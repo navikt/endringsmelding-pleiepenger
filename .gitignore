@@ -1,0 +1,9 @@
+/dist
+/.idea
+/.vscode
+/coverage
+/node_modules
+/src/navikt
+.DS_Store
+.env
+/src/sif-common

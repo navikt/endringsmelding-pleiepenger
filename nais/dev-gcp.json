@@ -1,0 +1,19 @@
+{
+    "app": "endring-pleiepenger",
+    "cluster": "dev-gcp",
+    "namespace": "dusseldorf",
+    "team": "dusseldorf",
+    "minReplicas": "1",
+    "maxReplicas": "1",
+    "ingresses": ["https://endring-pleiepenger.dev.nav.no"],
+    "env": {
+        "DEKORATOR_URL": "https://www.nav.no/dekoratoren/?simple=true&chatbot=false",
+        "API_URL": "https://endring-pleiepenger-api.dev.nav.no",
+        "PUBLIC_PATH": "/familie/sykdom-i-familien/soknad/endring-pleiepenger",
+        "APP_VERSION": "dev",
+        "LOGIN_URL": "https://loginservice.dev.nav.no/login?redirect=https://endring-pleiepenger.dev.nav.no/familie/sykdom-i-familien/soknad/endring-pleiepenger/melding",
+        "APPSTATUS_PROJECT_ID": "ryujtq87",
+        "APPSTATUS_DATASET": "staging",
+        "USE_AMPLITUDE": "true"
+    }
+}

@@ -1,0 +1,60 @@
+{
+    "backlink.label": "Tilbake",
+
+    "steg.footer.avbryt": "Avbryt",
+    "steg.footer.fortsettSenere": "Fortsett senere",
+    "steg.footer.cancelOrContinueLater.label": "Avbryt eller fortsett senere",
+
+    "application.title": "Endringsmelding - pleiepenger",
+
+    "application.loadError.title": "Noe gikk galt ...",
+    "application.loadError.message": "Beklager, her har det dessverre skjedd en feil. Dersom feilen fortsetter, prøv igjen litt senere.",
+
+    "stepIntroduction.ariaTitle": "Introduksjon",
+
+    "page.error.pageTitle": "Noe gikk galt ...",
+    "page.form.ubesvarteSpørsmålInfo": "For å komme videre, må du svare på alle spørsmålene ovenfor",
+
+    "page.ikkeMyndig.sidetittel": "Endringsmelding - pleiepenger - ikke myndig",
+    "page.ikkeMyndig.banner.tittel": "Hei!",
+    "page.ikkeMyndig.banner.tekst": "Fordi du er under 18 år, må en av foreldrene dine eller en foresatt skrive under på meldingen sammen med deg. Du må derfor fylle ut skjemaet på papir og sende det i posten.",
+    "page.ikkeMyndig.banner.lastNed": "Melding om endring av pleiepenger",
+    "page.ikkeMyndig.tittel": "Endre pleiepenger",
+
+    "samtykke.tekst": "Jeg bekrefter at jeg har lest og forstått",
+    "samtykke.harIkkeGodkjentVilkår": "Du må godkjenne vilkårene",
+    "samtykke.harForståttLabel": "For å gå videre må du bekrefte at du har lest og forstått {plikterLink}.",
+    "samtykke.harForståttLabel.lenketekst": "dine plikter",
+
+    "step.velkommen.banner.tittel": "Hei!",
+    "step.velkommen.banner.tekst": "Jeg vil hjelpe deg med å fylle ut meldingen, slik at du kan si i fra om endringer i dine pleiepenger.",
+    "step.velkommen.tittel": "Endringsmelding - pleiepenger",
+    "step.velkommen.info.1": "Her kan du melde fra om endringer i arbeidstid og omsorgstilbud innenfor søknadsperioden du har registrert. Du kan legge til, fjerne eller endre arbeidstid og tid i  omsorgstilbud.",
+    "step.velkommen.info.2": "Du kan melde fra om endringer så mange ganger du vil, så oppgi bare de endringene du er sikker på :) ",
+    "step.velkommen.personopplysninger.lenketekst": "Les om hvordan NAV behandler personopplysningene dine",
+    "step.velkommen.button.start": "Fortsett",
+
+    "step.omsorgstilbud.pageTitle": "Omsorgstilbud",
+    "step.omsorgstilbud.stepTitle": "Omsorgstilbud",
+    "step.omsorgstilbud.nextButtonLabel": "Fortsett",
+
+    "step.arbeidssituasjon.pageTitle": "Din arbeidssituasjon",
+    "step.arbeidssituasjon.stepTitle": "Din arbeidssituasjon",
+    "step.arbeidssituasjon.nextButtonLabel": "Fortsett",
+
+    "step.arbeidstid.pageTitle": "Arbeidstid",
+    "step.arbeidstid.stepTitle": "Arbeidstid",
+    "step.arbeidstid.nextButtonLabel": "Fortsett",
+
+    "oppsummering.søker.fødselsnummer": "Fødselsnummer:",
+
+    "step.oppsummering.pageTitle": "Oppsummering",
+    "step.oppsummering.stepTitle": "Oppsummering",
+    "step.oppsummering.info": "Les gjennom oppsummeringen og sjekk at alt er riktig før du sender inn meldingen om å endre pleiepenger. Hvis du vil gjøre endringer, kan du gå tilbake.",
+    "step.oppsummering.søker.header": "Om deg",
+    "step.oppsummering.nextButtonLabel": "Send inn endringsmelding",
+    "step.oppsummering.bekrefterOpplysninger": "Jeg bekrefter at opplysningene jeg har gitt er riktige, og at jeg ikke har holdt tilbake opplysninger som har betydning for min rett til pleiepenger.",
+
+    "validation.harForståttRettigheterOgPlikter.noValue": "Du må bekrefte at du har lest og forstått dine plikter.",
+    "validation.harBekreftetOpplysninger.notChecked": "Du må bekrefte opplysningene."
+}
