@@ -13,7 +13,7 @@ import '@navikt/sif-common-core/lib/styles/globalStyles.less';
 
 Modal.setAppElement('#app');
 
-export const APPLICATION_KEY = 'endring-pleiepenger';
+export const APPLICATION_KEY = 'endringsmelding-pleiepenger';
 export const SKJEMANAVN = 'Endringsmelding - pleiepenger';
 
 const root = document.getElementById('app');

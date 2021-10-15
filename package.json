@@ -1,8 +1,8 @@
 {
-    "name": "endring-pleiepenger",
+    "name": "endringsmelding-pleiepenger",
     "version": "0.0.1",
     "description": "Dialog for endring av pleiepenger for sykt barn",
-    "repository": "https://github.com/navikt/endring-pleiepenger",
+    "repository": "https://github.com/navikt/endringsmelding-pleiepenger",
     "license": "MIT",
     "author": "NAV",
     "scripts": {

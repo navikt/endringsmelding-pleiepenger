@@ -10,7 +10,7 @@ const getDecorator = () =>
     new Promise((resolve, reject) => {
         const callback = (error, response, body) => {
             if (!error && response.statusCode >= 200 && response.statusCode < 400) {
-                const publicPath = '/familie/sykdom-i-familien/soknad/endring-pleiepenger'; // process.env.PUBLIC_PATH
+                const publicPath = '/familie/sykdom-i-familien/soknad/endringsmelding-pleiepenger'; // process.env.PUBLIC_PATH
                 const { document } = new JSDOM(body).window;
                 const prop = 'innerHTML';
                 const data = {

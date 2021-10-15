@@ -12,7 +12,7 @@ const webpackConfig = {
     output: {
         path: path.resolve(__dirname, './../../../dist'),
         filename: 'js/[name].js',
-        publicPath: '/familie/sykdom-i-familien/soknad/endring-pleiepenger/dist',
+        publicPath: '/familie/sykdom-i-familien/soknad/endringsmelding-pleiepenger/dist',
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.json', '.jsx'],

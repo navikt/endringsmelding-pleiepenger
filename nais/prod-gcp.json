@@ -1,17 +1,17 @@
 {
-    "app": "endring-pleiepenger",
+    "app": "endringsmelding-pleiepenger",
     "cluster": "prod-gcp",
     "namespace": "dusseldorf",
     "team": "dusseldorf",
     "minReplicas": "1",
     "maxReplicas": "1",
-    "ingresses": ["https://www.nav.no/familie/sykdom-i-familien/soknad/endring-pleiepenger"],
+    "ingresses": ["https://www.nav.no/familie/sykdom-i-familien/soknad/endringsmelding-pleiepenger"],
     "env": {
         "DEKORATOR_URL": "https://www.nav.no/dekoratoren/?simple=true&chatbot=false",
-        "API_URL": "https://endring-pleiepenger-api.nav.no",
-        "PUBLIC_PATH": "/familie/sykdom-i-familien/soknad/endring-pleiepenger",
+        "API_URL": "https://endringsmelding-pleiepenger-api.nav.no",
+        "PUBLIC_PATH": "/familie/sykdom-i-familien/soknad/endringsmelding-pleiepenger",
         "APP_VERSION": "prod",
-        "LOGIN_URL": "https://loginservice.nav.no/login?redirect=https://www.nav.no/familie/sykdom-i-familien/soknad/endring-pleiepenger/melding",
+        "LOGIN_URL": "https://loginservice.nav.no/login?redirect=https://www.nav.no/familie/sykdom-i-familien/soknad/endringsmelding-pleiepenger/melding",
         "APPSTATUS_PROJECT_ID": "ryujtq87",
         "APPSTATUS_DATASET": "production",
         "USE_AMPLITUDE": "true"
