@@ -8,7 +8,8 @@
     "ingresses": ["https://www.nav.no/familie/sykdom-i-familien/soknad/endringsmelding-pleiepenger"],
     "env": {
         "DEKORATOR_URL": "https://www.nav.no/dekoratoren/?simple=true&chatbot=false",
-        "API_URL": "https://endringsmelding-pleiepenger-api.nav.no",
+        "API_URL": "https://pleiepengesoknad-api.nav.no",
+        "INNSYN_API_URL": "https://sif-innsyn-api.nav.no",
         "PUBLIC_PATH": "/familie/sykdom-i-familien/soknad/endringsmelding-pleiepenger",
         "APP_VERSION": "prod",
         "LOGIN_URL": "https://loginservice.nav.no/login?redirect=https://www.nav.no/familie/sykdom-i-familien/soknad/endringsmelding-pleiepenger/melding",
