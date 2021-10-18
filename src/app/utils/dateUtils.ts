@@ -3,11 +3,13 @@ import { iso8601DurationToTime } from '@navikt/sif-common-core/lib/utils/timeUti
 import { DateRange, Time } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
+import minMax from 'dayjs/plugin/minMax';
 import { ISODate, ISODateRange, ISODuration } from '../types';
 import isoWeek from 'dayjs/plugin/isoWeek';
 
 dayjs.extend(isoWeek);
 dayjs.extend(isBetween);
+dayjs.extend(minMax);
 
 export const getMonthsInDateRange = (range: DateRange): DateRange[] => {
     const months: DateRange[] = [];
@@ -81,4 +83,11 @@ export const getISODatesInISODateRange = (range: ISODateRange): ISODate[] => {
         currentDate = dayjs(currentDate).add(1, 'day');
     } while (dayjs(currentDate).isSameOrBefore(to, 'day'));
     return dates;
+};
+
+export const getMinMaxInDateRanges = (ranges: DateRange[]): DateRange => {
+    return {
+        from: dayjs.min(ranges.map((range) => dayjs(range.from))).toDate(),
+        to: dayjs.max(ranges.map((range) => dayjs(range.to))).toDate(),
+    };
 };

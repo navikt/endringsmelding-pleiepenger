@@ -16,7 +16,6 @@ import { prettifyDateFull } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 interface DialogState {
     dinePlikterModalOpen?: boolean;
-
     behandlingAvPersonopplysningerModalOpen?: boolean;
 }
 

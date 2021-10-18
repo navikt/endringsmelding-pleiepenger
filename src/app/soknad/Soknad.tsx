@@ -17,7 +17,7 @@ import { Person } from '../types/Person';
 import { SoknadApiData } from '../types/SoknadApiData';
 import { SoknadFormData } from '../types/SoknadFormData';
 import { SoknadTempStorageData } from '../types/SoknadTempStorageData';
-import { getEndringsperiode, getEndringsdato } from '../utils';
+import { getEndringsperiode, getEndringsdato } from '../utils/getEndringsperiode';
 import appSentryLogger from '../utils/appSentryLogger';
 import {
     navigateTo,
@@ -34,18 +34,19 @@ import SoknadFormComponents from './SoknadFormComponents';
 import SoknadRoutes from './SoknadRoutes';
 import { getSoknadStepsConfig, StepID } from './soknadStepsConfig';
 import soknadTempStorage, { isStorageDataValid } from './soknadTempStorage';
+import { getMinMaxInDateRanges } from '../utils/dateUtils';
 
 interface Props {
     søker: Person;
     arbeidsgivere: Arbeidsgivere;
-    k9sak?: K9Sak;
+    k9sak: K9Sak;
     soknadTempStorage: SoknadTempStorageData;
     route?: string;
 }
 
 type resetFormFunc = () => void;
 
-const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tempStorage, arbeidsgivere }) => {
+const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tempStorage, arbeidsgivere, k9sak }) => {
     const history = useHistory();
     const [initializing, setInitializing] = useState(true);
 
@@ -54,7 +55,8 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
     const [soknadId, setSoknadId] = useState<string | undefined>();
 
     const endringsdato = getEndringsdato();
-    const endringsperiode = getEndringsperiode(endringsdato);
+    const søknadsperiode = getMinMaxInDateRanges(k9sak.ytelse.søknadsperioder);
+    const endringsperiode = getEndringsperiode(endringsdato, søknadsperiode);
     const { logSoknadStartet, logSoknadFailed, logHendelse, logUserLoggedOut } = useAmplitudeInstance();
 
     const resetSoknad = async (redirectToFrontpage = true): Promise<void> => {
