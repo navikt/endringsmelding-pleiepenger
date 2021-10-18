@@ -10,19 +10,22 @@ import SoknadFormComponents from '../../soknad/SoknadFormComponents';
 import { SoknadFormField } from '../../types/SoknadFormData';
 import DinePlikterContent from './dine-plikter/DinePlikter';
 import BehandlingAvPersonopplysningerContent from './personopplysninger/Personopplysninger';
-import { FormikCheckboxPanelGroup } from '@navikt/sif-common-formik/lib';
+import { DateRange, FormikCheckboxPanelGroup } from '@navikt/sif-common-formik/lib';
 import { Element } from 'nav-frontend-typografi';
+import { prettifyDateFull } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 interface DialogState {
     dinePlikterModalOpen?: boolean;
+
     behandlingAvPersonopplysningerModalOpen?: boolean;
 }
 
 interface Props {
+    endringsperiode: DateRange;
     onStart: () => void;
 }
 
-const VelkommenPageForm: React.FunctionComponent<Props> = ({ onStart }) => {
+const VelkommenPageForm: React.FunctionComponent<Props> = ({ onStart, endringsperiode }) => {
     const [dialogState, setDialogState] = useState<DialogState>({});
     const { dinePlikterModalOpen, behandlingAvPersonopplysningerModalOpen } = dialogState;
     const intl = useIntl();
@@ -30,19 +33,16 @@ const VelkommenPageForm: React.FunctionComponent<Props> = ({ onStart }) => {
     return (
         <SoknadFormComponents.Form onValidSubmit={onStart} includeButtons={false}>
             <FormBlock>
+                <p>
+                    Du kan endre informasjon i perioden {prettifyDateFull(endringsperiode.from)} til{' '}
+                    {prettifyDateFull(endringsperiode.to)}.
+                </p>
+            </FormBlock>
+            <FormBlock>
                 <FormikCheckboxPanelGroup
                     name={'endreHva'}
                     legend={'Velg hva du ønsker å endre:'}
                     checkboxes={[
-                        {
-                            id: 'arbeidssituasjon',
-                            label: (
-                                <>
-                                    <Element>Arbeidssituasjon</Element>Oppdater din arbeidssituasjon
-                                </>
-                            ),
-                            value: 'arbeidssituasjon',
-                        },
                         {
                             id: 'omsorgstilbud',
                             label: (
@@ -53,10 +53,22 @@ const VelkommenPageForm: React.FunctionComponent<Props> = ({ onStart }) => {
                             value: 'omsorgstilbud',
                         },
                         {
-                            id: 'arbeidstid',
+                            id: 'arbeidssituasjon',
+                            disabled: true,
                             label: (
                                 <>
-                                    <Element>Arbeidstid</Element>Legg til, endre eller fjern arbeidstid
+                                    <Element>Arbeidssituasjon (ikke tilgjengelig)</Element>Oppdater din arbeidssituasjon
+                                </>
+                            ),
+                            value: 'arbeidssituasjon',
+                        },
+                        {
+                            id: 'arbeidstid',
+                            disabled: true,
+                            label: (
+                                <>
+                                    <Element>Arbeidstid (ikke tilgjengelig)</Element>Legg til, endre eller fjern
+                                    arbeidstid
                                 </>
                             ),
                             value: 'arbeidstid',

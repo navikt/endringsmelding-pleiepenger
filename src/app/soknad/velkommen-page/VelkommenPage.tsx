@@ -9,8 +9,13 @@ import { Sidetittel } from 'nav-frontend-typografi';
 import { useSoknadContext } from '../SoknadContext';
 import VelkommenPageForm from './VelkommenPageForm';
 import CounsellorPanel from '@navikt/sif-common-core/lib/components/counsellor-panel/CounsellorPanel';
+import { DateRange } from '@navikt/sif-common-formik/lib';
 
-const VelkommenPage: React.FunctionComponent = () => {
+interface Props {
+    endringsperiode: DateRange;
+}
+
+const VelkommenPage: React.FunctionComponent<Props> = ({ endringsperiode }) => {
     const intl = useIntl();
     const { startSoknad } = useSoknadContext();
     useLogSidevisning('velkommen');
@@ -40,7 +45,7 @@ const VelkommenPage: React.FunctionComponent = () => {
                 </CounsellorPanel>
             </Box>
             <Box margin="xl">
-                <VelkommenPageForm onStart={startSoknad} />
+                <VelkommenPageForm onStart={startSoknad} endringsperiode={endringsperiode} />
             </Box>
         </Page>
     );

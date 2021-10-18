@@ -22,19 +22,22 @@ import { StepID } from './soknadStepsConfig';
 import VelkommenPage from './velkommen-page/VelkommenPage';
 import ArbeidssituasjonStep from './arbeidssituasjon-step/ArbeidssituasjonStep';
 import ArbeidstidStep from './arbeidstid-step/ArbeidstidStep';
-import { getEndringsperiode, getSøknadsdato } from '../utils';
+import { DateRange } from '@navikt/sif-common-formik/lib';
+import { Arbeidsgivere } from '../types/Arbeidsgiver';
 
 interface Props {
     soknadId?: string;
     søker: Person;
+    søknadsdato: Date;
+    endringsperiode: DateRange;
+    arbeidsgivere?: Arbeidsgivere;
 }
 
-const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker }) => {
+const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, endringsperiode, søknadsdato }) => {
     const intl = useIntl();
     const { values } = useFormikContext<SoknadFormData>();
     const availableSteps = getAvailableSteps(values, søker);
     const { soknadStepsConfig, sendSoknadStatus } = useSoknadContext();
-    const søknadsdato = getSøknadsdato();
 
     const renderSoknadStep = (id: string, søker: Person, stepID: StepID): React.ReactNode => {
         switch (stepID) {
@@ -42,7 +45,7 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker }) => {
                 return (
                     <OmsorgstilbudStep
                         søknadsdato={søknadsdato}
-                        periode={getEndringsperiode(søknadsdato)}
+                        endringsperiode={endringsperiode}
                         tidIOmsorgstilbud={values.omsorgstilbud?.enkeltdager}
                     />
                 );
@@ -51,11 +54,14 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker }) => {
             case StepID.ARBEIDSTID:
                 return <ArbeidstidStep />;
             case StepID.OPPSUMMERING:
-                const apiValues = mapFormDataToApiData({
-                    soknadId: id,
-                    locale: intl.locale,
-                    formData: values,
-                });
+                const apiValues = mapFormDataToApiData(
+                    {
+                        soknadId: id,
+                        locale: intl.locale,
+                        formData: values,
+                    },
+                    endringsperiode
+                );
                 return <OppsummeringStep apiValues={apiValues} søker={søker} />;
         }
     };
@@ -85,7 +91,7 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker }) => {
                 />
             </Route>
             <Route path={AppRoutes.SOKNAD} exact={true}>
-                <VelkommenPage />
+                <VelkommenPage endringsperiode={endringsperiode} />
             </Route>
             {soknadId === undefined && <Redirect key="redirectToWelcome" to={AppRoutes.SOKNAD} />}
             {soknadId &&

@@ -15,6 +15,7 @@ export enum SoknadFormField {
     harForståttRettigheterOgPlikter = 'harForståttRettigheterOgPlikter',
     harBekreftetOpplysninger = 'harBekreftetOpplysninger',
     omsorgstilbud = 'omsorgstilbud',
+    omsorgstilbud_enkeltdager = 'omsorgstilbud.enkeltdager',
 }
 
 export interface SoknadFormData {

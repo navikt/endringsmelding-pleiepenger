@@ -33,6 +33,7 @@ import SoknadFormComponents from './SoknadFormComponents';
 import SoknadRoutes from './SoknadRoutes';
 import { getSoknadStepsConfig, StepID } from './soknadStepsConfig';
 import soknadTempStorage, { isStorageDataValid } from './soknadTempStorage';
+import { getEndringsperiode, getSøknadsdato } from '../utils';
 
 interface Props {
     søker: Person;
@@ -44,13 +45,16 @@ interface Props {
 
 type resetFormFunc = () => void;
 
-const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tempStorage }) => {
+const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tempStorage, arbeidsgivere }) => {
     const history = useHistory();
     const [initializing, setInitializing] = useState(true);
 
     const [initialFormData, setInitialFormData] = useState<Partial<SoknadFormData>>({ ...initialSoknadFormData });
     const [sendSoknadStatus, setSendSoknadStatus] = useState<SendSoknadStatus>(initialSendSoknadState);
     const [soknadId, setSoknadId] = useState<string | undefined>();
+
+    const søknadsdato = getSøknadsdato();
+    const endringsperiode = getEndringsperiode(søknadsdato);
 
     const { logSoknadStartet, logSoknadFailed, logHendelse, logUserLoggedOut } = useAmplitudeInstance();
 
@@ -221,7 +225,13 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
                                             );
                                         },
                                     }}>
-                                    <SoknadRoutes soknadId={soknadId} søker={søker} />
+                                    <SoknadRoutes
+                                        soknadId={soknadId}
+                                        søker={søker}
+                                        arbeidsgivere={arbeidsgivere}
+                                        endringsperiode={endringsperiode}
+                                        søknadsdato={søknadsdato}
+                                    />
                                 </SoknadContextProvider>
                             );
                         }}

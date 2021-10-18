@@ -18,6 +18,7 @@ import SoknadFormStep from '../SoknadFormStep';
 import { StepID } from '../soknadStepsConfig';
 import SøkerSummary from './SøkerSummary';
 import { getCheckedValidator } from '@navikt/sif-common-formik/lib/validation';
+import OmsorgstilbudSummary from './omsorgstilbud-summary/OmsorgstilbudSummary';
 
 type Props = {
     søker: Person;
@@ -57,6 +58,9 @@ const OppsummeringStep: React.FunctionComponent<Props> = ({ søker, apiValues })
                         <Box margin="xxl">
                             <ResponsivePanel border={true}>
                                 <SøkerSummary søker={søker} />
+                                {apiValues.omsorgstilbud && (
+                                    <OmsorgstilbudSummary omsorgstilbud={apiValues.omsorgstilbud} />
+                                )}
                             </ResponsivePanel>
                         </Box>
 

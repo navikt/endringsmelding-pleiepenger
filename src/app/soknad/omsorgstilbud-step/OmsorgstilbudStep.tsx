@@ -12,12 +12,16 @@ const cleanupOmsorgstilbudStep = (formData: SoknadFormData): SoknadFormData => {
 };
 
 interface Props {
-    periode: DateRange;
+    endringsperiode: DateRange;
     søknadsdato: Date;
     tidIOmsorgstilbud?: TidEnkeltdag;
 }
 
-const OmsorgstilbudStep: React.FunctionComponent<Props> = ({ periode, søknadsdato, tidIOmsorgstilbud = {} }) => {
+const OmsorgstilbudStep: React.FunctionComponent<Props> = ({
+    endringsperiode: periode,
+    søknadsdato,
+    tidIOmsorgstilbud = {},
+}) => {
     const stepId = StepID.OMSORGSTILBUD;
 
     return (

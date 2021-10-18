@@ -2,6 +2,9 @@
     "backlink.label": "Tilbake",
 
     "ukeÅr": "Uke {ukenummer}, {år}",
+    "dagerMedTid.uke": "Uke {uke}",
+    "dagerMedTid.ingenDagerRegistrert": "Ingen dager registrert",
+
     "uke": "uke",
     "Uke": "Uke",
     "måned": "måned",
@@ -93,6 +96,9 @@
     "step.oppsummering.søker.header": "Om deg",
     "step.oppsummering.nextButtonLabel": "Send inn endringsmelding",
     "step.oppsummering.bekrefterOpplysninger": "Jeg bekrefter at opplysningene jeg har gitt er riktige, og at jeg ikke har holdt tilbake opplysninger som har betydning for min rett til pleiepenger.",
+
+    "step.oppsummering.sendMelding.feilmelding.førsteGang": "Det oppstod en feil under innsending. Vennligst prøv på nytt.",
+    "step.oppsummering.sendMelding.feilmelding.andreGang": "Det oppstod fortsatt en feil under innsending. Vennligst vent litt og prøv på nytt.",
 
     "validation.harForståttRettigheterOgPlikter.noValue": "Du må bekrefte at du har lest og forstått dine plikter.",
     "validation.harBekreftetOpplysninger.notChecked": "Du må bekrefte opplysningene."
