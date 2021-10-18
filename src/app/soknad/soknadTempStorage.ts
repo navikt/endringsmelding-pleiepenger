@@ -1,8 +1,8 @@
 import persistence, { PersistenceInterface } from '@navikt/sif-common-core/lib/utils/persistence/persistence';
 import { AxiosResponse } from 'axios';
 import hash from 'object-hash';
-import { axiosJsonConfig } from '../api/api';
-import { ApiEndpoint } from '../types/ApiEndpoint';
+import { axiosConfigPsb } from '../api/api';
+import { ApiEndpointPsb } from '../types/ApiEndpoint';
 import { Person } from '../types/Person';
 import { SoknadFormData } from '../types/SoknadFormData';
 import { SoknadTempStorageData } from '../types/SoknadTempStorageData';
@@ -24,8 +24,8 @@ interface SoknadTemporaryStorage extends Omit<PersistenceInterface<SoknadTempSto
 }
 
 const persistSetup = persistence<SoknadTempStorageData>({
-    url: ApiEndpoint.mellomlagring,
-    requestConfig: { ...axiosJsonConfig },
+    url: ApiEndpointPsb.mellomlagring,
+    requestConfig: { ...axiosConfigPsb },
 });
 
 export const isStorageDataValid = (

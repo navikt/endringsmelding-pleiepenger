@@ -69,24 +69,33 @@ const søkerMockIkkeMyndig = {
     myndig: false,
 };
 
-const barnMock = {
-    barn: [
-        { fødselsdato: '1990-01-02', fornavn: 'Barn', mellomnavn: 'Barne', etternavn: 'Barnesen', aktørId: '1' },
-        { fødselsdato: '1990-01-02', fornavn: 'Mock', etternavn: 'Mocknes', aktørId: '2' },
+// const barnMock = {
+//     barn: [
+//         { fødselsdato: '1990-01-02', fornavn: 'Barn', mellomnavn: 'Barne', etternavn: 'Barnesen', aktørId: '1' },
+//         { fødselsdato: '1990-01-02', fornavn: 'Mock', etternavn: 'Mocknes', aktørId: '2' },
+//     ],
+// };
+
+// const barnMock2 = {
+//     barn: [
+//         {
+//             fødselsdato: '2008-03-01',
+//             fornavn: 'GØYAL',
+//             mellomnavn: null,
+//             etternavn: 'LAPP',
+//             aktørId: '1097566908089',
+//         },
+//     ],
+// };
+
+const arbeidsgivereMock = {
+    organisasjoner: [
+        { navn: 'Karls godteributikk', organisasjonsnummer: '123451234' },
+        // { navn: 'Noras sveiseri', organisasjonsnummer: '123451235' },
     ],
 };
 
-const barnMock2 = {
-    barn: [
-        {
-            fødselsdato: '2008-03-01',
-            fornavn: 'GØYAL',
-            mellomnavn: null,
-            etternavn: 'LAPP',
-            aktørId: '1097566908089',
-        },
-    ],
-};
+const K9SakMock = `./k9sak.json`;
 
 const startExpressServer = () => {
     const port = process.env.PORT || 8089;
@@ -106,6 +115,23 @@ const startExpressServer = () => {
             res.send(søkerMock);
         }, 200);
     });
+
+    server.get('/k9sak', (req, res) => {
+        setTimeout(() => {
+            if (existsSync(K9SakMock)) {
+                const body = readFileSync(K9SakMock);
+                console.log(body);
+                res.send(JSON.parse(body));
+            } else {
+                res.send({});
+            }
+        }, 200);
+    });
+
+    server.get('/arbeidsgiver', (req, res) => {
+        res.send(arbeidsgivereMock);
+    });
+
     server.get('/soker-ikke-myndig', (req, res) => {
         setTimeout(() => {
             res.send(søkerMockIkkeMyndig);

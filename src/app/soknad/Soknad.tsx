@@ -11,6 +11,8 @@ import { sendEndringsmelding } from '../api/sendSoknad';
 import { SKJEMANAVN } from '../App';
 import AppRoutes, { getRouteUrl } from '../config/routeConfig';
 import IkkeMyndigPage from '../pages/ikke-myndig-page/IkkeMyndigPage';
+import { Arbeidsgivere } from '../types/Arbeidsgiver';
+import { K9Sak } from '../types/K9Sak';
 import { Person } from '../types/Person';
 import { SoknadApiData } from '../types/SoknadApiData';
 import { SoknadFormData } from '../types/SoknadFormData';
@@ -34,6 +36,8 @@ import soknadTempStorage, { isStorageDataValid } from './soknadTempStorage';
 
 interface Props {
     søker: Person;
+    arbeidsgivere: Arbeidsgivere;
+    k9sak: K9Sak;
     soknadTempStorage: SoknadTempStorageData;
     route?: string;
 }
