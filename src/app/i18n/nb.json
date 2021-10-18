@@ -1,6 +1,45 @@
 {
     "backlink.label": "Tilbake",
 
+    "ukeÅr": "Uke {ukenummer}, {år}",
+    "uke": "uke",
+    "Uke": "Uke",
+    "måned": "måned",
+    "Måned": "Måned",
+
+    "mandag": "mandag",
+    "tirsdag": "tirsdag",
+    "onsdag": "onsdag",
+    "torsdag": "torsdag",
+    "fredag": "fredag",
+
+    "mandag.caps": "Mandag",
+    "tirsdag.caps": "Tirsdag",
+    "onsdag.caps": "Onsdag",
+    "torsdag.caps": "Torsdag",
+    "fredag.caps": "Fredag",
+
+    "mandager.caps": "Mandager",
+    "tirsdager.caps": "Tirsdager",
+    "onsdager.caps": "Onsdager",
+    "torsdager.caps": "Torsdager",
+    "fredager.caps": "Fredager",
+
+    "Mandag": "Mandag",
+    "Tirsdag": "Tirsdag",
+    "Onsdag": "Onsdag",
+    "Torsdag": "Torsdag",
+    "Fredag": "Fredag",
+
+    "Mandager": "Mandager",
+    "Tirsdager": "Tirsdager",
+    "Onsdager": "Onsdager",
+    "Torsdager": "Torsdager",
+    "Fredager": "Fredager",
+
+    "tidKalenderForm.ok.label": "Lagre",
+    "tidKalenderForm.avbryt.label": "Avbryt",
+
     "steg.footer.avbryt": "Avbryt",
     "steg.footer.fortsettSenere": "Fortsett senere",
     "steg.footer.cancelOrContinueLater.label": "Avbryt eller fortsett senere",

@@ -34,7 +34,6 @@ import soknadTempStorage, { isStorageDataValid } from './soknadTempStorage';
 
 interface Props {
     søker: Person;
-
     soknadTempStorage: SoknadTempStorageData;
     route?: string;
 }
@@ -79,6 +78,12 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
         setSoknadId(sId);
         const firstStep = StepID.OMSORGSTILBUD;
         await soknadTempStorage.create();
+        await soknadTempStorage.update(
+            sId,
+            { harBekreftetOpplysninger: false, harForståttRettigheterOgPlikter: true },
+            firstStep,
+            { søker }
+        );
         await logSoknadStartet(SKJEMANAVN);
         setTimeout(() => {
             navigateTo(soknadStepUtils.getStepRoute(firstStep, SoknadApplicationType.MELDING), history);

@@ -35,6 +35,15 @@ const VelkommenPageForm: React.FunctionComponent<Props> = ({ onStart }) => {
                     legend={'Velg hva du ønsker å endre:'}
                     checkboxes={[
                         {
+                            id: 'arbeidssituasjon',
+                            label: (
+                                <>
+                                    <Element>Arbeidssituasjon</Element>Oppdater din arbeidssituasjon
+                                </>
+                            ),
+                            value: 'arbeidssituasjon',
+                        },
+                        {
                             id: 'omsorgstilbud',
                             label: (
                                 <>

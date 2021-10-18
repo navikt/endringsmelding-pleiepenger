@@ -6,8 +6,8 @@ import { SoknadFormData } from '../types/SoknadFormData';
 export const getAvailableSteps = (values: Partial<SoknadFormData>, søker: Person): StepID[] => {
     const steps: StepID[] = [];
     steps.push(StepID.OMSORGSTILBUD);
-    steps.push(StepID.ARBEIDSSITUASJON);
-    steps.push(StepID.ARBEIDSTID);
+    // steps.push(StepID.ARBEIDSSITUASJON);
+    // steps.push(StepID.ARBEIDSTID);
     steps.push(StepID.OPPSUMMERING);
     return steps;
 };

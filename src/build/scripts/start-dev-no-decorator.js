@@ -13,4 +13,4 @@ const compiler = webpack({
 });
 const server = new WebpackDevServer(compiler, configureDevServer({}));
 
-server.listen(8080, '127.0.0.1', () => console.log('Started server on http://localhost:8080'));
+server.listen(8090, '127.0.0.1', () => console.log('Started server on http://localhost:8090'));

@@ -18,7 +18,6 @@ function useSoknadEssentials(): SoknadEssentialsRemoteData {
         try {
             const [sokerResult, soknadTempStorageResult] = await Promise.all([
                 getSokerRemoteData(),
-
                 getSoknadTempStorage(),
             ]);
             setData(combine(sokerResult, soknadTempStorageResult));

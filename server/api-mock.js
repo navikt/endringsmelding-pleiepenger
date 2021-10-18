@@ -2,13 +2,12 @@ const os = require('os');
 const fs = require('fs');
 const express = require('express');
 const server = express();
-const Busboy = require('busboy');
 
 server.use(express.json());
 server.use((req, res, next) => {
     const allowedOrigins = [
         'http://host.docker.internal:8080',
-        'http://localhost:8080',
+        'http://localhost:8090',
         'http://web:8080',
         'http://192.168.0.115:8080',
     ];

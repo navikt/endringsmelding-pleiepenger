@@ -22,6 +22,7 @@ import { StepID } from './soknadStepsConfig';
 import VelkommenPage from './velkommen-page/VelkommenPage';
 import ArbeidssituasjonStep from './arbeidssituasjon-step/ArbeidssituasjonStep';
 import ArbeidstidStep from './arbeidstid-step/ArbeidstidStep';
+import { getEndringsperiode, getSøknadsdato } from '../utils';
 
 interface Props {
     soknadId?: string;
@@ -33,11 +34,18 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker }) => {
     const { values } = useFormikContext<SoknadFormData>();
     const availableSteps = getAvailableSteps(values, søker);
     const { soknadStepsConfig, sendSoknadStatus } = useSoknadContext();
+    const søknadsdato = getSøknadsdato();
 
     const renderSoknadStep = (id: string, søker: Person, stepID: StepID): React.ReactNode => {
         switch (stepID) {
             case StepID.OMSORGSTILBUD:
-                return <OmsorgstilbudStep />;
+                return (
+                    <OmsorgstilbudStep
+                        søknadsdato={søknadsdato}
+                        periode={getEndringsperiode(søknadsdato)}
+                        tidIOmsorgstilbud={values.omsorgstilbud?.enkeltdager}
+                    />
+                );
             case StepID.ARBEIDSSITUASJON:
                 return <ArbeidssituasjonStep />;
             case StepID.ARBEIDSTID:

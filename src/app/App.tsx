@@ -10,6 +10,7 @@ import { applicationIntlMessages } from './i18n/applicationMessages';
 import IntroPage from './pages/intro-page/IntroPage';
 import SoknadRemoteDataFetcher from './soknad/SoknadRemoteDataFetcher';
 import '@navikt/sif-common-core/lib/styles/globalStyles.less';
+import './styles/app.less';
 
 Modal.setAppElement('#app');
 

@@ -3,6 +3,7 @@ import { allCommonMessages } from '@navikt/sif-common-core/lib/i18n/allCommonMes
 import annetBarnMessages from '@navikt/sif-common-forms/lib/annet-barn/annetBarnMessages';
 import soknadErrorIntlMessages from '@navikt/sif-common-soknad/lib/soknad-error-messages/soknadErrorIntlMessages';
 import soknadIntlMessages from '@navikt/sif-common-soknad/lib/soknad-intl-messages/soknadIntlMessages';
+import omsorgstilbudMessages from '../soknad/omsorgstilbud-step/omsorgstilbudMessages';
 
 const appMessagesNB = require('./nb.json');
 const introFormMessagesNB = require('../pages/intro-page/introFormMessagesNB.json');
@@ -18,6 +19,7 @@ const bokmålstekster = {
     ...annetBarnMessages.nb,
     ...soknadErrorIntlMessages.nb,
     ...soknadIntlMessages.nb,
+    ...omsorgstilbudMessages.nb,
 };
 
 export const applicationIntlMessages: MessageFileFormat = {
