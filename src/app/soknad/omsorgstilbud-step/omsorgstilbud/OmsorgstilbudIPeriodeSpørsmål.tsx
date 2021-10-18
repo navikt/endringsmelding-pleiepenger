@@ -7,12 +7,13 @@ import { SoknadFormField, TidEnkeltdag } from '../../../types/SoknadFormData';
 import { getMonthsInDateRange } from '../../../utils/dateUtils';
 import SoknadFormComponents from '../../SoknadFormComponents';
 import OmsorgstilbudInfoAndDialog from './OmsorgstilbudInfoAndDialog';
+import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 
 interface Props {
     periode: DateRange;
     søknadsdato: Date;
     tidIOmsorgstilbud: TidEnkeltdag;
-    onOmsorgstilbudChanged?: () => void;
+    onOmsorgstilbudChanged?: (omsorgsdager: TidEnkeltdag) => void;
 }
 
 const OmsorgstilbudIPeriodeSpørsmål: React.FunctionComponent<Props> = ({
@@ -38,7 +39,7 @@ const OmsorgstilbudIPeriodeSpørsmål: React.FunctionComponent<Props> = ({
             {getMonthsInDateRange(periode).map((periode) => {
                 const mndOgÅr = dayjs(periode.from).format('MMMM YYYY');
                 return (
-                    <div key={dayjs(periode.from).format('MM.YYYY')} className="omsorgstilbudKalender__mnd">
+                    <FormBlock margin="l" key={dayjs(periode.from).format('MM.YYYY')}>
                         <OmsorgstilbudInfoAndDialog
                             name={SoknadFormField.omsorgstilbud_enkeltdager}
                             periode={periode}
@@ -60,7 +61,7 @@ const OmsorgstilbudIPeriodeSpørsmål: React.FunctionComponent<Props> = ({
                                 }),
                             }}
                         />
-                    </div>
+                    </FormBlock>
                 );
             })}
         </SoknadFormComponents.InputGroup>

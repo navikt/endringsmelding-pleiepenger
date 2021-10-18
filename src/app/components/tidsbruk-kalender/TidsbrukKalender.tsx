@@ -10,6 +10,7 @@ import { DagMedTid } from '../../types/SoknadFormData';
 import CalendarGrid from '../calendar-grid/CalendarGrid';
 import FormattedTimeText from '../formatted-time-text/FormattedTimeText';
 
+export type TidRenderer = (tid: Partial<Time>) => React.ReactNode;
 interface Props {
     måned: Date;
     dager: DagMedTid[];
@@ -17,6 +18,7 @@ interface Props {
     brukEtikettForInnhold?: boolean;
     visSomListe?: boolean;
     skjulTommeDagerIListe?: boolean;
+    tidRenderer?: (tid: Time) => React.ReactNode;
 }
 
 const formatTime = (intl: IntlShape, time: Partial<Time>): string => {
@@ -29,15 +31,17 @@ const DagContent = ({
     tid,
     brukEtikettForInnhold = true,
     desimalTid,
+    tidRenderer,
 }: {
     tid: Partial<Time>;
     brukEtikettForInnhold?: boolean;
     desimalTid?: boolean;
+    tidRenderer?: TidRenderer;
 }) => {
     const intl = useIntl();
     const content = (
         <AriaAlternative
-            visibleText={<FormattedTimeText time={tid} decimal={desimalTid} />}
+            visibleText={tidRenderer ? tidRenderer(tid) : <FormattedTimeText time={tid} decimal={desimalTid} />}
             ariaText={formatTime(intl, tid)}
         />
     );
@@ -50,6 +54,7 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
     brukEtikettForInnhold,
     visSomListe,
     skjulTommeDagerIListe,
+    tidRenderer,
 }) => {
     return (
         <CalendarGrid
@@ -68,7 +73,14 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
             }}
             days={dager.map((dag) => ({
                 date: dag.dato,
-                content: <DagContent tid={dag.tid} brukEtikettForInnhold={brukEtikettForInnhold} desimalTid={false} />,
+                content: (
+                    <DagContent
+                        tid={dag.tid}
+                        tidRenderer={tidRenderer}
+                        brukEtikettForInnhold={brukEtikettForInnhold}
+                        desimalTid={false}
+                    />
+                ),
             }))}
             hideEmptyContentInListMode={skjulTommeDagerIListe}
         />

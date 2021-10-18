@@ -1,8 +1,8 @@
 import React from 'react';
 import SummaryBlock from '@navikt/sif-common-soknad/lib/soknad-summary/summary-block/SummaryBlock';
 import SummarySection from '@navikt/sif-common-soknad/lib/soknad-summary/summary-section/SummarySection';
-import TidEnkeltdager from '../../../components/dager-med-tid/TidEnkeltdager';
 import { OmsorgstilbudApiData } from '../../../types/SoknadApiData';
+import TidEnkeltdager from '../../../components/dager-med-tid/TidEnkeltdager';
 
 interface Props {
     omsorgstilbud: OmsorgstilbudApiData;

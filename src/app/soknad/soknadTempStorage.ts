@@ -10,7 +10,7 @@ import { StepID } from './soknadStepsConfig';
 
 export const STORAGE_VERSION = '2.1';
 
-interface UserHashInfo {
+export interface UserHashInfo {
     søker: Person;
 }
 

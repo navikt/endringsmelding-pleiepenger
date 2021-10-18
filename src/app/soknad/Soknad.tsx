@@ -17,6 +17,7 @@ import { Person } from '../types/Person';
 import { SoknadApiData } from '../types/SoknadApiData';
 import { SoknadFormData } from '../types/SoknadFormData';
 import { SoknadTempStorageData } from '../types/SoknadTempStorageData';
+import { getEndringsperiode, getSøknadsdato } from '../utils';
 import appSentryLogger from '../utils/appSentryLogger';
 import {
     navigateTo,
@@ -33,7 +34,6 @@ import SoknadFormComponents from './SoknadFormComponents';
 import SoknadRoutes from './SoknadRoutes';
 import { getSoknadStepsConfig, StepID } from './soknadStepsConfig';
 import soknadTempStorage, { isStorageDataValid } from './soknadTempStorage';
-import { getEndringsperiode, getSøknadsdato } from '../utils';
 
 interface Props {
     søker: Person;
@@ -55,7 +55,6 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
 
     const søknadsdato = getSøknadsdato();
     const endringsperiode = getEndringsperiode(søknadsdato);
-
     const { logSoknadStartet, logSoknadFailed, logHendelse, logUserLoggedOut } = useAmplitudeInstance();
 
     const resetSoknad = async (redirectToFrontpage = true): Promise<void> => {

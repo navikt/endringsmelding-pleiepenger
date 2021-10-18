@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { isFailure, isInitial, isPending, isSuccess } from '@devexperts/remote-data-ts';
@@ -12,7 +13,7 @@ import { useFormikContext } from 'formik';
 import AppRoutes from '../config/routeConfig';
 import KvitteringPage from '../pages/kvittering-page/KvitteringPage';
 import { Person } from '../types/Person';
-import { SoknadFormData } from '../types/SoknadFormData';
+import { SoknadFormData, SoknadFormField } from '../types/SoknadFormData';
 import { getAvailableSteps } from '../utils/getAvailableSteps';
 import { mapFormDataToApiData } from '../utils/map-form-data-to-api-data/mapFormDataToApiData';
 import OmsorgstilbudStep from './omsorgstilbud-step/OmsorgstilbudStep';
@@ -24,6 +25,7 @@ import ArbeidssituasjonStep from './arbeidssituasjon-step/ArbeidssituasjonStep';
 import ArbeidstidStep from './arbeidstid-step/ArbeidstidStep';
 import { DateRange } from '@navikt/sif-common-formik/lib';
 import { Arbeidsgivere } from '../types/Arbeidsgiver';
+import usePersistSoknad from '../hooks/usePersistSoknad';
 
 interface Props {
     soknadId?: string;
@@ -35,11 +37,24 @@ interface Props {
 
 const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, endringsperiode, søknadsdato }) => {
     const intl = useIntl();
-    const { values } = useFormikContext<SoknadFormData>();
+    const history = useHistory();
+    const { values, setFieldTouched } = useFormikContext<SoknadFormData>();
     const availableSteps = getAvailableSteps(values, søker);
     const { soknadStepsConfig, sendSoknadStatus } = useSoknadContext();
+    const { persist } = usePersistSoknad(history);
 
-    const renderSoknadStep = (id: string, søker: Person, stepID: StepID): React.ReactNode => {
+    const [persistRequest, setPersistRequest] = useState<{ stepID: StepID } | undefined>();
+
+    useEffect(() => {
+        if (soknadId) {
+            if (persistRequest) {
+                setPersistRequest(undefined);
+                persist(soknadId, persistRequest.stepID, { søker });
+            }
+        }
+    }, [soknadId, persistRequest, persist, søker]);
+
+    const renderSoknadStep = (soknadId: string, søker: Person, stepID: StepID): React.ReactNode => {
         switch (stepID) {
             case StepID.OMSORGSTILBUD:
                 return (
@@ -47,6 +62,13 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, endrin
                         søknadsdato={søknadsdato}
                         endringsperiode={endringsperiode}
                         tidIOmsorgstilbud={values.omsorgstilbud?.enkeltdager}
+                        onOmsorgstilbudChanged={() => {
+                            setTimeout(() => {
+                                console.log(values.omsorgstilbud?.enkeltdager);
+                            }, 100);
+                            setFieldTouched(SoknadFormField.omsorgstilbud_enkeltdager, true, false);
+                            setPersistRequest({ stepID: StepID.OMSORGSTILBUD });
+                        }}
                     />
                 );
             case StepID.ARBEIDSSITUASJON:
@@ -56,7 +78,7 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, endrin
             case StepID.OPPSUMMERING:
                 const apiValues = mapFormDataToApiData(
                     {
-                        soknadId: id,
+                        soknadId: soknadId,
                         locale: intl.locale,
                         formData: values,
                     },

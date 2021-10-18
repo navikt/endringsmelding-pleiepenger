@@ -15,11 +15,13 @@ interface Props {
     endringsperiode: DateRange;
     søknadsdato: Date;
     tidIOmsorgstilbud?: TidEnkeltdag;
+    onOmsorgstilbudChanged?: () => void;
 }
 
 const OmsorgstilbudStep: React.FunctionComponent<Props> = ({
     endringsperiode: periode,
     søknadsdato,
+    onOmsorgstilbudChanged,
     tidIOmsorgstilbud = {},
 }) => {
     const stepId = StepID.OMSORGSTILBUD;
@@ -32,6 +34,7 @@ const OmsorgstilbudStep: React.FunctionComponent<Props> = ({
                     periode={periode}
                     søknadsdato={søknadsdato}
                     tidIOmsorgstilbud={tidIOmsorgstilbud}
+                    onOmsorgstilbudChanged={onOmsorgstilbudChanged}
                 />
             </Box>
         </SoknadFormStep>

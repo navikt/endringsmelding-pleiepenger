@@ -70,6 +70,8 @@
         "nav-frontend-ekspanderbartpanel": "^4.0.2",
         "nav-frontend-ekspanderbartpanel-style": "^2.0.1",
         "nav-frontend-etiketter": "^3.0.1",
+        "nav-frontend-typografi": "^4.0.1",
+        "nav-frontend-typografi-style": "^2.0.1",
         "newtype-ts": "^0.3.4",
         "object-hash": "^2.2.0",
         "promise": "^8.1.0",

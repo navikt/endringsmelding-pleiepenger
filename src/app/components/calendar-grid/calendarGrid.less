@@ -42,10 +42,10 @@
             font-size: 0.8rem;
         }
         &__dayHeader {
-            padding: 0.5rem 0.5rem;
-            margin: 1rem 0 0.5rem 0;
-            font-weight: bold;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.55);
+            padding: 0 0.5rem 0.5rem 0.5rem;
+            margin-bottom: 0.5rem;
+            // font-weight: bold;
+            // border-bottom: 1px solid rgba(0, 0, 0, 0.55);
             &--week {
                 padding-left: 0;
             }
@@ -88,6 +88,8 @@
         &__date {
             left: initial;
             top: initial;
+            right: initial;
+            text-align: left;
             font-size: 1rem;
             position: relative;
             flex: 1 1 50%;
@@ -119,11 +121,10 @@
 .calendarGrid {
     &__day {
         display: block;
-        min-height: 4.5rem;
+        min-height: 4rem;
         position: relative;
         padding-top: 2rem;
-        margin: -1px;
-        border: 1px solid rgba(0, 0, 0, 0.2);
+        margin: 2px;
         border-radius: 0; //0.125rem;
         background-color: white;
         &--outsideMonth {
@@ -140,7 +141,8 @@
         opacity: 1;
         position: absolute;
         top: 0.25rem;
-        left: 0.5rem;
+        right: 0.5rem;
+        text-align: right;
     }
     &__week {
         padding: 0.5rem 0.5rem;
@@ -173,5 +175,9 @@
             padding-bottom: 0;
             border-bottom: none;
         }
+    }
+
+    .dagContent {
+        font-weight: bold;
     }
 }
