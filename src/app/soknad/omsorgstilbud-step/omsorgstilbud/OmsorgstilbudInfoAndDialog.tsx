@@ -26,7 +26,7 @@ interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, Va
     name: FieldNames;
     labels: ModalFormAndInfoLabels;
     periode: DateRange;
-    søknadsdato: Date;
+    endringsdato: Date;
     skjulTommeDagerIListe?: boolean;
     onAfterChange?: (omsorgsdager: TidEnkeltdag) => void;
 }
@@ -35,12 +35,12 @@ function OmsorgstilbudInfoAndDialog<FieldNames>({
     name,
     periode,
     labels,
-    søknadsdato,
+    endringsdato,
     skjulTommeDagerIListe,
     validate,
     onAfterChange,
 }: Props<FieldNames>) {
-    const erHistorisk = dayjs(periode.to).isBefore(søknadsdato, 'day');
+    const erHistorisk = dayjs(periode.to).isBefore(endringsdato, 'day');
     const intl = useIntl();
     return (
         <FormikModalFormAndInfo<FieldNames, TidEnkeltdag, ValidationError>
@@ -95,44 +95,42 @@ function OmsorgstilbudInfoAndDialog<FieldNames>({
                     ukeOgÅr: dayjs(periode.from).format('MMMM YYYY'),
                 });
                 return (
-                    <>
-                        <Ekspanderbartpanel
-                            tittel={
-                                <>
-                                    <Undertittel>{mndTittelPart}</Undertittel>
-                                    <Box margin="m">
-                                        <Normaltekst>Åpne for å se og endre tid i omsorgstilbud</Normaltekst>
-                                    </Box>
-                                </>
-                            }>
-                            <ResponsivePanel style={{ padding: '1rem' }}>
-                                <TidsbrukKalender
-                                    brukEtikettForInnhold={false}
-                                    måned={måned}
-                                    periode={periode}
-                                    dager={omsorgsdager}
-                                    visSomListe={false}
-                                    skjulTommeDagerIListe={skjulTommeDagerIListe}
-                                    tidRenderer={(tid) => {
-                                        return (
-                                            <strong>
-                                                <FormattedTimeText time={tid} decimal={false} />
-                                            </strong>
-                                        );
-                                    }}
-                                />
-                                <FormBlock margin="l">
-                                    <Knapp
-                                        htmlType="button"
-                                        mini={true}
-                                        onClick={() => onEdit(data)}
-                                        aria-describedby={tittelIdForAriaDescribedBy}>
-                                        {omsorgsdager.length === 0 ? labels.addLabel : labels.editLabel}
-                                    </Knapp>
-                                </FormBlock>
-                            </ResponsivePanel>
-                        </Ekspanderbartpanel>
-                    </>
+                    <Ekspanderbartpanel
+                        tittel={
+                            <>
+                                <Undertittel>{mndTittelPart}</Undertittel>
+                                <Box margin="m">
+                                    <Normaltekst>Åpne for å se og endre tid i omsorgstilbud</Normaltekst>
+                                </Box>
+                            </>
+                        }>
+                        <ResponsivePanel style={{ padding: '1rem' }}>
+                            <TidsbrukKalender
+                                brukEtikettForInnhold={false}
+                                måned={måned}
+                                periode={periode}
+                                dager={omsorgsdager}
+                                visSomListe={false}
+                                skjulTommeDagerIListe={skjulTommeDagerIListe}
+                                tidRenderer={(tid) => {
+                                    return (
+                                        <strong>
+                                            <FormattedTimeText time={tid} decimal={false} />
+                                        </strong>
+                                    );
+                                }}
+                            />
+                            <FormBlock margin="l">
+                                <Knapp
+                                    htmlType="button"
+                                    mini={true}
+                                    onClick={() => onEdit(data)}
+                                    aria-describedby={tittelIdForAriaDescribedBy}>
+                                    {omsorgsdager.length === 0 ? labels.addLabel : labels.editLabel}
+                                </Knapp>
+                            </FormBlock>
+                        </ResponsivePanel>
+                    </Ekspanderbartpanel>
                 );
             }}
             onAfterChange={onAfterChange}

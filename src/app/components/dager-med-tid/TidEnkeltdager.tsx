@@ -1,7 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
-import { iso8601DurationToTime } from '@navikt/sif-common-core/lib/utils/timeUtils';
 import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import groupBy from 'lodash.groupby';
@@ -9,6 +8,7 @@ import EkspanderbartPanel from 'nav-frontend-ekspanderbartpanel';
 import { TidEnkeltdagApiData } from '../../types/SoknadApiData';
 import { DagMedTid } from '../../types/SoknadFormData';
 import DagerMedTidListe from './dager-med-tid-liste/DagerMedTidListe';
+import { iso8601DurationToTime } from '@navikt/sif-common-core/lib/utils/timeUtils';
 
 interface Props {
     dager: TidEnkeltdagApiData[];

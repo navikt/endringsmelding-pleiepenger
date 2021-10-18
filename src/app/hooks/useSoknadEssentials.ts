@@ -32,6 +32,7 @@ function useSoknadEssentials(): SoknadEssentialsRemoteData {
                 setData(pending);
                 relocateToLoginPage();
             } else {
+                console.error(remoteDataError);
                 setData(remoteDataError);
             }
         }

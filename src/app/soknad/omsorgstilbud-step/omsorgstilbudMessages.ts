@@ -27,9 +27,9 @@ const omsorgstilbudMessages = {
         'omsorgstilbud.timerPerDag.minutter': '{minutes}m',
         'omsorgstilbud.ingenDagerValgt': 'Ingen dager med tilsyn er registrert',
 
-        'omsorgstilbud.addLabel': 'Registrer omsorgstilbud {periode}',
+        'omsorgstilbud.addLabel': 'Registrer tid i omsorgstilbud {periode}',
         'omsorgstilbud.deleteLabel': 'Fjern alle timer',
-        'omsorgstilbud.editLabel': 'Endre omsorgstilbud {periode}',
+        'omsorgstilbud.editLabel': 'Endre tid i omsorgstilbud {periode}',
         'omsorgstilbud.modalTitle': 'Omsorgstilbud - ${periode}',
     },
 };

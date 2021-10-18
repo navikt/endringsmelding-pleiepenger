@@ -95,7 +95,7 @@ const arbeidsgivereMock = {
     ],
 };
 
-const K9SakMock = `./k9sak.json`;
+const K9SakMock = `./server/k9sak.json`;
 
 const startExpressServer = () => {
     const port = process.env.PORT || 8089;
@@ -120,7 +120,6 @@ const startExpressServer = () => {
         setTimeout(() => {
             if (existsSync(K9SakMock)) {
                 const body = readFileSync(K9SakMock);
-                console.log(body);
                 res.send(JSON.parse(body));
             } else {
                 res.send({});

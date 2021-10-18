@@ -1,3 +1,3 @@
-export type ISO8601DateRange = string;
-export type ISO8601Duration = string;
-export type ISO8601Date = string;
+export type ISODateRange = string;
+export type ISODuration = string;
+export type ISODate = string;

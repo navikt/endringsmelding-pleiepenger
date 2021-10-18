@@ -17,7 +17,7 @@ import { Person } from '../types/Person';
 import { SoknadApiData } from '../types/SoknadApiData';
 import { SoknadFormData } from '../types/SoknadFormData';
 import { SoknadTempStorageData } from '../types/SoknadTempStorageData';
-import { getEndringsperiode, getSøknadsdato } from '../utils';
+import { getEndringsperiode, getEndringsdato } from '../utils';
 import appSentryLogger from '../utils/appSentryLogger';
 import {
     navigateTo,
@@ -38,7 +38,7 @@ import soknadTempStorage, { isStorageDataValid } from './soknadTempStorage';
 interface Props {
     søker: Person;
     arbeidsgivere: Arbeidsgivere;
-    k9sak: K9Sak;
+    k9sak?: K9Sak;
     soknadTempStorage: SoknadTempStorageData;
     route?: string;
 }
@@ -53,8 +53,8 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
     const [sendSoknadStatus, setSendSoknadStatus] = useState<SendSoknadStatus>(initialSendSoknadState);
     const [soknadId, setSoknadId] = useState<string | undefined>();
 
-    const søknadsdato = getSøknadsdato();
-    const endringsperiode = getEndringsperiode(søknadsdato);
+    const endringsdato = getEndringsdato();
+    const endringsperiode = getEndringsperiode(endringsdato);
     const { logSoknadStartet, logSoknadFailed, logHendelse, logUserLoggedOut } = useAmplitudeInstance();
 
     const resetSoknad = async (redirectToFrontpage = true): Promise<void> => {
@@ -229,7 +229,7 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
                                         søker={søker}
                                         arbeidsgivere={arbeidsgivere}
                                         endringsperiode={endringsperiode}
-                                        søknadsdato={søknadsdato}
+                                        endringsdato={endringsdato}
                                     />
                                 </SoknadContextProvider>
                             );

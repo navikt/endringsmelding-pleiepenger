@@ -9,7 +9,7 @@
     "env": {
         "DEKORATOR_URL": "https://www.nav.no/dekoratoren/?simple=true&chatbot=false",
         "API_URL": "https://pleiepengesoknad-api.dev.nav.no",
-        "INNSYN_API_URL": "https://sif-innsyn-api.dev.nav.no",
+        "API_URL_INNSYN": "https://sif-innsyn-api.dev.nav.no",
         "PUBLIC_PATH": "/familie/sykdom-i-familien/soknad/endringsmelding-pleiepenger",
         "APP_VERSION": "dev",
         "LOGIN_URL": "https://loginservice.dev.nav.no/login?redirect=https://endringsmelding-pleiepenger.dev.nav.no/familie/sykdom-i-familien/soknad/endringsmelding-pleiepenger/melding",

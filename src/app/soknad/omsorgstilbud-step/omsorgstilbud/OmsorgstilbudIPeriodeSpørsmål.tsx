@@ -8,10 +8,11 @@ import { getMonthsInDateRange } from '../../../utils/dateUtils';
 import SoknadFormComponents from '../../SoknadFormComponents';
 import OmsorgstilbudInfoAndDialog from './OmsorgstilbudInfoAndDialog';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
+import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
 
 interface Props {
     periode: DateRange;
-    søknadsdato: Date;
+    endringsdato: Date;
     tidIOmsorgstilbud: TidEnkeltdag;
     onOmsorgstilbudChanged?: (omsorgsdager: TidEnkeltdag) => void;
 }
@@ -19,7 +20,7 @@ interface Props {
 const OmsorgstilbudIPeriodeSpørsmål: React.FunctionComponent<Props> = ({
     periode,
     // tidIOmsorgstilbud,
-    søknadsdato,
+    endringsdato,
     onOmsorgstilbudChanged,
 }) => {
     const intl = useIntl();
@@ -33,6 +34,10 @@ const OmsorgstilbudIPeriodeSpørsmål: React.FunctionComponent<Props> = ({
              * Ikke optimalt, men det virker.
              */
             name={`${SoknadFormField.omsorgstilbud}_dager` as any}
+            legend="Åpne den eller de månedene du ønsker å endre. Du kan legge til eller fjerne tid"
+            description={
+                <ExpandableInfo title="Er det én eller flere måneder som ikke vises her? ">TODO: info</ExpandableInfo>
+            }
             tag="div"
             // validate={() => validateOmsorgstilbudEnkeltdagerIPeriode(tidIOmsorgstilbud, periode, gjelderFortid)}
         >
@@ -43,7 +48,7 @@ const OmsorgstilbudIPeriodeSpørsmål: React.FunctionComponent<Props> = ({
                         <OmsorgstilbudInfoAndDialog
                             name={SoknadFormField.omsorgstilbud_enkeltdager}
                             periode={periode}
-                            søknadsdato={søknadsdato}
+                            endringsdato={endringsdato}
                             skjulTommeDagerIListe={true}
                             onAfterChange={onOmsorgstilbudChanged}
                             labels={{

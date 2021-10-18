@@ -1,6 +1,6 @@
-import { ISO8601DateRange, ISO8601Duration, ISO8601Date } from './';
+import { ISODateRange, ISODuration, ISODate } from './';
 
-export const isISO8601Date = (value: any): value is ISO8601Date => {
+export const isISODate = (value: any): value is ISODate => {
     if (value && typeof value === 'string') {
         const reg = /^\d{4}-\d{2}-\d{2}$/;
         const match: RegExpMatchArray | null = value.match(reg);
@@ -10,19 +10,19 @@ export const isISO8601Date = (value: any): value is ISO8601Date => {
     }
 };
 
-export const isISO8601DateRange = (value: any): value is ISO8601DateRange => {
+export const isISODateRange = (value: any): value is ISODateRange => {
     if (value && typeof value === 'string') {
         const dates = value.split('/');
         if (dates.length !== 2) {
             return false;
         }
-        return isISO8601Date(dates[0]) === true && isISO8601Date(dates[1]) === true;
+        return isISODate(dates[0]) === true && isISODate(dates[1]) === true;
     } else {
         return false;
     }
 };
 
-export const isISO8601Duration = (value: any): value is ISO8601Duration => {
+export const isISODuration = (value: any): value is ISODuration => {
     /** Only hours and minutes PT7H30M */
     if (value && typeof value === 'string') {
         if (value === 'PT') {

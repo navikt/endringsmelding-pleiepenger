@@ -1,8 +1,12 @@
-import { dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { DateRange } from '@navikt/sif-common-formik/lib';
+import { apiStringDateToDate, dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { iso8601DurationToTime } from '@navikt/sif-common-core/lib/utils/timeUtils';
+import { DateRange, Time } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
+import { ISODate, ISODateRange, ISODuration } from '../types';
+import isoWeek from 'dayjs/plugin/isoWeek';
 
+dayjs.extend(isoWeek);
 dayjs.extend(isBetween);
 
 export const getMonthsInDateRange = (range: DateRange): DateRange[] => {
@@ -44,4 +48,37 @@ export const erUkeFørSammeEllerEtterDenneUken = (week: DateRange): 'før' | 'sa
         return 'samme';
     }
     return undefined;
+};
+
+export const ISODateRangeToDateRange = (isoDateRange: ISODateRange): DateRange => {
+    const parts = isoDateRange.split('/');
+    return {
+        from: apiStringDateToDate(parts[0]),
+        to: apiStringDateToDate(parts[1]),
+    };
+};
+
+const dateToISODate = (date: Date): ISODate => dayjs(date).format('YYYY-MM-DD');
+
+export const ISODurationToTime = (duration: ISODuration): Time | undefined => {
+    const time = iso8601DurationToTime(duration);
+    return {
+        hours: time?.hours ? `${time?.hours}` : '0',
+        minutes: time?.minutes ? `${time?.minutes}` : '0',
+    };
+};
+
+export const getISODatesInISODateRange = (range: ISODateRange): ISODate[] => {
+    const dateRange = ISODateRangeToDateRange(range);
+    const { from, to } = dateRange;
+    let currentDate = dayjs(from);
+    const dates: ISODate[] = [];
+    do {
+        const weekday = currentDate.isoWeekday();
+        if (weekday <= 5) {
+            dates.push(dateToISODate(currentDate.toDate()));
+        }
+        currentDate = dayjs(currentDate).add(1, 'day');
+    } while (dayjs(currentDate).isSameOrBefore(to, 'day'));
+    return dates;
 };

@@ -1,5 +1,5 @@
 import { Locale } from '@navikt/sif-common-core/lib/types/Locale';
-import { ISO8601Date, ISO8601Duration } from '.';
+import { ISODate, ISODuration } from '.';
 
 export enum SoknadApiDataField {
     'id' = 'id',
@@ -10,8 +10,8 @@ export enum SoknadApiDataField {
 }
 
 export interface TidEnkeltdagApiData {
-    dato: ISO8601Date;
-    tid: ISO8601Duration;
+    dato: ISODate;
+    tid: ISODuration;
 }
 
 export interface OmsorgstilbudApiData {
