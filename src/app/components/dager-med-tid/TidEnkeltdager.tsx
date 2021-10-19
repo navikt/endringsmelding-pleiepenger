@@ -9,7 +9,7 @@ import EkspanderbartPanel from 'nav-frontend-ekspanderbartpanel';
 import { ISODuration } from '../../types';
 import { TidEnkeltdagApiData } from '../../types/SoknadApiData';
 import { TidEnkeltdag } from '../../types/SoknadFormData';
-import { ISODateToDate, ISODurationToTime } from '../../utils/dateUtils';
+import { ISODateToDate, ISODurationToTime, timeHasSameDuration } from '../../utils/dateUtils';
 import DagerMedTidListe from './dager-med-tid-liste/DagerMedTidListe';
 import { datoSorter } from '../../utils/datoSorter';
 import { Element } from 'nav-frontend-typografi';
@@ -23,6 +23,7 @@ export type DagMedEndretTid = {
     dato: Date;
     tid?: Partial<Time>;
     tidOpprinnelig?: Partial<Time>;
+    erEndret: boolean;
 };
 
 type Kalenderdager = {
@@ -42,6 +43,8 @@ const TidEnkeltdager: React.FunctionComponent<Props> = ({ dager, dagerOpprinneli
             };
         });
     }
+    console.log({ dager });
+
     if (dagerOpprinnelig) {
         Object.keys(dagerOpprinnelig).forEach((isoDate) => {
             kalenderdager[isoDate] = {
@@ -60,6 +63,7 @@ const TidEnkeltdager: React.FunctionComponent<Props> = ({ dager, dagerOpprinneli
                 dato,
                 tid,
                 tidOpprinnelig,
+                erEndret: tid ? timeHasSameDuration(tid, tidOpprinnelig) === false : false,
             };
         })
         .sort(datoSorter);
@@ -74,9 +78,6 @@ const TidEnkeltdager: React.FunctionComponent<Props> = ({ dager, dagerOpprinneli
         <div>
             {Object.keys(months).map((key) => {
                 const dagerMedTid = months[key];
-                if (dagerMedTid.length === 0) {
-                    return ingenDagerRegistrertMelding;
-                }
                 return (
                     <Box margin="m" key={key}>
                         <EkspanderbartPanel
@@ -85,7 +86,7 @@ const TidEnkeltdager: React.FunctionComponent<Props> = ({ dager, dagerOpprinneli
                                     <span style={{ textTransform: 'capitalize' }}>
                                         {dayjs(dagerMedTid[0].dato).format('MMMM YYYY')}
                                     </span>
-                                    {dager && dager.length > 0 ? ' (endret)' : undefined}
+                                    {dagerMedTid.some((d) => d.erEndret === true) ? ' (endret)' : undefined}
                                 </Element>
                             }>
                             <DagerMedTidListe dagerMedTid={dagerMedTid} viseUke={true} />
