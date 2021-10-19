@@ -6,5 +6,5 @@ export enum ApiEndpointPsb {
 }
 
 export enum ApiEndpointInnsyn {
-    'k9sak' = 'k9sak',
+    'k9sak' = 'innsyn/sak',
 }

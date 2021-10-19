@@ -116,7 +116,7 @@ const startExpressServer = () => {
         }, 200);
     });
 
-    server.get('/k9sak', (req, res) => {
+    server.get('/innsyn/sak', (req, res) => {
         setTimeout(() => {
             if (existsSync(K9SakMock)) {
                 const body = readFileSync(K9SakMock);

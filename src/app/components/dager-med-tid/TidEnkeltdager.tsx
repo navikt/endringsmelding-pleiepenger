@@ -43,7 +43,6 @@ const TidEnkeltdager: React.FunctionComponent<Props> = ({ dager, dagerOpprinneli
             };
         });
     }
-    console.log({ dager });
 
     if (dagerOpprinnelig) {
         Object.keys(dagerOpprinnelig).forEach((isoDate) => {
