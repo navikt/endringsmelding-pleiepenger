@@ -30,6 +30,7 @@ interface Props {
     max?: Date;
     renderAsList?: boolean;
     hideEmptyContentInListMode?: boolean;
+    dateCSSModifierClassName?: (date: Date) => string | undefined;
     dateFormatter?: (date: Date) => React.ReactNode;
     dateFormatterFull?: (date: Date) => React.ReactNode;
     noContentRenderer?: (date: Date) => React.ReactNode;
@@ -79,6 +80,7 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
     month,
     min,
     max,
+    dateCSSModifierClassName,
     dateFormatter = prettifyDate,
     dateFormatterFull = (date) => dayjs(date).format('dddd DD. MMM'),
     noContentRenderer,
@@ -141,7 +143,8 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
                                 aria-hidden={d.content === undefined}
                                 className={bem.classNames(
                                     bem.element('day'),
-                                    bem.modifierConditional('empty', d.content === undefined)
+                                    bem.modifierConditional('empty', d.content === undefined),
+                                    dateCSSModifierClassName ? dateCSSModifierClassName(d.date) : undefined
                                 )}>
                                 <div className={bem.element('date')}>
                                     <span className={bem.classNames(bem.element('date__full'))}>

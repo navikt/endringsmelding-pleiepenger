@@ -23,6 +23,7 @@ interface Props {
     dager: DagMedTid[];
     dagerOpprinnelig?: DagMedTid[];
     periode: DateRange;
+    utilgjengeligeDager?: Date[];
     brukEtikettForInnhold?: boolean;
     visSomListe?: boolean;
     skjulTommeDagerIListe?: boolean;
@@ -36,6 +37,7 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
     dagerOpprinnelig = [],
     // brukEtikettForInnhold,
     visSomListe,
+    utilgjengeligeDager,
     skjulTommeDagerIListe,
     // tidRenderer,
 }) => {
@@ -68,8 +70,18 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
                     ariaText={dayjs(date).format('dddd DD. MMM YYYY')}
                 />
             )}
-            noContentRenderer={() => {
-                return <span />;
+            dateCSSModifierClassName={(date: Date) => {
+                const erUtilgjengelig = utilgjengeligeDager
+                    ? utilgjengeligeDager.some((d) => dayjs(date).isSame(d, 'day'))
+                    : false;
+                return erUtilgjengelig ? 'utilgjengeligDato' : undefined;
+            }}
+            noContentRenderer={(date: Date) => {
+                const erUtilgjengelig = utilgjengeligeDager
+                    ? utilgjengeligeDager.some((d) => dayjs(date).isSame(d, 'day'))
+                    : false;
+
+                return <span>{erUtilgjengelig ? '' : ''}</span>;
             }}
             days={Object.keys(kalenderdager).map((key) => {
                 const dato = ISODateToDate(key);

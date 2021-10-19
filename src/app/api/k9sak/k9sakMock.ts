@@ -13,8 +13,12 @@ export const k9SakMock: K9SakRemote = {
             norskIdentitetsnummer: '22222222222',
             fødselsdato: '2018-10-30',
         },
-        søknadsperiode: ['2021-08-12/2022-01-12'],
-
+        søknadsperiode: [
+            '2021-08-12/2021-10-15',
+            '2022-01-02/2022-01-10',
+            '2022-01-20/2022-01-25',
+            '2022-06-01/2022-06-20',
+        ],
         tilsynsordning: {
             perioder: {
                 '2021-08-12/2021-08-13': {

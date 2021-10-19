@@ -21,6 +21,7 @@ interface Props {
     editLabel: string;
     addLabel: string;
     skjulTommeDagerIListe?: boolean;
+    utilgjengeligeDager?: Date[];
     onEdit: (tid: TidEnkeltdag) => void;
 }
 
@@ -31,6 +32,7 @@ const OmsorgstilbudIPeriode: React.FunctionComponent<Props> = ({
     editLabel,
     addLabel,
     skjulTommeDagerIListe,
+    utilgjengeligeDager,
     onEdit,
 }) => {
     const intl = useIntl();
@@ -41,6 +43,7 @@ const OmsorgstilbudIPeriode: React.FunctionComponent<Props> = ({
     const mndTittelPart = intlHelper(intl, 'omsorgstilbud.ukeOgÅr', {
         ukeOgÅr: dayjs(periode.from).format('MMMM YYYY'),
     });
+
     return (
         <Ekspanderbartpanel
             tittel={
@@ -56,6 +59,7 @@ const OmsorgstilbudIPeriode: React.FunctionComponent<Props> = ({
                     brukEtikettForInnhold={false}
                     måned={måned}
                     periode={periode}
+                    utilgjengeligeDager={utilgjengeligeDager}
                     dager={omsorgsdager}
                     dagerOpprinnelig={omsorgsdagerSak}
                     visSomListe={false}
