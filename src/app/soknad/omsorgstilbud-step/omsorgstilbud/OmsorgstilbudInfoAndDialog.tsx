@@ -49,6 +49,7 @@ function OmsorgstilbudInfoAndDialog<FieldNames>({
                     <TidKalenderForm
                         periode={periode}
                         tid={data}
+                        opprinneligTid={tidIOmsorgstilbudSak}
                         tittel={
                             <FormattedMessage
                                 id="omsorgstilbud.form.tittel"

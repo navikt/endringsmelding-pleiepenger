@@ -8,11 +8,12 @@ import TidUkeInput from './parts/TidUkeInput';
 import { Ukeinfo } from './types';
 import { getDatoerIPeriode, getTidKalenderFieldName, getUkerFraDager } from './utils';
 import './tidUkerInput.less';
-
+import { TidEnkeltdag } from '../../types/SoknadFormData';
 interface Props {
     fieldName: string;
     periode: DateRange;
     brukPanel?: boolean;
+    opprinneligTid?: TidEnkeltdag;
     ukeTittelRenderer?: (uke: Ukeinfo) => React.ReactNode;
     tidPerDagValidator?: TidPerDagValidator;
 }
@@ -23,6 +24,7 @@ export const TidUkerInput: React.FunctionComponent<Props> = ({
     fieldName,
     periode,
     brukPanel,
+    opprinneligTid,
     ukeTittelRenderer,
     tidPerDagValidator,
 }) => {
@@ -39,6 +41,7 @@ export const TidUkerInput: React.FunctionComponent<Props> = ({
                         ukeTittelRenderer={ukeTittelRenderer}
                         getFieldName={(dag) => getTidKalenderFieldName(fieldName, dag)}
                         ukeinfo={week}
+                        opprinneligTid={opprinneligTid}
                         isNarrow={isNarrow}
                         isWide={isWide}
                         tidPerDagValidator={tidPerDagValidator}

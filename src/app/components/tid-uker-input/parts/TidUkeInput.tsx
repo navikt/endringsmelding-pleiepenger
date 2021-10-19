@@ -6,12 +6,14 @@ import { Element } from 'nav-frontend-typografi';
 import { Daginfo, Ukeinfo } from '../types';
 import { getForegåendeDagerIUke } from '../utils';
 import { TidPerDagValidator } from '../../../validation/fieldValidations';
+import { TidEnkeltdag } from '../../../types/SoknadFormData';
 
 type DagLabelRenderer = (dag: Daginfo) => React.ReactNode;
 
 interface Props {
     getFieldName: (dag: Daginfo) => string;
     ukeinfo: Ukeinfo;
+    opprinneligTid?: TidEnkeltdag;
     isNarrow: boolean;
     isWide: boolean;
     tidPerDagValidator?: TidPerDagValidator;
@@ -42,6 +44,7 @@ const TidUkeInput: React.FunctionComponent<Props> = ({
     dagLabelRenderer,
     tidPerDagValidator,
     ukeTittelRenderer,
+    opprinneligTid,
     isWide,
 }) => {
     const { dager } = ukeinfo;
@@ -66,18 +69,27 @@ const TidUkeInput: React.FunctionComponent<Props> = ({
                         <div className={bem.element('dag__utenforPeriodeIkon')}>-</div>
                     </div>
                 ))}
-                {dager.map((dag) => (
-                    <div key={dag.isoDateString} className={bem.element('dag')}>
-                        <FormikTimeInput
-                            name={getFieldName(dag)}
-                            label={renderDagLabel(dag, dagLabelRenderer)}
-                            timeInputLayout={{
-                                direction: 'horizontal',
-                            }}
-                            validate={tidPerDagValidator ? tidPerDagValidator(dag.labelFull) : undefined}
-                        />
-                    </div>
-                ))}
+                {dager.map((dag) => {
+                    const opprinneligDagMedTid = opprinneligTid ? opprinneligTid[dag.isoDateString] : undefined;
+                    return (
+                        <div key={dag.isoDateString} className={bem.element('dag')}>
+                            <FormikTimeInput
+                                name={getFieldName(dag)}
+                                label={renderDagLabel(dag, dagLabelRenderer)}
+                                timeInputLayout={{
+                                    direction: 'horizontal',
+                                    placeholders: opprinneligDagMedTid
+                                        ? {
+                                              hours: `${opprinneligDagMedTid.hours}`,
+                                              minutes: `${opprinneligDagMedTid.minutes}`,
+                                          }
+                                        : undefined,
+                                }}
+                                validate={tidPerDagValidator ? tidPerDagValidator(dag.labelFull) : undefined}
+                            />
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );

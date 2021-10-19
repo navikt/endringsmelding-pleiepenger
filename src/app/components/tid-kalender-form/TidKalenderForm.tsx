@@ -26,6 +26,7 @@ interface Props {
     intro?: JSX.Element;
     periode: DateRange;
     tid: TidEnkeltdag;
+    opprinneligTid?: TidEnkeltdag;
     tidPerDagValidator: TidPerDagValidator;
     onSubmit: (tid: TidEnkeltdag) => void;
     onCancel?: () => void;
@@ -40,7 +41,16 @@ interface FormValues {
 
 const Form = getTypedFormComponents<FormField, FormValues, ValidationError>();
 
-const TidKalenderForm = ({ periode, tid, tittel, intro, tidPerDagValidator, onSubmit, onCancel }: Props) => {
+const TidKalenderForm = ({
+    periode,
+    tid,
+    opprinneligTid,
+    tittel,
+    intro,
+    tidPerDagValidator,
+    onSubmit,
+    onCancel,
+}: Props) => {
     const intl = useIntl();
 
     if (dayjs(periode.from).isAfter(periode.to, 'day')) {
@@ -81,6 +91,7 @@ const TidKalenderForm = ({ periode, tid, tittel, intro, tidPerDagValidator, onSu
                                 <TidUkerInput
                                     fieldName={FormField.tid}
                                     periode={periode}
+                                    opprinneligTid={opprinneligTid}
                                     brukPanel={false}
                                     tidPerDagValidator={tidPerDagValidator}
                                 />
