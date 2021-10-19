@@ -5,10 +5,9 @@
 For å kjøre opp app-en i dev:
 
 1.  `npm install`.
-2.  `npm run rev`.
+2.  `npm run dev`.
 
 For å kjøre enhetstester:
-
 
 1.  `npm install && npm test`.
 
