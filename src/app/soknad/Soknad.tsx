@@ -15,7 +15,7 @@ import { Arbeidsgivere } from '../types/Arbeidsgiver';
 import { K9Sak } from '../types/K9Sak';
 import { Person } from '../types/Person';
 import { SoknadApiData } from '../types/SoknadApiData';
-import { SoknadFormData } from '../types/SoknadFormData';
+import { SoknadFormData, SoknadFormField } from '../types/SoknadFormData';
 import { SoknadTempStorageData } from '../types/SoknadTempStorageData';
 import { getEndringsperiode, getEndringsdato } from '../utils/getEndringsperiode';
 import appSentryLogger from '../utils/appSentryLogger';
@@ -28,7 +28,6 @@ import {
     relocateToSoknad,
 } from '../utils/navigationUtils';
 import { verifySoknadApiData } from '../validation/verifySoknadApiData';
-import { initialSoknadFormData } from './initialSoknadValues';
 import { initialSendSoknadState, SendSoknadStatus, SoknadContextProvider } from './SoknadContext';
 import SoknadFormComponents from './SoknadFormComponents';
 import SoknadRoutes from './SoknadRoutes';
@@ -51,6 +50,7 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
     const history = useHistory();
     const [initializing, setInitializing] = useState(true);
 
+    // const [initialFormData, setInitialFormData] = useState<Partial<SoknadFormData>>({ ...initialSoknadFormData });
     const [sendSoknadStatus, setSendSoknadStatus] = useState<SendSoknadStatus>(initialSendSoknadState);
     const [soknadId, setSoknadId] = useState<string | undefined>();
 
@@ -204,6 +204,15 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
         }
     }, [history, tempStorage, søker]);
 
+    const getInitialFormData = (): Partial<SoknadFormData> => {
+        return {
+            [SoknadFormField.harForståttRettigheterOgPlikter]: false,
+            [SoknadFormField.harBekreftetOpplysninger]: false,
+            omsorgstilbud: k9sak.ytelse.tilsynsordning,
+            ...(isStorageDataValid(tempStorage, { søker }) ? tempStorage.formData : {}),
+        };
+    };
+
     return (
         <LoadWrapper
             isLoading={initializing}
@@ -213,7 +222,7 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
                 }
                 return (
                     <SoknadFormComponents.FormikWrapper
-                        initialValues={{ ...initialSoknadFormData, omsorgstilbud: k9sak.ytelse.tilsynsordning }}
+                        initialValues={getInitialFormData()}
                         onSubmit={() => null}
                         renderForm={({ values, resetForm }) => {
                             const soknadStepsConfig = getSoknadStepsConfig(values);

@@ -31,9 +31,7 @@ const OppsummeringStep: React.FunctionComponent<Props> = ({ søker, apiValues, t
     const intl = useIntl();
     const { sendSoknadStatus } = useSoknadContext();
     const [showGiffy, setShowGiffy] = useState(false);
-
     const apiDataIsValid = apiValues !== undefined && verifySoknadApiData(apiValues);
-
     return (
         <SoknadFormStep
             id={StepID.OPPSUMMERING}
