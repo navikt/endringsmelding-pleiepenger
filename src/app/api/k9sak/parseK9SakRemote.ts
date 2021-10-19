@@ -15,7 +15,7 @@ export const parseK9SakRemote = (data: K9SakRemote): K9Sak => {
                 fødselsdato: apiStringDateToDate(ytelse.barn.fødselsdato),
                 norskIdentitetsnummer: ytelse.barn.norskIdentitetsnummer,
             },
-            søknadsperioder: ytelse.søknadsperiode.map((periode) => ISODateRangeToDateRange(periode)),
+            søknadsperiode: ytelse.søknadsperiode.map((periode) => ISODateRangeToDateRange(periode)),
             tilsynsordning: {
                 enkeltdager: getTilsynsdagerFromK9Format(ytelse.tilsynsordning.perioder),
             },

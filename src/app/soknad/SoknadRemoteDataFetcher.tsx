@@ -23,7 +23,7 @@ const SoknadRemoteDataFetcher = (): JSX.Element => {
                     contentRenderer={(): JSX.Element => <SoknadErrorMessages.GeneralApplicationError />}
                 />
             )}
-            success={([person, arbeidsgivere, k9sak, soknadTempStorage]): React.ReactNode => {
+            success={([person, k9sak, arbeidsgivere, soknadTempStorage]): React.ReactNode => {
                 return (
                     <Soknad
                         søker={person}

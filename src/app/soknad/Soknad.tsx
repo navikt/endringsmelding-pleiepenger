@@ -55,7 +55,7 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
     const [soknadId, setSoknadId] = useState<string | undefined>();
 
     const endringsdato = getEndringsdato();
-    const søknadsperiode = getMinMaxInDateRanges(k9sak.ytelse.søknadsperioder);
+    const søknadsperiode = getMinMaxInDateRanges(k9sak.ytelse.søknadsperiode);
     const endringsperiode = getEndringsperiode(endringsdato, søknadsperiode);
 
     const { logSoknadStartet, logSoknadFailed, logHendelse, logUserLoggedOut } = useAmplitudeInstance();
