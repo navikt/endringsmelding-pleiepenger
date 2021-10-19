@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { isFailure, isPending } from '@devexperts/remote-data-ts';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
@@ -19,6 +19,7 @@ import { StepID } from '../soknadStepsConfig';
 import SøkerSummary from './SøkerSummary';
 import { getCheckedValidator } from '@navikt/sif-common-formik/lib/validation';
 import OmsorgstilbudSummary from './omsorgstilbud-summary/OmsorgstilbudSummary';
+import ItsClosedGiffy from './ItsClosedGiffy';
 
 type Props = {
     søker: Person;
@@ -28,7 +29,8 @@ type Props = {
 
 const OppsummeringStep: React.FunctionComponent<Props> = ({ søker, apiValues, tidIOmsorgstilbudSak }) => {
     const intl = useIntl();
-    const { sendSoknadStatus, sendSoknad } = useSoknadContext();
+    const { sendSoknadStatus } = useSoknadContext();
+    const [showGiffy, setShowGiffy] = useState(false);
 
     const apiDataIsValid = apiValues !== undefined && verifySoknadApiData(apiValues);
 
@@ -37,7 +39,16 @@ const OppsummeringStep: React.FunctionComponent<Props> = ({ søker, apiValues, t
             id={StepID.OPPSUMMERING}
             showButtonSpinner={isPending(sendSoknadStatus.status)}
             buttonDisabled={isPending(sendSoknadStatus.status) || apiDataIsValid === false}
-            onSendSoknad={apiValues ? (): void => sendSoknad(apiValues) : undefined}>
+            onSendSoknad={
+                apiValues
+                    ? (): void => {
+                          setShowGiffy(true);
+                          setTimeout(() => {
+                              setShowGiffy(false);
+                          }, 8000);
+                      }
+                    : undefined
+            }>
             <Box margin="xxxl">
                 <Guide kompakt={true} type="normal" svg={<VeilederSVG />}>
                     <FormattedMessage id="step.oppsummering.info" />
@@ -67,6 +78,8 @@ const OppsummeringStep: React.FunctionComponent<Props> = ({ søker, apiValues, t
                                 )}
                             </ResponsivePanel>
                         </Box>
+
+                        {showGiffy && <ItsClosedGiffy />}
 
                         <Box margin="l">
                             <SoknadFormComponents.ConfirmationCheckbox

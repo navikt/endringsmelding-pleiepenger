@@ -10,7 +10,7 @@ const getArbeidsgivereRemoteData = async (fom?: string, tom?: string): Promise<S
     try {
         const { data } = await api.psb.get<Arbeidsgivere>(
             ApiEndpointPsb.arbeidsgiver,
-            `?fra_og_med=${fom}&til_og_med=${tom}`
+            `fra_og_med=${fom}&til_og_med=${tom}`
         );
         return Promise.resolve(success(data));
     } catch (error) {
