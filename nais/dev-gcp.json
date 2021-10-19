@@ -13,6 +13,7 @@
         "PUBLIC_PATH": "/familie/sykdom-i-familien/soknad/endringsmelding-pleiepenger",
         "APP_VERSION": "dev",
         "LOGIN_URL": "https://loginservice.dev.nav.no/login?redirect=https://endringsmelding-pleiepenger.dev.nav.no/familie/sykdom-i-familien/soknad/endringsmelding-pleiepenger/melding",
+        "PERSISTENCE": "off",
         "APPSTATUS_PROJECT_ID": "ryujtq87",
         "APPSTATUS_DATASET": "staging",
         "USE_AMPLITUDE": "true"

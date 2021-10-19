@@ -13,11 +13,9 @@ interface Props {
 const OmsorgstilbudSummary: React.FunctionComponent<Props> = ({ omsorgstilbud, tidIOmsorgstilbudSak }) => {
     return (
         <SummarySection header="Omsorgstilbud">
-            {omsorgstilbud && (
-                <SummaryBlock header="Endret omsorgstilbud">
-                    <TidEnkeltdager dager={omsorgstilbud.enkeltdager} dagerOpprinnelig={tidIOmsorgstilbudSak} />
-                </SummaryBlock>
-            )}
+            <SummaryBlock header="Endret omsorgstilbud">
+                <TidEnkeltdager dager={omsorgstilbud.enkeltdager} dagerOpprinnelig={tidIOmsorgstilbudSak} />
+            </SummaryBlock>
         </SummarySection>
     );
 };

@@ -35,6 +35,7 @@ import SoknadRoutes from './SoknadRoutes';
 import { getSoknadStepsConfig, StepID } from './soknadStepsConfig';
 import soknadTempStorage, { isStorageDataValid } from './soknadTempStorage';
 import { getMinMaxInDateRanges } from '../utils/dateUtils';
+import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 
 interface Props {
     søker: Person;
@@ -61,7 +62,9 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
     const { logSoknadStartet, logSoknadFailed, logHendelse, logUserLoggedOut } = useAmplitudeInstance();
 
     const resetSoknad = async (redirectToFrontpage = true): Promise<void> => {
-        await soknadTempStorage.purge();
+        if (isFeatureEnabled(Feature.PERSISTENCE)) {
+            await soknadTempStorage.purge();
+        }
         setInitialFormData({ ...initialSoknadFormData });
         setSoknadId(undefined);
         if (redirectToFrontpage) {
@@ -77,7 +80,9 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
     };
 
     const abortSoknad = async (): Promise<void> => {
-        await soknadTempStorage.purge();
+        if (isFeatureEnabled(Feature.PERSISTENCE)) {
+            await soknadTempStorage.purge();
+        }
         await logHendelse(ApplikasjonHendelse.avbryt);
         relocateToSoknad();
     };
@@ -87,13 +92,15 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
         const sId = ulid();
         setSoknadId(sId);
         const firstStep = StepID.OMSORGSTILBUD;
-        await soknadTempStorage.create();
-        await soknadTempStorage.update(
-            sId,
-            { harBekreftetOpplysninger: false, harForståttRettigheterOgPlikter: true },
-            firstStep,
-            { søker }
-        );
+        if (isFeatureEnabled(Feature.PERSISTENCE)) {
+            await soknadTempStorage.create();
+            await soknadTempStorage.update(
+                sId,
+                { harBekreftetOpplysninger: false, harForståttRettigheterOgPlikter: true },
+                firstStep,
+                { søker }
+            );
+        }
         await logSoknadStartet(SKJEMANAVN);
         setTimeout(() => {
             navigateTo(soknadStepUtils.getStepRoute(firstStep, SoknadApplicationType.MELDING), history);
@@ -101,7 +108,9 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
     };
 
     const continueSoknadLater = async (sId: string, stepID: StepID, values: SoknadFormData): Promise<void> => {
-        await soknadTempStorage.update(sId, values, stepID, { søker });
+        if (isFeatureEnabled(Feature.PERSISTENCE)) {
+            await soknadTempStorage.update(sId, values, stepID, { søker });
+        }
         await logHendelse(ApplikasjonHendelse.fortsettSenere);
         relocateToNavFrontpage();
     };
@@ -109,7 +118,9 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
     const doSendSoknad = async (apiValues: SoknadApiData, resetFormikForm: resetFormFunc): Promise<void> => {
         try {
             await sendEndringsmelding(apiValues);
-            await soknadTempStorage.purge();
+            if (isFeatureEnabled(Feature.PERSISTENCE)) {
+                await soknadTempStorage.purge();
+            }
             setSendSoknadStatus({ failures: 0, status: success(apiValues) });
             navigateToKvitteringPage(history);
             setSoknadId(undefined);
@@ -154,7 +165,9 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
     ): Promise<void> => {
         if (nextStep && soknadId) {
             try {
-                await soknadTempStorage.update(soknadId, values, nextStep, { søker });
+                if (isFeatureEnabled(Feature.PERSISTENCE)) {
+                    await soknadTempStorage.update(soknadId, values, nextStep, { søker });
+                }
             } catch (error) {
                 if (isUserLoggedOut(error)) {
                     await logUserLoggedOut('ved mellomlagring');

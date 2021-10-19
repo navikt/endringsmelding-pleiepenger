@@ -9,6 +9,7 @@ const envSettings = () => {
         PUBLIC_PATH: '${process.env.PUBLIC_PATH}',
         APP_VERSION: '${process.env.APP_VERSION}',
         LOGIN_URL: '${process.env.LOGIN_URL}',
+        PERSISTENCE: '${process.env.PERSISTENCE}',
         APPSTATUS_PROJECT_ID: '${process.env.APPSTATUS_PROJECT_ID}',
         APPSTATUS_DATASET: '${process.env.APPSTATUS_DATASET}',
         USE_AMPLITUDE: '${process.env.USE_AMPLITUDE}'

@@ -6,6 +6,7 @@ import { StepID } from '../soknad/soknadStepsConfig';
 import soknadTempStorage, { UserHashInfo } from '../soknad/soknadTempStorage';
 import { SoknadFormData } from '../types/SoknadFormData';
 import { navigateToErrorPage, relocateToLoginPage } from '../utils/navigationUtils';
+import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 
 function usePersistSoknad(history: History) {
     const { logUserLoggedOut } = useAmplitudeInstance();
@@ -25,7 +26,9 @@ function usePersistSoknad(history: History) {
     }
 
     const persist = (soknadId: string, stepID: StepID, hashInfo: UserHashInfo) => {
-        doPersist(soknadId, stepID, hashInfo);
+        if (isFeatureEnabled(Feature.PERSISTENCE)) {
+            doPersist(soknadId, stepID, hashInfo);
+        }
     };
 
     return { persist };

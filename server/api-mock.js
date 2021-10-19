@@ -145,15 +145,11 @@ const startExpressServer = () => {
         }, 200);
     });
 
-    server.delete('/vedlegg', (req, res) => {
-        res.sendStatus(200);
-    });
-
     server.get('/soker-logget-ut', (req, res) => {
         res.sendStatus(401);
     });
 
-    server.post('/melding/pleiepenger', (req, res) => {
+    server.post('/endring/melding', (req, res) => {
         const body = req.body;
         console.log('[POST] body', body);
         setTimeout(() => {
@@ -165,7 +161,7 @@ const startExpressServer = () => {
         res.sendStatus(401);
     });
 
-    server.get('/mellomlagring', (req, res) => {
+    server.get('/endring/mellomlagring', (req, res) => {
         if (existsSync(MELLOMLAGRING_JSON)) {
             const body = readFileSync(MELLOMLAGRING_JSON);
             res.send(JSON.parse(body));
@@ -174,21 +170,21 @@ const startExpressServer = () => {
         }
     });
 
-    server.post('/mellomlagring', (req, res) => {
+    server.post('/endring/mellomlagring', (req, res) => {
         const body = req.body;
         const jsBody = isJSON(body) ? JSON.parse(body) : body;
         writeFileAsync(MELLOMLAGRING_JSON, JSON.stringify(jsBody, null, 2));
         res.sendStatus(200);
     });
 
-    server.put('/mellomlagring', (req, res) => {
+    server.put('/endring/mellomlagring', (req, res) => {
         const body = req.body;
         const jsBody = isJSON(body) ? JSON.parse(body) : body;
         writeFileAsync(MELLOMLAGRING_JSON, JSON.stringify(jsBody, null, 2));
         res.sendStatus(200);
     });
 
-    server.delete('/mellomlagring', (req, res) => {
+    server.delete('/endring/mellomlagring', (req, res) => {
         writeFileAsync(MELLOMLAGRING_JSON, JSON.stringify({}, null, 2));
         res.sendStatus(200);
     });
