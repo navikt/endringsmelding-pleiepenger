@@ -4,17 +4,16 @@ import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
 import dayjs from 'dayjs';
 import { groupBy } from 'lodash';
 import { Element, Undertittel } from 'nav-frontend-typografi';
-import { DagMedTid } from '../../../types/SoknadFormData';
+import { datoSorter } from '../../../utils/datoSorter';
 import FormattedTimeText from '../../formatted-time-text/FormattedTimeText';
+import { DagMedEndretTid } from '../TidEnkeltdager';
 import './dagerMedTidListe.less';
 
 interface Props {
-    dagerMedTid: DagMedTid[];
+    dagerMedTid: DagMedEndretTid[];
     visMåned?: boolean;
     viseUke?: boolean;
 }
-
-const sortDays = (d1: DagMedTid, d2: DagMedTid): number => (dayjs(d1.dato).isSameOrBefore(d2.dato, 'day') ? -1 : 1);
 
 const bem = bemUtils('dagerMedTidListe');
 
@@ -37,9 +36,11 @@ export const DagerMedTidListe = ({ dagerMedTid: dagerMedTid, viseUke, visMåned 
                                 </Element>
                             )}
                             <ul className={bem.element('dager')}>
-                                {days.sort(sortDays).map((dag, idx) => {
-                                    const timer = dag.tid.hours || '0';
-                                    const minutter = dag.tid.minutes || '0';
+                                {days.sort(datoSorter).map((dag, idx) => {
+                                    const tid = dag.tid || dag.tidOpprinnelig;
+                                    const erEndret = dag.tid !== undefined;
+                                    const timer = tid?.hours || '0';
+                                    const minutter = tid?.minutes || '0';
 
                                     return (
                                         <li key={idx}>
@@ -52,6 +53,15 @@ export const DagerMedTidListe = ({ dagerMedTid: dagerMedTid, viseUke, visMåned 
                                                         time={{ hours: timer, minutes: minutter }}
                                                         fullText={true}
                                                     />
+                                                </span>
+                                                <span className={bem.element('dag__status')}>
+                                                    (
+                                                    {erEndret
+                                                        ? dag.tidOpprinnelig === undefined
+                                                            ? 'lagt til'
+                                                            : 'endret'
+                                                        : 'uendret'}
+                                                    )
                                                 </span>
                                             </div>
                                         </li>

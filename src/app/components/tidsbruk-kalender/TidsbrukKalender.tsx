@@ -4,10 +4,11 @@ import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { dateToISOString, Time } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { DagMedTid } from '../../types/SoknadFormData';
-import { ISODateToDate } from '../../utils/dateUtils';
+import { ISODateToDate, timeHasSameDuration } from '../../utils/dateUtils';
 import CalendarGrid from '../calendar-grid/CalendarGrid';
 import FormattedTimeText from '../formatted-time-text/FormattedTimeText';
-// import { EtikettInfo } from 'nav-frontend-etiketter';
+import { formatTimerOgMinutter } from '../../utils/formatTimerOgMinutter';
+import { useIntl } from 'react-intl';
 
 export type TidRenderer = (tid: Partial<Time>, dato: Date) => React.ReactNode;
 
@@ -38,6 +39,7 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
     skjulTommeDagerIListe,
     // tidRenderer,
 }) => {
+    const intl = useIntl();
     const kalenderdager: Kalenderdager = {};
     dager.forEach((d) => {
         const datostring = dateToISOString(d.dato);
@@ -53,6 +55,7 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
             tidOpprinnelig: d.tid,
         };
     });
+
     return (
         <CalendarGrid
             month={måned}
@@ -71,17 +74,25 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
             days={Object.keys(kalenderdager).map((key) => {
                 const dato = ISODateToDate(key);
                 const dag = kalenderdager[key];
+                const erEndret = timeHasSameDuration(dag.tid, dag.tidOpprinnelig) === false;
                 return {
                     date: dato,
                     content: (
                         <>
                             {dag.tid && (
                                 <div>
-                                    <strong>
-                                        {/* <EtikettInfo> */}
+                                    {erEndret ? (
+                                        <strong
+                                            title={
+                                                dag.tidOpprinnelig
+                                                    ? `Endret fra ${formatTimerOgMinutter(intl, dag.tidOpprinnelig)}`
+                                                    : 'Lagt til'
+                                            }>
+                                            <FormattedTimeText time={dag.tid} />
+                                        </strong>
+                                    ) : (
                                         <FormattedTimeText time={dag.tid} />
-                                        {/* </EtikettInfo> */}
-                                    </strong>
+                                    )}
                                 </div>
                             )}
                             {dag.tidOpprinnelig && !dag.tid && (
@@ -90,12 +101,6 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
                                 </>
                             )}
                         </>
-                        // <TidsbrukKalenderDag
-                        //     tid={dag.tid}
-                        //     dato={dato}
-                        //     tidRenderer={tidRenderer}
-                        //     brukEtikettForInnhold={brukEtikettForInnhold}
-                        // />
                     ),
                 };
             })}

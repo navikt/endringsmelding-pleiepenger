@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import minMax from 'dayjs/plugin/minMax';
 import { DagMedTid, TidEnkeltdag } from '../types/SoknadFormData';
+import { timeHasSameDuration } from './dateUtils';
 
 dayjs.extend(minMax);
 dayjs.extend(isSameOrAfter);
@@ -91,10 +92,13 @@ export const getDagerMedTidITidsrom = (data: TidEnkeltdag, tidsrom: DateRange): 
     return dager;
 };
 
-export const visSpørsmålOmTidErLikHverUke = (periode: DateRange): boolean => {
-    const antallDager = dayjs(periode.to).diff(periode.from, 'days');
-    if (antallDager < MIN_ANTALL_DAGER_FOR_FAST_PLAN) {
-        return false;
-    }
-    return true;
+export const fjernDagerMedUendretTid = (enkeltdager: TidEnkeltdag, dagerOpprinnelig: TidEnkeltdag): TidEnkeltdag => {
+    const dagerMedEndring: TidEnkeltdag = {};
+    Object.keys(enkeltdager).forEach((isoDate) => {
+        if (timeHasSameDuration(enkeltdager[isoDate], dagerOpprinnelig[isoDate])) {
+            return;
+        }
+        dagerMedEndring[isoDate] = enkeltdager[isoDate];
+    });
+    return dagerMedEndring;
 };

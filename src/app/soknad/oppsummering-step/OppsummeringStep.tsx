@@ -10,7 +10,7 @@ import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Person } from '../../types/Person';
 import { SoknadApiData } from '../../types/SoknadApiData';
-import { SoknadFormField } from '../../types/SoknadFormData';
+import { SoknadFormField, TidEnkeltdag } from '../../types/SoknadFormData';
 import { verifySoknadApiData } from '../../validation/verifySoknadApiData';
 import { useSoknadContext } from '../SoknadContext';
 import SoknadFormComponents from '../SoknadFormComponents';
@@ -22,10 +22,11 @@ import OmsorgstilbudSummary from './omsorgstilbud-summary/OmsorgstilbudSummary';
 
 type Props = {
     søker: Person;
+    tidIOmsorgstilbudSak?: TidEnkeltdag;
     apiValues?: SoknadApiData;
 };
 
-const OppsummeringStep: React.FunctionComponent<Props> = ({ søker, apiValues }) => {
+const OppsummeringStep: React.FunctionComponent<Props> = ({ søker, apiValues, tidIOmsorgstilbudSak }) => {
     const intl = useIntl();
     const { sendSoknadStatus, sendSoknad } = useSoknadContext();
 
@@ -59,7 +60,10 @@ const OppsummeringStep: React.FunctionComponent<Props> = ({ søker, apiValues })
                             <ResponsivePanel border={true}>
                                 <SøkerSummary søker={søker} />
                                 {apiValues.omsorgstilbud && (
-                                    <OmsorgstilbudSummary omsorgstilbud={apiValues.omsorgstilbud} />
+                                    <OmsorgstilbudSummary
+                                        omsorgstilbud={apiValues.omsorgstilbud}
+                                        tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}
+                                    />
                                 )}
                             </ResponsivePanel>
                         </Box>

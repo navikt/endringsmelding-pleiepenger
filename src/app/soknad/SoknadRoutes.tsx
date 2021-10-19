@@ -79,9 +79,16 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, endrin
                         locale: intl.locale,
                         formData: values,
                     },
-                    endringsperiode
+                    endringsperiode,
+                    k9sak
                 );
-                return <OppsummeringStep apiValues={apiValues} søker={søker} />;
+                return (
+                    <OppsummeringStep
+                        apiValues={apiValues}
+                        søker={søker}
+                        tidIOmsorgstilbudSak={k9sak.ytelse.tilsynsordning.enkeltdager}
+                    />
+                );
         }
     };
 

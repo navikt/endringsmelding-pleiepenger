@@ -1,5 +1,6 @@
 import { getEnvironmentVariable } from '@navikt/sif-common-core/lib/utils/envUtils';
 import { DateRange } from '@navikt/sif-common-formik/lib';
+import { K9Sak } from '../../types/K9Sak';
 import { SoknadApiData } from '../../types/SoknadApiData';
 import { SoknadFormData } from '../../types/SoknadFormData';
 import appSentryLogger from '../appSentryLogger';
@@ -17,7 +18,8 @@ const logErrorToSentry = (details: string): void => {
 
 export const mapFormDataToApiData = (
     values: MapFormDataToApiDataValues,
-    endringsperiode: DateRange
+    endringsperiode: DateRange,
+    k9sak: K9Sak
 ): SoknadApiData | undefined => {
     const apiValues: SoknadApiData = {
         harBekreftetOpplysninger: values.formData.harBekreftetOpplysninger,
@@ -25,7 +27,11 @@ export const mapFormDataToApiData = (
         id: '123',
         språk: 'nb',
         omsorgstilbud: values.formData.omsorgstilbud
-            ? mapOmsorgstilbudToApiData(values.formData.omsorgstilbud, endringsperiode)
+            ? mapOmsorgstilbudToApiData(
+                  values.formData.omsorgstilbud,
+                  k9sak.ytelse.tilsynsordning.enkeltdager,
+                  endringsperiode
+              )
             : undefined,
     };
 

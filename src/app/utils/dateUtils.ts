@@ -1,5 +1,5 @@
 import { apiStringDateToDate, dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { iso8601DurationToTime } from '@navikt/sif-common-core/lib/utils/timeUtils';
+import { iso8601DurationToTime, timeToIso8601Duration } from '@navikt/sif-common-core/lib/utils/timeUtils';
 import { DateRange, Time } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
@@ -94,4 +94,16 @@ export const getMinMaxInDateRanges = (ranges: DateRange[]): DateRange => {
         from: dayjs.min(ranges.map((range) => dayjs(range.from))).toDate(),
         to: dayjs.max(ranges.map((range) => dayjs(range.to))).toDate(),
     };
+};
+
+export const timeHasSameDuration = (time1?: Partial<Time>, time2?: Partial<Time>): boolean => {
+    if (time1 === undefined && time2 === undefined) {
+        return true;
+    }
+    if (time1 === undefined || time2 === undefined) {
+        return false;
+    }
+    const endretTid = timeToIso8601Duration(time1);
+    const opprinneligTid = timeToIso8601Duration(time2);
+    return endretTid === opprinneligTid;
 };
