@@ -1,13 +1,22 @@
 import React from 'react';
 import AriaAlternative from '@navikt/sif-common-core/lib/components/aria/AriaAlternative';
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { Time } from '@navikt/sif-common-formik/lib';
+import { dateToISOString, Time } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { DagMedTid } from '../../types/SoknadFormData';
+import { ISODateToDate } from '../../utils/dateUtils';
 import CalendarGrid from '../calendar-grid/CalendarGrid';
-import TidsbrukKalenderDag from './TidsbrukKalenderDag';
+import FormattedTimeText from '../formatted-time-text/FormattedTimeText';
+// import { EtikettInfo } from 'nav-frontend-etiketter';
 
 export type TidRenderer = (tid: Partial<Time>, dato: Date) => React.ReactNode;
+
+type Kalenderdager = {
+    [dato: string]: {
+        tid?: Partial<Time>;
+        tidOpprinnelig?: Partial<Time>;
+    };
+};
 interface Props {
     måned: Date;
     dager: DagMedTid[];
@@ -23,13 +32,27 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
     måned,
     periode,
     dager,
-    // dagerOpprinnelig,
-    brukEtikettForInnhold,
+    dagerOpprinnelig = [],
+    // brukEtikettForInnhold,
     visSomListe,
     skjulTommeDagerIListe,
-    tidRenderer,
+    // tidRenderer,
 }) => {
-    // const alleDager = { ...dager, ...dagerOpprinnelig };
+    const kalenderdager: Kalenderdager = {};
+    dager.forEach((d) => {
+        const datostring = dateToISOString(d.dato);
+        kalenderdager[datostring] = {
+            ...kalenderdager[datostring],
+            tid: d.tid,
+        };
+    });
+    dagerOpprinnelig.forEach((d) => {
+        const datostring = dateToISOString(d.dato);
+        kalenderdager[datostring] = {
+            ...kalenderdager[datostring],
+            tidOpprinnelig: d.tid,
+        };
+    });
     return (
         <CalendarGrid
             month={måned}
@@ -45,17 +68,37 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
             noContentRenderer={() => {
                 return <span />;
             }}
-            days={dager.map((dag) => ({
-                date: dag.dato,
-                content: (
-                    <TidsbrukKalenderDag
-                        tid={dag.tid}
-                        dato={dag.dato}
-                        tidRenderer={tidRenderer}
-                        brukEtikettForInnhold={brukEtikettForInnhold}
-                    />
-                ),
-            }))}
+            days={Object.keys(kalenderdager).map((key) => {
+                const dato = ISODateToDate(key);
+                const dag = kalenderdager[key];
+                return {
+                    date: dato,
+                    content: (
+                        <>
+                            {dag.tid && (
+                                <div>
+                                    <strong>
+                                        {/* <EtikettInfo> */}
+                                        <FormattedTimeText time={dag.tid} />
+                                        {/* </EtikettInfo> */}
+                                    </strong>
+                                </div>
+                            )}
+                            {dag.tidOpprinnelig && !dag.tid && (
+                                <>
+                                    <FormattedTimeText time={dag.tidOpprinnelig} />
+                                </>
+                            )}
+                        </>
+                        // <TidsbrukKalenderDag
+                        //     tid={dag.tid}
+                        //     dato={dato}
+                        //     tidRenderer={tidRenderer}
+                        //     brukEtikettForInnhold={brukEtikettForInnhold}
+                        // />
+                    ),
+                };
+            })}
             hideEmptyContentInListMode={skjulTommeDagerIListe}
         />
     );

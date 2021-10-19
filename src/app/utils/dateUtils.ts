@@ -52,6 +52,10 @@ export const erUkeFørSammeEllerEtterDenneUken = (week: DateRange): 'før' | 'sa
     return undefined;
 };
 
+export const ISODateToDate = (isoDate: ISODate): Date => {
+    return apiStringDateToDate(isoDate);
+};
+
 export const ISODateRangeToDateRange = (isoDateRange: ISODateRange): DateRange => {
     const parts = isoDateRange.split('/');
     return {

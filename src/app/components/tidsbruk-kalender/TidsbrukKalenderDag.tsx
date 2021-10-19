@@ -1,7 +1,7 @@
 import React from 'react';
-import { IntlShape, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import AriaAlternative from '@navikt/sif-common-core/lib/components/aria/AriaAlternative';
-import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
+import { formatTimerOgMinutter } from '../../utils/formatTimerOgMinutter';
 import { Time } from '@navikt/sif-common-formik/lib';
 import { EtikettInfo } from 'nav-frontend-etiketter';
 import FormattedTimeText from '../formatted-time-text/FormattedTimeText';
@@ -15,12 +15,6 @@ interface Props {
     tidRenderer?: TidRenderer;
 }
 
-const formatTime = (intl: IntlShape, time: Partial<Time>): string => {
-    const timer = time.hours || '0';
-    const minutter = time.minutes || '0';
-    return intlHelper(intl, 'timerOgMinutter', { timer, minutter });
-};
-
 const TidsbrukKalenderDag: React.FunctionComponent<Props> = ({
     tid,
     dato,
@@ -32,7 +26,7 @@ const TidsbrukKalenderDag: React.FunctionComponent<Props> = ({
     const content = (
         <AriaAlternative
             visibleText={tidRenderer ? tidRenderer(tid, dato) : <FormattedTimeText time={tid} decimal={desimalTid} />}
-            ariaText={formatTime(intl, tid)}
+            ariaText={formatTimerOgMinutter(intl, tid)}
         />
     );
     return brukEtikettForInnhold ? <EtikettInfo>{content}</EtikettInfo> : content;

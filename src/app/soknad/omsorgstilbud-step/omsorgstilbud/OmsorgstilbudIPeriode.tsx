@@ -18,6 +18,8 @@ interface Props {
     tidOmsorgstilbud: TidEnkeltdag;
     tidOmsorgstilbudSak: TidEnkeltdag;
     periode: DateRange;
+    editLabel: string;
+    addLabel: string;
     skjulTommeDagerIListe?: boolean;
     onEdit: (tid: TidEnkeltdag) => void;
 }
@@ -26,13 +28,14 @@ const OmsorgstilbudIPeriode: React.FunctionComponent<Props> = ({
     tidOmsorgstilbud,
     tidOmsorgstilbudSak,
     periode,
+    editLabel,
+    addLabel,
     skjulTommeDagerIListe,
     onEdit,
 }) => {
     const intl = useIntl();
     const omsorgsdager = getDagerMedTidITidsrom(tidOmsorgstilbud, periode);
     const omsorgsdagerSak = getDagerMedTidITidsrom(tidOmsorgstilbudSak, periode);
-    console.log(omsorgsdagerSak);
     const tittelIdForAriaDescribedBy = `mndTittel_${dayjs(periode.from).format('MM_YYYY')}`;
     const måned = omsorgsdager.length > 0 ? omsorgsdager[0].dato : periode.from;
     const mndTittelPart = intlHelper(intl, 'omsorgstilbud.ukeOgÅr', {
@@ -73,9 +76,7 @@ const OmsorgstilbudIPeriode: React.FunctionComponent<Props> = ({
                         mini={true}
                         onClick={() => onEdit(tidOmsorgstilbud)}
                         aria-describedby={tittelIdForAriaDescribedBy}>
-                        {omsorgsdager.length === 0
-                            ? intlHelper(intl, 'omsorgstilbud.addLabel')
-                            : intlHelper(intl, 'omsorgstilbud.editLabel')}
+                        {omsorgsdager.length === 0 ? addLabel : editLabel}
                     </Knapp>
                 </FormBlock>
             </ResponsivePanel>

@@ -12,7 +12,7 @@ import './calendarGrid.less';
 dayjs.extend(minMax);
 dayjs.extend(isSameOrBefore);
 
-interface Day {
+interface CalendarDay {
     date: Date;
     content: JSX.Element | undefined;
 }
@@ -20,11 +20,11 @@ interface Day {
 interface Week {
     year: number;
     weekNumber: number;
-    days: Day[];
+    days: CalendarDay[];
 }
 
 interface Props {
-    days: Day[];
+    days: CalendarDay[];
     month: Date;
     min?: Date;
     max?: Date;
@@ -45,10 +45,10 @@ const getFirstWeekdayOnOrAfterDate = (date: Date): Date => {
     return dayjs(date).add(1, 'day').toDate();
 };
 
-const getDaysInRange = (month: Date, calendarDayContent: Day[], range?: Partial<DateRange>): Day[] => {
+const getDaysInRange = (month: Date, calendarDayContent: CalendarDay[], range?: Partial<DateRange>): CalendarDay[] => {
     const from = getFirstWeekdayOnOrAfterDate(range?.from || month);
     const to = range?.to || dayjs(month).endOf('month');
-    const days: Array<Day> = [];
+    const days: Array<CalendarDay> = [];
     let current = dayjs(from).subtract(dayjs(from).isoWeekday() - 1, 'days');
     do {
         const date = current.toDate();
@@ -61,7 +61,7 @@ const getDaysInRange = (month: Date, calendarDayContent: Day[], range?: Partial<
     return days;
 };
 
-const getWeeks = (days: Day[]): Week[] => {
+const getWeeks = (days: CalendarDay[]): Week[] => {
     const weeksAndDays = groupBy(days, (day) => `week_${dayjs(day.date).isoWeek()}`);
     const weeks = Object.keys(weeksAndDays).map((key): Week => {
         const days = weeksAndDays[key];

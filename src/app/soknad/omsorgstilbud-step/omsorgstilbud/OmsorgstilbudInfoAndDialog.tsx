@@ -85,6 +85,8 @@ function OmsorgstilbudInfoAndDialog<FieldNames>({
                         tidOmsorgstilbud={data}
                         tidOmsorgstilbudSak={tidIOmsorgstilbudSak}
                         onEdit={onEdit}
+                        editLabel={labels.editLabel}
+                        addLabel={labels.addLabel}
                         periode={periode}
                         skjulTommeDagerIListe={skjulTommeDagerIListe}
                     />
