@@ -44,7 +44,6 @@ const TidUkeInput: React.FunctionComponent<Props> = ({
     dagLabelRenderer,
     tidPerDagValidator,
     ukeTittelRenderer,
-    opprinneligTid,
     isWide,
 }) => {
     const { dager } = ukeinfo;
@@ -70,7 +69,6 @@ const TidUkeInput: React.FunctionComponent<Props> = ({
                     </div>
                 ))}
                 {dager.map((dag) => {
-                    const opprinneligDagMedTid = opprinneligTid ? opprinneligTid[dag.isoDateString] : undefined;
                     return (
                         <div key={dag.isoDateString} className={bem.element('dag')}>
                             <FormikTimeInput
@@ -78,12 +76,6 @@ const TidUkeInput: React.FunctionComponent<Props> = ({
                                 label={renderDagLabel(dag, dagLabelRenderer)}
                                 timeInputLayout={{
                                     direction: 'horizontal',
-                                    placeholders: opprinneligDagMedTid
-                                        ? {
-                                              hours: `${opprinneligDagMedTid.hours}`,
-                                              minutes: `${opprinneligDagMedTid.minutes}`,
-                                          }
-                                        : undefined,
                                 }}
                                 validate={tidPerDagValidator ? tidPerDagValidator(dag.labelFull) : undefined}
                             />

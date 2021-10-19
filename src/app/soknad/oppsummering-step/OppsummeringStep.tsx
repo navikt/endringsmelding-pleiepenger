@@ -70,12 +70,10 @@ const OppsummeringStep: React.FunctionComponent<Props> = ({ søker, apiValues, t
                         <Box margin="xxl">
                             <ResponsivePanel border={true}>
                                 <SøkerSummary søker={søker} />
-                                {apiValues.omsorgstilbud && (
-                                    <OmsorgstilbudSummary
-                                        omsorgstilbud={apiValues.omsorgstilbud}
-                                        tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}
-                                    />
-                                )}
+                                <OmsorgstilbudSummary
+                                    omsorgstilbud={apiValues.omsorgstilbud}
+                                    tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}
+                                />
                             </ResponsivePanel>
                         </Box>
 

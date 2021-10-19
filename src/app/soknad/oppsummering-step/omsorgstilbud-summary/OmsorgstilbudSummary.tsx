@@ -6,7 +6,7 @@ import TidEnkeltdager from '../../../components/dager-med-tid/TidEnkeltdager';
 import { TidEnkeltdag } from '../../../types/SoknadFormData';
 
 interface Props {
-    omsorgstilbud: OmsorgstilbudApiData;
+    omsorgstilbud?: OmsorgstilbudApiData;
     tidIOmsorgstilbudSak?: TidEnkeltdag;
 }
 
@@ -14,7 +14,7 @@ const OmsorgstilbudSummary: React.FunctionComponent<Props> = ({ omsorgstilbud, t
     return (
         <SummarySection header="Omsorgstilbud">
             <SummaryBlock header="Endret omsorgstilbud">
-                <TidEnkeltdager dager={omsorgstilbud.enkeltdager} dagerOpprinnelig={tidIOmsorgstilbudSak} />
+                <TidEnkeltdager dager={omsorgstilbud?.enkeltdager} dagerOpprinnelig={tidIOmsorgstilbudSak} />
             </SummaryBlock>
         </SummarySection>
     );

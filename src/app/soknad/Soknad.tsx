@@ -51,7 +51,6 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
     const history = useHistory();
     const [initializing, setInitializing] = useState(true);
 
-    const [initialFormData, setInitialFormData] = useState<Partial<SoknadFormData>>({ ...initialSoknadFormData });
     const [sendSoknadStatus, setSendSoknadStatus] = useState<SendSoknadStatus>(initialSendSoknadState);
     const [soknadId, setSoknadId] = useState<string | undefined>();
 
@@ -65,7 +64,6 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
         if (isFeatureEnabled(Feature.PERSISTENCE)) {
             await soknadTempStorage.purge();
         }
-        setInitialFormData({ ...initialSoknadFormData });
         setSoknadId(undefined);
         if (redirectToFrontpage) {
             if (location.pathname !== getRouteUrl(AppRoutes.SOKNAD)) {
@@ -184,7 +182,6 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
 
     useEffect(() => {
         if (isStorageDataValid(tempStorage, { søker })) {
-            setInitialFormData(tempStorage.formData);
             setSoknadId(tempStorage.metadata.soknadId);
             const currentRoute = history.location.pathname;
             const lastStepRoute = soknadStepUtils.getStepRoute(
@@ -216,7 +213,7 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
                 }
                 return (
                     <SoknadFormComponents.FormikWrapper
-                        initialValues={initialFormData}
+                        initialValues={{ ...initialSoknadFormData, omsorgstilbud: k9sak.ytelse.tilsynsordning }}
                         onSubmit={() => null}
                         renderForm={({ values, resetForm }) => {
                             const soknadStepsConfig = getSoknadStepsConfig(values);
