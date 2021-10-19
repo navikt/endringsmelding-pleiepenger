@@ -4,7 +4,7 @@ import { isUserLoggedOut } from '@navikt/sif-common-core/lib/utils/apiUtils';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { AxiosError } from 'axios';
 import getArbeidsgivereRemoteData from '../api/getArbeidsgivere';
-import getK9SakRemoteData from '../api/getK9Sak';
+import getK9SakRemoteData from '../api/k9sak/getK9Sak';
 import getSokerRemoteData from '../api/getSoker';
 import getSoknadTempStorage from '../api/getSoknadTempStorage';
 import { Arbeidsgivere } from '../types/Arbeidsgiver';

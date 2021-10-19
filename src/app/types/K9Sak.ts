@@ -3,7 +3,9 @@ import { TidEnkeltdag } from './SoknadFormData';
 
 export interface K9Sak {
     søknadId: string;
-    søker: string;
+    søker: {
+        norskIdentitetsnummer: string;
+    };
     ytelse: {
         type: 'PLEIEPENGER_SYKT_BARN';
         barn: {

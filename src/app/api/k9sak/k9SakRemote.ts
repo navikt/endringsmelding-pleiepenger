@@ -6,7 +6,11 @@ export type TilsynsordningPerioderK9 = {
 
 export interface K9SakRemote {
     søknadId: string;
-    søker: string;
+    versjon: string;
+    mottattDato: string;
+    søker: {
+        norskIdentitetsnummer: string;
+    };
     ytelse: {
         type: 'PLEIEPENGER_SYKT_BARN';
         barn: {
