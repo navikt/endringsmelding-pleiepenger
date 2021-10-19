@@ -13,13 +13,13 @@ import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-co
 interface Props {
     periode: DateRange;
     endringsdato: Date;
-    tidIOmsorgstilbud: TidEnkeltdag;
+    tidIOmsorgstilbudSak: TidEnkeltdag;
     onOmsorgstilbudChanged?: (omsorgsdager: TidEnkeltdag) => void;
 }
 
-const OmsorgstilbudIPeriodeSpørsmål: React.FunctionComponent<Props> = ({
+const OmsorgstilbudIPerioder: React.FunctionComponent<Props> = ({
     periode,
-    // tidIOmsorgstilbud,
+    tidIOmsorgstilbudSak,
     endringsdato,
     onOmsorgstilbudChanged,
 }) => {
@@ -49,6 +49,7 @@ const OmsorgstilbudIPeriodeSpørsmål: React.FunctionComponent<Props> = ({
                             name={SoknadFormField.omsorgstilbud_enkeltdager}
                             periode={periode}
                             endringsdato={endringsdato}
+                            tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}
                             skjulTommeDagerIListe={true}
                             onAfterChange={onOmsorgstilbudChanged}
                             labels={{
@@ -73,4 +74,4 @@ const OmsorgstilbudIPeriodeSpørsmål: React.FunctionComponent<Props> = ({
     );
 };
 
-export default OmsorgstilbudIPeriodeSpørsmål;
+export default OmsorgstilbudIPerioder;

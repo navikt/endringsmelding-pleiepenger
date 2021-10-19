@@ -5,7 +5,7 @@ import StepIntroduction from '../../components/step-introduction/StepIntroductio
 import { SoknadFormData, TidEnkeltdag } from '../../types/SoknadFormData';
 import SoknadFormStep from '../SoknadFormStep';
 import { StepID } from '../soknadStepsConfig';
-import OmsorgstilbudIPeriodeSpørsmål from './omsorgstilbud/OmsorgstilbudIPeriodeSpørsmål';
+import OmsorgstilbudIPerioder from './omsorgstilbud/OmsorgstilbudIPerioder';
 
 const cleanupOmsorgstilbudStep = (formData: SoknadFormData): SoknadFormData => {
     return formData;
@@ -14,15 +14,15 @@ const cleanupOmsorgstilbudStep = (formData: SoknadFormData): SoknadFormData => {
 interface Props {
     endringsperiode: DateRange;
     endringsdato: Date;
-    tidIOmsorgstilbud?: TidEnkeltdag;
+    tidIOmsorgstilbudSak?: TidEnkeltdag;
     onOmsorgstilbudChanged?: () => void;
 }
 
 const OmsorgstilbudStep: React.FunctionComponent<Props> = ({
-    endringsperiode: periode,
+    endringsperiode,
     endringsdato,
     onOmsorgstilbudChanged,
-    tidIOmsorgstilbud = {},
+    tidIOmsorgstilbudSak = {},
 }) => {
     const stepId = StepID.OMSORGSTILBUD;
 
@@ -30,10 +30,10 @@ const OmsorgstilbudStep: React.FunctionComponent<Props> = ({
         <SoknadFormStep id={stepId} onStepCleanup={cleanupOmsorgstilbudStep}>
             <StepIntroduction>Intro til steg</StepIntroduction>
             <Box margin="xl">
-                <OmsorgstilbudIPeriodeSpørsmål
-                    periode={periode}
+                <OmsorgstilbudIPerioder
+                    periode={endringsperiode}
                     endringsdato={endringsdato}
-                    tidIOmsorgstilbud={tidIOmsorgstilbud}
+                    tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}
                     onOmsorgstilbudChanged={onOmsorgstilbudChanged}
                 />
             </Box>

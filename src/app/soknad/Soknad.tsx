@@ -57,6 +57,7 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
     const endringsdato = getEndringsdato();
     const søknadsperiode = getMinMaxInDateRanges(k9sak.ytelse.søknadsperioder);
     const endringsperiode = getEndringsperiode(endringsdato, søknadsperiode);
+
     const { logSoknadStartet, logSoknadFailed, logHendelse, logUserLoggedOut } = useAmplitudeInstance();
 
     const resetSoknad = async (redirectToFrontpage = true): Promise<void> => {
@@ -232,6 +233,7 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
                                         arbeidsgivere={arbeidsgivere}
                                         endringsperiode={endringsperiode}
                                         endringsdato={endringsdato}
+                                        k9sak={k9sak}
                                     />
                                 </SoknadContextProvider>
                             );

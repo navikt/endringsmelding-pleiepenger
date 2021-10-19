@@ -88,7 +88,16 @@
         },
         "tilsynsordning": {
             "perioder": {
-                "2018-12-30/2019-10-20": {
+                "2021-08-12/2021-08-13": {
+                    "etablertTilsynTimerPerDag": "PT2H0M"
+                },
+                "2021-09-01/2021-09-15": {
+                    "etablertTilsynTimerPerDag": "PT7H30M"
+                },
+                "2021-10-01/2021-10-15": {
+                    "etablertTilsynTimerPerDag": "PT4H0M"
+                },
+                "2021-11-01/2021-11-15": {
                     "etablertTilsynTimerPerDag": "PT7H30M"
                 }
             },

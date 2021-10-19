@@ -6,6 +6,10 @@ export interface DagMedTid {
     dato: Date;
     tid: Partial<Time>;
 }
+export interface DagMedSak {
+    dato: Date;
+    tid: Partial<Time>;
+}
 
 export interface Omsorgstilbud {
     enkeltdager: TidEnkeltdag;

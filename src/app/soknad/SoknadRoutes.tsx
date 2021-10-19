@@ -25,6 +25,7 @@ import OppsummeringStep from './oppsummering-step/OppsummeringStep';
 import { useSoknadContext } from './SoknadContext';
 import { StepID } from './soknadStepsConfig';
 import VelkommenPage from './velkommen-page/VelkommenPage';
+import { K9Sak } from '../types/K9Sak';
 
 interface Props {
     soknadId?: string;
@@ -32,9 +33,10 @@ interface Props {
     endringsdato: Date;
     endringsperiode: DateRange;
     arbeidsgivere?: Arbeidsgivere;
+    k9sak: K9Sak;
 }
 
-const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, endringsperiode, endringsdato }) => {
+const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, endringsperiode, endringsdato, k9sak }) => {
     const intl = useIntl();
     const history = useHistory();
     const { values } = useFormikContext<SoknadFormData>();
@@ -60,7 +62,7 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, endrin
                     <OmsorgstilbudStep
                         endringsdato={endringsdato}
                         endringsperiode={endringsperiode}
-                        tidIOmsorgstilbud={values.omsorgstilbud?.enkeltdager}
+                        tidIOmsorgstilbudSak={k9sak.ytelse.tilsynsordning.enkeltdager}
                         onOmsorgstilbudChanged={() => {
                             setPersistRequest({ stepID: StepID.OMSORGSTILBUD });
                         }}
