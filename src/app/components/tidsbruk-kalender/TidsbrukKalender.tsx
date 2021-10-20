@@ -28,6 +28,7 @@ interface Props {
     utilgjengeligDagInfo?: string;
     visSomListe?: boolean;
     skjulTommeDagerIListe?: boolean;
+    visEndringsinformasjon?: boolean;
     tomUkeContentRenderer?: () => React.ReactNode;
     tidRenderer?: TidRenderer;
 }
@@ -41,6 +42,7 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
     visSomListe,
     utilgjengeligeDager,
     skjulTommeDagerIListe,
+    visEndringsinformasjon,
     tomUkeContentRenderer,
 }) => {
     const intl = useIntl();
@@ -102,19 +104,23 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
                                                 }>
                                                 <FormattedTimeText time={dag.tid} />
                                             </span>
-                                            {dag.tidOpprinnelig ? (
-                                                <div>
-                                                    (
-                                                    <Undertekst
-                                                        tag="span"
-                                                        aria-label="Opprinnelig tid"
-                                                        style={{ textDecoration: 'line-through' }}>
-                                                        <FormattedTimeText time={dag.tidOpprinnelig} />
-                                                    </Undertekst>
-                                                    )
-                                                </div>
-                                            ) : (
-                                                <Undertekst>(lagt til)</Undertekst>
+                                            {visEndringsinformasjon && (
+                                                <>
+                                                    {dag.tidOpprinnelig ? (
+                                                        <div>
+                                                            (
+                                                            <Undertekst
+                                                                tag="span"
+                                                                aria-label="Opprinnelig tid"
+                                                                style={{ textDecoration: 'line-through' }}>
+                                                                <FormattedTimeText time={dag.tidOpprinnelig} />
+                                                            </Undertekst>
+                                                            )
+                                                        </div>
+                                                    ) : (
+                                                        <Undertekst>(lagt til)</Undertekst>
+                                                    )}
+                                                </>
                                             )}
                                         </>
                                     ) : (

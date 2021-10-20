@@ -87,6 +87,7 @@ const OmsorgstilbudIPeriode: React.FunctionComponent<Props> = ({
                     dagerOpprinnelig={omsorgsdagerSak}
                     visSomListe={false}
                     skjulTommeDagerIListe={skjulTommeDagerIListe}
+                    visEndringsinformasjon={true}
                     tidRenderer={(tid) => {
                         return (
                             <>

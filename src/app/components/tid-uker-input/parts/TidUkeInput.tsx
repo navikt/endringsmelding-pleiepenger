@@ -65,7 +65,7 @@ const TidUkeInput: React.FunctionComponent<Props> = ({
             )}
 
             {alleDagerErUtilgjengelig ? (
-                <FormBlock>
+                <FormBlock margin="l">
                     <p>Det er ikke søkt om pleiepenger for dagene i denne uken</p>
                 </FormBlock>
             ) : (
