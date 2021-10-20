@@ -7,6 +7,8 @@ import { Daginfo, Ukeinfo } from '../types';
 import { getForegåendeDagerIUke } from '../utils';
 import { TidPerDagValidator } from '../../../validation/fieldValidations';
 import { TidEnkeltdag } from '../../../types/SoknadFormData';
+import { isDateInDates } from '../../../utils/dateUtils';
+import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 
 type DagLabelRenderer = (dag: Daginfo) => React.ReactNode;
 
@@ -16,6 +18,7 @@ interface Props {
     opprinneligTid?: TidEnkeltdag;
     isNarrow: boolean;
     isWide: boolean;
+    utilgjengeligeDager?: Date[];
     tidPerDagValidator?: TidPerDagValidator;
     ukeTittelRenderer?: (uke: Ukeinfo) => React.ReactNode;
     dagLabelRenderer?: (dag: Daginfo) => React.ReactNode;
@@ -40,6 +43,7 @@ const bem = bemUtils('tidUkerInput');
 
 const TidUkeInput: React.FunctionComponent<Props> = ({
     ukeinfo,
+    utilgjengeligeDager,
     getFieldName,
     dagLabelRenderer,
     tidPerDagValidator,
@@ -47,6 +51,9 @@ const TidUkeInput: React.FunctionComponent<Props> = ({
     isWide,
 }) => {
     const { dager } = ukeinfo;
+    const alleDagerErUtilgjengelig =
+        ukeinfo.dager.filter((dag) => isDateInDates(dag.dato, utilgjengeligeDager)).length === ukeinfo.dager.length;
+
     return (
         <div className={bem.element('uke')}>
             {ukeTittelRenderer ? (
@@ -57,32 +64,45 @@ const TidUkeInput: React.FunctionComponent<Props> = ({
                 </Element>
             )}
 
-            <div className={bem.element('uke__ukedager', isWide ? 'grid' : 'liste')}>
-                {getForegåendeDagerIUke(dager[0]).map((dag) => (
-                    <div
-                        className={bem.element('dag', 'utenforPeriode')}
-                        key={dag.isoDateString}
-                        role="presentation"
-                        aria-hidden={true}>
-                        {renderDagLabel(dag, dagLabelRenderer)}
-                        <div className={bem.element('dag__utenforPeriodeIkon')}>-</div>
-                    </div>
-                ))}
-                {dager.map((dag) => {
-                    return (
-                        <div key={dag.isoDateString} className={bem.element('dag')}>
-                            <FormikTimeInput
-                                name={getFieldName(dag)}
-                                label={renderDagLabel(dag, dagLabelRenderer)}
-                                timeInputLayout={{
-                                    direction: 'horizontal',
-                                }}
-                                validate={tidPerDagValidator ? tidPerDagValidator(dag.labelFull) : undefined}
-                            />
+            {alleDagerErUtilgjengelig ? (
+                <FormBlock>
+                    <p>Det er ikke søkt om pleiepenger for dagene i denne uken</p>
+                </FormBlock>
+            ) : (
+                <div className={bem.element('uke__ukedager', isWide ? 'grid' : 'liste')}>
+                    {getForegåendeDagerIUke(dager[0]).map((dag) => (
+                        <div
+                            className={bem.element('dag', 'utenforPeriode')}
+                            key={dag.isoDateString}
+                            role="presentation"
+                            aria-hidden={true}>
+                            {renderDagLabel(dag, dagLabelRenderer)}
+                            <div className={bem.element('dag__utenforPeriodeIkon')}>-</div>
                         </div>
-                    );
-                })}
-            </div>
+                    ))}
+                    {dager.map((dag) => {
+                        const erUtilgjengelig = isDateInDates(dag.dato, utilgjengeligeDager);
+                        return (
+                            <div
+                                key={dag.isoDateString}
+                                className={bem.element('dag', erUtilgjengelig ? 'utilgjengelig' : undefined)}>
+                                {erUtilgjengelig ? (
+                                    <span />
+                                ) : (
+                                    <FormikTimeInput
+                                        name={getFieldName(dag)}
+                                        label={renderDagLabel(dag, dagLabelRenderer)}
+                                        timeInputLayout={{
+                                            direction: 'horizontal',
+                                        }}
+                                        validate={tidPerDagValidator ? tidPerDagValidator(dag.labelFull) : undefined}
+                                    />
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
+            )}
         </div>
     );
 };

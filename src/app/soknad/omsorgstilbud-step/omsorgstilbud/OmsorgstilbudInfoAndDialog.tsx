@@ -11,7 +11,7 @@ import dayjs from 'dayjs';
 import TidKalenderForm from '../../../components/tid-kalender-form/TidKalenderForm';
 import { TidEnkeltdag } from '../../../types/SoknadFormData';
 import { getTidIOmsorgValidator } from '../../../validation/validateOmsorgstilbudFields';
-import OmsorgstilbudIPeriode from './OmsorgstilbudIPeriode';
+import OmsorgstilbudIPeriode, { OmsorgstilbudIPeriodemånedTittelHeadingLevel } from './OmsorgstilbudIPeriode';
 
 interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     name: FieldNames;
@@ -21,6 +21,7 @@ interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, Va
     endringsdato: Date;
     tidIOmsorgstilbudSak: TidEnkeltdag;
     skjulTommeDagerIListe?: boolean;
+    månedTittelHeadingLevel?: OmsorgstilbudIPeriodemånedTittelHeadingLevel;
     onAfterChange?: (omsorgsdager: TidEnkeltdag) => void;
 }
 
@@ -32,6 +33,7 @@ function OmsorgstilbudInfoAndDialog<FieldNames>({
     skjulTommeDagerIListe,
     tidIOmsorgstilbudSak,
     utilgjengeligeDager,
+    månedTittelHeadingLevel,
     validate,
     onAfterChange,
 }: Props<FieldNames>) {
@@ -50,6 +52,7 @@ function OmsorgstilbudInfoAndDialog<FieldNames>({
                 return (
                     <TidKalenderForm
                         periode={periode}
+                        utilgjengeligeDager={utilgjengeligeDager}
                         tid={data}
                         opprinneligTid={tidIOmsorgstilbudSak}
                         tittel={
@@ -87,6 +90,7 @@ function OmsorgstilbudInfoAndDialog<FieldNames>({
                     <OmsorgstilbudIPeriode
                         tidOmsorgstilbud={data}
                         tidOmsorgstilbudSak={tidIOmsorgstilbudSak}
+                        månedTittelHeadingLevel={månedTittelHeadingLevel}
                         onEdit={onEdit}
                         editLabel={labels.editLabel}
                         addLabel={labels.addLabel}

@@ -4,12 +4,14 @@ import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import dayjs from 'dayjs';
 import { SoknadFormField, TidEnkeltdag } from '../../../types/SoknadFormData';
-import { getMonthsInDateRange } from '../../../utils/dateUtils';
+import { dateIsWeekDay, getMonthsInDateRange, getYearsInDateRanges } from '../../../utils/dateUtils';
 import SoknadFormComponents from '../../SoknadFormComponents';
 import OmsorgstilbudInfoAndDialog from './OmsorgstilbudInfoAndDialog';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
 import flatten from 'lodash.flatten';
+import { Undertittel } from 'nav-frontend-typografi';
+import Box from '@navikt/sif-common-core/lib/components/box/Box';
 
 interface Props {
     endringsdato: Date;
@@ -58,7 +60,7 @@ export const getUtilgjengeligeDager = (perioder: DateRange[]): Date[] => {
             const dates = getDatesIDateRange({
                 from: dayjs(forrigePeriode.to).add(1, 'day').toDate(),
                 to: dayjs(periode.from).subtract(1, 'day').toDate(),
-            });
+            }).filter(dateIsWeekDay);
             utilgjengeligeDager.push(...dates);
         }
     });
@@ -75,7 +77,11 @@ const OmsorgstilbudIPerioder: React.FunctionComponent<Props> = ({
     onOmsorgstilbudChanged,
 }) => {
     const intl = useIntl();
-    const måneder = getMånederMedSøknadsperioder(søknadsperioder);
+    const måneder: SøknadsperiodeMåned = getMånederMedSøknadsperioder(søknadsperioder);
+    const månederArray = Object.keys(måneder).map((key) => måneder[key]);
+    const år = getYearsInDateRanges(månederArray.map((m) => m[0]));
+
+    const visÅrHeading = år.length > 1;
 
     return (
         <SoknadFormComponents.InputGroup
@@ -93,8 +99,7 @@ const OmsorgstilbudIPerioder: React.FunctionComponent<Props> = ({
             tag="div"
             // validate={() => validateOmsorgstilbudEnkeltdagerIPeriode(tidIOmsorgstilbud, periode, gjelderFortid)}
         >
-            {Object.keys(måneder).map((key) => {
-                const måned = måneder[key];
+            {månederArray.map((måned, index) => {
                 const periode = {
                     from: måned[0].from,
                     to: måned[måned.length - 1].to,
@@ -102,6 +107,14 @@ const OmsorgstilbudIPerioder: React.FunctionComponent<Props> = ({
                 const mndOgÅr = dayjs(periode.from).format('MMMM YYYY');
                 return (
                     <FormBlock margin="l" key={dayjs(periode.from).format('MM.YYYY')}>
+                        {visÅrHeading &&
+                        (index === 0 ||
+                            månederArray[index][0].from.getFullYear() !==
+                                månederArray[index - 1][0].from.getFullYear()) ? (
+                            <Box margin="xl" padBottom="l">
+                                <Undertittel>{dayjs(periode.from).format('YYYY')}</Undertittel>
+                            </Box>
+                        ) : undefined}
                         <OmsorgstilbudInfoAndDialog
                             name={SoknadFormField.omsorgstilbud_enkeltdager}
                             periode={periode}
@@ -109,6 +122,7 @@ const OmsorgstilbudIPerioder: React.FunctionComponent<Props> = ({
                             endringsdato={endringsdato}
                             tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}
                             skjulTommeDagerIListe={true}
+                            månedTittelHeadingLevel={visÅrHeading ? 3 : 2}
                             onAfterChange={onOmsorgstilbudChanged}
                             labels={{
                                 addLabel: intlHelper(intl, 'omsorgstilbud.addLabel', {

@@ -16,7 +16,7 @@ export const k9SakMock: K9SakRemote = {
         søknadsperiode: [
             '2021-08-12/2021-10-15',
             '2022-01-02/2022-01-10',
-            '2022-01-20/2022-01-25',
+            '2022-01-27/2022-01-28',
             '2022-06-01/2022-06-20',
         ],
         tilsynsordning: {
@@ -27,7 +27,7 @@ export const k9SakMock: K9SakRemote = {
                 '2021-09-01/2021-09-15': {
                     etablertTilsynTimerPerDag: 'PT7H30M',
                 },
-                '2021-10-01/2021-10-15': {
+                '2021-10-01/2021-10-5': {
                     etablertTilsynTimerPerDag: 'PT4H0M',
                 },
                 '2021-11-01/2021-11-15': {

@@ -3,17 +3,19 @@ import { useMediaQuery } from 'react-responsive';
 import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
 import { DateRange } from '@navikt/sif-common-formik';
+import { TidEnkeltdag } from '../../types/SoknadFormData';
 import { TidPerDagValidator } from '../../validation/fieldValidations';
 import TidUkeInput from './parts/TidUkeInput';
 import { Ukeinfo } from './types';
 import { getDatoerIPeriode, getTidKalenderFieldName, getUkerFraDager } from './utils';
 import './tidUkerInput.less';
-import { TidEnkeltdag } from '../../types/SoknadFormData';
+
 interface Props {
     fieldName: string;
     periode: DateRange;
     brukPanel?: boolean;
     opprinneligTid?: TidEnkeltdag;
+    utilgjengeligeDager?: Date[];
     ukeTittelRenderer?: (uke: Ukeinfo) => React.ReactNode;
     tidPerDagValidator?: TidPerDagValidator;
 }
@@ -25,6 +27,7 @@ export const TidUkerInput: React.FunctionComponent<Props> = ({
     periode,
     brukPanel,
     opprinneligTid,
+    utilgjengeligeDager,
     ukeTittelRenderer,
     tidPerDagValidator,
 }) => {
@@ -42,6 +45,7 @@ export const TidUkerInput: React.FunctionComponent<Props> = ({
                         getFieldName={(dag) => getTidKalenderFieldName(fieldName, dag)}
                         ukeinfo={week}
                         opprinneligTid={opprinneligTid}
+                        utilgjengeligeDager={utilgjengeligeDager}
                         isNarrow={isNarrow}
                         isWide={isWide}
                         tidPerDagValidator={tidPerDagValidator}

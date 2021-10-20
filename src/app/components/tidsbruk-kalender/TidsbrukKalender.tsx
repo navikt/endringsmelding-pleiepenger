@@ -24,6 +24,7 @@ interface Props {
     dagerOpprinnelig?: DagMedTid[];
     periode: DateRange;
     utilgjengeligeDager?: Date[];
+    utilgjengeligDagInfo?: string;
     brukEtikettForInnhold?: boolean;
     visSomListe?: boolean;
     skjulTommeDagerIListe?: boolean;
@@ -35,6 +36,7 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
     periode,
     dager,
     dagerOpprinnelig = [],
+    utilgjengeligDagInfo,
     // brukEtikettForInnhold,
     visSomListe,
     utilgjengeligeDager,
@@ -65,6 +67,7 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
             max={periode.to}
             renderAsList={visSomListe}
             disabledDates={utilgjengeligeDager}
+            disabledDateInfo={utilgjengeligDagInfo}
             dateFormatter={(date: Date) => (
                 <AriaAlternative
                     visibleText={dayjs(date).format('D.')}

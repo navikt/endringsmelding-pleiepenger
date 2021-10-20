@@ -8,6 +8,7 @@ import minMax from 'dayjs/plugin/minMax';
 import { groupBy } from 'lodash';
 import { guid } from 'nav-frontend-js-utils';
 import './calendarGrid.less';
+import { dateIsWeekDay, isDateInDates } from '../../utils/dateUtils';
 
 dayjs.extend(minMax);
 dayjs.extend(isSameOrBefore);
@@ -30,6 +31,7 @@ interface Props {
     max?: Date;
     renderAsList?: boolean;
     disabledDates?: Date[];
+    disabledDateInfo?: string;
     hideEmptyContentInListMode?: boolean;
     dateFormatter?: (date: Date) => React.ReactNode;
     dateFormatterFull?: (date: Date) => React.ReactNode;
@@ -53,7 +55,7 @@ const getDaysInRange = (month: Date, calendarDayContent: CalendarDay[], range?: 
     let current = dayjs(from).subtract(dayjs(from).isoWeekday() - 1, 'days');
     do {
         const date = current.toDate();
-        if (current.isoWeekday() <= 5) {
+        if (dateIsWeekDay(current.toDate())) {
             const dayContent = calendarDayContent.find((c) => dayjs(c.date).isSame(date, 'day'));
             days.push({ date, content: dayContent !== undefined ? dayContent.content : undefined });
         }
@@ -75,13 +77,6 @@ const getWeeks = (days: CalendarDay[]): Week[] => {
 
 const bem = bemUtils('calendarGrid');
 
-const isDateDisabled = (date: Date, disabledDates?: Date[]): boolean => {
-    if (!disabledDates) {
-        return false;
-    }
-    return disabledDates.some((d) => dayjs(date).isSame(d, 'day'));
-};
-
 const CalendarGrid: React.FunctionComponent<Props> = ({
     days,
     month,
@@ -91,6 +86,7 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
     dateFormatterFull = (date) => dayjs(date).format('dddd DD. MMM'),
     noContentRenderer,
     disabledDates,
+    disabledDateInfo,
     renderAsList,
     hideEmptyContentInListMode,
 }) => {
@@ -137,7 +133,7 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
                         <span>{weekNum}</span>
                     </span>,
                     daysInWeek.map((d) => {
-                        const dateIsDisabled = isDateDisabled(d.date, disabledDates);
+                        const dateIsDisabled = isDateInDates(d.date, disabledDates);
                         return dayjs(d.date).isSame(month, 'month') === false ||
                             (min && dayjs(d.date).isBefore(min, 'day')) ? (
                             <div
@@ -154,7 +150,9 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
                                     bem.child('day').modifierConditional('empty', d.content === undefined),
                                     bem.child('day').modifierConditional('disabled', dateIsDisabled)
                                 )}>
-                                <div className={bem.element('date')}>
+                                <div
+                                    className={bem.element('date')}
+                                    title={dateIsDisabled ? disabledDateInfo : undefined}>
                                     <span className={bem.classNames(bem.element('date__full'))}>
                                         <span>{dateFormatterFull(d.date)}</span>
                                     </span>

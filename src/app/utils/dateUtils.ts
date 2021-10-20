@@ -3,9 +3,10 @@ import { iso8601DurationToTime, timeToIso8601Duration } from '@navikt/sif-common
 import { DateRange, Time } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
-import minMax from 'dayjs/plugin/minMax';
-import { ISODate, ISODateRange, ISODuration } from '../types';
 import isoWeek from 'dayjs/plugin/isoWeek';
+import minMax from 'dayjs/plugin/minMax';
+import { uniq } from 'lodash';
+import { ISODate, ISODateRange, ISODuration } from '../types';
 
 dayjs.extend(isoWeek);
 dayjs.extend(isBetween);
@@ -107,3 +108,17 @@ export const timeHasSameDuration = (time1?: Partial<Time>, time2?: Partial<Time>
     const opprinneligTid = timeToIso8601Duration(time2);
     return endretTid === opprinneligTid;
 };
+
+export const isDateInDates = (date: Date, dates?: Date[]): boolean => {
+    if (!dates) {
+        return false;
+    }
+    return dates.some((d) => dayjs(date).isSame(d, 'day'));
+};
+
+export const dateIsWeekDay = (date: Date): boolean => {
+    return dayjs(date).isoWeekday() <= 5;
+};
+
+export const getYearsInDateRanges = (dateRanges: DateRange[]): number[] =>
+    uniq(dateRanges.map((d) => d.from.getFullYear()));

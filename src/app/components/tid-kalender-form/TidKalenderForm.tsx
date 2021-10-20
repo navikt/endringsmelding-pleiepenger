@@ -1,6 +1,7 @@
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import Knapperad from '@navikt/sif-common-core/lib/components/knapperad/Knapperad';
 import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
@@ -13,9 +14,9 @@ import isoWeek from 'dayjs/plugin/isoWeek';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
 import Knapp from 'nav-frontend-knapper';
 import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
+import { TidEnkeltdag } from '../../types/SoknadFormData';
 import { getValidEnkeltdager } from '../../utils/tidsbrukUtils';
 import { TidPerDagValidator } from '../../validation/fieldValidations';
-import { TidEnkeltdag } from '../../types/SoknadFormData';
 import TidUkerInput from '../tid-uker-input/TidUkerInput';
 
 dayjs.extend(isoWeek);
@@ -27,6 +28,7 @@ interface Props {
     periode: DateRange;
     tid: TidEnkeltdag;
     opprinneligTid?: TidEnkeltdag;
+    utilgjengeligeDager?: Date[];
     tidPerDagValidator: TidPerDagValidator;
     onSubmit: (tid: TidEnkeltdag) => void;
     onCancel?: () => void;
@@ -47,6 +49,7 @@ const TidKalenderForm = ({
     opprinneligTid,
     tittel,
     intro,
+    utilgjengeligeDager = [],
     tidPerDagValidator,
     onSubmit,
     onCancel,
@@ -87,11 +90,30 @@ const TidKalenderForm = ({
                             }>
                             <Systemtittel tag="h1">{tittel}</Systemtittel>
                             {intro ? <Box margin="l">{intro}</Box> : undefined}
+
+                            {utilgjengeligeDager.length > 0 && (
+                                <Box margin="m">
+                                    <ExpandableInfo title={`Hvorfor er ikke alle dagene nedenfor tilgjengelig?`}>
+                                        Her kommer en forklaring på hvorfor noen dager ikke er tilgjengelig nedenfor.
+                                        Altså dager som det ikke er søkt om. Dager det ikke er søkt om i{' '}
+                                        {dayjs(periode.from).format('MMMM YYYY')}:
+                                        <ul>
+                                            {utilgjengeligeDager.map((d) => (
+                                                <li key={d.toString()}>
+                                                    <span className={'--capitalize'}>{dayjs(d).format('dddd DD')}</span>
+                                                    .
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </ExpandableInfo>
+                                </Box>
+                            )}
                             <ResponsivePanel>
                                 <TidUkerInput
                                     fieldName={FormField.tid}
                                     periode={periode}
                                     opprinneligTid={opprinneligTid}
+                                    utilgjengeligeDager={utilgjengeligeDager}
                                     brukPanel={false}
                                     tidPerDagValidator={tidPerDagValidator}
                                 />

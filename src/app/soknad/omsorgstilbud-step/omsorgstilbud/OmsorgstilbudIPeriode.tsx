@@ -14,6 +14,8 @@ import TidsbrukKalender from '../../../components/tidsbruk-kalender/TidsbrukKale
 import { TidEnkeltdag } from '../../../types/SoknadFormData';
 import { getDagerMedTidITidsrom } from '../../../utils/tidsbrukUtils';
 
+export type OmsorgstilbudIPeriodemånedTittelHeadingLevel = 2 | 3;
+
 interface Props {
     tidOmsorgstilbud: TidEnkeltdag;
     tidOmsorgstilbudSak: TidEnkeltdag;
@@ -22,6 +24,7 @@ interface Props {
     addLabel: string;
     skjulTommeDagerIListe?: boolean;
     utilgjengeligeDager?: Date[];
+    månedTittelHeadingLevel?: OmsorgstilbudIPeriodemånedTittelHeadingLevel;
     onEdit: (tid: TidEnkeltdag) => void;
 }
 
@@ -33,6 +36,7 @@ const OmsorgstilbudIPeriode: React.FunctionComponent<Props> = ({
     addLabel,
     skjulTommeDagerIListe,
     utilgjengeligeDager,
+    månedTittelHeadingLevel = 2,
     onEdit,
 }) => {
     const intl = useIntl();
@@ -48,7 +52,7 @@ const OmsorgstilbudIPeriode: React.FunctionComponent<Props> = ({
         <Ekspanderbartpanel
             tittel={
                 <>
-                    <Undertittel>{mndTittelPart}</Undertittel>
+                    <Undertittel tag={`h${månedTittelHeadingLevel}`}>{mndTittelPart}</Undertittel>
                     <Box margin="m">
                         <Normaltekst>Åpne for å se og endre tid i omsorgstilbud</Normaltekst>
                     </Box>
@@ -60,6 +64,7 @@ const OmsorgstilbudIPeriode: React.FunctionComponent<Props> = ({
                     måned={måned}
                     periode={periode}
                     utilgjengeligeDager={utilgjengeligeDager}
+                    utilgjengeligDagInfo={'Det er ikke søkt om pleiepenger for denne dagen'}
                     dager={omsorgsdager}
                     dagerOpprinnelig={omsorgsdagerSak}
                     visSomListe={false}
