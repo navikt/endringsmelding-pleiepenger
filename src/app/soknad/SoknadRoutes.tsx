@@ -61,8 +61,9 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, endrin
                 return (
                     <OmsorgstilbudStep
                         endringsdato={endringsdato}
-                        endringsperiode={endringsperiode}
-                        søknadsperioder={k9sak.ytelse.søknadsperiode}
+                        søknadsperioder={
+                            k9sak.ytelse.søknadsperiode
+                        } /** Todo - fjerne deler av perioder som er utenfor endringesperiode */
                         tidIOmsorgstilbudSak={k9sak.ytelse.tilsynsordning.enkeltdager}
                         onOmsorgstilbudChanged={() => {
                             setPersistRequest({ stepID: StepID.OMSORGSTILBUD });

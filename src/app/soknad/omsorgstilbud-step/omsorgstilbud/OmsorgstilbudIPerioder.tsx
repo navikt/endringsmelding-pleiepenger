@@ -15,7 +15,6 @@ import Box from '@navikt/sif-common-core/lib/components/box/Box';
 
 interface Props {
     endringsdato: Date;
-    endringsperiode: DateRange;
     søknadsperioder: DateRange[];
     tidIOmsorgstilbudSak: TidEnkeltdag;
     onOmsorgstilbudChanged?: (omsorgsdager: TidEnkeltdag) => void;
@@ -71,7 +70,6 @@ const getYearMonthKey = (date: Date): string => dayjs(date).format('YYYY-MM');
 
 const OmsorgstilbudIPerioder: React.FunctionComponent<Props> = ({
     endringsdato,
-    // endringsperiode,
     søknadsperioder,
     tidIOmsorgstilbudSak,
     onOmsorgstilbudChanged,

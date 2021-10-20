@@ -13,7 +13,6 @@ const cleanupOmsorgstilbudStep = (formData: SoknadFormData): SoknadFormData => {
 
 interface Props {
     endringsdato: Date;
-    endringsperiode: DateRange;
     søknadsperioder: DateRange[];
     tidIOmsorgstilbudSak?: TidEnkeltdag;
     onOmsorgstilbudChanged?: () => void;
@@ -21,7 +20,6 @@ interface Props {
 
 const OmsorgstilbudStep: React.FunctionComponent<Props> = ({
     endringsdato,
-    endringsperiode,
     søknadsperioder,
     onOmsorgstilbudChanged,
     tidIOmsorgstilbudSak = {},
@@ -33,7 +31,6 @@ const OmsorgstilbudStep: React.FunctionComponent<Props> = ({
             <StepIntroduction>Intro til steg</StepIntroduction>
             <Box margin="xl">
                 <OmsorgstilbudIPerioder
-                    endringsperiode={endringsperiode}
                     endringsdato={endringsdato}
                     søknadsperioder={søknadsperioder}
                     tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}
