@@ -64,24 +64,15 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
             min={periode.from}
             max={periode.to}
             renderAsList={visSomListe}
+            disabledDates={utilgjengeligeDager}
             dateFormatter={(date: Date) => (
                 <AriaAlternative
                     visibleText={dayjs(date).format('D.')}
                     ariaText={dayjs(date).format('dddd DD. MMM YYYY')}
                 />
             )}
-            dateCSSModifierClassName={(date: Date) => {
-                const erUtilgjengelig = utilgjengeligeDager
-                    ? utilgjengeligeDager.some((d) => dayjs(date).isSame(d, 'day'))
-                    : false;
-                return erUtilgjengelig ? 'utilgjengeligDato' : undefined;
-            }}
-            noContentRenderer={(date: Date) => {
-                const erUtilgjengelig = utilgjengeligeDager
-                    ? utilgjengeligeDager.some((d) => dayjs(date).isSame(d, 'day'))
-                    : false;
-
-                return <span>{erUtilgjengelig ? '' : ''}</span>;
+            noContentRenderer={() => {
+                return <span />;
             }}
             days={Object.keys(kalenderdager).map((key) => {
                 const dato = ISODateToDate(key);

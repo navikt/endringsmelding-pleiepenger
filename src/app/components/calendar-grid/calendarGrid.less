@@ -70,6 +70,9 @@
             min-height: 0;
             display: flex;
             align-items: center;
+            &--disabled {
+                display: none;
+            }
         }
         &__day + &__weekNum {
             margin-top: 1rem;
@@ -118,6 +121,18 @@
     }
 }
 
+.disabledDay() {
+    background: transparent !important; // repeating-linear-gradient(-45deg, #f1f1f1, #f1f1f1 10px, #eaeaea 10px, #eaeaea 20px);
+    border: 1px dashed rgba(0, 0, 0, 0.15);
+    svg {
+        opacity: 0.5;
+    }
+    .calendarGrid__date__short,
+    .calendarGrid__date__full {
+        text-decoration: line-through;
+    }
+}
+
 .calendarGrid {
     &__day {
         display: block;
@@ -131,10 +146,13 @@
             border: none; // 1px dashed rgba(0, 0, 0, 0.3);
             background-color: transparent;
         }
-    }
-    &--empty {
-        background-color: white;
-        background-size: 10px 10px;
+        &--disabled {
+            .disabledDay();
+        }
+        &--empty {
+            background-color: white;
+            background-size: 10px 10px;
+        }
     }
     &__date {
         font-size: 0.8rem;
@@ -179,16 +197,5 @@
 
     .dagContent {
         font-weight: bold;
-    }
-}
-
-.utilgjengeligDato {
-    background: transparent; // repeating-linear-gradient(-45deg, #f1f1f1, #f1f1f1 10px, #eaeaea 10px, #eaeaea 20px);
-    border: 1px dashed rgba(0, 0, 0, 0.15);
-    svg {
-        opacity: 0.5;
-    }
-    .calendarGrid__date__short {
-        text-decoration: line-through;
     }
 }

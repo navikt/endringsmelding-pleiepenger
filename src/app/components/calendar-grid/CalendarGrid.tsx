@@ -29,8 +29,8 @@ interface Props {
     min?: Date;
     max?: Date;
     renderAsList?: boolean;
+    disabledDates?: Date[];
     hideEmptyContentInListMode?: boolean;
-    dateCSSModifierClassName?: (date: Date) => string | undefined;
     dateFormatter?: (date: Date) => React.ReactNode;
     dateFormatterFull?: (date: Date) => React.ReactNode;
     noContentRenderer?: (date: Date) => React.ReactNode;
@@ -75,15 +75,22 @@ const getWeeks = (days: CalendarDay[]): Week[] => {
 
 const bem = bemUtils('calendarGrid');
 
+const isDateDisabled = (date: Date, disabledDates?: Date[]): boolean => {
+    if (!disabledDates) {
+        return false;
+    }
+    return disabledDates.some((d) => dayjs(date).isSame(d, 'day'));
+};
+
 const CalendarGrid: React.FunctionComponent<Props> = ({
     days,
     month,
     min,
     max,
-    dateCSSModifierClassName,
     dateFormatter = prettifyDate,
     dateFormatterFull = (date) => dayjs(date).format('dddd DD. MMM'),
     noContentRenderer,
+    disabledDates,
     renderAsList,
     hideEmptyContentInListMode,
 }) => {
@@ -130,6 +137,7 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
                         <span>{weekNum}</span>
                     </span>,
                     daysInWeek.map((d) => {
+                        const dateIsDisabled = isDateDisabled(d.date, disabledDates);
                         return dayjs(d.date).isSame(month, 'month') === false ||
                             (min && dayjs(d.date).isBefore(min, 'day')) ? (
                             <div
@@ -142,9 +150,9 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
                                 key={guid()}
                                 aria-hidden={d.content === undefined}
                                 className={bem.classNames(
-                                    bem.element('day'),
-                                    bem.modifierConditional('empty', d.content === undefined),
-                                    dateCSSModifierClassName ? dateCSSModifierClassName(d.date) : undefined
+                                    bem.child('day').block,
+                                    bem.child('day').modifierConditional('empty', d.content === undefined),
+                                    bem.child('day').modifierConditional('disabled', dateIsDisabled)
                                 )}>
                                 <div className={bem.element('date')}>
                                     <span className={bem.classNames(bem.element('date__full'))}>
