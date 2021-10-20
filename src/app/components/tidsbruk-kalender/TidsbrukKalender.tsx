@@ -9,6 +9,7 @@ import CalendarGrid from '../calendar-grid/CalendarGrid';
 import FormattedTimeText from '../formatted-time-text/FormattedTimeText';
 import { formatTimerOgMinutter } from '../../utils/formatTimerOgMinutter';
 import { useIntl } from 'react-intl';
+import { Undertekst } from 'nav-frontend-typografi';
 
 export type TidRenderer = (tid: Partial<Time>, dato: Date) => React.ReactNode;
 
@@ -89,14 +90,33 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
                             {dag.tid && (
                                 <div>
                                     {erEndret ? (
-                                        <strong
-                                            title={
-                                                dag.tidOpprinnelig
-                                                    ? `Endret fra ${formatTimerOgMinutter(intl, dag.tidOpprinnelig)}`
-                                                    : 'Lagt til'
-                                            }>
-                                            <FormattedTimeText time={dag.tid} />
-                                        </strong>
+                                        <>
+                                            <span
+                                                title={
+                                                    dag.tidOpprinnelig
+                                                        ? `Endret fra ${formatTimerOgMinutter(
+                                                              intl,
+                                                              dag.tidOpprinnelig
+                                                          )}`
+                                                        : 'Lagt til'
+                                                }>
+                                                <FormattedTimeText time={dag.tid} />
+                                            </span>
+                                            {dag.tidOpprinnelig ? (
+                                                <div>
+                                                    (
+                                                    <Undertekst
+                                                        tag="span"
+                                                        aria-label="Opprinnelig tid"
+                                                        style={{ textDecoration: 'line-through' }}>
+                                                        <FormattedTimeText time={dag.tidOpprinnelig} />
+                                                    </Undertekst>
+                                                    )
+                                                </div>
+                                            ) : (
+                                                <Undertekst>(lagt til)</Undertekst>
+                                            )}
+                                        </>
                                     ) : (
                                         <FormattedTimeText time={dag.tid} />
                                     )}

@@ -53,6 +53,7 @@ const OmsorgstilbudIPeriode: React.FunctionComponent<Props> = ({
         const key = dateToISOString(dag.dato);
         return timeHasSameDuration(tidOmsorgstilbud[key], tidOmsorgstilbudSak[key]) === false;
     });
+
     return (
         <Ekspanderbartpanel
             tittel={
