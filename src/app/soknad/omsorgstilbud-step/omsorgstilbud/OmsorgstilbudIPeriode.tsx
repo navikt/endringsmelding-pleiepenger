@@ -69,7 +69,7 @@ const OmsorgstilbudIPeriode: React.FunctionComponent<Props> = ({
             }>
             <ResponsivePanel style={{ padding: '1rem' }}>
                 <TidsbrukKalender
-                    brukEtikettForInnhold={false}
+                    tomUkeContentRenderer={() => <p>Det er ikke søkt om pleiepenger for dager i denne uken.</p>}
                     måned={måned}
                     periode={periode}
                     utilgjengeligeDager={utilgjengeligeDager}

@@ -7,8 +7,8 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import minMax from 'dayjs/plugin/minMax';
 import { groupBy } from 'lodash';
 import { guid } from 'nav-frontend-js-utils';
-import './calendarGrid.less';
 import { dateIsWeekDay, isDateInDates } from '../../utils/dateUtils';
+import './calendarGrid.less';
 
 dayjs.extend(minMax);
 dayjs.extend(isSameOrBefore);
@@ -33,6 +33,7 @@ interface Props {
     disabledDates?: Date[];
     disabledDateInfo?: string;
     hideEmptyContentInListMode?: boolean;
+    allDaysInWeekDisabledContentRenderer?: () => React.ReactNode;
     dateFormatter?: (date: Date) => React.ReactNode;
     dateFormatterFull?: (date: Date) => React.ReactNode;
     noContentRenderer?: (date: Date) => React.ReactNode;
@@ -89,6 +90,7 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
     disabledDateInfo,
     renderAsList,
     hideEmptyContentInListMode,
+    allDaysInWeekDisabledContentRenderer,
 }) => {
     const daysInRange = getDaysInRange(month, days, { from: min, to: max });
     const weeks = getWeeks(daysInRange);
@@ -120,18 +122,25 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
             {weeks.map((week) => {
                 const daysInWeek = week.days;
                 const weekNum = week.weekNumber;
-                const hasDaysWithContent = daysInWeek.some((d) => d.content !== undefined);
+                const areAllDaysInWeekDisabled =
+                    daysInWeek.filter((d) => isDateInDates(d.date, disabledDates) === true).length ===
+                    daysInWeek.length;
                 return [
-                    <span
+                    <div
                         role="presentation"
                         aria-hidden={true}
-                        className={bem.element('weekNum', hasDaysWithContent === false ? 'empty' : undefined)}
+                        className={bem.element('weekNum', areAllDaysInWeekDisabled ? 'empty' : undefined)}
                         key={guid()}>
                         <span className={bem.element('weekNum_label')}>
                             <FormattedMessage id="Uke" /> {` `}
                         </span>
                         <span>{weekNum}</span>
-                    </span>,
+                        {areAllDaysInWeekDisabled && allDaysInWeekDisabledContentRenderer ? (
+                            <div className={bem.element('allWeekDisabledContent')}>
+                                {allDaysInWeekDisabledContentRenderer()}
+                            </div>
+                        ) : undefined}
+                    </div>,
                     daysInWeek.map((d) => {
                         const dateIsDisabled = isDateInDates(d.date, disabledDates);
                         return dayjs(d.date).isSame(month, 'month') === false ||

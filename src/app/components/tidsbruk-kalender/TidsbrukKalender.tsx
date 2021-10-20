@@ -25,9 +25,9 @@ interface Props {
     periode: DateRange;
     utilgjengeligeDager?: Date[];
     utilgjengeligDagInfo?: string;
-    brukEtikettForInnhold?: boolean;
     visSomListe?: boolean;
     skjulTommeDagerIListe?: boolean;
+    tomUkeContentRenderer?: () => React.ReactNode;
     tidRenderer?: TidRenderer;
 }
 
@@ -37,11 +37,10 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
     dager,
     dagerOpprinnelig = [],
     utilgjengeligDagInfo,
-    // brukEtikettForInnhold,
     visSomListe,
     utilgjengeligeDager,
     skjulTommeDagerIListe,
-    // tidRenderer,
+    tomUkeContentRenderer,
 }) => {
     const intl = useIntl();
     const kalenderdager: Kalenderdager = {};
@@ -63,8 +62,8 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
     return (
         <CalendarGrid
             month={måned}
-            min={periode.from}
-            max={periode.to}
+            min={dayjs(periode.from).startOf('month').toDate()}
+            max={dayjs(periode.to).endOf('month').toDate()}
             renderAsList={visSomListe}
             disabledDates={utilgjengeligeDager}
             disabledDateInfo={utilgjengeligDagInfo}
@@ -77,12 +76,14 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
             noContentRenderer={() => {
                 return <span />;
             }}
+            allDaysInWeekDisabledContentRenderer={tomUkeContentRenderer}
             days={Object.keys(kalenderdager).map((key) => {
                 const dato = ISODateToDate(key);
                 const dag = kalenderdager[key];
                 const erEndret = timeHasSameDuration(dag.tid, dag.tidOpprinnelig) === false;
                 return {
                     date: dato,
+                    isDisabled: dag.tid === undefined && dag.tidOpprinnelig === undefined,
                     content: (
                         <>
                             {dag.tid && (

@@ -7,8 +7,9 @@ import { TidEnkeltdag } from '../../types/SoknadFormData';
 import { TidPerDagValidator } from '../../validation/fieldValidations';
 import TidUkeInput from './parts/TidUkeInput';
 import { Ukeinfo } from './types';
-import { getDatoerIPeriode, getTidKalenderFieldName, getUkerFraDager } from './utils';
+import { getDagerIPeriode, getTidKalenderFieldName, getUkerFraDager } from './utils';
 import './tidUkerInput.less';
+import dayjs from 'dayjs';
 
 interface Props {
     fieldName: string;
@@ -33,8 +34,15 @@ export const TidUkerInput: React.FunctionComponent<Props> = ({
 }) => {
     const isNarrow = useMediaQuery({ maxWidth: 400 });
     const isWide = useMediaQuery({ minWidth: 1050 });
-    const datoer = getDatoerIPeriode(periode.from, periode.to);
-    const uker = getUkerFraDager(datoer);
+    // const dager = getDagerIPeriode(periode.from, periode.to);
+
+    const månedDateRange: DateRange = {
+        from: dayjs(periode.from).startOf('month').toDate(),
+        to: dayjs(periode.to).endOf('month').toDate(),
+    };
+    const alleDagerIMåned = getDagerIPeriode(månedDateRange.from, månedDateRange.to);
+
+    const uker = getUkerFraDager(alleDagerIMåned);
 
     return (
         <div className={bem.classNames(bem.block, bem.modifier('inlineForm'))}>

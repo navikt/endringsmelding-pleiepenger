@@ -9,6 +9,7 @@ import minMax from 'dayjs/plugin/minMax';
 import { DagMedTid, TidEnkeltdag } from '../types/SoknadFormData';
 import { timeHasSameDuration } from './dateUtils';
 import { Time } from '@navikt/sif-common-formik/lib';
+import { timeToIso8601Duration } from '@navikt/sif-common-core/lib/utils/timeUtils';
 
 dayjs.extend(minMax);
 dayjs.extend(isSameOrAfter);
@@ -103,4 +104,8 @@ export const fjernDagerMedUendretTid = (enkeltdager: TidEnkeltdag, dagerOpprinne
         dagerMedEndring[isoDate] = enkeltdager[isoDate];
     });
     return dagerMedEndring;
+};
+
+export const tidErIngenTid = (time: Partial<Time>): boolean => {
+    return timeToIso8601Duration(time) === 'PT0H0M';
 };

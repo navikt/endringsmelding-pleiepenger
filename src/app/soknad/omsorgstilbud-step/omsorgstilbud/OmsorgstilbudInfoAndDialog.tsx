@@ -12,8 +12,9 @@ import TidKalenderForm from '../../../components/tid-kalender-form/TidKalenderFo
 import { TidEnkeltdag } from '../../../types/SoknadFormData';
 import { getTidIOmsorgValidator } from '../../../validation/validateOmsorgstilbudFields';
 import OmsorgstilbudIPeriode, { OmsorgstilbudIPeriodemånedTittelHeadingLevel } from './OmsorgstilbudIPeriode';
-import { getTidEnkeltdagerInnenforPeriode } from '../../../utils/tidsbrukUtils';
+import { getTidEnkeltdagerInnenforPeriode, tidErIngenTid } from '../../../utils/tidsbrukUtils';
 import { timeToIso8601Duration } from '@navikt/sif-common-core/lib/utils/timeUtils';
+import { getDagerIPeriode } from '../../../components/tid-uker-input/utils';
 
 interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     name: FieldNames;
@@ -34,12 +35,9 @@ const cleanupTidIPeriode = (
 ): TidEnkeltdag => {
     const keysToRemove: string[] = [];
     Object.keys(tidIPeriode).forEach((key) => {
-        const tid = tidIPeriode[key];
-        const duration = timeToIso8601Duration(tid);
         const opprinneligDuration = tidOpprinnelig[key] ? timeToIso8601Duration(tidOpprinnelig[key]) : undefined;
-        if (duration === 'PT0H0M' && opprinneligDuration === undefined) {
+        if (tidErIngenTid(tidIPeriode[key]) && opprinneligDuration === undefined) {
             keysToRemove.push(key);
-            console.log({ tid, duration, opprinneligDuration });
         }
     });
     const cleanedTid = { ...alleTider, ...tidIPeriode };
@@ -56,12 +54,29 @@ function OmsorgstilbudInfoAndDialog<FieldNames>({
     endringsdato,
     skjulTommeDagerIListe,
     tidIOmsorgstilbudSak,
-    utilgjengeligeDager,
+    utilgjengeligeDager = [],
     månedTittelHeadingLevel,
     validate,
     onAfterChange,
 }: Props<FieldNames>) {
     const erHistorisk = dayjs(periode.to).isBefore(endringsdato, 'day');
+
+    const månedDateRange: DateRange = {
+        from: dayjs(periode.from).startOf('month').toDate(),
+        to: dayjs(periode.to).endOf('month').toDate(),
+    };
+
+    const dagerFørFørsteDag =
+        periode.from.getDate() !== månedDateRange.from.getDate()
+            ? getDagerIPeriode(månedDateRange.from, dayjs(periode.from).subtract(1, 'day').toDate()).map((d) => d.dato)
+            : [];
+    const dagerEtterSisteDag =
+        periode.to.getDate() !== månedDateRange.to.getDate()
+            ? getDagerIPeriode(dayjs(periode.to).add(1, 'day').toDate(), månedDateRange.to).map((d) => d.dato)
+            : [];
+
+    const alleUtilgjengeligeDager: Date[] = [...dagerFørFørsteDag, ...utilgjengeligeDager, ...dagerEtterSisteDag];
+
     return (
         <FormikModalFormAndInfo<FieldNames, TidEnkeltdag, ValidationError>
             name={name}
@@ -76,7 +91,7 @@ function OmsorgstilbudInfoAndDialog<FieldNames>({
                 return (
                     <TidKalenderForm
                         periode={periode}
-                        utilgjengeligeDager={utilgjengeligeDager}
+                        utilgjengeligeDager={alleUtilgjengeligeDager}
                         tid={getTidEnkeltdagerInnenforPeriode(data, periode)}
                         opprinneligTid={tidIOmsorgstilbudSak}
                         tittel={
@@ -127,7 +142,7 @@ function OmsorgstilbudInfoAndDialog<FieldNames>({
                         editLabel={labels.editLabel}
                         addLabel={labels.addLabel}
                         periode={periode}
-                        utilgjengeligeDager={utilgjengeligeDager}
+                        utilgjengeligeDager={alleUtilgjengeligeDager}
                         skjulTommeDagerIListe={skjulTommeDagerIListe}
                     />
                 );

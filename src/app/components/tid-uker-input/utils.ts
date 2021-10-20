@@ -25,7 +25,7 @@ export const getDagInfo = (date: Date): Daginfo => {
     };
 };
 
-export const getDatoerIPeriode = (from: Date, to: Date): Daginfo[] => {
+export const getDagerIPeriode = (from: Date, to: Date): Daginfo[] => {
     const dager: Daginfo[] = [];
     let dayjsDato = dayjs(from);
     while (dayjsDato.isSameOrBefore(to, 'day')) {
