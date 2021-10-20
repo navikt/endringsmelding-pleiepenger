@@ -12,7 +12,7 @@ export interface K9Sak {
             norskIdentitetsnummer: string;
             fødselsdato: Date;
         };
-        søknadsperiode: DateRange[];
+        søknadsperioder: DateRange[];
         tilsynsordning: {
             enkeltdager: TidEnkeltdag;
         };

@@ -17,7 +17,7 @@ import { Person } from '../types/Person';
 import { SoknadApiData } from '../types/SoknadApiData';
 import { SoknadFormData, SoknadFormField } from '../types/SoknadFormData';
 import { SoknadTempStorageData } from '../types/SoknadTempStorageData';
-import { getEndringsperiode, getEndringsdato } from '../utils/getEndringsperiode';
+import { getEndringsperiode, getEndringsdato } from '../utils/endringsperiode';
 import appSentryLogger from '../utils/appSentryLogger';
 import {
     navigateTo,
@@ -33,7 +33,6 @@ import SoknadFormComponents from './SoknadFormComponents';
 import SoknadRoutes from './SoknadRoutes';
 import { getSoknadStepsConfig, StepID } from './soknadStepsConfig';
 import soknadTempStorage, { isStorageDataValid } from './soknadTempStorage';
-import { getMinMaxInDateRanges } from '../utils/dateUtils';
 import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 
 interface Props {
@@ -55,8 +54,7 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
     const [soknadId, setSoknadId] = useState<string | undefined>();
 
     const endringsdato = getEndringsdato();
-    const søknadsperiode = getMinMaxInDateRanges(k9sak.ytelse.søknadsperiode);
-    const endringsperiode = getEndringsperiode(endringsdato, søknadsperiode);
+    const endringsperiode = getEndringsperiode(endringsdato, k9sak.ytelse.søknadsperioder);
 
     const { logSoknadStartet, logSoknadFailed, logHendelse, logUserLoggedOut } = useAmplitudeInstance();
 

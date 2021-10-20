@@ -1,11 +1,13 @@
 import { apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { K9Sak } from '../../types/K9Sak';
 import { ISODateRangeToDateRange } from '../../utils/dateUtils';
+import { getEndringsdato, getSøknadsperioderInnenforTillattEndringsperiode } from '../../utils/endringsperiode';
 import { getTilsynsdagerFromK9Format } from './getTilsynsdagerFromK9Format';
 import { K9SakRemote } from './k9SakRemote';
 
 export const parseK9SakRemote = (data: K9SakRemote): K9Sak => {
     const { ytelse, søker, søknadId } = data;
+    const endringsdato = getEndringsdato();
     const sak: K9Sak = {
         søker: søker,
         søknadId: søknadId,
@@ -15,7 +17,10 @@ export const parseK9SakRemote = (data: K9SakRemote): K9Sak => {
                 fødselsdato: apiStringDateToDate(ytelse.barn.fødselsdato),
                 norskIdentitetsnummer: ytelse.barn.norskIdentitetsnummer,
             },
-            søknadsperiode: ytelse.søknadsperiode.map((periode) => ISODateRangeToDateRange(periode)),
+            søknadsperioder: getSøknadsperioderInnenforTillattEndringsperiode(
+                endringsdato,
+                ytelse.søknadsperiode.map((periode) => ISODateRangeToDateRange(periode))
+            ),
             tilsynsordning: {
                 enkeltdager: getTilsynsdagerFromK9Format(ytelse.tilsynsordning.perioder),
             },

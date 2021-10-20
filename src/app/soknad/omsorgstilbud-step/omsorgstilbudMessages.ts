@@ -33,8 +33,8 @@ const omsorgstilbudMessages = {
         'omsorgstilbud.modalTitle': 'Omsorgstilbud - ${periode}',
 
         'omsorgstilbud.iPeriodePanel.info':
-            '{dager, plural, one {# dag} other {# dager}} registrert med tid i omsorgstilbud.',
-        'omsorgstilbud.iPeriodePanel.info.ingenDager': 'Ingen dager registrert med tid i omsorgstilbud.',
+            '{dager, plural, one {# dag} other {# dager}} med tid i omsorgstilbud registrert.',
+        'omsorgstilbud.iPeriodePanel.info.ingenDager': 'Ingen dager med tid i omsorgstilbud registrert.',
     },
 };
 

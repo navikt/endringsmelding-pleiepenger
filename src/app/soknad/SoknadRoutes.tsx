@@ -62,7 +62,7 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, endrin
                     <OmsorgstilbudStep
                         endringsdato={endringsdato}
                         søknadsperioder={
-                            k9sak.ytelse.søknadsperiode
+                            k9sak.ytelse.søknadsperioder
                         } /** Todo - fjerne deler av perioder som er utenfor endringesperiode */
                         tidIOmsorgstilbudSak={k9sak.ytelse.tilsynsordning.enkeltdager}
                         onOmsorgstilbudChanged={() => {

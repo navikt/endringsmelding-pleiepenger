@@ -4,15 +4,14 @@ import { isUserLoggedOut } from '@navikt/sif-common-core/lib/utils/apiUtils';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { AxiosError } from 'axios';
 import getArbeidsgivereRemoteData from '../api/getArbeidsgivere';
-import getK9SakRemoteData from '../api/k9sak/getK9Sak';
 import getSokerRemoteData from '../api/getSoker';
 import getSoknadTempStorage from '../api/getSoknadTempStorage';
+import getK9SakRemoteData from '../api/k9sak/getK9Sak';
 import { Arbeidsgivere } from '../types/Arbeidsgiver';
 import { K9Sak } from '../types/K9Sak';
 import { Person } from '../types/Person';
 import { SoknadTempStorageData } from '../types/SoknadTempStorageData';
-import { getMinMaxInDateRanges } from '../utils/dateUtils';
-import { getEndringsdato, getEndringsperiode } from '../utils/getEndringsperiode';
+import { getEndringsdato, getEndringsperiode } from '../utils/endringsperiode';
 import { relocateToLoginPage } from '../utils/navigationUtils';
 
 export type SoknadEssentials = [Person, K9Sak, Arbeidsgivere, SoknadTempStorageData];
@@ -29,9 +28,7 @@ function useSoknadEssentials(): SoknadEssentialsRemoteData {
                 getSoknadTempStorage(),
             ]);
             const k9sak: K9Sak = (k9SakResult as any).value as any;
-            const endringsdato = getEndringsdato();
-            const søknadsperiode = getMinMaxInDateRanges(k9sak.ytelse.søknadsperiode);
-            const endringsperiode = getEndringsperiode(endringsdato, søknadsperiode);
+            const endringsperiode = getEndringsperiode(getEndringsdato(), k9sak.ytelse.søknadsperioder);
             const arbeidsgivereResult = await getArbeidsgivereRemoteData(
                 dateToISOString(endringsperiode.from),
                 dateToISOString(endringsperiode.to)
