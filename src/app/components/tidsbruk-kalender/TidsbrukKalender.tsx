@@ -1,23 +1,20 @@
 import React from 'react';
 import AriaAlternative from '@navikt/sif-common-core/lib/components/aria/AriaAlternative';
-import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { dateToISOString, Time } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { DagMedTid } from '../../types/SoknadFormData';
-import { ISODateToDate, timeHasSameDuration } from '../../utils/dateUtils';
 import CalendarGrid from '../calendar-grid/CalendarGrid';
-import FormattedTimeText from '../formatted-time-text/FormattedTimeText';
-import { formatTimerOgMinutter } from '../../utils/formatTimerOgMinutter';
-import { useIntl } from 'react-intl';
-import { Undertekst } from 'nav-frontend-typografi';
+import TidsbrukKalenderDag from './TidsbrukKalenderDag';
 
 export type TidRenderer = (tid: Partial<Time>, dato: Date) => React.ReactNode;
 
+type KalenderDag = {
+    tid?: Partial<Time>;
+    tidOpprinnelig?: Partial<Time>;
+};
+
 type Kalenderdager = {
-    [dato: string]: {
-        tid?: Partial<Time>;
-        tidOpprinnelig?: Partial<Time>;
-    };
+    [dato: string]: KalenderDag;
 };
 interface Props {
     måned: Date;
@@ -41,12 +38,7 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
     visEndringsinformasjon,
     tomUkeContentRenderer,
 }) => {
-    const intl = useIntl();
     const kalenderdager: Kalenderdager = {};
-    const periode: DateRange = {
-        from: dayjs(måned).startOf('month').toDate(),
-        to: dayjs(måned).endOf('month').toDate(),
-    };
     dager.forEach((d) => {
         const datostring = dateToISOString(d.dato);
         kalenderdager[datostring] = {
@@ -65,78 +57,28 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
     return (
         <CalendarGrid
             month={måned}
-            min={dayjs(periode.from).startOf('month').toDate()}
-            max={dayjs(periode.to).endOf('month').toDate()}
             disabledDates={utilgjengeligeDager}
             disabledDateInfo={utilgjengeligDagInfo}
-            dateFormatter={(date: Date) => (
+            hideEmptyContentInListMode={skjulTommeDagerIListe}
+            allDaysInWeekDisabledContentRenderer={tomUkeContentRenderer}
+            dateRendererShort={(date: Date) => (
                 <AriaAlternative
                     visibleText={dayjs(date).format('D.')}
                     ariaText={dayjs(date).format('dddd DD. MMM YYYY')}
                 />
             )}
-            noContentRenderer={() => {
-                return <span />;
+            dateContentRenderer={(dato) => {
+                const dag = kalenderdager[dateToISOString(dato)];
+                return dag ? (
+                    <TidsbrukKalenderDag
+                        tid={dag.tid}
+                        tidOpprinnelig={dag.tidOpprinnelig}
+                        visEndringsinformasjon={visEndringsinformasjon}
+                    />
+                ) : (
+                    <span />
+                );
             }}
-            hideEmptyContentInListMode={skjulTommeDagerIListe}
-            allDaysInWeekDisabledContentRenderer={tomUkeContentRenderer}
-            days={Object.keys(kalenderdager).map((key) => {
-                const dato = ISODateToDate(key);
-                const dag = kalenderdager[key];
-                const erEndret = timeHasSameDuration(dag.tid, dag.tidOpprinnelig) === false;
-                return {
-                    date: dato,
-                    isDisabled: dag.tid === undefined && dag.tidOpprinnelig === undefined,
-                    content: (
-                        <>
-                            {dag.tid && (
-                                <div>
-                                    {erEndret ? (
-                                        <>
-                                            <span
-                                                title={
-                                                    dag.tidOpprinnelig
-                                                        ? `Endret fra ${formatTimerOgMinutter(
-                                                              intl,
-                                                              dag.tidOpprinnelig
-                                                          )}`
-                                                        : 'Lagt til'
-                                                }>
-                                                <FormattedTimeText time={dag.tid} />
-                                            </span>
-                                            {visEndringsinformasjon && (
-                                                <>
-                                                    {dag.tidOpprinnelig ? (
-                                                        <div>
-                                                            (
-                                                            <Undertekst
-                                                                tag="span"
-                                                                aria-label="Opprinnelig tid"
-                                                                style={{ textDecoration: 'line-through' }}>
-                                                                <FormattedTimeText time={dag.tidOpprinnelig} />
-                                                            </Undertekst>
-                                                            )
-                                                        </div>
-                                                    ) : (
-                                                        <Undertekst>(lagt til)</Undertekst>
-                                                    )}
-                                                </>
-                                            )}
-                                        </>
-                                    ) : (
-                                        <FormattedTimeText time={dag.tid} />
-                                    )}
-                                </div>
-                            )}
-                            {dag.tidOpprinnelig && !dag.tid && (
-                                <>
-                                    <FormattedTimeText time={dag.tidOpprinnelig} />
-                                </>
-                            )}
-                        </>
-                    ),
-                };
-            })}
         />
     );
 };

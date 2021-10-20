@@ -40,6 +40,43 @@ export const getWeeksInDateRange = (range: DateRange): DateRange[] => {
     return weeks;
 };
 
+export const getDatesInDateRange = (range: DateRange, onlyWeekDays = true): Date[] => {
+    const dates: Date[] = [];
+    let current = dayjs(range.from); //.subtract(dayjs(range.from).isoWeekday() - 1, 'days');
+    do {
+        const date = current.toDate();
+        if (onlyWeekDays === false || dateIsWeekDay(date)) {
+            dates.push(date);
+        }
+        current = current.add(1, 'day');
+    } while (current.isSameOrBefore(range.to, 'day'));
+    return dates;
+};
+
+export const getDatesInMonth = (month: Date, onlyWeekDays = true): Date[] => {
+    const dates: Date[] = [];
+    const range = getMonthDateRange(month);
+    let current = dayjs(range.from); //.subtract(dayjs(range.from).isoWeekday() - 1, 'days');
+    do {
+        const date = current.toDate();
+        if (onlyWeekDays === false || dateIsWeekDay(date)) {
+            dates.push(date);
+        }
+        current = current.add(1, 'day');
+    } while (current.isSameOrBefore(range.to, 'day'));
+    return dates;
+};
+
+export const getFirstDateOfWeek = (dateInWeek: Date): Date =>
+    dayjs(dateInWeek)
+        .subtract(dayjs(dateInWeek).isoWeekday() - 1, 'days')
+        .toDate();
+
+export const getMonthDateRange = (date: Date): DateRange => ({
+    from: dayjs(date).startOf('month').toDate(),
+    to: dayjs(date).endOf('month').toDate(),
+});
+
 export const erUkeFørSammeEllerEtterDenneUken = (week: DateRange): 'før' | 'samme' | 'etter' | undefined => {
     if (dayjs(week.from).isAfter(dateToday, 'day')) {
         return 'etter';

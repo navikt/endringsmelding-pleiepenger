@@ -1,35 +1,66 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import AriaAlternative from '@navikt/sif-common-core/lib/components/aria/AriaAlternative';
-import { formatTimerOgMinutter } from '../../utils/formatTimerOgMinutter';
 import { Time } from '@navikt/sif-common-formik/lib';
-import { EtikettInfo } from 'nav-frontend-etiketter';
+import { Undertekst } from 'nav-frontend-typografi';
+import { timeHasSameDuration } from '../../utils/dateUtils';
+import { formatTimerOgMinutter } from '../../utils/formatTimerOgMinutter';
 import FormattedTimeText from '../formatted-time-text/FormattedTimeText';
-import { TidRenderer } from './TidsbrukKalender';
 
 interface Props {
-    tid: Partial<Time>;
-    dato: Date;
-    brukEtikettForInnhold?: boolean;
-    desimalTid?: boolean;
-    tidRenderer?: TidRenderer;
+    tid?: Partial<Time>;
+    tidOpprinnelig?: Partial<Time>;
+    visEndringsinformasjon?: boolean;
+    erUtilgjengelig?: boolean;
 }
 
-const TidsbrukKalenderDag: React.FunctionComponent<Props> = ({
-    tid,
-    dato,
-    brukEtikettForInnhold,
-    desimalTid,
-    tidRenderer,
-}) => {
+const TidsbrukKalenderDag: React.FunctionComponent<Props> = ({ tid, tidOpprinnelig, visEndringsinformasjon }) => {
     const intl = useIntl();
-    const content = (
-        <AriaAlternative
-            visibleText={tidRenderer ? tidRenderer(tid, dato) : <FormattedTimeText time={tid} decimal={desimalTid} />}
-            ariaText={formatTimerOgMinutter(intl, tid)}
-        />
+    const erEndret = timeHasSameDuration(tid, tidOpprinnelig) === false;
+    return (
+        <>
+            {tid && (
+                <div>
+                    {erEndret ? (
+                        <>
+                            <span
+                                title={
+                                    tidOpprinnelig
+                                        ? `Endret fra ${formatTimerOgMinutter(intl, tidOpprinnelig)}`
+                                        : 'Lagt til'
+                                }>
+                                <FormattedTimeText time={tid} />
+                            </span>
+                            {visEndringsinformasjon && (
+                                <>
+                                    {tidOpprinnelig ? (
+                                        <div>
+                                            (
+                                            <Undertekst
+                                                tag="span"
+                                                aria-label="Opprinnelig tid"
+                                                style={{ textDecoration: 'line-through' }}>
+                                                <FormattedTimeText time={tidOpprinnelig} />
+                                            </Undertekst>
+                                            )
+                                        </div>
+                                    ) : (
+                                        <Undertekst>(lagt til)</Undertekst>
+                                    )}
+                                </>
+                            )}
+                        </>
+                    ) : (
+                        <FormattedTimeText time={tid} />
+                    )}
+                </div>
+            )}
+            {tidOpprinnelig && !tid && (
+                <>
+                    <FormattedTimeText time={tidOpprinnelig} />
+                </>
+            )}
+        </>
     );
-    return brukEtikettForInnhold ? <EtikettInfo>{content}</EtikettInfo> : content;
 };
 
 export default TidsbrukKalenderDag;
