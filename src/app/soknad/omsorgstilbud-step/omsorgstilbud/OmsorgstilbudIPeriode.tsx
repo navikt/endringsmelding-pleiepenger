@@ -1,5 +1,5 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
@@ -54,7 +54,16 @@ const OmsorgstilbudIPeriode: React.FunctionComponent<Props> = ({
                 <>
                     <Undertittel tag={`h${månedTittelHeadingLevel}`}>{mndTittelPart}</Undertittel>
                     <Box margin="m">
-                        <Normaltekst>Åpne for å se og endre tid i omsorgstilbud</Normaltekst>
+                        <Normaltekst>
+                            {omsorgsdager.length === 0 ? (
+                                <FormattedMessage id="omsorgstilbud.iPeriodePanel.info.ingenDager" />
+                            ) : (
+                                <FormattedMessage
+                                    id="omsorgstilbud.iPeriodePanel.info"
+                                    values={{ dager: omsorgsdager.length }}
+                                />
+                            )}
+                        </Normaltekst>
                     </Box>
                 </>
             }>

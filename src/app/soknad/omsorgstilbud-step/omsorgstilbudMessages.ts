@@ -31,6 +31,10 @@ const omsorgstilbudMessages = {
         'omsorgstilbud.deleteLabel': 'Fjern alle timer',
         'omsorgstilbud.editLabel': 'Endre tid i omsorgstilbud {periode}',
         'omsorgstilbud.modalTitle': 'Omsorgstilbud - ${periode}',
+
+        'omsorgstilbud.iPeriodePanel.info':
+            '{dager, plural, one {# dag} other {# dager}} registrert med tid i omsorgstilbud.',
+        'omsorgstilbud.iPeriodePanel.info.ingenDager': 'Ingen dager registrert med tid i omsorgstilbud.',
     },
 };
 
