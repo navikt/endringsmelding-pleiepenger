@@ -12,6 +12,8 @@ import TidKalenderForm from '../../../components/tid-kalender-form/TidKalenderFo
 import { TidEnkeltdag } from '../../../types/SoknadFormData';
 import { getTidIOmsorgValidator } from '../../../validation/validateOmsorgstilbudFields';
 import OmsorgstilbudIPeriode, { OmsorgstilbudIPeriodemånedTittelHeadingLevel } from './OmsorgstilbudIPeriode';
+import { getTidEnkeltdagerInnenforPeriode } from '../../../utils/tidsbrukUtils';
+import { timeToIso8601Duration } from '@navikt/sif-common-core/lib/utils/timeUtils';
 
 interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     name: FieldNames;
@@ -24,6 +26,28 @@ interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, Va
     månedTittelHeadingLevel?: OmsorgstilbudIPeriodemånedTittelHeadingLevel;
     onAfterChange?: (omsorgsdager: TidEnkeltdag) => void;
 }
+
+const cleanupTidIPeriode = (
+    alleTider: TidEnkeltdag,
+    tidIPeriode: TidEnkeltdag,
+    tidOpprinnelig: TidEnkeltdag
+): TidEnkeltdag => {
+    const keysToRemove: string[] = [];
+    Object.keys(tidIPeriode).forEach((key) => {
+        const tid = tidIPeriode[key];
+        const duration = timeToIso8601Duration(tid);
+        const opprinneligDuration = tidOpprinnelig[key] ? timeToIso8601Duration(tidOpprinnelig[key]) : undefined;
+        if (duration === 'PT0H0M' && opprinneligDuration === undefined) {
+            keysToRemove.push(key);
+            console.log({ tid, duration, opprinneligDuration });
+        }
+    });
+    const cleanedTid = { ...alleTider, ...tidIPeriode };
+    keysToRemove.forEach((key) => {
+        delete cleanedTid[key];
+    });
+    return cleanedTid;
+};
 
 function OmsorgstilbudInfoAndDialog<FieldNames>({
     name,
@@ -53,7 +77,7 @@ function OmsorgstilbudInfoAndDialog<FieldNames>({
                     <TidKalenderForm
                         periode={periode}
                         utilgjengeligeDager={utilgjengeligeDager}
-                        tid={data}
+                        tid={getTidEnkeltdagerInnenforPeriode(data, periode)}
                         opprinneligTid={tidIOmsorgstilbudSak}
                         tittel={
                             <FormattedMessage
@@ -80,7 +104,15 @@ function OmsorgstilbudInfoAndDialog<FieldNames>({
                             </>
                         }
                         tidPerDagValidator={getTidIOmsorgValidator}
-                        onSubmit={onSubmit}
+                        onSubmit={(values) => {
+                            onSubmit(
+                                cleanupTidIPeriode(
+                                    data,
+                                    values,
+                                    getTidEnkeltdagerInnenforPeriode(tidIOmsorgstilbudSak, periode)
+                                )
+                            );
+                        }}
                         onCancel={onCancel}
                     />
                 );

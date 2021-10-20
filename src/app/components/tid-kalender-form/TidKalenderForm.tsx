@@ -15,7 +15,7 @@ import weekOfYear from 'dayjs/plugin/weekOfYear';
 import Knapp from 'nav-frontend-knapper';
 import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import { TidEnkeltdag } from '../../types/SoknadFormData';
-import { getValidEnkeltdager } from '../../utils/tidsbrukUtils';
+import { getValidEnkeltdager, getValidTidEnkeltdag } from '../../utils/tidsbrukUtils';
 import { TidPerDagValidator } from '../../validation/fieldValidations';
 import TidUkerInput from '../tid-uker-input/TidUkerInput';
 
@@ -43,6 +43,16 @@ interface FormValues {
 
 const Form = getTypedFormComponents<FormField, FormValues, ValidationError>();
 
+export const cleanupTid = (values: FormValues): FormValues => {
+    const cleanedTid: TidEnkeltdag = {};
+    Object.keys(values[FormField.tid]).forEach((tidKey) => {
+        cleanedTid[tidKey] = getValidTidEnkeltdag(values[FormField.tid][tidKey]);
+    });
+    return {
+        tid: cleanedTid,
+    };
+};
+
 const TidKalenderForm = ({
     periode,
     tid,
@@ -55,7 +65,6 @@ const TidKalenderForm = ({
     onCancel,
 }: Props) => {
     const intl = useIntl();
-
     if (dayjs(periode.from).isAfter(periode.to, 'day')) {
         return <div>Fra dato er før til-dato</div>;
     }
@@ -76,6 +85,7 @@ const TidKalenderForm = ({
                             formErrorHandler={getFormErrorHandler(intl, 'tidsperiodeForm')}
                             includeValidationSummary={true}
                             includeButtons={false}
+                            cleanup={cleanupTid}
                             formFooter={
                                 <FormBlock margin="l">
                                     <Knapperad align="left">

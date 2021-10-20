@@ -8,6 +8,7 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import minMax from 'dayjs/plugin/minMax';
 import { DagMedTid, TidEnkeltdag } from '../types/SoknadFormData';
 import { timeHasSameDuration } from './dateUtils';
+import { Time } from '@navikt/sif-common-formik/lib';
 
 dayjs.extend(minMax);
 dayjs.extend(isSameOrAfter);
@@ -31,11 +32,12 @@ export const getValidEnkeltdager = (tidEnkeltdag: TidEnkeltdag): TidEnkeltdag =>
     return cleanedTidEnkeltdag;
 };
 
-// export const sumTimerFasteDager = (uke: TidFasteDager): number => {
-//     return Object.keys(uke).reduce((timer: number, key: string) => {
-//         return timer + timeToDecimalTime(uke[key]);
-//     }, 0);
-// };
+export const getValidTidEnkeltdag = ({ hours, minutes }: Partial<Time>): Partial<Time> => {
+    return {
+        hours: hours ? (parseInt(hours, 10) > 0 ? hours : '0') : '0',
+        minutes: minutes ? (parseInt(minutes, 10) > 0 ? minutes : '0') : '0',
+    };
+};
 
 export const sumTimerEnkeltdager = (dager: TidEnkeltdag): number => {
     return Object.keys(dager).reduce((timer: number, key: string) => {
