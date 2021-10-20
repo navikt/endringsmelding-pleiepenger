@@ -23,10 +23,8 @@ interface Props {
     måned: Date;
     dager: DagMedTid[];
     dagerOpprinnelig?: DagMedTid[];
-    periode: DateRange;
     utilgjengeligeDager?: Date[];
     utilgjengeligDagInfo?: string;
-    visSomListe?: boolean;
     skjulTommeDagerIListe?: boolean;
     visEndringsinformasjon?: boolean;
     tomUkeContentRenderer?: () => React.ReactNode;
@@ -35,18 +33,20 @@ interface Props {
 
 const TidsbrukKalender: React.FunctionComponent<Props> = ({
     måned,
-    periode,
     dager,
     dagerOpprinnelig = [],
-    utilgjengeligDagInfo,
-    visSomListe,
     utilgjengeligeDager,
+    utilgjengeligDagInfo,
     skjulTommeDagerIListe,
     visEndringsinformasjon,
     tomUkeContentRenderer,
 }) => {
     const intl = useIntl();
     const kalenderdager: Kalenderdager = {};
+    const periode: DateRange = {
+        from: dayjs(måned).startOf('month').toDate(),
+        to: dayjs(måned).endOf('month').toDate(),
+    };
     dager.forEach((d) => {
         const datostring = dateToISOString(d.dato);
         kalenderdager[datostring] = {
@@ -67,7 +67,6 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
             month={måned}
             min={dayjs(periode.from).startOf('month').toDate()}
             max={dayjs(periode.to).endOf('month').toDate()}
-            renderAsList={visSomListe}
             disabledDates={utilgjengeligeDager}
             disabledDateInfo={utilgjengeligDagInfo}
             dateFormatter={(date: Date) => (
@@ -79,6 +78,7 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
             noContentRenderer={() => {
                 return <span />;
             }}
+            hideEmptyContentInListMode={skjulTommeDagerIListe}
             allDaysInWeekDisabledContentRenderer={tomUkeContentRenderer}
             days={Object.keys(kalenderdager).map((key) => {
                 const dato = ISODateToDate(key);
@@ -137,7 +137,6 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
                     ),
                 };
             })}
-            hideEmptyContentInListMode={skjulTommeDagerIListe}
         />
     );
 };

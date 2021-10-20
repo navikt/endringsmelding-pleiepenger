@@ -23,7 +23,6 @@ interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, Va
     utilgjengeligeDager?: Date[];
     endringsdato: Date;
     tidIOmsorgstilbudSak: TidEnkeltdag;
-    skjulTommeDagerIListe?: boolean;
     månedTittelHeadingLevel?: OmsorgstilbudIPeriodemånedTittelHeadingLevel;
     onAfterChange?: (omsorgsdager: TidEnkeltdag) => void;
 }
@@ -52,7 +51,6 @@ function OmsorgstilbudInfoAndDialog<FieldNames>({
     periode,
     labels,
     endringsdato,
-    skjulTommeDagerIListe,
     tidIOmsorgstilbudSak,
     utilgjengeligeDager = [],
     månedTittelHeadingLevel,
@@ -143,7 +141,6 @@ function OmsorgstilbudInfoAndDialog<FieldNames>({
                         addLabel={labels.addLabel}
                         periode={periode}
                         utilgjengeligeDager={alleUtilgjengeligeDager}
-                        skjulTommeDagerIListe={skjulTommeDagerIListe}
                     />
                 );
             }}

@@ -119,7 +119,6 @@ const OmsorgstilbudIPerioder: React.FunctionComponent<Props> = ({
                             utilgjengeligeDager={getUtilgjengeligeDager(måned)}
                             endringsdato={endringsdato}
                             tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}
-                            skjulTommeDagerIListe={true}
                             månedTittelHeadingLevel={visÅrHeading ? 3 : 2}
                             onAfterChange={onOmsorgstilbudChanged}
                             labels={{
