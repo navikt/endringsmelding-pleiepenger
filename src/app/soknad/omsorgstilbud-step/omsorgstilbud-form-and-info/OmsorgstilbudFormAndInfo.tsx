@@ -15,7 +15,7 @@ import OmsorgstilbudMånedForm from './OmsorgstilbudMånedForm';
 interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     name: FieldNames;
     labels: ModalFormAndInfoLabels;
-    måned: DateRange;
+    periodeIMåned: DateRange;
     utilgjengeligeDager?: Date[];
     endringsdato: Date;
     tidIOmsorgstilbudSak: TidEnkeltdag;
@@ -25,7 +25,7 @@ interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, Va
 
 function OmsorgstilbudFormAndInfo<FieldNames>({
     name,
-    måned,
+    periodeIMåned,
     labels,
     endringsdato,
     tidIOmsorgstilbudSak,
@@ -34,8 +34,9 @@ function OmsorgstilbudFormAndInfo<FieldNames>({
     validate,
     onAfterChange,
 }: Props<FieldNames>) {
-    const erHistorisk = dayjs(måned.to).isBefore(endringsdato, 'day');
-    const alleUtilgjengeligeDager = getUtilgjengeligeDagerIMåned(utilgjengeligeDager, måned);
+    const erHistorisk = dayjs(periodeIMåned.to).isBefore(endringsdato, 'day');
+    const alleUtilgjengeligeDager = getUtilgjengeligeDagerIMåned(utilgjengeligeDager, periodeIMåned);
+
     return (
         <FormikModalFormAndInfo<FieldNames, TidEnkeltdag, ValidationError>
             name={name}
@@ -49,7 +50,7 @@ function OmsorgstilbudFormAndInfo<FieldNames>({
             formRenderer={({ onSubmit, onCancel, data = {} }) => {
                 return (
                     <OmsorgstilbudMånedForm
-                        måned={måned}
+                        periodeIMåned={periodeIMåned}
                         tidOmsorgstilbud={data}
                         tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}
                         utilgjengeligeDager={alleUtilgjengeligeDager}
@@ -62,7 +63,7 @@ function OmsorgstilbudFormAndInfo<FieldNames>({
             infoRenderer={({ data, onEdit }) => {
                 return (
                     <OmsorgstilbudMånedInfo
-                        måned={måned}
+                        periodeIMåned={periodeIMåned}
                         tidOmsorgstilbud={data}
                         tidOmsorgstilbudSak={tidIOmsorgstilbudSak}
                         utilgjengeligeDager={alleUtilgjengeligeDager}

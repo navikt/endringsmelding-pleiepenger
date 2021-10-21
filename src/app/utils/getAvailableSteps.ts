@@ -7,7 +7,7 @@ export const getAvailableSteps = (values: Partial<SoknadFormData>, søker: Perso
     const steps: StepID[] = [];
     steps.push(StepID.OMSORGSTILBUD);
     // steps.push(StepID.ARBEIDSSITUASJON);
-    // steps.push(StepID.ARBEIDSTID);
+    steps.push(StepID.ARBEIDSTID);
     steps.push(StepID.OPPSUMMERING);
     return steps;
 };

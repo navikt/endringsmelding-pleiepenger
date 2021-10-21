@@ -10,7 +10,7 @@ import { timeToIso8601Duration } from '@navikt/sif-common-core/lib/utils/timeUti
 import { timeHasSameDuration } from '../../../utils/dateUtils';
 
 interface Props {
-    måned: DateRange;
+    periodeIMåned: DateRange;
     tidOmsorgstilbud: TidEnkeltdag;
     tidIOmsorgstilbudSak: TidEnkeltdag;
     utilgjengeligeDager: Date[];
@@ -39,7 +39,7 @@ const cleanupTidIPeriode = (
 };
 
 const OmsorgstilbudMånedForm: React.FunctionComponent<Props> = ({
-    måned,
+    periodeIMåned,
     tidOmsorgstilbud,
     tidIOmsorgstilbudSak,
     utilgjengeligeDager,
@@ -47,15 +47,15 @@ const OmsorgstilbudMånedForm: React.FunctionComponent<Props> = ({
     onSubmit,
     onCancel,
 }) => {
-    const tidIMåned = getTidEnkeltdagerInnenforPeriode(tidOmsorgstilbud, måned);
-    const omsorgsdager = getDagerMedTidITidsrom(tidOmsorgstilbud, måned);
+    const tidIMåned = getTidEnkeltdagerInnenforPeriode(tidOmsorgstilbud, periodeIMåned);
+    const omsorgsdager = getDagerMedTidITidsrom(tidOmsorgstilbud, periodeIMåned);
     const erEndret = omsorgsdager.some((dag) => {
         const key = dateToISOString(dag.dato);
         return timeHasSameDuration(tidOmsorgstilbud[key], tidIOmsorgstilbudSak[key]) === false;
     });
     return (
         <TidKalenderForm
-            periode={måned}
+            periode={periodeIMåned}
             utilgjengeligeDager={utilgjengeligeDager}
             tid={tidIMåned}
             opprinneligTid={tidIOmsorgstilbudSak}
@@ -63,7 +63,7 @@ const OmsorgstilbudMånedForm: React.FunctionComponent<Props> = ({
             tittel={
                 <FormattedMessage
                     id="omsorgstilbud.form.tittel"
-                    values={{ måned: dayjs(måned.from).format('MMMM YYYY') }}
+                    values={{ måned: dayjs(periodeIMåned.from).format('MMMM YYYY') }}
                 />
             }
             intro={
@@ -86,7 +86,7 @@ const OmsorgstilbudMånedForm: React.FunctionComponent<Props> = ({
                     cleanupTidIPeriode(
                         tidOmsorgstilbud,
                         values,
-                        getTidEnkeltdagerInnenforPeriode(tidIOmsorgstilbudSak, måned)
+                        getTidEnkeltdagerInnenforPeriode(tidIOmsorgstilbudSak, periodeIMåned)
                     )
                 );
             }}

@@ -6,12 +6,11 @@ import { K9Sak } from '../types/K9Sak';
 import { k9SakMock } from '../k9/k9sakMock';
 // import { K9SakRemote } from './k9SakRemote';
 import { parseK9SakRemote } from '../k9/parseK9SakRemote';
-import { getEndringsdato, getMaksEndringsperiode } from '../utils/endringsperiode';
 
 const getK9SakRemoteData = async (): Promise<RemoteData<AxiosError, K9Sak>> => {
     try {
         const data = k9SakMock; // await api.innsyn.get<K9SakRemote>(ApiEndpointInnsyn.k9sak);
-        const k9sak = parseK9SakRemote(data, getMaksEndringsperiode(getEndringsdato()));
+        const k9sak = parseK9SakRemote(data);
         return Promise.resolve(success(k9sak));
     } catch (error) {
         return Promise.reject(failure(error));

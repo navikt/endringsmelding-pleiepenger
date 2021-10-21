@@ -36,7 +36,14 @@ interface Props {
     k9sak: K9Sak;
 }
 
-const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, endringsperiode, endringsdato, k9sak }) => {
+const SoknadRoutes: React.FunctionComponent<Props> = ({
+    soknadId,
+    søker,
+    endringsperiode,
+    endringsdato,
+    arbeidsgivere,
+    k9sak,
+}) => {
     const intl = useIntl();
     const history = useHistory();
     const { values } = useFormikContext<SoknadFormData>();
@@ -73,7 +80,14 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, endrin
             case StepID.ARBEIDSSITUASJON:
                 return <ArbeidssituasjonStep />;
             case StepID.ARBEIDSTID:
-                return <ArbeidstidStep />;
+                return (
+                    <ArbeidstidStep
+                        arbeidsgivere={arbeidsgivere}
+                        søknadsperioder={k9sak.ytelse.søknadsperioder}
+                        endringsdato={endringsdato}
+                        arbeidstidSak={k9sak.ytelse.arbeidstid}
+                    />
+                );
             case StepID.OPPSUMMERING:
                 const apiValues = mapFormDataToApiData(
                     {
@@ -135,9 +149,10 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, endrin
                 })}
             <Route path="*">
                 <ErrorPage
-                    contentRenderer={(): JSX.Element => (
-                        <SoknadErrorMessages.MissingSoknadDataError lastAvailableStep={lastAvailableStepInfo} />
-                    )}></ErrorPage>
+                    contentRenderer={(): JSX.Element => {
+                        console.warn('Route not found');
+                        return <SoknadErrorMessages.MissingSoknadDataError lastAvailableStep={lastAvailableStepInfo} />;
+                    }}></ErrorPage>
             </Route>
         </Switch>
     );

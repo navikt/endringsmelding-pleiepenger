@@ -11,13 +11,13 @@ export type ArbeidstidInfoK9 = {
     };
 };
 
-export type ArbeidsgiverK9 = {
+export interface ArbeidsgiverK9 {
     norskIdentitetsnummer?: string;
     organisasjonsnummer: string;
     arbeidstidInfo: {
         perioder: ArbeidstidInfoK9;
     };
-};
+}
 
 export interface K9SakRemote {
     søknadId: string;

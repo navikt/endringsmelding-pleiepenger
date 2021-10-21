@@ -18,9 +18,9 @@ import { timeHasSameDuration } from '../../../utils/dateUtils';
 export type OmsorgstilbudIPeriodemånedTittelHeadingLevel = 2 | 3;
 
 interface Props {
+    periodeIMåned: DateRange;
     tidOmsorgstilbud: TidEnkeltdag;
     tidOmsorgstilbudSak: TidEnkeltdag;
-    måned: DateRange;
     editLabel: string;
     addLabel: string;
     utilgjengeligeDager?: Date[];
@@ -29,7 +29,7 @@ interface Props {
 }
 
 const OmsorgstilbudMånedInfo: React.FunctionComponent<Props> = ({
-    måned,
+    periodeIMåned,
     tidOmsorgstilbud,
     tidOmsorgstilbudSak,
     editLabel,
@@ -39,8 +39,8 @@ const OmsorgstilbudMånedInfo: React.FunctionComponent<Props> = ({
     onEdit,
 }) => {
     const intl = useIntl();
-    const omsorgsdager = getDagerMedTidITidsrom(tidOmsorgstilbud, måned);
-    const omsorgsdagerSak = getDagerMedTidITidsrom(tidOmsorgstilbudSak, måned);
+    const omsorgsdager = getDagerMedTidITidsrom(tidOmsorgstilbud, periodeIMåned);
+    const omsorgsdagerSak = getDagerMedTidITidsrom(tidOmsorgstilbudSak, periodeIMåned);
 
     const harEndringer = omsorgsdager.some((dag) => {
         const key = dateToISOString(dag.dato);
@@ -53,7 +53,7 @@ const OmsorgstilbudMånedInfo: React.FunctionComponent<Props> = ({
                 <>
                     <Undertittel tag={`h${månedTittelHeadingLevel}`} className="--capitalize">
                         {intlHelper(intl, 'omsorgstilbud.ukeOgÅr', {
-                            ukeOgÅr: dayjs(måned.from).format('MMMM YYYY'),
+                            ukeOgÅr: dayjs(periodeIMåned.from).format('MMMM YYYY'),
                         })}
                         {harEndringer ? ' (endret)' : ''}
                     </Undertittel>
@@ -74,7 +74,7 @@ const OmsorgstilbudMånedInfo: React.FunctionComponent<Props> = ({
             <ResponsivePanel style={{ padding: '1rem' }}>
                 <TidsbrukKalender
                     tomUkeContentRenderer={() => <p>Det er ikke søkt om pleiepenger for dager i denne uken.</p>}
-                    måned={måned}
+                    periodeIMåned={periodeIMåned}
                     dager={omsorgsdager}
                     utilgjengeligeDager={utilgjengeligeDager}
                     utilgjengeligDagInfo={'Det er ikke søkt om pleiepenger for denne dagen'}

@@ -4,15 +4,19 @@ import { ApiEndpointPsb } from '../types/ApiEndpoint';
 import { Arbeidsgiver } from '../types/Arbeidsgiver';
 import api from './api';
 
-export type SokerRemoteData = RemoteData<AxiosError, Arbeidsgiver[]>;
+type ArbeidsgiverRemoteType = {
+    organisasjoner: Arbeidsgiver[];
+};
 
-const getArbeidsgivereRemoteData = async (fom?: string, tom?: string): Promise<SokerRemoteData> => {
+export type ArbeidsgiverRemoteData = RemoteData<AxiosError, Arbeidsgiver[]>;
+
+const getArbeidsgivereRemoteData = async (fom?: string, tom?: string): Promise<ArbeidsgiverRemoteData> => {
     try {
-        const { data } = await api.psb.get<Arbeidsgiver[]>(
+        const { data } = await api.psb.get<ArbeidsgiverRemoteType>(
             ApiEndpointPsb.arbeidsgiver,
             `fra_og_med=${fom}&til_og_med=${tom}`
         );
-        return Promise.resolve(success(data));
+        return Promise.resolve(success(data.organisasjoner));
     } catch (error) {
         return Promise.reject(failure(error));
     }

@@ -52,6 +52,15 @@ const VelkommenPageForm: React.FunctionComponent<Props> = ({ onStart, endringspe
                             value: 'omsorgstilbud',
                         },
                         {
+                            id: 'arbeidstid',
+                            label: (
+                                <>
+                                    <Element>Arbeidstid</Element>Legg til, endre eller fjern arbeidstid
+                                </>
+                            ),
+                            value: 'arbeidstid',
+                        },
+                        {
                             id: 'arbeidssituasjon',
                             disabled: true,
                             label: (
@@ -60,17 +69,6 @@ const VelkommenPageForm: React.FunctionComponent<Props> = ({ onStart, endringspe
                                 </>
                             ),
                             value: 'arbeidssituasjon',
-                        },
-                        {
-                            id: 'arbeidstid',
-                            disabled: true,
-                            label: (
-                                <>
-                                    <Element>Arbeidstid (ikke tilgjengelig)</Element>Legg til, endre eller fjern
-                                    arbeidstid
-                                </>
-                            ),
-                            value: 'arbeidstid',
                         },
                     ]}
                 />

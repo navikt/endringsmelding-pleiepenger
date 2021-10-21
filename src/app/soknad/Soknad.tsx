@@ -87,7 +87,7 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
         await resetSoknad();
         const sId = ulid();
         setSoknadId(sId);
-        const firstStep = StepID.OMSORGSTILBUD;
+        const firstStep = StepID.ARBEIDSTID;
         if (isFeatureEnabled(Feature.PERSISTENCE)) {
             await soknadTempStorage.create();
             await soknadTempStorage.update(

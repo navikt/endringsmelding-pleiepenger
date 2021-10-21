@@ -1,10 +1,15 @@
 import { DateRange } from '@navikt/sif-common-formik/lib';
 import { ArbeidstidEnkeltdag, TidEnkeltdag } from './SoknadFormData';
 
-interface ArbeidsgiverArbeidstid {
-    orgnr: string;
-    arbeidstid: ArbeidstidEnkeltdag;
+// interface ArbeidsgiverArbeidstid {
+//     orgnr: string;
+//     arbeidstid: ArbeidstidEnkeltdag;
+// }
+
+export interface ArbeidstidSak {
+    arbeidsgivere?: { [orgNr: string]: ArbeidstidEnkeltdag };
 }
+
 export interface K9Sak {
     søknadId: string;
     søker: {
@@ -20,8 +25,6 @@ export interface K9Sak {
         tilsynsordning: {
             enkeltdager: TidEnkeltdag;
         };
-        arbeidstid: {
-            arbeidsgivere?: ArbeidsgiverArbeidstid[];
-        };
+        arbeidstid: ArbeidstidSak;
     };
 }

@@ -29,10 +29,14 @@ export const trimK9SakTilMaksEndringsperiode = (k9sak: K9Sak): K9Sak => {
 
     /** Trim arbeidstid ansatt */
     if (arbeidsgivere) {
-        sak.ytelse.arbeidstid.arbeidsgivere = arbeidsgivere.map((a) => ({
-            ...a,
-            arbeidstid: getISODateObjectsWithinDateRange(a.arbeidstid, maksEndringsperiode),
-        }));
+        const trimmedArbeidsgivere = {}; //sak.ytelse.arbeidstid.arbeidsgivere = {};
+        Object.keys(arbeidsgivere).forEach((key) => {
+            trimmedArbeidsgivere[key] = {
+                ...arbeidsgivere[key],
+                arbeidstid: getISODateObjectsWithinDateRange(arbeidsgivere[key].arbeidstid, maksEndringsperiode),
+            };
+        });
+        sak.ytelse.arbeidstid.arbeidsgivere = trimmedArbeidsgivere;
     }
 
     /** Trim tilsynsordning */

@@ -17,7 +17,7 @@ type Kalenderdager = {
     [dato: string]: KalenderDag;
 };
 interface Props {
-    måned: DateRange;
+    periodeIMåned: DateRange;
     dager: DagMedTid[];
     dagerOpprinnelig?: DagMedTid[];
     utilgjengeligeDager?: Date[];
@@ -29,8 +29,8 @@ interface Props {
 }
 
 const TidsbrukKalender: React.FunctionComponent<Props> = ({
-    måned,
-    dager,
+    periodeIMåned,
+    dager: dagerMedTid,
     dagerOpprinnelig = [],
     utilgjengeligeDager,
     utilgjengeligDagInfo,
@@ -39,7 +39,7 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
     tomUkeContentRenderer,
 }) => {
     const kalenderdager: Kalenderdager = {};
-    dager.forEach((d) => {
+    dagerMedTid.forEach((d) => {
         const datostring = dateToISOString(d.dato);
         kalenderdager[datostring] = {
             ...kalenderdager[datostring],
@@ -56,7 +56,7 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
 
     return (
         <CalendarGrid
-            month={måned}
+            month={periodeIMåned}
             disabledDates={utilgjengeligeDager}
             disabledDateInfo={utilgjengeligDagInfo}
             hideEmptyContentInListMode={skjulTommeDagerIListe}
