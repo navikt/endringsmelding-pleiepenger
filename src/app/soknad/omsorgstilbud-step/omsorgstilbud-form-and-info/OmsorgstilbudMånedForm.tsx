@@ -1,12 +1,13 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { DateRange } from '@navikt/sif-common-formik/lib';
+import { DateRange, dateToISOString } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import TidKalenderForm from '../../../components/tid-kalender-form/TidKalenderForm';
 import { TidEnkeltdag } from '../../../types/SoknadFormData';
-import { getTidEnkeltdagerInnenforPeriode, tidErIngenTid } from '../../../utils/tidsbrukUtils';
+import { getDagerMedTidITidsrom, getTidEnkeltdagerInnenforPeriode, tidErIngenTid } from '../../../utils/tidsbrukUtils';
 import { getTidIOmsorgValidator } from '../../../validation/validateOmsorgstilbudFields';
 import { timeToIso8601Duration } from '@navikt/sif-common-core/lib/utils/timeUtils';
+import { timeHasSameDuration } from '../../../utils/dateUtils';
 
 interface Props {
     måned: DateRange;
@@ -47,12 +48,18 @@ const OmsorgstilbudMånedForm: React.FunctionComponent<Props> = ({
     onCancel,
 }) => {
     const tidIMåned = getTidEnkeltdagerInnenforPeriode(tidOmsorgstilbud, måned);
+    const omsorgsdager = getDagerMedTidITidsrom(tidOmsorgstilbud, måned);
+    const erEndret = omsorgsdager.some((dag) => {
+        const key = dateToISOString(dag.dato);
+        return timeHasSameDuration(tidOmsorgstilbud[key], tidIOmsorgstilbudSak[key]) === false;
+    });
     return (
         <TidKalenderForm
             periode={måned}
             utilgjengeligeDager={utilgjengeligeDager}
             tid={tidIMåned}
             opprinneligTid={tidIOmsorgstilbudSak}
+            erEndret={erEndret}
             tittel={
                 <FormattedMessage
                     id="omsorgstilbud.form.tittel"

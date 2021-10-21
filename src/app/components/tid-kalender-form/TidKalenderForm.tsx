@@ -27,6 +27,7 @@ interface Props {
     intro?: JSX.Element;
     periode: DateRange;
     tid: TidEnkeltdag;
+    erEndret: boolean;
     opprinneligTid?: TidEnkeltdag;
     utilgjengeligeDager?: Date[];
     tidPerDagValidator: TidPerDagValidator;
@@ -60,6 +61,7 @@ const TidKalenderForm = ({
     tittel,
     intro,
     utilgjengeligeDager = [],
+    erEndret,
     tidPerDagValidator,
     onSubmit,
     onCancel,
@@ -93,7 +95,7 @@ const TidKalenderForm = ({
                                             <FormattedMessage id="tidKalenderForm.ok.label" />
                                         </Knapp>
                                         <Knapp htmlType="button" type="standard" onClick={onCancel}>
-                                            <FormattedMessage id="tidKalenderForm.avbryt.label" />
+                                            <FormattedMessage id="tidKalenderForm.lukk.label" />
                                         </Knapp>
                                     </Knapperad>
                                 </FormBlock>
@@ -118,6 +120,7 @@ const TidKalenderForm = ({
                                     </ExpandableInfo>
                                 </Box>
                             )}
+
                             <ResponsivePanel>
                                 <TidUkerInput
                                     fieldName={FormField.tid}
@@ -127,6 +130,22 @@ const TidKalenderForm = ({
                                     brukPanel={false}
                                     tidPerDagValidator={tidPerDagValidator}
                                 />
+                                {erEndret && (
+                                    <FormBlock>
+                                        <ExpandableInfo
+                                            title="Ønsker du å tilbakestille endringene dine?"
+                                            filledBackground={false}>
+                                            <p>Tilbakestille til sak eller etter at en åpnet dialogen?</p>
+                                            <p>
+                                                Du kan tilbakestille alle endringene dine for denne måneden ved å trykke
+                                                på knappen nedenfor.
+                                            </p>
+                                            <Knapp htmlType="button" type="standard" mini={true}>
+                                                Tilbakestill endringer til slik det er i sak
+                                            </Knapp>
+                                        </ExpandableInfo>
+                                    </FormBlock>
+                                )}
                             </ResponsivePanel>
                         </Form.Form>
                     );
