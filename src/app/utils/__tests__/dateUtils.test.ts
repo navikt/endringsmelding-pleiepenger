@@ -1,12 +1,16 @@
 import { apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { ISODateRange } from '../../types';
-import { getISODatesInISODateRange, getDateRangeFromDateRanges, timeHasSameDuration } from '../dateUtils';
+import {
+    getISODatesInISODateRangeWeekendExcluded,
+    getDateRangeFromDateRanges,
+    timeHasSameDuration,
+} from '../dateUtils';
 
 describe('getISODatesInISODateRange', () => {
     it('èn ukedag', () => {
         const range: ISODateRange = '2021-02-01/2021-02-01';
-        const result = getISODatesInISODateRange(range);
+        const result = getISODatesInISODateRangeWeekendExcluded(range);
         expect(result).toBeDefined();
         expect(result.length).toBe(1);
         if (result) {
@@ -15,7 +19,7 @@ describe('getISODatesInISODateRange', () => {
     });
     it('to ukedager', () => {
         const range: ISODateRange = '2021-02-01/2021-02-02';
-        const result = getISODatesInISODateRange(range);
+        const result = getISODatesInISODateRangeWeekendExcluded(range);
         expect(result).toBeDefined();
         expect(Object.keys(result).length).toBe(2);
         if (result) {
@@ -25,7 +29,7 @@ describe('getISODatesInISODateRange', () => {
     });
     it('to ukedager over helg', () => {
         const range: ISODateRange = '2021-01-01/2021-01-04';
-        const result = getISODatesInISODateRange(range);
+        const result = getISODatesInISODateRangeWeekendExcluded(range);
         expect(result).toBeDefined();
         expect(Object.keys(result).length).toBe(2);
         if (result) {

@@ -13,7 +13,7 @@ import { useFormikContext } from 'formik';
 import AppRoutes from '../config/routeConfig';
 import usePersistSoknad from '../hooks/usePersistSoknad';
 import KvitteringPage from '../pages/kvittering-page/KvitteringPage';
-import { Arbeidsgivere } from '../types/Arbeidsgiver';
+import { Arbeidsgiver } from '../types/Arbeidsgiver';
 import { Person } from '../types/Person';
 import { SoknadFormData } from '../types/SoknadFormData';
 import { getAvailableSteps } from '../utils/getAvailableSteps';
@@ -32,7 +32,7 @@ interface Props {
     søker: Person;
     endringsdato: Date;
     endringsperiode: DateRange;
-    arbeidsgivere?: Arbeidsgivere;
+    arbeidsgivere?: Arbeidsgiver[];
     k9sak: K9Sak;
 }
 

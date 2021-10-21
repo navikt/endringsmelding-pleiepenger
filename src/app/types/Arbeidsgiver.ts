@@ -1,8 +1,11 @@
-import { DateRange } from '@navikt/sif-common-formik/lib';
+import { ArbeidstidEnkeltdag } from './SoknadFormData';
 
 export interface Arbeidsgiver {
     organisasjonsnummer: string;
     navn: string;
-    ansattPeriode?: DateRange;
+    arbeidstid: ArbeidstidEnkeltdag;
 }
-export type Arbeidsgivere = Arbeidsgiver[];
+export interface AnsattArbeidstid {
+    organisasjonsnummer: string;
+    arbeidstid: ArbeidstidEnkeltdag;
+}

@@ -29,7 +29,7 @@ export const k9SakMock: K9SakRemote = {
                 '2021-09-01/2021-09-15': {
                     etablertTilsynTimerPerDag: 'PT7H30M',
                 },
-                '2021-10-01/2021-10-5': {
+                '2021-10-01/2021-10-05': {
                     etablertTilsynTimerPerDag: 'PT4H0M',
                 },
                 '2021-11-01/2021-11-15': {
@@ -44,7 +44,19 @@ export const k9SakMock: K9SakRemote = {
                     organisasjonsnummer: '999999999',
                     arbeidstidInfo: {
                         perioder: {
-                            '2018-12-30/2019-10-20': {
+                            '2018-01-12/2018-10-15': {
+                                jobberNormaltTimerPerDag: 'PT0H0M',
+                                faktiskArbeidTimerPerDag: 'PT0H',
+                            },
+                            '2020-01-12/2021-09-15': {
+                                jobberNormaltTimerPerDag: 'PT5H0M',
+                                faktiskArbeidTimerPerDag: 'PT1H30M',
+                            },
+                            '2021-09-01/2021-09-15': {
+                                jobberNormaltTimerPerDag: 'PT7H30M',
+                                faktiskArbeidTimerPerDag: 'PT3H',
+                            },
+                            '2021-10-01/2021-10-05': {
                                 jobberNormaltTimerPerDag: 'PT7H30M',
                                 faktiskArbeidTimerPerDag: 'PT3H',
                             },

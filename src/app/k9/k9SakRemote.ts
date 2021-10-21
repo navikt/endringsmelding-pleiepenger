@@ -1,7 +1,22 @@
-import { ISODate, ISODateRange, ISODuration } from '../../types';
+import { ISODate, ISODateRange, ISODuration } from '../types';
 
 export type TilsynsordningPerioderK9 = {
     [key: ISODateRange]: { etablertTilsynTimerPerDag: ISODuration };
+};
+
+export type ArbeidstidInfoK9 = {
+    [key: ISODateRange]: {
+        jobberNormaltTimerPerDag: ISODuration;
+        faktiskArbeidTimerPerDag: ISODuration;
+    };
+};
+
+export type ArbeidsgiverK9 = {
+    norskIdentitetsnummer?: string;
+    organisasjonsnummer: string;
+    arbeidstidInfo: {
+        perioder: ArbeidstidInfoK9;
+    };
 };
 
 export interface K9SakRemote {
@@ -22,20 +37,7 @@ export interface K9SakRemote {
             perioder: TilsynsordningPerioderK9;
         };
         arbeidstid: {
-            arbeidstakerList: [
-                {
-                    norskIdentitetsnummer?: string;
-                    organisasjonsnummer: string;
-                    arbeidstidInfo: {
-                        perioder: {
-                            [key: ISODateRange]: {
-                                jobberNormaltTimerPerDag: ISODuration;
-                                faktiskArbeidTimerPerDag: ISODuration;
-                            };
-                        };
-                    };
-                }
-            ];
+            arbeidstakerList: ArbeidsgiverK9[];
         };
     };
 }

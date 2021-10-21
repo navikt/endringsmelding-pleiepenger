@@ -6,15 +6,15 @@ import { AxiosError } from 'axios';
 import getArbeidsgivereRemoteData from '../api/getArbeidsgivere';
 import getSokerRemoteData from '../api/getSoker';
 import getSoknadTempStorage from '../api/getSoknadTempStorage';
-import getK9SakRemoteData from '../api/k9sak/getK9Sak';
-import { Arbeidsgivere } from '../types/Arbeidsgiver';
+import getK9SakRemoteData from '../api/getK9Sak';
+import { Arbeidsgiver } from '../types/Arbeidsgiver';
 import { K9Sak } from '../types/K9Sak';
 import { Person } from '../types/Person';
 import { SoknadTempStorageData } from '../types/SoknadTempStorageData';
 import { getEndringsdato, getEndringsperiode } from '../utils/endringsperiode';
 import { relocateToLoginPage } from '../utils/navigationUtils';
 
-export type SoknadEssentials = [Person, K9Sak, Arbeidsgivere, SoknadTempStorageData];
+export type SoknadEssentials = [Person, K9Sak, Arbeidsgiver[], SoknadTempStorageData];
 
 export type SoknadEssentialsRemoteData = RemoteData<AxiosError, SoknadEssentials>;
 
@@ -27,6 +27,7 @@ function useSoknadEssentials(): SoknadEssentialsRemoteData {
                 getK9SakRemoteData(),
                 getSoknadTempStorage(),
             ]);
+
             const k9sak: K9Sak = (k9SakResult as any).value as any;
             const endringsperiode = getEndringsperiode(getEndringsdato(), k9sak.ytelse.søknadsperioder);
             const arbeidsgivereResult = await getArbeidsgivereRemoteData(

@@ -2,6 +2,13 @@ import { Time } from '@navikt/sif-common-formik/lib';
 
 export type TidEnkeltdag = { [isoDateString: string]: Partial<Time> };
 
+export interface ArbeidstidNormaltOgFaktisk {
+    jobberNormaltTimer?: Partial<Time>;
+    faktiskArbeidTimer?: Partial<Time>;
+}
+
+export type ArbeidstidEnkeltdag = { [isoDateString: string]: ArbeidstidNormaltOgFaktisk };
+
 export interface DagMedTid {
     dato: Date;
     tid: Partial<Time>;

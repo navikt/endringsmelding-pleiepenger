@@ -112,7 +112,7 @@ export const ISODurationToTime = (duration: ISODuration): Time | undefined => {
     };
 };
 
-export const getISODatesInISODateRange = (range: ISODateRange): ISODate[] => {
+export const getISODatesInISODateRangeWeekendExcluded = (range: ISODateRange): ISODate[] => {
     const dateRange = ISODateRangeToDateRange(range);
     const { from, to } = dateRange;
     let currentDate = dayjs(from);
@@ -151,6 +151,11 @@ export const isDateInDates = (date: Date, dates?: Date[]): boolean => {
         return false;
     }
     return dates.some((d) => dayjs(date).isSame(d, 'day'));
+};
+
+/** Includes start and end date */
+export const dateIsWithinDateRange = (date: Date, dateRange: DateRange): boolean => {
+    return dayjs(date).isBetween(dateRange.from, dateRange.to, 'day', '[]');
 };
 
 export const dateIsWeekDay = (date: Date): boolean => {
