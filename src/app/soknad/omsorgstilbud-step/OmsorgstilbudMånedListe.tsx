@@ -13,11 +13,10 @@ import {
 import SoknadFormComponents from '../SoknadFormComponents';
 import OmsorgstilbudFormAndInfo from './omsorgstilbud-form-and-info/OmsorgstilbudFormAndInfo';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
-// import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
 import flatten from 'lodash.flatten';
-import { Undertittel } from 'nav-frontend-typografi';
+import { Undertittel, Element } from 'nav-frontend-typografi';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
-
+import AlertStripe from 'nav-frontend-alertstriper';
 interface Props {
     endringsdato: Date;
     søknadsperioder: DateRange[];
@@ -84,6 +83,8 @@ const OmsorgstilbudMånedListe: React.FunctionComponent<Props> = ({
     const alleMånederIPeriode = getMonthsInDateRange(getDateRangeFromDateRanges(søknadsperioder));
     const gårOverFlereÅr = getYearsInDateRanges(alleMånederIPeriode).length > 1;
 
+    const antallMånederMedHull = alleMånederIPeriode.length - Object.keys(månederMedSøknadsperiode).length;
+
     const visÅrstallHeading = (index: number): boolean => {
         return (
             gårOverFlereÅr &&
@@ -101,30 +102,37 @@ const OmsorgstilbudMånedListe: React.FunctionComponent<Props> = ({
              * Ikke optimalt, men det virker.
              */
             name={`${SoknadFormField.omsorgstilbud}_dager` as any}
-            legend="Åpne den eller de månedene du ønsker å endre. Du kan legge til eller fjerne tid"
-            // description={
-            //     <ExpandableInfo title="Er det én eller flere måneder som ikke vises her? ">TODO: info</ExpandableInfo>
-            // }
+            legend={<span className="sr-only">Måneder med dager hvor det er søkt pleiepenger for.</span>}
+            description={
+                antallMånederMedHull > 0 ? (
+                    <AlertStripe type="info" form="inline">
+                        <Element tag="h3">{antallMånederMedHull} måneder er skjult i listen nedenfor</Element>
+                        <p>La inn antallet som er skult, slik at du evt. kan bruke det i teksten Siv.</p>
+                        Måneder som ikke har dager hvor det er søkt om pleiepenger for, vises ikke listen nedenfor.
+                    </AlertStripe>
+                ) : undefined
+            }
             tag="div"
             // validate={() => validateOmsorgstilbudEnkeltdagerIPeriode(tidIOmsorgstilbud, periode, gjelderFortid)}
         >
             {alleMånederIPeriode.map((måned, index) => {
                 const mndOgÅrLabelPart = dayjs(måned.from).format('MMMM YYYY');
                 const søknadsperioderIMåned = månederMedSøknadsperiode[getYearMonthKey(måned.from)];
-                return søknadsperioderIMåned === undefined ? (
-                    <FormBlock margin="xl" key={dayjs(måned.from).format('MM.YYYY')}>
-                        <Undertittel tag={gårOverFlereÅr ? 'h3' : 'h2'} style={{ fontSize: '1rem' }}>
-                            {intlHelper(intl, 'omsorgstilbud.ukeOgÅr', {
-                                ukeOgÅr: dayjs(måned.from).format('MMMM YYYY'),
-                            })}
-                        </Undertittel>
-                        <p style={{ padding: 0, margin: 0 }}>Det er ikke søkt om pleiepenger for denne måneden.</p>
-                    </FormBlock>
-                ) : (
+                return søknadsperioderIMåned === undefined ? null : (
+                    // <FormBlock margin="xl" key={dayjs(måned.from).format('MM.YYYY')}>
+                    //     <Undertittel tag={gårOverFlereÅr ? 'h3' : 'h2'} style={{ fontSize: '1rem' }}>
+                    //         {intlHelper(intl, 'omsorgstilbud.ukeOgÅr', {
+                    //             ukeOgÅr: dayjs(måned.from).format('MMMM YYYY'),
+                    //         })}
+                    //     </Undertittel>
+                    //     <p style={{ padding: 0, margin: 0 }}>Det er ikke søkt om pleiepenger for denne måneden.</p>
+                    // </FormBlock>
                     <FormBlock margin="l" key={dayjs(måned.from).format('MM.YYYY')}>
                         {visÅrstallHeading(index) && (
                             <Box margin="xl" padBottom="l">
-                                <Undertittel>{dayjs(måned.from).format('YYYY')}</Undertittel>
+                                <Undertittel>
+                                    Måneder det er søkt om pleiepenger i {dayjs(måned.from).format('YYYY')}
+                                </Undertittel>
                             </Box>
                         )}
                         <OmsorgstilbudFormAndInfo

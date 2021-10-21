@@ -9,7 +9,7 @@ const omsorgstilbudMessages = {
         'omsorgstilbud.validation.durationIsTooShort':
             'Antall timer og minutter {dag} er for lavt. Tiden må være minst ett minutt.',
         'omsorgstilbud.uke': 'Uke {uke}',
-        'omsorgstilbud.ukeOgÅr': 'Omsorgstilbud {ukeOgÅr}',
+        'omsorgstilbud.ukeOgÅr': '{ukeOgÅr}',
         'omsorgstilbud.ingenDagerRegistrert': 'Ingen dager med omsorgstilbud registrert',
         'omsorgstilbud.form.tittel': 'Omsorgstilbud - {måned}',
         'omsorgstilbud.form.intro.1':

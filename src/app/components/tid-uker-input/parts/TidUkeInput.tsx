@@ -19,6 +19,7 @@ interface Props {
     isNarrow: boolean;
     isWide: boolean;
     utilgjengeligeDager?: Date[];
+    visSomListe?: boolean;
     tidPerDagValidator?: TidPerDagValidator;
     ukeTittelRenderer?: (uke: Ukeinfo) => React.ReactNode;
     dagLabelRenderer?: (dag: Daginfo) => React.ReactNode;
@@ -44,6 +45,7 @@ const bem = bemUtils('tidUkerInput');
 const TidUkeInput: React.FunctionComponent<Props> = ({
     ukeinfo,
     utilgjengeligeDager,
+    visSomListe,
     getFieldName,
     dagLabelRenderer,
     tidPerDagValidator,
@@ -69,7 +71,7 @@ const TidUkeInput: React.FunctionComponent<Props> = ({
                     <p>Det er ikke søkt om pleiepenger for dagene i denne uken</p>
                 </FormBlock>
             ) : (
-                <div className={bem.element('uke__ukedager', isWide ? 'grid' : 'liste')}>
+                <div className={bem.element('uke__ukedager', isWide && visSomListe !== true ? 'grid' : 'liste')}>
                     {getForegåendeDagerIUke(dager[0]).map((dag) => (
                         <div
                             className={bem.element('dag', 'utenforPeriode')}

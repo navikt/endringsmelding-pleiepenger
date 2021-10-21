@@ -10,6 +10,7 @@ import { Ukeinfo } from './types';
 import { getDagerIPeriode, getTidKalenderFieldName, getUkerFraDager } from './utils';
 import './tidUkerInput.less';
 import dayjs from 'dayjs';
+import { isDateInDates } from '../../utils/dateUtils';
 
 interface Props {
     fieldName: string;
@@ -42,25 +43,28 @@ export const TidUkerInput: React.FunctionComponent<Props> = ({
     };
     const alleDagerIMåned = getDagerIPeriode(månedDateRange.from, månedDateRange.to);
 
-    const uker = getUkerFraDager(alleDagerIMåned);
+    const uker = getUkerFraDager(alleDagerIMåned).filter(
+        (uke) => uke.dager.filter((dag) => isDateInDates(dag.dato, utilgjengeligeDager)).length !== uke.dager.length
+    );
 
     return (
         <div className={bem.classNames(bem.block, bem.modifier('inlineForm'))}>
-            {uker.map((week) => {
+            {uker.map((uke) => {
                 const content = (
                     <TidUkeInput
                         ukeTittelRenderer={ukeTittelRenderer}
                         getFieldName={(dag) => getTidKalenderFieldName(fieldName, dag)}
-                        ukeinfo={week}
+                        ukeinfo={uke}
                         opprinneligTid={opprinneligTid}
                         utilgjengeligeDager={utilgjengeligeDager}
                         isNarrow={isNarrow}
                         isWide={isWide}
+                        visSomListe={true}
                         tidPerDagValidator={tidPerDagValidator}
                     />
                 );
                 return (
-                    <div key={week.ukenummer} className={bem.element('ukeWrapper')}>
+                    <div key={uke.ukenummer} className={bem.element('ukeWrapper')}>
                         {brukPanel ? <ResponsivePanel>{content}</ResponsivePanel> : content}
                     </div>
                 );

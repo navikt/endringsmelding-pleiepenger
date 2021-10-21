@@ -5,24 +5,24 @@
         }
     }
     &__ukeWrapper {
-        @media (min-width: 1050px) {
-            border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-            padding-bottom: 1rem;
-            &:last-child {
-                border-bottom: none;
-                padding-bottom: 0;
-            }
-            &:not(:first-child) {
-                padding-top: 1rem;
-            }
+        // @media (min-width: 1050px) {
+        //     border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+        //     padding-bottom: 1rem;
+        //     &:last-child {
+        //         border-bottom: none;
+        //         padding-bottom: 0;
+        //     }
+        //     &:not(:first-child) {
+        //         padding-top: 1rem;
+        //     }
+        // }
+        // @media (max-width: 1050px) {
+        border-bottom: none;
+        padding-bottom: none;
+        &:not(:first-child) {
+            padding-top: 1rem;
         }
-        @media (max-width: 1050px) {
-            border-bottom: none;
-            padding-bottom: none;
-            &:not(:first-child) {
-                padding-top: 1rem;
-            }
-        }
+        // }
     }
     &__uke {
         &--medBakgrunn  {
@@ -60,20 +60,19 @@
             visibility: hidden;
         }
 
-        @media (max-width: 1050px) {
-            padding: 0.25rem 0;
-            margin-bottom: 0.5rem;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-        }
-
-        @media (min-width: 1051px) {
-            &__label {
-                &__dagnavn {
-                    display: block;
-                    font-size: 0.8rem;
-                }
-            }
-        }
+        // @media (max-width: 1050px) {
+        padding: 0.25rem 0;
+        margin-bottom: 0.5rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+        // }
+        // @media (min-width: 1051px) {
+        //     &__label {
+        //         &__dagnavn {
+        //             display: block;
+        //             font-size: 0.8rem;
+        //         }
+        //     }
+        // }
         &__label {
             text-transform: capitalize;
             font-weight: normal;

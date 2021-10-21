@@ -85,7 +85,7 @@ const TidEnkeltdager: React.FunctionComponent<Props> = ({ dager, dagerOpprinneli
                                     <span style={{ textTransform: 'capitalize' }}>
                                         {dayjs(dagerMedTid[0].dato).format('MMMM YYYY')}
                                     </span>
-                                    {dagerMedTid.some((d) => d.erEndret === true) ? ' (endret)' : undefined}
+                                    {dagerMedTid.some((d) => d.erEndret === true) ? ' (endret)' : '(uendret)'}
                                 </Element>
                             }>
                             <DagerMedTidListe dagerMedTid={dagerMedTid} viseUke={true} />
