@@ -127,7 +127,7 @@ export const getISODatesInISODateRange = (range: ISODateRange): ISODate[] => {
     return dates;
 };
 
-export const getMinMaxInDateRanges = (ranges: DateRange[]): DateRange => {
+export const getDateRangeFromDateRanges = (ranges: DateRange[]): DateRange => {
     return {
         from: dayjs.min(ranges.map((range) => dayjs(range.from))).toDate(),
         to: dayjs.max(ranges.map((range) => dayjs(range.to))).toDate(),

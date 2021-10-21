@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import minMax from 'dayjs/plugin/minMax';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import { getMinMaxInDateRanges } from './dateUtils';
+import { getDateRangeFromDateRanges } from './dateUtils';
 
 dayjs.extend(minMax);
 dayjs.extend(isSameOrAfter);
@@ -18,7 +18,7 @@ export const getMaksEndringsperiode = (endringsdato: Date): DateRange => ({
 
 export const getEndringsperiode = (endringsdato: Date, søknadsperioder: DateRange[]): DateRange => {
     const maksEndringsperiode = getMaksEndringsperiode(endringsdato);
-    const søknadsperioderDateRange = getMinMaxInDateRanges(søknadsperioder);
+    const søknadsperioderDateRange = getDateRangeFromDateRanges(søknadsperioder);
     return {
         from: dayjs.max(dayjs(søknadsperioderDateRange.from), dayjs(maksEndringsperiode.from)).toDate(),
         to: dayjs.min(dayjs(søknadsperioderDateRange.to), dayjs(maksEndringsperiode.to)).toDate(),

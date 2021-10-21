@@ -1,7 +1,7 @@
 import { apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { ISODateRange } from '../../types';
-import { getISODatesInISODateRange, getMinMaxInDateRanges, timeHasSameDuration } from '../dateUtils';
+import { getISODatesInISODateRange, getDateRangeFromDateRanges, timeHasSameDuration } from '../dateUtils';
 
 describe('getISODatesInISODateRange', () => {
     it('èn ukedag', () => {
@@ -35,9 +35,9 @@ describe('getISODatesInISODateRange', () => {
     });
 });
 
-describe('getMinMaxInDateRanges', () => {
+describe('getDateRangeFromDateRanges', () => {
     it('én periode', () => {
-        const result = getMinMaxInDateRanges([
+        const result = getDateRangeFromDateRanges([
             { from: apiStringDateToDate('2021-02-01'), to: apiStringDateToDate('2021-02-02') },
         ]);
         expect(result).toBeDefined();
@@ -47,7 +47,7 @@ describe('getMinMaxInDateRanges', () => {
         }
     });
     it('to perioder', () => {
-        const result = getMinMaxInDateRanges([
+        const result = getDateRangeFromDateRanges([
             { from: apiStringDateToDate('2021-02-01'), to: apiStringDateToDate('2021-02-02') },
             { from: apiStringDateToDate('2020-01-01'), to: apiStringDateToDate('2021-01-01') },
         ]);
