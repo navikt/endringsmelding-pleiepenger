@@ -20,7 +20,7 @@ export type OmsorgstilbudIPeriodemånedTittelHeadingLevel = 2 | 3;
 interface Props {
     tidOmsorgstilbud: TidEnkeltdag;
     tidOmsorgstilbudSak: TidEnkeltdag;
-    periode: DateRange;
+    måned: DateRange;
     editLabel: string;
     addLabel: string;
     utilgjengeligeDager?: Date[];
@@ -28,10 +28,10 @@ interface Props {
     onEdit: (tid: TidEnkeltdag) => void;
 }
 
-const OmsorgstilbudIPeriode: React.FunctionComponent<Props> = ({
+const OmsorgstilbudMånedInfo: React.FunctionComponent<Props> = ({
+    måned,
     tidOmsorgstilbud,
     tidOmsorgstilbudSak,
-    periode,
     editLabel,
     addLabel,
     utilgjengeligeDager,
@@ -39,13 +39,8 @@ const OmsorgstilbudIPeriode: React.FunctionComponent<Props> = ({
     onEdit,
 }) => {
     const intl = useIntl();
-    const omsorgsdager = getDagerMedTidITidsrom(tidOmsorgstilbud, periode);
-    const omsorgsdagerSak = getDagerMedTidITidsrom(tidOmsorgstilbudSak, periode);
-    const tittelIdForAriaDescribedBy = `mndTittel_${dayjs(periode.from).format('MM_YYYY')}`;
-    const måned = omsorgsdager.length > 0 ? omsorgsdager[0].dato : periode.from;
-    const mndTittelPart = intlHelper(intl, 'omsorgstilbud.ukeOgÅr', {
-        ukeOgÅr: dayjs(periode.from).format('MMMM YYYY'),
-    });
+    const omsorgsdager = getDagerMedTidITidsrom(tidOmsorgstilbud, måned);
+    const omsorgsdagerSak = getDagerMedTidITidsrom(tidOmsorgstilbudSak, måned);
 
     const harEndringer = omsorgsdager.some((dag) => {
         const key = dateToISOString(dag.dato);
@@ -57,7 +52,9 @@ const OmsorgstilbudIPeriode: React.FunctionComponent<Props> = ({
             tittel={
                 <>
                     <Undertittel tag={`h${månedTittelHeadingLevel}`}>
-                        {mndTittelPart}
+                        {intlHelper(intl, 'omsorgstilbud.ukeOgÅr', {
+                            ukeOgÅr: dayjs(måned.from).format('MMMM YYYY'),
+                        })}
                         {harEndringer ? ' (endret)' : ''}
                     </Undertittel>
                     <Box margin="m">
@@ -95,11 +92,7 @@ const OmsorgstilbudIPeriode: React.FunctionComponent<Props> = ({
                     }}
                 />
                 <FormBlock margin="l">
-                    <Knapp
-                        htmlType="button"
-                        mini={true}
-                        onClick={() => onEdit(tidOmsorgstilbud)}
-                        aria-describedby={tittelIdForAriaDescribedBy}>
+                    <Knapp htmlType="button" mini={true} onClick={() => onEdit(tidOmsorgstilbud)}>
                         {omsorgsdager.length === 0 ? addLabel : editLabel}
                     </Knapp>
                 </FormBlock>
@@ -108,4 +101,4 @@ const OmsorgstilbudIPeriode: React.FunctionComponent<Props> = ({
     );
 };
 
-export default OmsorgstilbudIPeriode;
+export default OmsorgstilbudMånedInfo;

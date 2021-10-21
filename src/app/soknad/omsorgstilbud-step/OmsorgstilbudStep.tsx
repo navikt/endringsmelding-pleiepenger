@@ -5,7 +5,7 @@ import StepIntroduction from '../../components/step-introduction/StepIntroductio
 import { SoknadFormData, TidEnkeltdag } from '../../types/SoknadFormData';
 import SoknadFormStep from '../SoknadFormStep';
 import { StepID } from '../soknadStepsConfig';
-import OmsorgstilbudIPerioder from './omsorgstilbud/OmsorgstilbudIPerioder';
+import OmsorgstilbudMånedListe from './OmsorgstilbudMånedListe';
 
 const cleanupOmsorgstilbudStep = (formData: SoknadFormData): SoknadFormData => {
     return formData;
@@ -30,7 +30,7 @@ const OmsorgstilbudStep: React.FunctionComponent<Props> = ({
         <SoknadFormStep id={stepId} onStepCleanup={cleanupOmsorgstilbudStep}>
             <StepIntroduction>Intro til steg</StepIntroduction>
             <Box margin="xl">
-                <OmsorgstilbudIPerioder
+                <OmsorgstilbudMånedListe
                     endringsdato={endringsdato}
                     søknadsperioder={søknadsperioder}
                     tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}

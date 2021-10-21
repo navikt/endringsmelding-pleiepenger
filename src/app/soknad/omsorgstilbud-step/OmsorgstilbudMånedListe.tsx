@@ -3,10 +3,10 @@ import { useIntl } from 'react-intl';
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import dayjs from 'dayjs';
-import { SoknadFormField, TidEnkeltdag } from '../../../types/SoknadFormData';
-import { dateIsWeekDay, getMonthsInDateRange, getYearsInDateRanges } from '../../../utils/dateUtils';
-import SoknadFormComponents from '../../SoknadFormComponents';
-import OmsorgstilbudInfoAndDialog from './OmsorgstilbudInfoAndDialog';
+import { SoknadFormField, TidEnkeltdag } from '../../types/SoknadFormData';
+import { dateIsWeekDay, getMonthsInDateRange, getYearsInDateRanges } from '../../utils/dateUtils';
+import SoknadFormComponents from '../SoknadFormComponents';
+import OmsorgstilbudFormAndInfo from './omsorgstilbud-form-and-info/OmsorgstilbudFormAndInfo';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
 import flatten from 'lodash.flatten';
@@ -68,7 +68,7 @@ export const getUtilgjengeligeDager = (perioder: DateRange[]): Date[] => {
 
 const getYearMonthKey = (date: Date): string => dayjs(date).format('YYYY-MM');
 
-const OmsorgstilbudIPerioder: React.FunctionComponent<Props> = ({
+const OmsorgstilbudMånedListe: React.FunctionComponent<Props> = ({
     endringsdato,
     søknadsperioder,
     tidIOmsorgstilbudSak,
@@ -80,6 +80,13 @@ const OmsorgstilbudIPerioder: React.FunctionComponent<Props> = ({
     const år = getYearsInDateRanges(månederArray.map((m) => m[0]));
 
     const visÅrHeading = år.length > 1;
+
+    const visÅrstallHeading = (index: number): boolean => {
+        return (
+            visÅrHeading &&
+            (index === 0 || månederArray[index][0].from.getFullYear() !== månederArray[index - 1][0].from.getFullYear())
+        );
+    };
 
     return (
         <SoknadFormComponents.InputGroup
@@ -102,20 +109,17 @@ const OmsorgstilbudIPerioder: React.FunctionComponent<Props> = ({
                     from: måned[0].from,
                     to: måned[måned.length - 1].to,
                 };
-                const mndOgÅr = dayjs(periode.from).format('MMMM YYYY');
+                const mndOgÅrLabelPart = dayjs(periode.from).format('MMMM YYYY');
                 return (
                     <FormBlock margin="l" key={dayjs(periode.from).format('MM.YYYY')}>
-                        {visÅrHeading &&
-                        (index === 0 ||
-                            månederArray[index][0].from.getFullYear() !==
-                                månederArray[index - 1][0].from.getFullYear()) ? (
+                        {visÅrstallHeading(index) && (
                             <Box margin="xl" padBottom="l">
                                 <Undertittel>{dayjs(periode.from).format('YYYY')}</Undertittel>
                             </Box>
-                        ) : undefined}
-                        <OmsorgstilbudInfoAndDialog
+                        )}
+                        <OmsorgstilbudFormAndInfo
                             name={SoknadFormField.omsorgstilbud_enkeltdager}
-                            periode={periode}
+                            måned={periode}
                             utilgjengeligeDager={getUtilgjengeligeDager(måned)}
                             endringsdato={endringsdato}
                             tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}
@@ -123,16 +127,16 @@ const OmsorgstilbudIPerioder: React.FunctionComponent<Props> = ({
                             onAfterChange={onOmsorgstilbudChanged}
                             labels={{
                                 addLabel: intlHelper(intl, 'omsorgstilbud.addLabel', {
-                                    periode: mndOgÅr,
+                                    periode: mndOgÅrLabelPart,
                                 }),
                                 deleteLabel: intlHelper(intl, 'omsorgstilbud.deleteLabel', {
-                                    periode: mndOgÅr,
+                                    periode: mndOgÅrLabelPart,
                                 }),
                                 editLabel: intlHelper(intl, 'omsorgstilbud.editLabel', {
-                                    periode: mndOgÅr,
+                                    periode: mndOgÅrLabelPart,
                                 }),
                                 modalTitle: intlHelper(intl, 'omsorgstilbud.modalTitle', {
-                                    periode: mndOgÅr,
+                                    periode: mndOgÅrLabelPart,
                                 }),
                             }}
                         />
@@ -143,4 +147,4 @@ const OmsorgstilbudIPerioder: React.FunctionComponent<Props> = ({
     );
 };
 
-export default OmsorgstilbudIPerioder;
+export default OmsorgstilbudMånedListe;

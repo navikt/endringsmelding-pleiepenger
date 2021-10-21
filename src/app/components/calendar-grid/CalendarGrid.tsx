@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { groupBy } from 'lodash';
 import { guid } from 'nav-frontend-js-utils';
-import { dateIsWeekDay, getFirstDateOfWeek, getMonthDateRange, isDateInDates } from '../../utils/dateUtils';
+import { dateIsWeekDay, getFirstDateOfWeek, isDateInDates } from '../../utils/dateUtils';
 import './calendarGrid.less';
 
 dayjs.extend(isSameOrBefore);
@@ -18,7 +18,7 @@ interface WeekToRender {
 }
 
 interface Props {
-    month: Date;
+    month: DateRange;
     renderAsList?: boolean;
     disabledDates?: Date[];
     disabledDateInfo?: string;
@@ -71,7 +71,7 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
     dateRendererFull = (date) => dayjs(date).format('dddd DD. MMM'),
     allDaysInWeekDisabledContentRenderer,
 }) => {
-    const weeks = getWeeks(getDatesToRender(getMonthDateRange(month)), month);
+    const weeks = getWeeks(getDatesToRender(month), month.from);
     return (
         <div
             className={bem.classNames(
@@ -121,7 +121,7 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
                     </div>,
                     datesInWeek.map((date) => {
                         const dateIsDisabled = isDateInDates(date, disabledDates);
-                        return dayjs(date).isSame(month, 'month') === false ? (
+                        return dayjs(date).isSame(month.from, 'month') === false ? (
                             <div
                                 key={guid()}
                                 aria-hidden={true}

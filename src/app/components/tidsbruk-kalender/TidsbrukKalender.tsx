@@ -1,6 +1,6 @@
 import React from 'react';
 import AriaAlternative from '@navikt/sif-common-core/lib/components/aria/AriaAlternative';
-import { dateToISOString, Time } from '@navikt/sif-common-formik/lib';
+import { DateRange, dateToISOString, Time } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { DagMedTid } from '../../types/SoknadFormData';
 import CalendarGrid from '../calendar-grid/CalendarGrid';
@@ -17,7 +17,7 @@ type Kalenderdager = {
     [dato: string]: KalenderDag;
 };
 interface Props {
-    måned: Date;
+    måned: DateRange;
     dager: DagMedTid[];
     dagerOpprinnelig?: DagMedTid[];
     utilgjengeligeDager?: Date[];
