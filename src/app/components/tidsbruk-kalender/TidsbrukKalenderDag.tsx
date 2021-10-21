@@ -1,9 +1,7 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
 import { Time } from '@navikt/sif-common-formik/lib';
 import { Undertekst } from 'nav-frontend-typografi';
 import { timeHasSameDuration } from '../../utils/dateUtils';
-import { formatTimerOgMinutter } from '../../utils/formatTimerOgMinutter';
 import FormattedTimeText from '../formatted-time-text/FormattedTimeText';
 
 interface Props {
@@ -14,7 +12,6 @@ interface Props {
 }
 
 const TidsbrukKalenderDag: React.FunctionComponent<Props> = ({ tid, tidOpprinnelig, visEndringsinformasjon }) => {
-    const intl = useIntl();
     const erEndret = timeHasSameDuration(tid, tidOpprinnelig) === false;
     return (
         <>
@@ -22,12 +19,7 @@ const TidsbrukKalenderDag: React.FunctionComponent<Props> = ({ tid, tidOpprinnel
                 <div>
                     {erEndret ? (
                         <>
-                            <span
-                                title={
-                                    tidOpprinnelig
-                                        ? `Endret fra ${formatTimerOgMinutter(intl, tidOpprinnelig)}`
-                                        : 'Lagt til'
-                                }>
+                            <span>
                                 <FormattedTimeText time={tid} />
                             </span>
                             {visEndringsinformasjon && (
@@ -35,10 +27,8 @@ const TidsbrukKalenderDag: React.FunctionComponent<Props> = ({ tid, tidOpprinnel
                                     {tidOpprinnelig ? (
                                         <div>
                                             (
-                                            <Undertekst
-                                                tag="span"
-                                                aria-label="Opprinnelig tid"
-                                                style={{ textDecoration: 'line-through' }}>
+                                            <Undertekst tag="span" style={{ textDecoration: 'line-through' }}>
+                                                <span className="sr-only">Endret fra: </span>
                                                 <FormattedTimeText time={tidOpprinnelig} />
                                             </Undertekst>
                                             )

@@ -62,14 +62,14 @@ function OmsorgstilbudFormAndInfo<FieldNames>({
             infoRenderer={({ data, onEdit }) => {
                 return (
                     <OmsorgstilbudMånedInfo
+                        måned={måned}
                         tidOmsorgstilbud={data}
                         tidOmsorgstilbudSak={tidIOmsorgstilbudSak}
+                        utilgjengeligeDager={alleUtilgjengeligeDager}
                         månedTittelHeadingLevel={månedTittelHeadingLevel}
                         onEdit={onEdit}
                         editLabel={labels.editLabel}
                         addLabel={labels.addLabel}
-                        måned={måned}
-                        utilgjengeligeDager={alleUtilgjengeligeDager}
                     />
                 );
             }}

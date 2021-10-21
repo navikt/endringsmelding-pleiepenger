@@ -77,13 +77,12 @@ const OmsorgstilbudMånedListe: React.FunctionComponent<Props> = ({
     const intl = useIntl();
     const måneder: SøknadsperiodeMåned = getMånederMedSøknadsperioder(søknadsperioder);
     const månederArray = Object.keys(måneder).map((key) => måneder[key]);
-    const år = getYearsInDateRanges(månederArray.map((m) => m[0]));
 
-    const visÅrHeading = år.length > 1;
+    const gårOverFlereÅr = getYearsInDateRanges(månederArray.map((m) => m[0])).length > 1;
 
     const visÅrstallHeading = (index: number): boolean => {
         return (
-            visÅrHeading &&
+            gårOverFlereÅr &&
             (index === 0 || månederArray[index][0].from.getFullYear() !== månederArray[index - 1][0].from.getFullYear())
         );
     };
@@ -123,7 +122,7 @@ const OmsorgstilbudMånedListe: React.FunctionComponent<Props> = ({
                             utilgjengeligeDager={getUtilgjengeligeDager(måned)}
                             endringsdato={endringsdato}
                             tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}
-                            månedTittelHeadingLevel={visÅrHeading ? 3 : 2}
+                            månedTittelHeadingLevel={gårOverFlereÅr ? 3 : 2}
                             onAfterChange={onOmsorgstilbudChanged}
                             labels={{
                                 addLabel: intlHelper(intl, 'omsorgstilbud.addLabel', {
@@ -138,6 +137,13 @@ const OmsorgstilbudMånedListe: React.FunctionComponent<Props> = ({
                                 modalTitle: intlHelper(intl, 'omsorgstilbud.modalTitle', {
                                     periode: mndOgÅrLabelPart,
                                 }),
+                                infoTitle: (
+                                    <span className="sr-only">
+                                        {intlHelper(intl, 'omsorgstilbud.modalTitle', {
+                                            periode: mndOgÅrLabelPart,
+                                        })}
+                                    </span>
+                                ),
                             }}
                         />
                     </FormBlock>
