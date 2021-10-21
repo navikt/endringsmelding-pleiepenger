@@ -129,14 +129,13 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
                             />
                         ) : (
                             <div
+                                title={dateIsDisabled ? disabledDateInfo : undefined}
                                 key={guid()}
                                 className={bem.classNames(
                                     bem.child('day').block,
                                     bem.child('day').modifierConditional('disabled', dateIsDisabled)
                                 )}>
-                                <div
-                                    className={bem.element('date')}
-                                    title={dateIsDisabled ? disabledDateInfo : undefined}>
+                                <div className={bem.element('date')}>
                                     <span className={bem.classNames(bem.element('date__full'))}>
                                         <span>{dateRendererFull(date)}</span>
                                     </span>
