@@ -35,7 +35,6 @@ export const TidUkerInput: React.FunctionComponent<Props> = ({
 }) => {
     const isNarrow = useMediaQuery({ maxWidth: 400 });
     const isWide = useMediaQuery({ minWidth: 1050 });
-    // const dager = getDagerIPeriode(periode.from, periode.to);
 
     const månedDateRange: DateRange = {
         from: dayjs(periode.from).startOf('month').toDate(),
