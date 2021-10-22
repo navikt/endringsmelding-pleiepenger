@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import flatten from 'lodash.flatten';
 import { Undertittel } from 'nav-frontend-typografi';
 import SoknadFormComponents from '../../soknad/SoknadFormComponents';
-import { SoknadFormField, TidEnkeltdag } from '../../types/SoknadFormData';
+import { TidEnkeltdag } from '../../types/SoknadFormData';
 import {
     dateIsWeekDay,
     getDateRangeFromDateRanges,
@@ -15,7 +15,7 @@ import {
 } from '../../utils/dateUtils';
 
 interface Props {
-    formFieldName: SoknadFormField;
+    inputGroupFieldName: string;
     endringsdato: Date;
     søknadsperioder: DateRange[];
     // opprinneligTid: TidEnkeltdag;
@@ -78,7 +78,7 @@ const SøknadsperioderMånedListe: React.FunctionComponent<Props> = ({
     søknadsperioder,
     legend,
     description,
-    formFieldName,
+    inputGroupFieldName: formFieldName,
     årstallHeaderRenderer,
     månedContentRenderer,
 }) => {

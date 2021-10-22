@@ -10,9 +10,12 @@ const arbeidstidMessages = {
             'Antall timer og minutter {dag} er for lavt. Tiden må være minst ett minutt.',
         'arbeidstid.uke': 'Uke {uke}',
         'arbeidstid.ukeOgÅr': '{ukeOgÅr}',
-        'arbeidstid.ingenDagerRegistrert': 'Ingen dager med arbeidstid registrert',
         'arbeidstid.form.tittel': 'Arbeidstid - {måned}',
         'arbeidstid.ukeForm.tittel': 'Uke {uke}, {år}',
+        'arbeidstid.form.intro.1':
+            'Fyll ut antall timer og minutter du skal jobbe. Du skal bare fylle ut den tiden du vet med sikkerhet. Du trenger ikke fylle ut noe de dagene du ikke skal jobbe. Husk å trykke lagre når du er ferdig med å fylle ut.',
+        'arbeidstid.form.intro_fortid.1':
+            'Fyll ut antall timer og minutter de dagene du jobbet. Du trenger ikke fylle ut noe de dagene du ikke jobbet. Husk å trykke lagre når du er ferdig med å fylle ut.',
 
         'arbeidstid.svar.ja': 'Ja',
         'arbeidstid.svar.nei': 'Nei',
@@ -20,12 +23,13 @@ const arbeidstidMessages = {
         'arbeidstid.timerPerDag.timerOgMinutter': '{hours}t {minutes}m',
         'arbeidstid.timerPerDag.timer': '{hours}t',
         'arbeidstid.timerPerDag.minutter': '{minutes}m',
-        'arbeidstid.ingenDagerValgt': 'Ingen dager med tilsyn er registrert',
 
         'arbeidstid.addLabel': 'Registrer hvor mye du jobbet {periode}',
         'arbeidstid.deleteLabel': 'Fjern alle timer',
         'arbeidstid.editLabel': 'Endre arbeidstid {periode}',
         'arbeidstid.modalTitle': 'Arbeidstid - {periode}',
+        'arbeidstid.iPeriodePanel.info': '{dager, plural, one {# dag} other {# dager}} med jobb registrert.',
+        'arbeidstid.iPeriodePanel.info.ingenDager': 'Ingen dager jobb registrert.',
     },
 };
 

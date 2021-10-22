@@ -6,7 +6,7 @@ import ErrorPage from '@navikt/sif-common-soknad/lib/soknad-common-pages/ErrorPa
 import LoadingPage from '@navikt/sif-common-soknad/lib/soknad-common-pages/LoadingPage';
 import SoknadErrorMessages from '@navikt/sif-common-soknad/lib/soknad-error-messages/SoknadErrorMessages';
 import useSoknadEssentials, { SoknadEssentials } from '../hooks/useSoknadEssentials';
-import { trimK9SakTilMaksEndringsperiode } from '../utils/k9utils';
+import { trimK9SakForSøknad } from '../utils/k9utils';
 import Soknad from './Soknad';
 
 const SoknadRemoteDataFetcher = (): JSX.Element => {
@@ -29,7 +29,7 @@ const SoknadRemoteDataFetcher = (): JSX.Element => {
                     <Soknad
                         søker={person}
                         arbeidsgivere={arbeidsgivere}
-                        k9sak={trimK9SakTilMaksEndringsperiode(k9sak)}
+                        k9sak={trimK9SakForSøknad(k9sak)}
                         soknadTempStorage={soknadTempStorage}
                     />
                 );

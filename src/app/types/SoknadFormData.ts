@@ -1,4 +1,5 @@
 import { Time } from '@navikt/sif-common-formik/lib';
+import { Arbeidsgiver } from './Arbeidsgiver';
 
 export type TidEnkeltdag = { [isoDateString: string]: Partial<Time> };
 export interface DagMedTid {
@@ -43,3 +44,6 @@ export interface SoknadFormData {
     [SoknadFormField.omsorgstilbud]?: Omsorgstilbud;
     [SoknadFormField.arbeidstid]?: Arbeidstid;
 }
+
+export const getArbeidsgiverArbeidstidFormFieldName = (a: Arbeidsgiver): SoknadFormField =>
+    `${SoknadFormField.arbeidstid_arbeidsgiver}.${a.organisasjonsnummer}.faktisk` as any;

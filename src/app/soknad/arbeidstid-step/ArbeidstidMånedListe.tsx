@@ -17,6 +17,7 @@ import {
 import ArbeidstidFormAndInfo from './arbeidstid-form-and-info/ArbeidstidFormAndInfo';
 
 interface Props {
+    formFieldName: SoknadFormField;
     endringsdato: Date;
     søknadsperioder: DateRange[];
     arbeidstidSak: TidEnkeltdag;
@@ -72,6 +73,7 @@ export const getUtilgjengeligeDager = (perioder: DateRange[]): Date[] => {
 const getYearMonthKey = (date: Date): string => dayjs(date).format('YYYY-MM');
 
 const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
+    formFieldName,
     endringsdato,
     søknadsperioder,
     arbeidstidSak,
@@ -85,9 +87,9 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
 
     return (
         <SøknadsperioderMånedListe
+            inputGroupFieldName={`${formFieldName}_gruppe`}
             endringsdato={endringsdato}
             søknadsperioder={søknadsperioder}
-            formFieldName={'TODO' as any}
             legend={<span className="sr-only">Måneder med dager hvor det er søkt pleiepenger for.</span>}
             description={
                 antallMånederMedHull > 0 ? (
@@ -103,7 +105,7 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
                 const mndOgÅrLabelPart = dayjs(måned.from).format('MMMM YYYY');
                 return (
                     <ArbeidstidFormAndInfo
-                        name={SoknadFormField.arbeidstid_arbeidsgiver}
+                        formFieldName={formFieldName}
                         periodeIMåned={måned}
                         utilgjengeligeDager={getUtilgjengeligeDager(søknadsperioderIMåned)}
                         endringsdato={endringsdato}

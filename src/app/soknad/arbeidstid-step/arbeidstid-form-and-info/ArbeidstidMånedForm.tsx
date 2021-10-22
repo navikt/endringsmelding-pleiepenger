@@ -40,18 +40,18 @@ const cleanupTidIPeriode = (
 
 const ArbeidstidMånedForm: React.FunctionComponent<Props> = ({
     periodeIMåned,
-    arbeidstid: tidArbeidstid,
+    arbeidstid,
     arbeidstidSak,
     utilgjengeligeDager,
     erHistorisk,
     onSubmit,
     onCancel,
 }) => {
-    const tidIMåned = getTidEnkeltdagerInnenforPeriode(tidArbeidstid, periodeIMåned);
-    const dager = getDagerMedTidITidsrom(tidArbeidstid, periodeIMåned);
+    const tidIMåned = getTidEnkeltdagerInnenforPeriode(arbeidstid, periodeIMåned);
+    const dager = getDagerMedTidITidsrom(arbeidstid, periodeIMåned);
     const erEndret = dager.some((dag) => {
         const key = dateToISOString(dag.dato);
-        return timeHasSameDuration(tidArbeidstid[key], arbeidstidSak[key]) === false;
+        return timeHasSameDuration(arbeidstid[key], arbeidstidSak[key]) === false;
     });
     return (
         <TidKalenderForm
@@ -62,7 +62,7 @@ const ArbeidstidMånedForm: React.FunctionComponent<Props> = ({
             erEndret={erEndret}
             tittel={
                 <FormattedMessage
-                    id="omsorgstilbud.form.tittel"
+                    id="arbeidstid.form.tittel"
                     values={{ måned: dayjs(periodeIMåned.from).format('MMMM YYYY') }}
                 />
             }
@@ -70,13 +70,8 @@ const ArbeidstidMånedForm: React.FunctionComponent<Props> = ({
                 <>
                     <p>
                         <FormattedMessage
-                            id={erHistorisk ? 'omsorgstilbud.form.intro_fortid.1' : 'omsorgstilbud.form.intro.1'}
+                            id={erHistorisk ? 'arbeidstid.form.intro_fortid.1' : 'arbeidstid.form.intro.1'}
                         />
-                    </p>
-                    <p>
-                        <strong>
-                            <FormattedMessage id="omsorgstilbud.form.intro.2" />
-                        </strong>
                     </p>
                 </>
             }
@@ -84,7 +79,7 @@ const ArbeidstidMånedForm: React.FunctionComponent<Props> = ({
             onSubmit={(values) => {
                 onSubmit(
                     cleanupTidIPeriode(
-                        tidArbeidstid,
+                        arbeidstid,
                         values,
                         getTidEnkeltdagerInnenforPeriode(arbeidstidSak, periodeIMåned)
                     )

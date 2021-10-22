@@ -3,6 +3,7 @@ import { iso8601DurationToTime, timeToIso8601Duration } from '@navikt/sif-common
 import { DateRange, Time } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import minMax from 'dayjs/plugin/minMax';
 import { uniq } from 'lodash';
@@ -11,6 +12,7 @@ import { ISODate, ISODateRange, ISODuration } from '../types';
 dayjs.extend(isoWeek);
 dayjs.extend(isBetween);
 dayjs.extend(minMax);
+dayjs.extend(isSameOrBefore);
 
 export const getMonthsInDateRange = (range: DateRange): DateRange[] => {
     const months: DateRange[] = [];
@@ -102,6 +104,10 @@ export const ISODateRangeToDateRange = (isoDateRange: ISODateRange): DateRange =
     };
 };
 
+export const dateRangeToISODateRange = (dateRange: DateRange): ISODateRange => {
+    return `${dateToISODate(dateRange.from)}/${dateToISODate(dateRange.to)}`;
+};
+
 const dateToISODate = (date: Date): ISODate => dayjs(date).format('YYYY-MM-DD');
 
 export const ISODurationToTime = (duration: ISODuration): Time | undefined => {
@@ -164,3 +170,23 @@ export const dateIsWeekDay = (date: Date): boolean => {
 
 export const getYearsInDateRanges = (dateRanges: DateRange[]): number[] =>
     uniq(dateRanges.map((d) => d.from.getFullYear()));
+
+export const getDateRangesBetweenDateRanges = (dateRanges: DateRange[]): DateRange[] => {
+    const rangesInBetween: DateRange[] = [];
+    dateRanges.forEach((periode, index) => {
+        if (index === 0) {
+            return;
+        }
+        const rangeInBetween: DateRange = {
+            from: dayjs(dateRanges[index - 1].to)
+                .add(1, 'day')
+                .toDate(),
+            to: dayjs(periode.from).subtract(1, 'day').toDate(),
+        };
+
+        if (dayjs(rangeInBetween.from).isSameOrBefore(rangeInBetween.to, 'day')) {
+            rangesInBetween.push(rangeInBetween);
+        }
+    });
+    return rangesInBetween;
+};

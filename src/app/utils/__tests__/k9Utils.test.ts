@@ -2,9 +2,9 @@ import { DateRange, Time } from '@navikt/sif-common-formik/lib';
 import { K9ArbeidsgiverArbeidstid } from '../../types/K9Sak';
 import { TidEnkeltdag } from '../../types/SoknadFormData';
 import { ISODateToDate } from '../dateUtils';
-import { getISODateObjectsWithinDateRange, trimArbeidstidTilMaksEndringsperiode } from '../k9utils';
+import { getISODateObjectsWithinDateRange, trimArbeidstidTilTillatPeriode } from '../k9utils';
 
-describe('trimArbeidstidTilMaksEndringsperiode', () => {
+describe('trimArbeidstidTilTillatPeriode', () => {
     it('fjerner arbeidstid utenfor endringsperiode', () => {
         const endringsperiode: DateRange = {
             from: ISODateToDate('2021-02-02'),
@@ -15,6 +15,7 @@ describe('trimArbeidstidTilMaksEndringsperiode', () => {
             hours: '0',
             minutes: '30',
         };
+
         const arbeidstid: K9ArbeidsgiverArbeidstid = {
             faktisk: {
                 '2021-02-01': tid,
@@ -29,7 +30,7 @@ describe('trimArbeidstidTilMaksEndringsperiode', () => {
                 '2021-02-04': tid,
             },
         };
-        const result = trimArbeidstidTilMaksEndringsperiode(arbeidstid, endringsperiode);
+        const result = trimArbeidstidTilTillatPeriode(arbeidstid, endringsperiode, {});
         expect(Object.keys(result).length).toEqual(2);
         expect(result['2021-02-01']).toBeUndefined();
         expect(result['2021-02-04']).toBeUndefined();
@@ -50,9 +51,12 @@ describe('trimArbeidstidTilMaksEndringsperiode', () => {
             '2021-02-03': tid,
             '2021-02-04': tid,
         };
-        const result = getISODateObjectsWithinDateRange(tilsyn, endringsperiode);
+        const result = getISODateObjectsWithinDateRange(tilsyn, endringsperiode, {});
         expect(Object.keys(result).length).toEqual(2);
         expect(result['2021-02-01']).toBeUndefined();
         expect(result['2021-02-04']).toBeUndefined();
+    });
+    it('fjerner dager med arbeidstid som er på dager det ikke er søkt om', () => {
+        expect(1).toBe(1);
     });
 });

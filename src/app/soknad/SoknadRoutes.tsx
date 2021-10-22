@@ -86,6 +86,9 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({
                         søknadsperioder={k9sak.ytelse.søknadsperioder}
                         endringsdato={endringsdato}
                         arbeidstidSak={k9sak.ytelse.arbeidstid}
+                        onArbeidstidChanged={() => {
+                            setPersistRequest({ stepID: StepID.ARBEIDSTID });
+                        }}
                     />
                 );
             case StepID.OPPSUMMERING:

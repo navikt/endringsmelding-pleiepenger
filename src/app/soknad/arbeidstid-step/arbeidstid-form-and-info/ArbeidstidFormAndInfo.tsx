@@ -13,18 +13,18 @@ import ArbeidstidMånedForm from './ArbeidstidMånedForm';
 import ArbeidstidMånedInfo, { ArbeidstidIPeriodemånedTittelHeadingLevel } from './ArbeidstidMånedInfo';
 
 interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
-    name: FieldNames;
+    formFieldName: FieldNames;
     labels: ModalFormAndInfoLabels;
     periodeIMåned: DateRange;
     utilgjengeligeDager?: Date[];
     endringsdato: Date;
     arbeidstid: TidEnkeltdag;
     månedTittelHeadingLevel?: ArbeidstidIPeriodemånedTittelHeadingLevel;
-    onAfterChange?: (omsorgsdager: TidEnkeltdag) => void;
+    onAfterChange?: (tid: TidEnkeltdag) => void;
 }
 
 function ArbeidstidFormAndInfo<FieldNames>({
-    name,
+    formFieldName,
     periodeIMåned,
     labels,
     endringsdato,
@@ -39,7 +39,7 @@ function ArbeidstidFormAndInfo<FieldNames>({
 
     return (
         <FormikModalFormAndInfo<FieldNames, TidEnkeltdag, ValidationError>
-            name={name}
+            name={formFieldName}
             validate={validate}
             labels={labels}
             renderEditButtons={false}

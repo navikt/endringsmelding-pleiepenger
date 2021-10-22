@@ -12,7 +12,7 @@ import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import FormattedTimeText from '../../../components/formatted-time-text/FormattedTimeText';
 import TidsbrukKalender from '../../../components/tidsbruk-kalender/TidsbrukKalender';
 import { TidEnkeltdag } from '../../../types/SoknadFormData';
-import { getDagerMedTidITidsrom } from '../../../utils/tidsbrukUtils';
+import { getDagerMedTidITidsrom, tidErIngenTid } from '../../../utils/tidsbrukUtils';
 import { timeHasSameDuration } from '../../../utils/dateUtils';
 
 export type ArbeidstidIPeriodemånedTittelHeadingLevel = 2 | 3;
@@ -47,24 +47,28 @@ const ArbeidstidMånedInfo: React.FunctionComponent<Props> = ({
         return timeHasSameDuration(tidArbeidstid[key], tidArbeidstidSak[key]) === false;
     });
 
+    const dagerMedRegistrertArbeidstid = dager.filter((d) => tidErIngenTid(d.tid) === false);
+
     return (
         <Ekspanderbartpanel
             tittel={
                 <>
-                    <Undertittel tag={`h${månedTittelHeadingLevel}`} className="--capitalize">
-                        {intlHelper(intl, 'omsorgstilbud.ukeOgÅr', {
-                            ukeOgÅr: dayjs(periodeIMåned.from).format('MMMM YYYY'),
-                        })}
+                    <Undertittel tag={`h${månedTittelHeadingLevel}`}>
+                        <span className="--capitalize">
+                            {intlHelper(intl, 'arbeidstid.ukeOgÅr', {
+                                ukeOgÅr: dayjs(periodeIMåned.from).format('MMMM YYYY'),
+                            })}
+                        </span>
                         {harEndringer ? ' (endret)' : ''}
                     </Undertittel>
                     <Box margin="m">
                         <Normaltekst>
-                            {dager.length === 0 ? (
-                                <FormattedMessage id="omsorgstilbud.iPeriodePanel.info.ingenDager" />
+                            {dagerMedRegistrertArbeidstid.length === 0 ? (
+                                <FormattedMessage id="arbeidstid.iPeriodePanel.info.ingenDager" />
                             ) : (
                                 <FormattedMessage
-                                    id="omsorgstilbud.iPeriodePanel.info"
-                                    values={{ dager: dager.length }}
+                                    id="arbeidstid.iPeriodePanel.info"
+                                    values={{ dager: dagerMedRegistrertArbeidstid.length }}
                                 />
                             )}
                         </Normaltekst>

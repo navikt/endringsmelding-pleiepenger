@@ -5,7 +5,7 @@ import { Undertittel } from 'nav-frontend-typografi';
 import StepIntroduction from '../../components/step-introduction/StepIntroduction';
 import { Arbeidsgiver } from '../../types/Arbeidsgiver';
 import { K9Arbeidstid } from '../../types/K9Sak';
-import { SoknadFormData } from '../../types/SoknadFormData';
+import { getArbeidsgiverArbeidstidFormFieldName, SoknadFormData } from '../../types/SoknadFormData';
 import SoknadFormStep from '../SoknadFormStep';
 import { StepID } from '../soknadStepsConfig';
 import ArbeidstidMånedListe from './ArbeidstidMånedListe';
@@ -19,6 +19,7 @@ interface Props {
     arbeidsgivere?: Arbeidsgiver[];
     søknadsperioder: DateRange[];
     arbeidstidSak: K9Arbeidstid;
+    onArbeidstidChanged: () => void;
 }
 
 const ArbeidstidStep: React.FunctionComponent<Props> = ({
@@ -26,6 +27,7 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
     endringsdato,
     arbeidstidSak,
     søknadsperioder,
+    onArbeidstidChanged,
 }) => {
     const stepId = StepID.ARBEIDSTID;
     return (
@@ -42,12 +44,11 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
                                     <p>Informasjon mangler om arbeidstid for denne arbeidsgiveren</p>
                                 ) : (
                                     <ArbeidstidMånedListe
+                                        formFieldName={getArbeidsgiverArbeidstidFormFieldName(a)}
                                         endringsdato={endringsdato}
                                         søknadsperioder={søknadsperioder}
-                                        arbeidstidSak={{}}
-                                        onArbeidstidChanged={(values) => {
-                                            console.log(values);
-                                        }}
+                                        arbeidstidSak={arbeidstidArbeidsgiver.faktisk}
+                                        onArbeidstidChanged={onArbeidstidChanged}
                                     />
                                 )}
                             </FormBlock>

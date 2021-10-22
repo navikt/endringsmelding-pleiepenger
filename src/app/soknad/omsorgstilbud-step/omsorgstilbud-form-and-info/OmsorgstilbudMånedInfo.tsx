@@ -51,10 +51,12 @@ const OmsorgstilbudMånedInfo: React.FunctionComponent<Props> = ({
         <Ekspanderbartpanel
             tittel={
                 <>
-                    <Undertittel tag={`h${månedTittelHeadingLevel}`} className="--capitalize">
-                        {intlHelper(intl, 'omsorgstilbud.ukeOgÅr', {
-                            ukeOgÅr: dayjs(periodeIMåned.from).format('MMMM YYYY'),
-                        })}
+                    <Undertittel tag={`h${månedTittelHeadingLevel}`}>
+                        <span className="--capitalize">
+                            {intlHelper(intl, 'omsorgstilbud.ukeOgÅr', {
+                                ukeOgÅr: dayjs(periodeIMåned.from).format('MMMM YYYY'),
+                            })}
+                        </span>
                         {harEndringer ? ' (endret)' : ''}
                     </Undertittel>
                     <Box margin="m">
