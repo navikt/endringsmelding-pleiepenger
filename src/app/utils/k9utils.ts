@@ -66,6 +66,7 @@ export const trimK9SakForSøknad = (k9sak: K9Sak): K9Sak => {
     } = sak;
 
     const dagerIkkeSøktFor = getDagerIkkeSøktFor(søknadsperioder);
+    sak.meta.dagerIkkeSøktFor = dagerIkkeSøktFor;
 
     /** Trim arbeidstid ansatt */
     if (arbeidsgivere) {

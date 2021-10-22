@@ -9,6 +9,7 @@ import { getArbeidsgiverArbeidstidFormFieldName, SoknadFormData } from '../../ty
 import SoknadFormStep from '../SoknadFormStep';
 import { StepID } from '../soknadStepsConfig';
 import ArbeidstidMånedListe from './ArbeidstidMånedListe';
+import { DagerIkkeSøktFor } from '../../types';
 
 const cleanupStep = (formData: SoknadFormData): SoknadFormData => {
     return formData;
@@ -18,6 +19,7 @@ interface Props {
     endringsdato: Date;
     arbeidsgivere?: Arbeidsgiver[];
     søknadsperioder: DateRange[];
+    dagerIkkeSøktFor: DagerIkkeSøktFor;
     arbeidstidSak: K9Arbeidstid;
     onArbeidstidChanged: () => void;
 }
@@ -27,6 +29,7 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
     endringsdato,
     arbeidstidSak,
     søknadsperioder,
+    dagerIkkeSøktFor,
     onArbeidstidChanged,
 }) => {
     const stepId = StepID.ARBEIDSTID;
@@ -48,6 +51,7 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
                                         endringsdato={endringsdato}
                                         søknadsperioder={søknadsperioder}
                                         arbeidstidArbeidsgiverSak={arbeidstidArbeidsgiver}
+                                        dagerIkkeSøktFor={dagerIkkeSøktFor}
                                         onArbeidstidChanged={onArbeidstidChanged}
                                     />
                                 )}

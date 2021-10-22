@@ -1,4 +1,5 @@
 import { DateRange } from '@navikt/sif-common-formik/lib';
+import { DagerIkkeSøktFor } from '.';
 import { TidEnkeltdag } from './SoknadFormData';
 
 export type K9ArbeidsgiverArbeidstid = { faktisk: TidEnkeltdag; normalt: TidEnkeltdag };
@@ -27,5 +28,8 @@ export interface K9Sak {
             enkeltdager: TidEnkeltdag;
         };
         arbeidstid: K9Arbeidstid;
+    };
+    meta: {
+        dagerIkkeSøktFor: DagerIkkeSøktFor;
     };
 }

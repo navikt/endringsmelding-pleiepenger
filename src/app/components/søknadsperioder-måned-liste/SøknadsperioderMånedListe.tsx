@@ -7,18 +7,12 @@ import flatten from 'lodash.flatten';
 import { Undertittel } from 'nav-frontend-typografi';
 import SoknadFormComponents from '../../soknad/SoknadFormComponents';
 import { TidEnkeltdag } from '../../types/SoknadFormData';
-import {
-    dateIsWeekDay,
-    getDateRangeFromDateRanges,
-    getMonthsInDateRange,
-    getYearsInDateRanges,
-} from '../../utils/dateUtils';
+import { getDateRangeFromDateRanges, getMonthsInDateRange, getYearsInDateRanges } from '../../utils/dateUtils';
 
 interface Props {
     inputGroupFieldName: string;
     endringsdato: Date;
     søknadsperioder: DateRange[];
-    // opprinneligTid: TidEnkeltdag;
     legend: React.ReactNode;
     description?: React.ReactNode;
     årstallHeaderRenderer?: (årstall: number) => React.ReactNode;
@@ -37,39 +31,6 @@ export const getMånederMedSøknadsperioder = (søknadsperioder: DateRange[]): S
         måneder[key] = måneder[key] ? [...måneder[key], periode] : [periode];
     });
     return måneder;
-};
-
-export const getDatesInDateRange = ({ from, to }: DateRange): Date[] => {
-    const dates: Date[] = [];
-    let currentDate = dayjs(from);
-    do {
-        dates.push(currentDate.toDate());
-        currentDate = currentDate.add(1, 'day');
-    } while (dayjs(currentDate).isSameOrBefore(to));
-    return dates;
-};
-
-export const getUtilgjengeligeDager = (perioder: DateRange[]): Date[] => {
-    if (perioder.length === 1) {
-        return [];
-    }
-    const utilgjengeligeDager: Date[] = [];
-
-    perioder.forEach((periode, index) => {
-        if (index === 0) {
-            return;
-        }
-        const forrigePeriode = perioder[index - 1];
-        const dagerMellom = dayjs(periode.from).diff(forrigePeriode.to, 'days');
-        if (dagerMellom > 0) {
-            const dates = getDatesInDateRange({
-                from: dayjs(forrigePeriode.to).add(1, 'day').toDate(),
-                to: dayjs(periode.from).subtract(1, 'day').toDate(),
-            }).filter(dateIsWeekDay);
-            utilgjengeligeDager.push(...dates);
-        }
-    });
-    return utilgjengeligeDager;
 };
 
 const getYearMonthKey = (date: Date): string => dayjs(date).format('YYYY-MM');

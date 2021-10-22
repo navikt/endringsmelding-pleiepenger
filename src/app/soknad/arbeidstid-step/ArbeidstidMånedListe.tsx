@@ -8,20 +8,18 @@ import AlertStripe from 'nav-frontend-alertstriper';
 import { Element } from 'nav-frontend-typografi';
 import SøknadsperioderMånedListe from '../../components/søknadsperioder-måned-liste/SøknadsperioderMånedListe';
 import { SoknadFormField, TidEnkeltdag } from '../../types/SoknadFormData';
-import {
-    dateIsWeekDay,
-    getDateRangeFromDateRanges,
-    getMonthsInDateRange,
-    getYearsInDateRanges,
-} from '../../utils/dateUtils';
+import { getDateRangeFromDateRanges, getMonthsInDateRange, getYearsInDateRanges } from '../../utils/dateUtils';
 import ArbeidstidFormAndInfo from './arbeidstid-form-and-info/ArbeidstidFormAndInfo';
 import { K9ArbeidsgiverArbeidstid } from '../../types/K9Sak';
+import { DagerIkkeSøktFor } from '../../types';
+import { getUtilgjengeligeDager } from '../../utils/utilgjengeligeDagerUtils';
 
 interface Props {
     formFieldName: SoknadFormField;
     endringsdato: Date;
     søknadsperioder: DateRange[];
     arbeidstidArbeidsgiverSak: K9ArbeidsgiverArbeidstid;
+    dagerIkkeSøktFor: DagerIkkeSøktFor;
     onArbeidstidChanged?: (arbeidstid: TidEnkeltdag) => void;
 }
 
@@ -38,39 +36,6 @@ export const getMånederMedSøknadsperioder = (søknadsperioder: DateRange[]): S
     return måneder;
 };
 
-export const getDatesInDateRange = ({ from, to }: DateRange): Date[] => {
-    const dates: Date[] = [];
-    let currentDate = dayjs(from);
-    do {
-        dates.push(currentDate.toDate());
-        currentDate = currentDate.add(1, 'day');
-    } while (dayjs(currentDate).isSameOrBefore(to));
-    return dates;
-};
-
-export const getUtilgjengeligeDager = (perioder: DateRange[]): Date[] => {
-    if (perioder.length === 1) {
-        return [];
-    }
-    const utilgjengeligeDager: Date[] = [];
-
-    perioder.forEach((periode, index) => {
-        if (index === 0) {
-            return;
-        }
-        const forrigePeriode = perioder[index - 1];
-        const dagerMellom = dayjs(periode.from).diff(forrigePeriode.to, 'days');
-        if (dagerMellom > 0) {
-            const dates = getDatesInDateRange({
-                from: dayjs(forrigePeriode.to).add(1, 'day').toDate(),
-                to: dayjs(periode.from).subtract(1, 'day').toDate(),
-            }).filter(dateIsWeekDay);
-            utilgjengeligeDager.push(...dates);
-        }
-    });
-    return utilgjengeligeDager;
-};
-
 const getYearMonthKey = (date: Date): string => dayjs(date).format('YYYY-MM');
 
 const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
@@ -78,6 +43,7 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
     endringsdato,
     søknadsperioder,
     arbeidstidArbeidsgiverSak,
+    dagerIkkeSøktFor,
     onArbeidstidChanged,
 }) => {
     const intl = useIntl();
@@ -108,7 +74,7 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
                     <ArbeidstidFormAndInfo
                         formFieldName={formFieldName}
                         periodeIMåned={måned}
-                        utilgjengeligeDager={getUtilgjengeligeDager(søknadsperioderIMåned)}
+                        utilgjengeligeDager={getUtilgjengeligeDager(søknadsperioderIMåned, dagerIkkeSøktFor)}
                         endringsdato={endringsdato}
                         arbeidstidArbeidsgiverSak={arbeidstidArbeidsgiverSak}
                         månedTittelHeadingLevel={gårOverFlereÅr ? 3 : 2}
