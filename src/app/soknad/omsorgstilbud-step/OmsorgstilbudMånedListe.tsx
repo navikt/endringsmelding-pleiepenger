@@ -87,7 +87,7 @@ const OmsorgstilbudMånedListe: React.FunctionComponent<Props> = ({
         <SøknadsperioderMånedListe
             endringsdato={endringsdato}
             søknadsperioder={søknadsperioder}
-            formFieldName={`${SoknadFormField.omsorgstilbud}_dager` as any}
+            formFieldName={SoknadFormField.omsorgstilbud_dager_gruppe}
             legend={<span className="sr-only">Måneder med dager hvor det er søkt pleiepenger for.</span>}
             description={
                 antallMånederMedHull > 0 ? (

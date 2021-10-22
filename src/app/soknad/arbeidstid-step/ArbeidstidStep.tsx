@@ -2,13 +2,13 @@ import React from 'react';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { Undertittel } from 'nav-frontend-typografi';
-import SøknadsperioderMånedListe from '../../components/søknadsperioder-måned-liste/SøknadsperioderMånedListe';
 import StepIntroduction from '../../components/step-introduction/StepIntroduction';
 import { Arbeidsgiver } from '../../types/Arbeidsgiver';
-import { ArbeidstidSak } from '../../types/K9Sak';
+import { K9Arbeidstid } from '../../types/K9Sak';
 import { SoknadFormData } from '../../types/SoknadFormData';
 import SoknadFormStep from '../SoknadFormStep';
 import { StepID } from '../soknadStepsConfig';
+import ArbeidstidMånedListe from './ArbeidstidMånedListe';
 
 const cleanupStep = (formData: SoknadFormData): SoknadFormData => {
     return formData;
@@ -18,7 +18,7 @@ interface Props {
     endringsdato: Date;
     arbeidsgivere?: Arbeidsgiver[];
     søknadsperioder: DateRange[];
-    arbeidstidSak: ArbeidstidSak;
+    arbeidstidSak: K9Arbeidstid;
 }
 
 const ArbeidstidStep: React.FunctionComponent<Props> = ({
@@ -34,19 +34,22 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
             {arbeidsgivere && (
                 <>
                     {arbeidsgivere.map((a) => {
-                        const arbeidstidArbeidsgiver = arbeidstidSak[a.organisasjonsnummer];
-                        console.log(arbeidstidArbeidsgiver);
-
+                        const arbeidstidArbeidsgiver = arbeidstidSak.arbeidsgivere[a.organisasjonsnummer];
                         return (
                             <FormBlock key={a.organisasjonsnummer}>
                                 <Undertittel>{a.navn}</Undertittel>
-                                <SøknadsperioderMånedListe
-                                    formFieldName={'abc' as any}
-                                    legend="Tittel på skjemagruppe"
-                                    månedContentRenderer={() => <div>måned</div>}
-                                    søknadsperioder={søknadsperioder}
-                                    endringsdato={endringsdato}
-                                />
+                                {arbeidstidArbeidsgiver === undefined ? (
+                                    <p>Informasjon mangler om arbeidstid for denne arbeidsgiveren</p>
+                                ) : (
+                                    <ArbeidstidMånedListe
+                                        endringsdato={endringsdato}
+                                        søknadsperioder={søknadsperioder}
+                                        arbeidstidSak={{}}
+                                        onArbeidstidChanged={(values) => {
+                                            console.log(values);
+                                        }}
+                                    />
+                                )}
                             </FormBlock>
                         );
                     })}

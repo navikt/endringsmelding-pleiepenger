@@ -1,16 +1,21 @@
 import { apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { ArbeidstidSak, K9Sak } from '../types/K9Sak';
+import { K9Arbeidstid, K9Sak } from '../types/K9Sak';
 import { ISODateRangeToDateRange } from '../utils/dateUtils';
 import { getEndringsdato, getSøknadsperioderInnenforTillattEndringsperiode } from '../utils/endringsperiode';
+import { getArbeidsgiverArbeidstidFromK9Format } from './getArbeidstidFromK9Format';
 import { getTilsynsdagerFromK9Format } from './getTilsynsdagerFromK9Format';
 import { ArbeidsgiverK9, K9SakRemote } from './k9SakRemote';
 
-const getArbeidstidArbeidsgivere = (arbeidsgivere: ArbeidsgiverK9[]): ArbeidstidSak => {
-    const arbeidstidSak: ArbeidstidSak = {};
+const getArbeidstidArbeidsgivere = (arbeidsgivere: ArbeidsgiverK9[]): K9Arbeidstid => {
+    const arbeidstid: K9Arbeidstid = {
+        arbeidsgivere: {},
+    };
     arbeidsgivere.forEach((a) => {
-        arbeidstidSak[a.organisasjonsnummer] = a.arbeidstidInfo;
+        arbeidstid.arbeidsgivere[a.organisasjonsnummer] = getArbeidsgiverArbeidstidFromK9Format(
+            a.arbeidstidInfo.perioder
+        );
     });
-    return arbeidstidSak;
+    return arbeidstid;
 };
 
 export const parseK9SakRemote = (data: K9SakRemote): K9Sak => {

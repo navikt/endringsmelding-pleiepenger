@@ -90,8 +90,8 @@ const søkerMockIkkeMyndig = {
 
 const arbeidsgivereMock = {
     organisasjoner: [
-        { navn: 'Karls godteributikk', organisasjonsnummer: '123451234' },
-        // { navn: 'Noras sveiseri', organisasjonsnummer: '123451235' },
+        { navn: 'Johs broderi', organisasjonsnummer: '123451234' },
+        { navn: 'Noras sveiseri', organisasjonsnummer: '112233445' },
     ],
 };
 

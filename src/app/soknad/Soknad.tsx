@@ -15,10 +15,11 @@ import { Arbeidsgiver } from '../types/Arbeidsgiver';
 import { K9Sak } from '../types/K9Sak';
 import { Person } from '../types/Person';
 import { SoknadApiData } from '../types/SoknadApiData';
-import { SoknadFormData, SoknadFormField } from '../types/SoknadFormData';
+import { SoknadFormData } from '../types/SoknadFormData';
 import { SoknadTempStorageData } from '../types/SoknadTempStorageData';
-import { getEndringsperiode, getEndringsdato } from '../utils/endringsperiode';
 import appSentryLogger from '../utils/appSentryLogger';
+import { getEndringsdato, getEndringsperiode } from '../utils/endringsperiode';
+import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 import {
     navigateTo,
     navigateToErrorPage,
@@ -33,7 +34,7 @@ import SoknadFormComponents from './SoknadFormComponents';
 import SoknadRoutes from './SoknadRoutes';
 import { getSoknadStepsConfig, StepID } from './soknadStepsConfig';
 import soknadTempStorage, { isStorageDataValid } from './soknadTempStorage';
-import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
+import { getInitialFormData } from '../utils/initialFormDataUtils';
 
 interface Props {
     søker: Person;
@@ -49,7 +50,6 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
     const history = useHistory();
     const [initializing, setInitializing] = useState(true);
 
-    // const [initialFormData, setInitialFormData] = useState<Partial<SoknadFormData>>({ ...initialSoknadFormData });
     const [sendSoknadStatus, setSendSoknadStatus] = useState<SendSoknadStatus>(initialSendSoknadState);
     const [soknadId, setSoknadId] = useState<string | undefined>();
 
@@ -202,15 +202,6 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
         }
     }, [history, tempStorage, søker]);
 
-    const getInitialFormData = (): Partial<SoknadFormData> => {
-        return {
-            [SoknadFormField.harForståttRettigheterOgPlikter]: false,
-            [SoknadFormField.harBekreftetOpplysninger]: false,
-            omsorgstilbud: k9sak.ytelse.tilsynsordning,
-            ...(isStorageDataValid(tempStorage, { søker }) ? tempStorage.formData : {}),
-        };
-    };
-
     return (
         <LoadWrapper
             isLoading={initializing}
@@ -220,7 +211,7 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
                 }
                 return (
                     <SoknadFormComponents.FormikWrapper
-                        initialValues={getInitialFormData()}
+                        initialValues={getInitialFormData(k9sak, søker, tempStorage)}
                         onSubmit={() => null}
                         renderForm={({ values, resetForm }) => {
                             const soknadStepsConfig = getSoknadStepsConfig(values);

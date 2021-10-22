@@ -41,7 +41,7 @@ export const k9SakMock: K9SakRemote = {
         arbeidstid: {
             arbeidstakerList: [
                 {
-                    organisasjonsnummer: '999999999',
+                    organisasjonsnummer: '123451234',
                     arbeidstidInfo: {
                         perioder: {
                             '2018-01-12/2018-10-15': {

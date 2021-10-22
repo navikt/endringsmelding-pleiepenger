@@ -1,5 +1,5 @@
 import { DateRange, Time } from '@navikt/sif-common-formik/lib';
-import { ArbeidstidEnkeltdag, ArbeidstidNormaltOgFaktisk } from '../types/SoknadFormData';
+import { K9ArbeidsgiverArbeidstid } from '../types/K9Sak';
 import {
     dateIsWithinDateRange,
     getISODatesInISODateRangeWeekendExcluded,
@@ -8,8 +8,14 @@ import {
 } from '../utils/dateUtils';
 import { ArbeidstidInfoK9 } from './k9SakRemote';
 
-export const getArbeidstidFromK9Format = (data: ArbeidstidInfoK9, maxRange?: DateRange): ArbeidstidEnkeltdag => {
-    const arbeidstidEnkeltdager: ArbeidstidEnkeltdag = {};
+export const getArbeidsgiverArbeidstidFromK9Format = (
+    data: ArbeidstidInfoK9,
+    maxRange?: DateRange
+): K9ArbeidsgiverArbeidstid => {
+    const arbeidstid: K9ArbeidsgiverArbeidstid = {
+        faktisk: {},
+        normalt: {},
+    };
 
     const getTid = (tid: Time | undefined): Time => {
         return {
@@ -19,16 +25,13 @@ export const getArbeidstidFromK9Format = (data: ArbeidstidInfoK9, maxRange?: Dat
     };
     Object.keys(data).forEach((isoDateRange) => {
         const isoDates = getISODatesInISODateRangeWeekendExcluded(isoDateRange);
-        const arbeidstidIPeriode: ArbeidstidNormaltOgFaktisk = {
-            faktiskArbeidTimer: getTid(ISODurationToTime(data[isoDateRange].faktiskArbeidTimerPerDag)),
-            jobberNormaltTimer: getTid(ISODurationToTime(data[isoDateRange].jobberNormaltTimerPerDag)),
-        };
         isoDates.forEach((isoDate) => {
             if (maxRange === undefined || dateIsWithinDateRange(ISODateToDate(isoDate), maxRange)) {
-                arbeidstidEnkeltdager[isoDate] = arbeidstidIPeriode;
+                arbeidstid.faktisk[isoDate] = getTid(ISODurationToTime(data[isoDateRange].faktiskArbeidTimerPerDag));
+                arbeidstid.normalt[isoDate] = getTid(ISODurationToTime(data[isoDateRange].jobberNormaltTimerPerDag));
             }
         });
     });
 
-    return arbeidstidEnkeltdager;
+    return arbeidstid;
 };

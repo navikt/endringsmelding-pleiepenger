@@ -1,50 +1,58 @@
 import { DateRange, Time } from '@navikt/sif-common-formik/lib';
-import { ArbeidstidEnkeltdag, ArbeidstidNormaltOgFaktisk, TidEnkeltdag } from '../../types/SoknadFormData';
+import { K9ArbeidsgiverArbeidstid } from '../../types/K9Sak';
+import { TidEnkeltdag } from '../../types/SoknadFormData';
 import { ISODateToDate } from '../dateUtils';
-import { getISODateObjectsWithinDateRange } from '../k9utils';
+import { getISODateObjectsWithinDateRange, trimArbeidstidTilMaksEndringsperiode } from '../k9utils';
 
-describe('trimK9SakTilMaksEndringsperiode', () => {
+describe('trimArbeidstidTilMaksEndringsperiode', () => {
     it('fjerner arbeidstid utenfor endringsperiode', () => {
         const endringsperiode: DateRange = {
-            from: ISODateToDate('2021-02-01'),
-            to: ISODateToDate('2021-02-02'),
+            from: ISODateToDate('2021-02-02'),
+            to: ISODateToDate('2021-02-03'),
         };
-        const tid: ArbeidstidNormaltOgFaktisk = {
-            faktiskArbeidTimer: {
-                hours: '0',
-                minutes: '30',
+
+        const tid: Partial<Time> = {
+            hours: '0',
+            minutes: '30',
+        };
+        const arbeidstid: K9ArbeidsgiverArbeidstid = {
+            faktisk: {
+                '2021-02-01': tid,
+                '2021-02-02': tid,
+                '2021-02-03': tid,
+                '2021-02-04': tid,
+            },
+            normalt: {
+                '2021-02-01': tid,
+                '2021-02-02': tid,
+                '2021-02-03': tid,
+                '2021-02-04': tid,
             },
         };
-        const arbeidstid: ArbeidstidEnkeltdag = {
-            '2021-01-01': tid,
-            '2021-02-01': tid,
-            '2021-02-02': tid,
-            '2021-02-03': tid,
-        };
-        const result = getISODateObjectsWithinDateRange(arbeidstid, endringsperiode);
+        const result = trimArbeidstidTilMaksEndringsperiode(arbeidstid, endringsperiode);
         expect(Object.keys(result).length).toEqual(2);
-        expect(result['2021-01-01']).toBeUndefined();
-        expect(result['2021-01-03']).toBeUndefined();
+        expect(result['2021-02-01']).toBeUndefined();
+        expect(result['2021-02-04']).toBeUndefined();
     });
 
     it('fjerner dager med tilsyn utenfor endringsperiode', () => {
         const endringsperiode: DateRange = {
-            from: ISODateToDate('2021-02-01'),
-            to: ISODateToDate('2021-02-02'),
+            from: ISODateToDate('2021-02-02'),
+            to: ISODateToDate('2021-02-03'),
         };
         const tid: Time = {
             hours: '0',
             minutes: '30',
         };
-        const arbeidstid: TidEnkeltdag = {
-            '2021-01-01': tid,
+        const tilsyn: TidEnkeltdag = {
             '2021-02-01': tid,
             '2021-02-02': tid,
             '2021-02-03': tid,
+            '2021-02-04': tid,
         };
-        const result = getISODateObjectsWithinDateRange(arbeidstid, endringsperiode);
+        const result = getISODateObjectsWithinDateRange(tilsyn, endringsperiode);
         expect(Object.keys(result).length).toEqual(2);
-        expect(result['2021-01-01']).toBeUndefined();
-        expect(result['2021-01-03']).toBeUndefined();
+        expect(result['2021-02-01']).toBeUndefined();
+        expect(result['2021-02-04']).toBeUndefined();
     });
 });
