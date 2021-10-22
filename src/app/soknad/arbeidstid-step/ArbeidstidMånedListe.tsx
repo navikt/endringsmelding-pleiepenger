@@ -15,12 +15,13 @@ import {
     getYearsInDateRanges,
 } from '../../utils/dateUtils';
 import ArbeidstidFormAndInfo from './arbeidstid-form-and-info/ArbeidstidFormAndInfo';
+import { K9ArbeidsgiverArbeidstid } from '../../types/K9Sak';
 
 interface Props {
     formFieldName: SoknadFormField;
     endringsdato: Date;
     søknadsperioder: DateRange[];
-    arbeidstidSak: TidEnkeltdag;
+    arbeidstidArbeidsgiverSak: K9ArbeidsgiverArbeidstid;
     onArbeidstidChanged?: (arbeidstid: TidEnkeltdag) => void;
 }
 
@@ -76,7 +77,7 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
     formFieldName,
     endringsdato,
     søknadsperioder,
-    arbeidstidSak,
+    arbeidstidArbeidsgiverSak,
     onArbeidstidChanged,
 }) => {
     const intl = useIntl();
@@ -109,7 +110,7 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
                         periodeIMåned={måned}
                         utilgjengeligeDager={getUtilgjengeligeDager(søknadsperioderIMåned)}
                         endringsdato={endringsdato}
-                        arbeidstid={arbeidstidSak}
+                        arbeidstidArbeidsgiverSak={arbeidstidArbeidsgiverSak}
                         månedTittelHeadingLevel={gårOverFlereÅr ? 3 : 2}
                         onAfterChange={onArbeidstidChanged}
                         labels={{

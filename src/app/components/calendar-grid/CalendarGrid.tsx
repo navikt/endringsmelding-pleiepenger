@@ -8,6 +8,7 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { groupBy } from 'lodash';
 import { guid } from 'nav-frontend-js-utils';
 import { dateIsWeekDay, getFirstDateOfWeek, isDateInDates } from '../../utils/dateUtils';
+import CalendarGridDate from './CalendarGridDate';
 import './calendarGrid.less';
 
 dayjs.extend(isSameOrBefore);
@@ -17,12 +18,15 @@ interface WeekToRender {
     dates: Date[];
 }
 
+export type CalendarGridPopoverContentRenderer = (date: Date) => React.ReactNode;
+
 interface Props {
     month: DateRange;
     renderAsList?: boolean;
     disabledDates?: Date[];
     disabledDateInfo?: string;
     hideEmptyContentInListMode?: boolean;
+    popoverContentRenderer?: CalendarGridPopoverContentRenderer;
     dateContentRenderer: (date: Date, isDisabled?: boolean) => React.ReactNode;
     dateRendererShort?: (date: Date) => React.ReactNode;
     dateRendererFull?: (date: Date) => React.ReactNode;
@@ -66,6 +70,7 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
     disabledDateInfo,
     renderAsList,
     hideEmptyContentInListMode,
+    popoverContentRenderer,
     dateContentRenderer,
     dateRendererShort = prettifyDate,
     dateRendererFull = (date) => dayjs(date).format('dddd DD. MMM'),
@@ -135,12 +140,12 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
                                     bem.child('day').block,
                                     bem.child('day').modifierConditional('disabled', dateIsDisabled)
                                 )}>
-                                <div className={bem.element('date')}>
-                                    <span className={bem.classNames(bem.element('date__full'))}>
-                                        <span>{dateRendererFull(date)}</span>
-                                    </span>
-                                    <span className={bem.element('date__short')}>{dateRendererShort(date)}</span>
-                                </div>
+                                <CalendarGridDate
+                                    date={date}
+                                    dateRendererFull={dateRendererFull}
+                                    dateRendererShort={dateRendererShort}
+                                    popoverContentRenderer={dateIsDisabled ? undefined : popoverContentRenderer}
+                                />
                                 <div>{dateContentRenderer(date, dateIsDisabled)}</div>
                             </div>
                         );

@@ -11,6 +11,7 @@ import { TidEnkeltdag } from '../../../types/SoknadFormData';
 import { getUtilgjengeligeDagerIMåned } from '../../../utils/utilgjengeligeDagerUtils';
 import ArbeidstidMånedForm from './ArbeidstidMånedForm';
 import ArbeidstidMånedInfo, { ArbeidstidIPeriodemånedTittelHeadingLevel } from './ArbeidstidMånedInfo';
+import { K9ArbeidsgiverArbeidstid } from '../../../types/K9Sak';
 
 interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     formFieldName: FieldNames;
@@ -18,7 +19,7 @@ interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, Va
     periodeIMåned: DateRange;
     utilgjengeligeDager?: Date[];
     endringsdato: Date;
-    arbeidstid: TidEnkeltdag;
+    arbeidstidArbeidsgiverSak: K9ArbeidsgiverArbeidstid;
     månedTittelHeadingLevel?: ArbeidstidIPeriodemånedTittelHeadingLevel;
     onAfterChange?: (tid: TidEnkeltdag) => void;
 }
@@ -28,7 +29,7 @@ function ArbeidstidFormAndInfo<FieldNames>({
     periodeIMåned,
     labels,
     endringsdato,
-    arbeidstid,
+    arbeidstidArbeidsgiverSak,
     utilgjengeligeDager = [],
     månedTittelHeadingLevel,
     validate,
@@ -52,7 +53,7 @@ function ArbeidstidFormAndInfo<FieldNames>({
                     <ArbeidstidMånedForm
                         periodeIMåned={periodeIMåned}
                         arbeidstid={data}
-                        arbeidstidSak={arbeidstid}
+                        arbeidstidArbeidsgiverSak={arbeidstidArbeidsgiverSak}
                         utilgjengeligeDager={alleUtilgjengeligeDager}
                         erHistorisk={erHistorisk}
                         onCancel={onCancel}
@@ -65,7 +66,7 @@ function ArbeidstidFormAndInfo<FieldNames>({
                     <ArbeidstidMånedInfo
                         periodeIMåned={periodeIMåned}
                         tidArbeidstid={data}
-                        tidArbeidstidSak={arbeidstid}
+                        arbeidstidArbeidsgiverSak={arbeidstidArbeidsgiverSak}
                         utilgjengeligeDager={alleUtilgjengeligeDager}
                         månedTittelHeadingLevel={månedTittelHeadingLevel}
                         onEdit={onEdit}

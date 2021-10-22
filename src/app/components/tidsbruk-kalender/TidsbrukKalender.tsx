@@ -3,7 +3,7 @@ import AriaAlternative from '@navikt/sif-common-core/lib/components/aria/AriaAlt
 import { DateRange, dateToISOString, Time } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { DagMedTid } from '../../types/SoknadFormData';
-import CalendarGrid from '../calendar-grid/CalendarGrid';
+import CalendarGrid, { CalendarGridPopoverContentRenderer } from '../calendar-grid/CalendarGrid';
 import TidsbrukKalenderDag from './TidsbrukKalenderDag';
 
 export type TidRenderer = (tid: Partial<Time>, dato: Date) => React.ReactNode;
@@ -24,6 +24,7 @@ interface Props {
     utilgjengeligDagInfo?: string;
     skjulTommeDagerIListe?: boolean;
     visEndringsinformasjon?: boolean;
+    popoverContentRenderer?: CalendarGridPopoverContentRenderer;
     tomUkeContentRenderer?: () => React.ReactNode;
     tidRenderer?: TidRenderer;
 }
@@ -36,6 +37,8 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
     utilgjengeligDagInfo,
     skjulTommeDagerIListe,
     visEndringsinformasjon,
+    popoverContentRenderer,
+    tidRenderer,
     tomUkeContentRenderer,
 }) => {
     const kalenderdager: Kalenderdager = {};
@@ -61,6 +64,7 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
             disabledDateInfo={utilgjengeligDagInfo}
             hideEmptyContentInListMode={skjulTommeDagerIListe}
             allDaysInWeekDisabledContentRenderer={tomUkeContentRenderer}
+            popoverContentRenderer={popoverContentRenderer}
             dateRendererShort={(date: Date) => (
                 <AriaAlternative
                     visibleText={dayjs(date).format('D.')}
@@ -71,7 +75,9 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
                 const dag = kalenderdager[dateToISOString(dato)];
                 return dag ? (
                     <TidsbrukKalenderDag
+                        dato={dato}
                         tid={dag.tid}
+                        tidRenderer={tidRenderer}
                         tidOpprinnelig={dag.tidOpprinnelig}
                         visEndringsinformasjon={visEndringsinformasjon}
                     />

@@ -8,11 +8,12 @@ import { TidEnkeltdag } from '../../../types/SoknadFormData';
 import { timeHasSameDuration } from '../../../utils/dateUtils';
 import { getDagerMedTidITidsrom, getTidEnkeltdagerInnenforPeriode, tidErIngenTid } from '../../../utils/tidsbrukUtils';
 import { getArbeidstidValidator } from '../../../validation/validateArbeidstidFields';
+import { K9ArbeidsgiverArbeidstid } from '../../../types/K9Sak';
 
 interface Props {
     periodeIMåned: DateRange;
     arbeidstid: TidEnkeltdag;
-    arbeidstidSak: TidEnkeltdag;
+    arbeidstidArbeidsgiverSak: K9ArbeidsgiverArbeidstid;
     utilgjengeligeDager: Date[];
     erHistorisk: boolean;
     onCancel: () => void;
@@ -41,7 +42,7 @@ const cleanupTidIPeriode = (
 const ArbeidstidMånedForm: React.FunctionComponent<Props> = ({
     periodeIMåned,
     arbeidstid,
-    arbeidstidSak,
+    arbeidstidArbeidsgiverSak,
     utilgjengeligeDager,
     erHistorisk,
     onSubmit,
@@ -51,14 +52,14 @@ const ArbeidstidMånedForm: React.FunctionComponent<Props> = ({
     const dager = getDagerMedTidITidsrom(arbeidstid, periodeIMåned);
     const erEndret = dager.some((dag) => {
         const key = dateToISOString(dag.dato);
-        return timeHasSameDuration(arbeidstid[key], arbeidstidSak[key]) === false;
+        return timeHasSameDuration(arbeidstid[key], arbeidstidArbeidsgiverSak.faktisk[key]) === false;
     });
     return (
         <TidKalenderForm
             periode={periodeIMåned}
             utilgjengeligeDager={utilgjengeligeDager}
             tid={tidIMåned}
-            opprinneligTid={arbeidstidSak}
+            opprinneligTid={arbeidstidArbeidsgiverSak.faktisk}
             erEndret={erEndret}
             tittel={
                 <FormattedMessage
@@ -81,7 +82,7 @@ const ArbeidstidMånedForm: React.FunctionComponent<Props> = ({
                     cleanupTidIPeriode(
                         arbeidstid,
                         values,
-                        getTidEnkeltdagerInnenforPeriode(arbeidstidSak, periodeIMåned)
+                        getTidEnkeltdagerInnenforPeriode(arbeidstidArbeidsgiverSak.faktisk, periodeIMåned)
                     )
                 );
             }}

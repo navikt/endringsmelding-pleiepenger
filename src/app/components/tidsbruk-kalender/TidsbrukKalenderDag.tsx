@@ -4,32 +4,43 @@ import { Undertekst } from 'nav-frontend-typografi';
 import { timeHasSameDuration } from '../../utils/dateUtils';
 import FormattedTimeText from '../formatted-time-text/FormattedTimeText';
 
+export type TidRenderer = (tid: Partial<Time>, dato: Date) => React.ReactNode;
 interface Props {
+    dato: Date;
     tid?: Partial<Time>;
     tidOpprinnelig?: Partial<Time>;
     visEndringsinformasjon?: boolean;
     erUtilgjengelig?: boolean;
+    tidRenderer?: TidRenderer;
 }
 
-const TidsbrukKalenderDag: React.FunctionComponent<Props> = ({ tid, tidOpprinnelig, visEndringsinformasjon }) => {
+const TidsbrukKalenderDag: React.FunctionComponent<Props> = ({
+    dato,
+    tid,
+    tidOpprinnelig,
+    visEndringsinformasjon,
+    tidRenderer,
+}) => {
     const erEndret = timeHasSameDuration(tid, tidOpprinnelig) === false;
+
+    const renderTid = (time: Partial<Time>) =>
+        tidRenderer ? tidRenderer(time, dato) : <FormattedTimeText time={time} />;
+
     return (
         <>
             {tid && (
                 <div>
                     {erEndret ? (
                         <>
-                            <span>
-                                <FormattedTimeText time={tid} />
-                            </span>
+                            <span>{renderTid(tid)}</span>
                             {visEndringsinformasjon && (
                                 <>
                                     {tidOpprinnelig ? (
-                                        <div>
+                                        <div className={'tidsbruk__opprinneligTid'}>
                                             (
                                             <Undertekst tag="span" style={{ textDecoration: 'line-through' }}>
                                                 <span className="sr-only">Endret fra: </span>
-                                                <FormattedTimeText time={tidOpprinnelig} />
+                                                {renderTid(tidOpprinnelig)}
                                             </Undertekst>
                                             )
                                         </div>
@@ -40,15 +51,11 @@ const TidsbrukKalenderDag: React.FunctionComponent<Props> = ({ tid, tidOpprinnel
                             )}
                         </>
                     ) : (
-                        <FormattedTimeText time={tid} />
+                        renderTid(tid)
                     )}
                 </div>
             )}
-            {tidOpprinnelig && !tid && (
-                <>
-                    <FormattedTimeText time={tidOpprinnelig} />
-                </>
-            )}
+            {tidOpprinnelig && !tid && <>{renderTid(tidOpprinnelig)}</>}
         </>
     );
 };

@@ -47,7 +47,7 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
                                         formFieldName={getArbeidsgiverArbeidstidFormFieldName(a)}
                                         endringsdato={endringsdato}
                                         søknadsperioder={søknadsperioder}
-                                        arbeidstidSak={arbeidstidArbeidsgiver.faktisk}
+                                        arbeidstidArbeidsgiverSak={arbeidstidArbeidsgiver}
                                         onArbeidstidChanged={onArbeidstidChanged}
                                     />
                                 )}
