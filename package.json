@@ -149,7 +149,7 @@
         "request": "^2.88.2",
         "rimraf": "^3.0.2",
         "source-map-loader": "^3.0.0",
-        "style-loader": "^3.3.0",
+        "style-loader": "^3.3.1",
         "svg-sprite-loader": "6.0.9",
         "ts-jest": "^27.0.6",
         "ts-loader": "^9.2.6",
