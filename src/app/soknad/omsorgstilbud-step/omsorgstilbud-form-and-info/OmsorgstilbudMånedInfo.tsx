@@ -87,7 +87,7 @@ const OmsorgstilbudMånedInfo: React.FunctionComponent<Props> = ({
                         return (
                             <>
                                 <strong>
-                                    <FormattedTimeText time={tid} decimal={false} />
+                                    <FormattedTimeText time={tid} />
                                 </strong>
                             </>
                         );

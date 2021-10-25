@@ -146,7 +146,18 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
                                     dateRendererShort={dateRendererShort}
                                     popoverContentRenderer={dateIsDisabled ? undefined : popoverContentRenderer}
                                 />
-                                <div>{dateContentRenderer(date, dateIsDisabled)}</div>
+                                <div className={bem.child('day').element('content')}>
+                                    {dateContentRenderer(date, dateIsDisabled)}
+                                    {/* TODO 
+                                    <div className="tidsinfo__group">
+                                        <div className="tidnormalt tidsinfo">
+                                            Nor: <span className="tidsinfo__value">7:30</span>
+                                        </div>
+                                        <div className="tidomsorg tidsinfo">
+                                            Oms.: <span className="tidsinfo__value">7:30</span>
+                                        </div>
+                                    </div> */}
+                                </div>
                             </div>
                         );
                     }),

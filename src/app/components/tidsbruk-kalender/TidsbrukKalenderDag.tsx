@@ -32,7 +32,7 @@ const TidsbrukKalenderDag: React.FunctionComponent<Props> = ({
                 <div>
                     {erEndret ? (
                         <>
-                            <span>{renderTid(tid)}</span>
+                            <span className="tidsbrukTidDag">{renderTid(tid)}</span>
                             {visEndringsinformasjon && (
                                 <>
                                     {tidOpprinnelig ? (
@@ -51,7 +51,7 @@ const TidsbrukKalenderDag: React.FunctionComponent<Props> = ({
                             )}
                         </>
                     ) : (
-                        renderTid(tid)
+                        <span className="tidsbrukTidDag">{renderTid(tid)}</span>
                     )}
                 </div>
             )}

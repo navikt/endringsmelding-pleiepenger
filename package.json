@@ -24,6 +24,7 @@
     "dependencies": {
         "@devexperts/remote-data-ts": "^2.1.1",
         "@formatjs/intl-pluralrules": "^4.1.4",
+        "@navikt/ds-icons": "^0.5.6",
         "@navikt/fnrvalidator": "^1.1.4",
         "@navikt/sif-common-amplitude": "2.0.0",
         "@navikt/sif-common-core": "^9.5.2",
