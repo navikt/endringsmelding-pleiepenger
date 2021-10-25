@@ -106,8 +106,9 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
                 const datesInWeek = week.dates;
                 const weekNum = week.weekNumber;
                 const areAllDaysInWeekDisabled =
+                    allDaysInWeekDisabledContentRenderer !== undefined &&
                     datesInWeek.filter((date) => isDateInDates(date, disabledDates) === true).length ===
-                    datesInWeek.length;
+                        datesInWeek.length;
                 return [
                     <div
                         role="presentation"

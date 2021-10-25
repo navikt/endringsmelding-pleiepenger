@@ -1,5 +1,5 @@
 import { DateRange } from '@navikt/sif-common-formik/lib';
-import { DagerIkkeSøktFor } from '.';
+import { DagerIkkeSøktFor, DagerSøktFor } from '.';
 import { TidEnkeltdag } from './SoknadFormData';
 
 export type K9ArbeidsgiverArbeidstid = { faktisk: TidEnkeltdag; normalt: TidEnkeltdag };
@@ -29,7 +29,42 @@ export interface K9Sak {
         };
         arbeidstid: K9Arbeidstid;
     };
-    meta: {
-        dagerIkkeSøktFor: DagerIkkeSøktFor;
-    };
 }
+
+export interface K9SakMeta {
+    /** Dato endring gjennomføres på (dagens dato) */
+    endringsdato: Date;
+
+    /** Hele perioden som bruker kan gjøre endringer innenfor, avgrenset til 3 måned bakover og 12 måneder
+     * fremover i tid. Avkortet dersom søknadsperioder er kortere.
+     */
+    endringsperiode: DateRange;
+
+    /** Dager det er søkt for */
+    dagerSøktFor: DagerSøktFor;
+
+    /** Dager det ikke er søkt for */
+    dagerIkkeSøktFor: DagerIkkeSøktFor;
+
+    /** Søknadsperioder */
+    søknadsperioder: DateRange[];
+
+    /** Måneder som har dager det er søkt om */
+    alleMånederISøknadsperiode: DateRange[];
+
+    /** Måneder som har dager det er søkt om */
+    månederMedSøknadsperiode: MånedMedSøknadsperioder;
+
+    /** Antall måneder som ikke har dager det er søkt for */
+    antallMånederUtenSøknadsperiode: number;
+
+    /** Flagg dersom månedene går over flere år */
+    søknadsperioderGårOverFlereÅr: boolean;
+
+    /** Utilgjengelige datoer */
+    utilgjengeligeDatoer: Date[];
+}
+
+export type MånedMedSøknadsperioder = {
+    [yearMonthKey: string]: DateRange[];
+};

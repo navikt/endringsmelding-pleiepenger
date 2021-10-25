@@ -1,35 +1,29 @@
 import React from 'react';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
-import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { Undertittel } from 'nav-frontend-typografi';
 import StepIntroduction from '../../components/step-introduction/StepIntroduction';
 import { Arbeidsgiver } from '../../types/Arbeidsgiver';
-import { K9Arbeidstid } from '../../types/K9Sak';
+import { K9Arbeidstid, K9SakMeta } from '../../types/K9Sak';
 import { getArbeidsgiverArbeidstidFormFieldName, SoknadFormData } from '../../types/SoknadFormData';
 import SoknadFormStep from '../SoknadFormStep';
 import { StepID } from '../soknadStepsConfig';
 import ArbeidstidMånedListe from './ArbeidstidMånedListe';
-import { DagerIkkeSøktFor } from '../../types';
 
 const cleanupStep = (formData: SoknadFormData): SoknadFormData => {
     return formData;
 };
 
 interface Props {
-    endringsdato: Date;
     arbeidsgivere?: Arbeidsgiver[];
-    søknadsperioder: DateRange[];
-    dagerIkkeSøktFor: DagerIkkeSøktFor;
+    k9sakMeta: K9SakMeta;
     arbeidstidSak: K9Arbeidstid;
     onArbeidstidChanged: () => void;
 }
 
 const ArbeidstidStep: React.FunctionComponent<Props> = ({
     arbeidsgivere,
-    endringsdato,
     arbeidstidSak,
-    søknadsperioder,
-    dagerIkkeSøktFor,
+    k9sakMeta,
     onArbeidstidChanged,
 }) => {
     const stepId = StepID.ARBEIDSTID;
@@ -48,10 +42,8 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
                                 ) : (
                                     <ArbeidstidMånedListe
                                         formFieldName={getArbeidsgiverArbeidstidFormFieldName(a)}
-                                        endringsdato={endringsdato}
-                                        søknadsperioder={søknadsperioder}
                                         arbeidstidArbeidsgiverSak={arbeidstidArbeidsgiver}
-                                        dagerIkkeSøktFor={dagerIkkeSøktFor}
+                                        k9sakMeta={k9sakMeta}
                                         onArbeidstidChanged={onArbeidstidChanged}
                                     />
                                 )}

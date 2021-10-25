@@ -8,7 +8,6 @@ import {
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import dayjs from 'dayjs';
 import { TidEnkeltdag } from '../../../types/SoknadFormData';
-import { getUtilgjengeligeDagerIMåned } from '../../../utils/utilgjengeligeDagerUtils';
 import OmsorgstilbudMånedInfo, { OmsorgstilbudIPeriodemånedTittelHeadingLevel } from './OmsorgstilbudMånedInfo';
 import OmsorgstilbudMånedForm from './OmsorgstilbudMånedForm';
 
@@ -35,7 +34,6 @@ function OmsorgstilbudFormAndInfo<FieldNames>({
     onAfterChange,
 }: Props<FieldNames>) {
     const erHistorisk = dayjs(periodeIMåned.to).isBefore(endringsdato, 'day');
-    const alleUtilgjengeligeDager = getUtilgjengeligeDagerIMåned(utilgjengeligeDager, periodeIMåned);
 
     return (
         <FormikModalFormAndInfo<FieldNames, TidEnkeltdag, ValidationError>
@@ -53,7 +51,7 @@ function OmsorgstilbudFormAndInfo<FieldNames>({
                         periodeIMåned={periodeIMåned}
                         tidOmsorgstilbud={data}
                         tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}
-                        utilgjengeligeDager={alleUtilgjengeligeDager}
+                        utilgjengeligeDager={utilgjengeligeDager}
                         erHistorisk={erHistorisk}
                         onCancel={onCancel}
                         onSubmit={onSubmit}
@@ -66,7 +64,7 @@ function OmsorgstilbudFormAndInfo<FieldNames>({
                         periodeIMåned={periodeIMåned}
                         tidOmsorgstilbud={data}
                         tidOmsorgstilbudSak={tidIOmsorgstilbudSak}
-                        utilgjengeligeDager={alleUtilgjengeligeDager}
+                        utilgjengeligeDager={utilgjengeligeDager}
                         månedTittelHeadingLevel={månedTittelHeadingLevel}
                         onEdit={onEdit}
                         editLabel={labels.editLabel}

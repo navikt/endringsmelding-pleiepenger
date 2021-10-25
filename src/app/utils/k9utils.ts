@@ -1,8 +1,24 @@
 import { DateRange, dateToISOString } from '@navikt/sif-common-formik/lib';
-import { DagerIkkeSøktFor } from '../types';
-import { K9ArbeidsgiverArbeidstid, K9ArbeidsgivereArbeidstid, K9Sak } from '../types/K9Sak';
-import { dateIsWithinDateRange, getDateRangesBetweenDateRanges, getDatesInDateRange, ISODateToDate } from './dateUtils';
-import { getEndringsdato, getMaksEndringsperiode } from './endringsperiode';
+import dayjs from 'dayjs';
+import { flatten } from 'lodash';
+import { DagerIkkeSøktFor, DagerSøktFor } from '../types';
+import {
+    K9ArbeidsgiverArbeidstid,
+    K9ArbeidsgivereArbeidstid,
+    K9Sak,
+    K9SakMeta,
+    MånedMedSøknadsperioder,
+} from '../types/K9Sak';
+import {
+    dateIsWithinDateRange,
+    getDateRangeFromDateRanges,
+    getDateRangesBetweenDateRanges,
+    getDatesInDateRange,
+    getMonthsInDateRange,
+    getYearsInDateRanges,
+    ISODateToDate,
+} from './dateUtils';
+import { getEndringsdato, getEndringsperiode, getMaksEndringsperiode } from './endringsperiode';
 
 type ISODateObject = { [key: string]: any };
 
@@ -54,9 +70,54 @@ export const getDagerIkkeSøktFor = (søknadsperioder: DateRange[]): DagerIkkeS�
     return dagerIkkeSøktFor;
 };
 
-export const trimK9SakForSøknad = (k9sak: K9Sak): K9Sak => {
+export const getDagerSøktFor = (søknadsperioder: DateRange[]): DagerSøktFor => {
+    const dagerSøktFor: DagerSøktFor = {};
+    søknadsperioder.forEach((periode) => {
+        const datoer = getDatesInDateRange(periode, true);
+        datoer.forEach((d) => (dagerSøktFor[dateToISOString(d)] = true));
+    });
+    return dagerSøktFor;
+};
+
+export const getYearMonthKey = (date: Date): string => dayjs(date).format('YYYY-MM');
+
+export const getMånederMedSøknadsperioder = (søknadsperioder: DateRange[]): MånedMedSøknadsperioder => {
+    const måneder: MånedMedSøknadsperioder = {};
+    flatten(søknadsperioder.map((periode) => getMonthsInDateRange(periode))).forEach((periode) => {
+        const key = getYearMonthKey(periode.from);
+        måneder[key] = måneder[key] ? [...måneder[key], periode] : [periode];
+    });
+    return måneder;
+};
+
+const getK9SakMeta = (endringsdato: Date, søknadsperioder: DateRange[]): K9SakMeta => {
+    const endringsperiode = getEndringsperiode(endringsdato, søknadsperioder);
+    const dagerIkkeSøktFor = getDagerIkkeSøktFor(søknadsperioder);
+    const dagerSøktFor = getDagerIkkeSøktFor(søknadsperioder);
+    const alleMånederISøknadsperiode = getMonthsInDateRange(getDateRangeFromDateRanges(søknadsperioder));
+    const månederMedSøknadsperiode = getMånederMedSøknadsperioder(søknadsperioder);
+    const antallMånederUtenSøknadsperiode =
+        alleMånederISøknadsperiode.length - Object.keys(månederMedSøknadsperiode).length;
+    const søknadsperioderGårOverFlereÅr = getYearsInDateRanges(alleMånederISøknadsperiode).length > 1;
+    const utilgjengeligeDatoer: Date[] = Object.keys(dagerIkkeSøktFor).map((dato) => ISODateToDate(dato));
+    return {
+        endringsdato,
+        endringsperiode,
+        søknadsperioder,
+        dagerIkkeSøktFor,
+        dagerSøktFor,
+        månederMedSøknadsperiode,
+        alleMånederISøknadsperiode,
+        søknadsperioderGårOverFlereÅr,
+        antallMånederUtenSøknadsperiode,
+        utilgjengeligeDatoer,
+    };
+};
+
+export const trimK9SakForSøknad = (k9sak: K9Sak): { sak: K9Sak; meta: K9SakMeta } => {
     const sak: K9Sak = { ...k9sak };
-    const maksEndringsperiode = getMaksEndringsperiode(getEndringsdato());
+    const endringsdato = getEndringsdato();
+    const maksEndringsperiode = getMaksEndringsperiode(endringsdato);
     const {
         ytelse: {
             søknadsperioder,
@@ -65,8 +126,8 @@ export const trimK9SakForSøknad = (k9sak: K9Sak): K9Sak => {
         },
     } = sak;
 
-    const dagerIkkeSøktFor = getDagerIkkeSøktFor(søknadsperioder);
-    sak.meta.dagerIkkeSøktFor = dagerIkkeSøktFor;
+    const meta = getK9SakMeta(endringsdato, søknadsperioder);
+    const { dagerIkkeSøktFor } = meta;
 
     /** Trim arbeidstid ansatt */
     if (arbeidsgivere) {
@@ -75,7 +136,7 @@ export const trimK9SakForSøknad = (k9sak: K9Sak): K9Sak => {
             trimmedArbeidsgiverTid[key] = trimArbeidstidTilTillatPeriode(
                 arbeidsgivere[key],
                 maksEndringsperiode,
-                dagerIkkeSøktFor
+                meta.dagerIkkeSøktFor
             );
         });
         sak.ytelse.arbeidstid.arbeidsgivere = trimmedArbeidsgiverTid;
@@ -90,5 +151,5 @@ export const trimK9SakForSøknad = (k9sak: K9Sak): K9Sak => {
         );
     }
 
-    return sak;
+    return { sak, meta };
 };

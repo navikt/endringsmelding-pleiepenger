@@ -10,7 +10,7 @@ import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Knapp from 'nav-frontend-knapper';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import TidsbrukKalender from '../../../components/tidsbruk-kalender/TidsbrukKalender';
-import { TidEnkeltdag } from '../../../types/SoknadFormData';
+import { DagMedTid, TidEnkeltdag } from '../../../types/SoknadFormData';
 import { timeHasSameDuration } from '../../../utils/dateUtils';
 import { getDagerMedTidITidsrom, tidErIngenTid } from '../../../utils/tidsbrukUtils';
 import { prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
@@ -43,7 +43,7 @@ const ArbeidstidMånedInfo: React.FunctionComponent<Props> = ({
 }) => {
     const intl = useIntl();
     const dager = getDagerMedTidITidsrom(tidArbeidstid, periodeIMåned);
-    const dagerSak = getDagerMedTidITidsrom(arbeidstidArbeidsgiverSak.faktisk, periodeIMåned);
+    const dagerSak: DagMedTid[] = getDagerMedTidITidsrom(arbeidstidArbeidsgiverSak.faktisk, periodeIMåned);
 
     const harEndringer = dager.some((dag) => {
         const key = dateToISOString(dag.dato);
@@ -95,6 +95,7 @@ const ArbeidstidMånedInfo: React.FunctionComponent<Props> = ({
                     skjulTommeDagerIListe={true}
                     visEndringsinformasjon={true}
                     popoverContentRenderer={(date) => {
+                        console.log('whoa');
                         const dateKey = dateToISOString(date);
                         const tid: Partial<Time> | undefined = getTidForDag(date);
                         const opprinneligTid: Partial<Time> | undefined = arbeidstidArbeidsgiverSak.faktisk[dateKey];

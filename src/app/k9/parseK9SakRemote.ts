@@ -39,9 +39,6 @@ export const parseK9SakRemote = (data: K9SakRemote): K9Sak => {
             },
             arbeidstid: getArbeidstidArbeidsgivere(ytelse.arbeidstid.arbeidstakerList),
         },
-        meta: {
-            dagerIkkeSøktFor: {},
-        },
     };
     return sak;
 };

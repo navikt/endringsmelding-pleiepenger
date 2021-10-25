@@ -7,11 +7,11 @@ import {
 } from '@navikt/sif-common-formik';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import dayjs from 'dayjs';
+import { K9ArbeidsgiverArbeidstid } from '../../../types/K9Sak';
 import { TidEnkeltdag } from '../../../types/SoknadFormData';
 import { getUtilgjengeligeDagerIMåned } from '../../../utils/utilgjengeligeDagerUtils';
 import ArbeidstidMånedForm from './ArbeidstidMånedForm';
 import ArbeidstidMånedInfo, { ArbeidstidIPeriodemånedTittelHeadingLevel } from './ArbeidstidMånedInfo';
-import { K9ArbeidsgiverArbeidstid } from '../../../types/K9Sak';
 
 interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     formFieldName: FieldNames;

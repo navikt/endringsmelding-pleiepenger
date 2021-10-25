@@ -1,83 +1,55 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import dayjs from 'dayjs';
-import flatten from 'lodash.flatten';
 import AlertStripe from 'nav-frontend-alertstriper';
 import { Element } from 'nav-frontend-typografi';
 import SøknadsperioderMånedListe from '../../components/søknadsperioder-måned-liste/SøknadsperioderMånedListe';
+import { K9ArbeidsgiverArbeidstid, K9SakMeta } from '../../types/K9Sak';
 import { SoknadFormField, TidEnkeltdag } from '../../types/SoknadFormData';
-import { getDateRangeFromDateRanges, getMonthsInDateRange, getYearsInDateRanges } from '../../utils/dateUtils';
 import ArbeidstidFormAndInfo from './arbeidstid-form-and-info/ArbeidstidFormAndInfo';
-import { K9ArbeidsgiverArbeidstid } from '../../types/K9Sak';
-import { DagerIkkeSøktFor } from '../../types';
-import { getUtilgjengeligeDager } from '../../utils/utilgjengeligeDagerUtils';
 
 interface Props {
     formFieldName: SoknadFormField;
-    endringsdato: Date;
-    søknadsperioder: DateRange[];
     arbeidstidArbeidsgiverSak: K9ArbeidsgiverArbeidstid;
-    dagerIkkeSøktFor: DagerIkkeSøktFor;
+    k9sakMeta: K9SakMeta;
     onArbeidstidChanged?: (arbeidstid: TidEnkeltdag) => void;
 }
 
-type SøknadsperiodeMåned = {
-    [yearMonthKey: string]: DateRange[];
-};
-
-export const getMånederMedSøknadsperioder = (søknadsperioder: DateRange[]): SøknadsperiodeMåned => {
-    const måneder: SøknadsperiodeMåned = {};
-    flatten(søknadsperioder.map((periode) => getMonthsInDateRange(periode))).forEach((periode) => {
-        const key = getYearMonthKey(periode.from);
-        måneder[key] = måneder[key] ? [...måneder[key], periode] : [periode];
-    });
-    return måneder;
-};
-
-const getYearMonthKey = (date: Date): string => dayjs(date).format('YYYY-MM');
-
 const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
     formFieldName,
-    endringsdato,
-    søknadsperioder,
     arbeidstidArbeidsgiverSak,
-    dagerIkkeSøktFor,
+    k9sakMeta,
     onArbeidstidChanged,
 }) => {
     const intl = useIntl();
-    const månederMedSøknadsperiode: SøknadsperiodeMåned = getMånederMedSøknadsperioder(søknadsperioder);
-    const alleMånederIPeriode = getMonthsInDateRange(getDateRangeFromDateRanges(søknadsperioder));
-    const gårOverFlereÅr = getYearsInDateRanges(alleMånederIPeriode).length > 1;
-    const antallMånederMedHull = alleMånederIPeriode.length - Object.keys(månederMedSøknadsperiode).length;
-
     return (
         <SøknadsperioderMånedListe
             inputGroupFieldName={`${formFieldName}_gruppe`}
-            endringsdato={endringsdato}
-            søknadsperioder={søknadsperioder}
+            k9sakMeta={k9sakMeta}
             legend={<span className="sr-only">Måneder med dager hvor det er søkt pleiepenger for.</span>}
             description={
-                antallMånederMedHull > 0 ? (
+                k9sakMeta.antallMånederUtenSøknadsperiode > 0 ? (
                     <AlertStripe type="info" form="inline">
-                        <Element tag="h3">{antallMånederMedHull} måneder er skjult i listen nedenfor</Element>
+                        <Element tag="h3">
+                            {k9sakMeta.antallMånederUtenSøknadsperiode} måneder er skjult i listen nedenfor
+                        </Element>
                         <p>La inn antallet som er skult, slik at du evt. kan bruke det i teksten Siv.</p>
                         Måneder som ikke har dager hvor det er søkt om pleiepenger for, vises ikke listen nedenfor.
                     </AlertStripe>
                 ) : undefined
             }
             årstallHeaderRenderer={(årstall) => `Måneder det er søkt om pleiepenger i ${årstall}`}
-            månedContentRenderer={(måned, søknadsperioderIMåned) => {
+            månedContentRenderer={(måned) => {
                 const mndOgÅrLabelPart = dayjs(måned.from).format('MMMM YYYY');
                 return (
                     <ArbeidstidFormAndInfo
                         formFieldName={formFieldName}
                         periodeIMåned={måned}
-                        utilgjengeligeDager={getUtilgjengeligeDager(søknadsperioderIMåned, dagerIkkeSøktFor)}
-                        endringsdato={endringsdato}
+                        utilgjengeligeDager={k9sakMeta.utilgjengeligeDatoer}
+                        endringsdato={k9sakMeta.endringsdato}
                         arbeidstidArbeidsgiverSak={arbeidstidArbeidsgiverSak}
-                        månedTittelHeadingLevel={gårOverFlereÅr ? 3 : 2}
+                        månedTittelHeadingLevel={k9sakMeta.søknadsperioderGårOverFlereÅr ? 3 : 2}
                         onAfterChange={onArbeidstidChanged}
                         labels={{
                             addLabel: intlHelper(intl, 'arbeidstid.addLabel', {

@@ -12,13 +12,12 @@ import { SKJEMANAVN } from '../App';
 import AppRoutes, { getRouteUrl } from '../config/routeConfig';
 import IkkeMyndigPage from '../pages/ikke-myndig-page/IkkeMyndigPage';
 import { Arbeidsgiver } from '../types/Arbeidsgiver';
-import { K9Sak } from '../types/K9Sak';
+import { K9Sak, K9SakMeta } from '../types/K9Sak';
 import { Person } from '../types/Person';
 import { SoknadApiData } from '../types/SoknadApiData';
 import { SoknadFormData } from '../types/SoknadFormData';
 import { SoknadTempStorageData } from '../types/SoknadTempStorageData';
 import appSentryLogger from '../utils/appSentryLogger';
-import { getEndringsdato, getEndringsperiode } from '../utils/endringsperiode';
 import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 import {
     navigateTo,
@@ -40,21 +39,25 @@ interface Props {
     søker: Person;
     arbeidsgivere: Arbeidsgiver[];
     k9sak: K9Sak;
+    k9sakMeta: K9SakMeta;
     soknadTempStorage: SoknadTempStorageData;
     route?: string;
 }
 
 type resetFormFunc = () => void;
 
-const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tempStorage, arbeidsgivere, k9sak }) => {
+const Soknad: React.FunctionComponent<Props> = ({
+    søker,
+    soknadTempStorage: tempStorage,
+    arbeidsgivere,
+    k9sak,
+    k9sakMeta,
+}) => {
     const history = useHistory();
     const [initializing, setInitializing] = useState(true);
 
     const [sendSoknadStatus, setSendSoknadStatus] = useState<SendSoknadStatus>(initialSendSoknadState);
     const [soknadId, setSoknadId] = useState<string | undefined>();
-
-    const endringsdato = getEndringsdato();
-    const endringsperiode = getEndringsperiode(endringsdato, k9sak.ytelse.søknadsperioder);
 
     const { logSoknadStartet, logSoknadFailed, logHendelse, logUserLoggedOut } = useAmplitudeInstance();
 
@@ -240,9 +243,8 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
                                         soknadId={soknadId}
                                         søker={søker}
                                         arbeidsgivere={arbeidsgivere}
-                                        endringsperiode={endringsperiode}
-                                        endringsdato={endringsdato}
                                         k9sak={k9sak}
+                                        k9sakMeta={k9sakMeta}
                                     />
                                 </SoknadContextProvider>
                             );

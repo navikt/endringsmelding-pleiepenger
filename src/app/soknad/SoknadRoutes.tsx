@@ -3,7 +3,6 @@ import { useIntl } from 'react-intl';
 import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import { isFailure, isInitial, isPending, isSuccess } from '@devexperts/remote-data-ts';
 import LoadWrapper from '@navikt/sif-common-core/lib/components/load-wrapper/LoadWrapper';
-import { DateRange } from '@navikt/sif-common-formik/lib';
 import ErrorPage from '@navikt/sif-common-soknad/lib/soknad-common-pages/ErrorPage';
 import SoknadErrorMessages, {
     LastAvailableStepInfo,
@@ -25,25 +24,17 @@ import OppsummeringStep from './oppsummering-step/OppsummeringStep';
 import { useSoknadContext } from './SoknadContext';
 import { StepID } from './soknadStepsConfig';
 import VelkommenPage from './velkommen-page/VelkommenPage';
-import { K9Sak } from '../types/K9Sak';
+import { K9Sak, K9SakMeta } from '../types/K9Sak';
 
 interface Props {
     soknadId?: string;
     søker: Person;
-    endringsdato: Date;
-    endringsperiode: DateRange;
     arbeidsgivere?: Arbeidsgiver[];
     k9sak: K9Sak;
+    k9sakMeta: K9SakMeta;
 }
 
-const SoknadRoutes: React.FunctionComponent<Props> = ({
-    soknadId,
-    søker,
-    endringsperiode,
-    endringsdato,
-    arbeidsgivere,
-    k9sak,
-}) => {
+const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, arbeidsgivere, k9sak, k9sakMeta }) => {
     const intl = useIntl();
     const history = useHistory();
     const { values } = useFormikContext<SoknadFormData>();
@@ -62,15 +53,13 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({
         }
     }, [soknadId, persistRequest, persist, søker]);
 
+    const { endringsperiode } = k9sakMeta;
     const renderSoknadStep = (soknadId: string, søker: Person, stepID: StepID): React.ReactNode => {
         switch (stepID) {
             case StepID.OMSORGSTILBUD:
                 return (
                     <OmsorgstilbudStep
-                        endringsdato={endringsdato}
-                        søknadsperioder={
-                            k9sak.ytelse.søknadsperioder
-                        } /** Todo - fjerne deler av perioder som er utenfor endringesperiode */
+                        k9sakMeta={k9sakMeta}
                         tidIOmsorgstilbudSak={k9sak.ytelse.tilsynsordning.enkeltdager}
                         onOmsorgstilbudChanged={() => {
                             setPersistRequest({ stepID: StepID.OMSORGSTILBUD });
@@ -83,10 +72,8 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({
                 return (
                     <ArbeidstidStep
                         arbeidsgivere={arbeidsgivere}
-                        søknadsperioder={k9sak.ytelse.søknadsperioder}
-                        endringsdato={endringsdato}
                         arbeidstidSak={k9sak.ytelse.arbeidstid}
-                        dagerIkkeSøktFor={k9sak.meta.dagerIkkeSøktFor}
+                        k9sakMeta={k9sakMeta}
                         onArbeidstidChanged={() => {
                             setPersistRequest({ stepID: StepID.ARBEIDSTID });
                         }}

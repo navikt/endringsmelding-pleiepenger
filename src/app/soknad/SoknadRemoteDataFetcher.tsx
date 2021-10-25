@@ -25,11 +25,13 @@ const SoknadRemoteDataFetcher = (): JSX.Element => {
                 />
             )}
             success={([person, k9sak, arbeidsgivere, soknadTempStorage]): React.ReactNode => {
+                const { sak, meta } = trimK9SakForSøknad(k9sak);
                 return (
                     <Soknad
                         søker={person}
                         arbeidsgivere={arbeidsgivere}
-                        k9sak={trimK9SakForSøknad(k9sak)}
+                        k9sak={sak}
+                        k9sakMeta={meta}
                         soknadTempStorage={soknadTempStorage}
                     />
                 );

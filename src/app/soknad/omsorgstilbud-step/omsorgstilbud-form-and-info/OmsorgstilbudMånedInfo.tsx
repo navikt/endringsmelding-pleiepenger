@@ -85,13 +85,7 @@ const OmsorgstilbudMånedInfo: React.FunctionComponent<Props> = ({
                     skjulTommeDagerIListe={true}
                     visEndringsinformasjon={true}
                     tidRenderer={(tid) => {
-                        return (
-                            <>
-                                <strong>
-                                    <FormattedTimeText time={tid} />
-                                </strong>
-                            </>
-                        );
+                        return <FormattedTimeText time={tid} />;
                     }}
                 />
                 <FormBlock margin="l">
