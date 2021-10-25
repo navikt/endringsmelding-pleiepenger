@@ -95,7 +95,6 @@ const ArbeidstidMånedInfo: React.FunctionComponent<Props> = ({
                     skjulTommeDagerIListe={true}
                     visEndringsinformasjon={true}
                     popoverContentRenderer={(date) => {
-                        console.log('whoa');
                         const dateKey = dateToISOString(date);
                         const tid: Partial<Time> | undefined = getTidForDag(date);
                         const opprinneligTid: Partial<Time> | undefined = arbeidstidArbeidsgiverSak.faktisk[dateKey];

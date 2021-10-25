@@ -153,7 +153,6 @@ export const timeHasSameDuration = (time1?: Partial<Time>, time2?: Partial<Time>
 };
 
 export const isDateInDates = (date: Date, dates?: Date[]): boolean => {
-    console.log('isDateInDates');
     if (!dates) {
         return false;
     }
