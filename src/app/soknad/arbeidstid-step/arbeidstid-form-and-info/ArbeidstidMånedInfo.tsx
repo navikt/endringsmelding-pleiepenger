@@ -59,6 +59,7 @@ const ArbeidstidMånedInfo: React.FunctionComponent<Props> = ({
 
     return (
         <Ekspanderbartpanel
+            renderContentWhenClosed={false}
             tittel={
                 <>
                     <Undertittel tag={`h${månedTittelHeadingLevel}`}>

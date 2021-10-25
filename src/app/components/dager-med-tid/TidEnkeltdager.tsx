@@ -80,6 +80,7 @@ const TidEnkeltdager: React.FunctionComponent<Props> = ({ dager, dagerOpprinneli
                 return (
                     <Box margin="m" key={key}>
                         <EkspanderbartPanel
+                            renderContentWhenClosed={false}
                             tittel={
                                 <Element>
                                     <span style={{ textTransform: 'capitalize' }}>

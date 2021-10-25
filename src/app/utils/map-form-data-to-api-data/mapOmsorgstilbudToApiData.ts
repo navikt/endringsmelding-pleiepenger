@@ -7,16 +7,20 @@ import { fjernDagerMedUendretTid } from '../tidsbrukUtils';
 export const mapOmsorgstilbudToApiData = (
     omsorgstilbud: Omsorgstilbud,
     dagerOpprinnelig: TidEnkeltdag = {},
-    endringsperiode: DateRange
-): OmsorgstilbudApiData | undefined => {
+    søknadsperioder: DateRange[]
+): OmsorgstilbudApiData => {
     const { enkeltdager } = omsorgstilbud;
     const dagerMedEndring: TidEnkeltdag = dagerOpprinnelig
         ? fjernDagerMedUendretTid(enkeltdager, dagerOpprinnelig)
         : enkeltdager;
 
-    return omsorgstilbud
-        ? {
-              enkeltdager: getEnkeltdagerIPeriodeApiData(dagerMedEndring, endringsperiode),
-          }
-        : undefined;
+    const apiData: OmsorgstilbudApiData = {
+        enkeltdager: [],
+    };
+
+    søknadsperioder.forEach((periode) => {
+        apiData.enkeltdager.push(...getEnkeltdagerIPeriodeApiData(dagerMedEndring, periode));
+    });
+
+    return apiData;
 };

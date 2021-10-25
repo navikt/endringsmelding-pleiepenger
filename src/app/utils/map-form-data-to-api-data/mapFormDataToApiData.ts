@@ -18,7 +18,7 @@ const logErrorToSentry = (details: string): void => {
 
 export const mapFormDataToApiData = (
     values: MapFormDataToApiDataValues,
-    endringsperiode: DateRange,
+    søknadsperioder: DateRange[],
     k9sak: K9Sak
 ): SoknadApiData | undefined => {
     const apiValues: SoknadApiData = {
@@ -30,7 +30,7 @@ export const mapFormDataToApiData = (
             ? mapOmsorgstilbudToApiData(
                   values.formData.omsorgstilbud,
                   k9sak.ytelse.tilsynsordning.enkeltdager,
-                  endringsperiode
+                  søknadsperioder
               )
             : undefined,
     };

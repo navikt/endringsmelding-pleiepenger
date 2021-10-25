@@ -99,7 +99,7 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({
                         locale: intl.locale,
                         formData: values,
                     },
-                    endringsperiode,
+                    k9sak.ytelse.søknadsperioder,
                     k9sak
                 );
                 return (

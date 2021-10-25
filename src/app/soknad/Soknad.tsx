@@ -209,9 +209,10 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, soknadTempStorage: tem
                 if (søker.myndig === false) {
                     return <IkkeMyndigPage />;
                 }
+                const initialData = getInitialFormData(k9sak, søker, tempStorage);
                 return (
                     <SoknadFormComponents.FormikWrapper
-                        initialValues={getInitialFormData(k9sak, søker, tempStorage)}
+                        initialValues={initialData}
                         onSubmit={() => null}
                         renderForm={({ values, resetForm }) => {
                             const soknadStepsConfig = getSoknadStepsConfig(values);
