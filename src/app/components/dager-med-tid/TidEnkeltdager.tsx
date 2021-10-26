@@ -17,6 +17,8 @@ import { Element } from 'nav-frontend-typografi';
 interface Props {
     dager?: TidEnkeltdagApiData[];
     dagerOpprinnelig?: TidEnkeltdag;
+    visKunEndretTid?: boolean;
+    ingenEndringerMelding?: string;
 }
 
 export type DagMedEndretTid = {
@@ -33,7 +35,12 @@ type Kalenderdager = {
     };
 };
 
-const TidEnkeltdager: React.FunctionComponent<Props> = ({ dager, dagerOpprinnelig }) => {
+const TidEnkeltdager: React.FunctionComponent<Props> = ({
+    dager,
+    dagerOpprinnelig,
+    visKunEndretTid = true,
+    ingenEndringerMelding,
+}) => {
     const kalenderdager: Kalenderdager = {};
     if (dager) {
         dager.forEach((isoDate) => {
@@ -52,6 +59,7 @@ const TidEnkeltdager: React.FunctionComponent<Props> = ({ dager, dagerOpprinneli
             };
         });
     }
+
     const days: DagMedEndretTid[] = Object.keys(kalenderdager)
         .map((isoDate) => {
             const dag = kalenderdager[isoDate];
@@ -65,11 +73,17 @@ const TidEnkeltdager: React.FunctionComponent<Props> = ({ dager, dagerOpprinneli
                 erEndret: tid ? timeHasSameDuration(tid, tidOpprinnelig) === false : false,
             };
         })
+        .filter((d) => (visKunEndretTid ? false : d.erEndret === true))
         .sort(datoSorter);
 
-    const ingenDagerRegistrertMelding = <FormattedMessage id="dagerMedTid.ingenDagerRegistrert" />;
+    const ingenDagerRegistrertMelding = ingenEndringerMelding ? (
+        ingenEndringerMelding
+    ) : (
+        <FormattedMessage id="dagerMedTid.ingenDagerRegistrert" />
+    );
+
     if (days.length === 0) {
-        return ingenDagerRegistrertMelding;
+        return <>{ingenDagerRegistrertMelding}</>;
     }
 
     const months = groupBy(days, ({ dato }) => `${dato.getFullYear()}.${dato.getMonth()}`);

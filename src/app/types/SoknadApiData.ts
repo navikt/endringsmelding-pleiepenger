@@ -7,6 +7,7 @@ export enum SoknadApiDataField {
     'harForståttRettigheterOgPlikter' = 'harForståttRettigheterOgPlikter',
     'harBekreftetOpplysninger' = 'harBekreftetOpplysninger',
     'omsorgstilbud' = 'omsorgstilbud',
+    'arbeidstid' = 'arbeidstid',
 }
 
 export interface TidEnkeltdagApiData {
@@ -14,8 +15,17 @@ export interface TidEnkeltdagApiData {
     tid: ISODuration;
 }
 
+export interface ArbeidsgiverArbeidstidApiData {
+    orgnr: string;
+    faktiskArbeid: TidEnkeltdagApiData[];
+}
+
 export interface OmsorgstilbudApiData {
     enkeltdager: TidEnkeltdagApiData[];
+}
+
+export interface ArbeidstidApiData {
+    arbeidsgivere: ArbeidsgiverArbeidstidApiData[];
 }
 
 export interface SoknadApiData {
@@ -24,4 +34,5 @@ export interface SoknadApiData {
     [SoknadApiDataField.harForståttRettigheterOgPlikter]: boolean;
     [SoknadApiDataField.harBekreftetOpplysninger]: boolean;
     [SoknadApiDataField.omsorgstilbud]?: OmsorgstilbudApiData;
+    [SoknadApiDataField.arbeidstid]?: ArbeidstidApiData;
 }

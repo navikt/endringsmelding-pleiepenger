@@ -7,27 +7,31 @@ import Guide from '@navikt/sif-common-core/lib/components/guide/Guide';
 import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 import VeilederSVG from '@navikt/sif-common-core/lib/components/veileder-svg/VeilederSVG';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
+import { getCheckedValidator } from '@navikt/sif-common-formik/lib/validation';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { Arbeidsgiver } from '../../types/Arbeidsgiver';
 import { Person } from '../../types/Person';
 import { SoknadApiData } from '../../types/SoknadApiData';
-import { SoknadFormField, TidEnkeltdag } from '../../types/SoknadFormData';
+import { SoknadFormField } from '../../types/SoknadFormData';
 import { verifySoknadApiData } from '../../validation/verifySoknadApiData';
 import { useSoknadContext } from '../SoknadContext';
 import SoknadFormComponents from '../SoknadFormComponents';
 import SoknadFormStep from '../SoknadFormStep';
 import { StepID } from '../soknadStepsConfig';
-import SøkerSummary from './SøkerSummary';
-import { getCheckedValidator } from '@navikt/sif-common-formik/lib/validation';
-import OmsorgstilbudSummary from './omsorgstilbud-summary/OmsorgstilbudSummary';
+import ArbeidstidSummary from './arbeidstid-summary/ArbeidstidSummary';
 import ItsClosedGiffy from './ItsClosedGiffy';
+import OmsorgstilbudSummary from './omsorgstilbud-summary/OmsorgstilbudSummary';
+import SøkerSummary from './SøkerSummary';
+import { K9Sak } from '../../types/K9Sak';
 
 type Props = {
-    søker: Person;
-    tidIOmsorgstilbudSak?: TidEnkeltdag;
     apiValues?: SoknadApiData;
+    søker: Person;
+    arbeidsgivere: Arbeidsgiver[];
+    k9sak: K9Sak;
 };
 
-const OppsummeringStep: React.FunctionComponent<Props> = ({ søker, apiValues, tidIOmsorgstilbudSak }) => {
+const OppsummeringStep: React.FunctionComponent<Props> = ({ søker, apiValues, arbeidsgivere, k9sak }) => {
     const intl = useIntl();
     const { sendSoknadStatus } = useSoknadContext();
     const [showGiffy, setShowGiffy] = useState(false);
@@ -68,10 +72,19 @@ const OppsummeringStep: React.FunctionComponent<Props> = ({ søker, apiValues, t
                         <Box margin="xxl">
                             <ResponsivePanel border={true}>
                                 <SøkerSummary søker={søker} />
-                                <OmsorgstilbudSummary
-                                    omsorgstilbud={apiValues.omsorgstilbud}
-                                    tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}
-                                />
+                                {apiValues.omsorgstilbud && (
+                                    <OmsorgstilbudSummary
+                                        omsorgstilbud={apiValues.omsorgstilbud}
+                                        tidIOmsorgstilbudSak={k9sak.ytelse.tilsynsordning}
+                                    />
+                                )}
+                                {apiValues.arbeidstid && arbeidsgivere && (
+                                    <ArbeidstidSummary
+                                        arbeidstid={apiValues.arbeidstid}
+                                        arbeidstidK9={k9sak.ytelse.arbeidstid}
+                                        arbeidsgivere={arbeidsgivere}
+                                    />
+                                )}
                             </ResponsivePanel>
                         </Box>
 

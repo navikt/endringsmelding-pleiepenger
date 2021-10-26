@@ -4,8 +4,8 @@ import { AxiosError } from 'axios';
 import { K9Sak } from '../types/K9Sak';
 // import api from '../api';
 import { k9SakMock } from '../k9/k9sakMock';
+import { parseK9SakRemote } from '../k9/k9SakRemote';
 // import { K9SakRemote } from './k9SakRemote';
-import { parseK9SakRemote } from '../k9/parseK9SakRemote';
 
 const getK9SakRemoteData = async (): Promise<RemoteData<AxiosError, K9Sak>> => {
     try {

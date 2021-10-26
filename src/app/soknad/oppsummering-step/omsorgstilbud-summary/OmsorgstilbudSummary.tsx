@@ -14,7 +14,11 @@ const OmsorgstilbudSummary: React.FunctionComponent<Props> = ({ omsorgstilbud, t
     return (
         <SummarySection header="Omsorgstilbud">
             <SummaryBlock header="Endret omsorgstilbud">
-                <TidEnkeltdager dager={omsorgstilbud?.enkeltdager} dagerOpprinnelig={tidIOmsorgstilbudSak} />
+                <TidEnkeltdager
+                    dager={omsorgstilbud?.enkeltdager}
+                    dagerOpprinnelig={tidIOmsorgstilbudSak}
+                    ingenEndringerMelding={'Ingen endringer registrert på omsorgstilbud'}
+                />
             </SummaryBlock>
         </SummarySection>
     );
