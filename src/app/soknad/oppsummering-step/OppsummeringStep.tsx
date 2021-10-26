@@ -36,6 +36,7 @@ const OppsummeringStep: React.FunctionComponent<Props> = ({ søker, apiValues, a
     const { sendSoknadStatus } = useSoknadContext();
     const [showGiffy, setShowGiffy] = useState(false);
     const apiDataIsValid = apiValues !== undefined && verifySoknadApiData(apiValues);
+
     return (
         <SoknadFormStep
             id={StepID.OPPSUMMERING}
@@ -75,7 +76,7 @@ const OppsummeringStep: React.FunctionComponent<Props> = ({ søker, apiValues, a
                                 {apiValues.omsorgstilbud && (
                                     <OmsorgstilbudSummary
                                         omsorgstilbud={apiValues.omsorgstilbud}
-                                        tidIOmsorgstilbudSak={k9sak.ytelse.tilsynsordning}
+                                        tidIOmsorgstilbudSak={k9sak.ytelse.tilsynsordning.enkeltdager}
                                     />
                                 )}
                                 {apiValues.arbeidstid && arbeidsgivere && (
