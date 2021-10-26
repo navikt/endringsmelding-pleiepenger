@@ -53,7 +53,7 @@ const SøknadsperioderMånedListe: React.FunctionComponent<Props> = ({
             // validate={() => validateOmsorgstilbudEnkeltdagerIPeriode(tidIOmsorgstilbud, periode, gjelderFortid)}
         >
             {k9sakMeta.alleMånederISøknadsperiode.map((måned, index) => {
-                const søknadsperioderIMåned = k9sakMeta.månederMedSøknadsperiode[getYearMonthKey(måned.from)];
+                const søknadsperioderIMåned = k9sakMeta.månederMedSøknadsperiodeMap[getYearMonthKey(måned.from)];
                 return søknadsperioderIMåned === undefined ? null : (
                     <FormBlock margin="l" key={dayjs(måned.from).format('MM.YYYY')}>
                         {årstallHeaderRenderer && visÅrstallHeading(index) && (

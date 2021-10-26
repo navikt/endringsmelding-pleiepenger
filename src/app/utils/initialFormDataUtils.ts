@@ -1,17 +1,17 @@
 import { isStorageDataValid } from '../soknad/soknadTempStorage';
 import { K9Arbeidstid, K9Sak } from '../types/K9Sak';
 import { Person } from '../types/Person';
-import { ArbeidstidArbeidsgiver, SoknadFormData, SoknadFormField } from '../types/SoknadFormData';
+import { ArbeidstidArbeidsgiverMap, SoknadFormData, SoknadFormField } from '../types/SoknadFormData';
 import { SoknadTempStorageData } from '../types/SoknadTempStorageData';
 
 /** TODO - skrive tester på disse */
 
-export const getArbeidsgivereArbeidstid = (k9Arbeidstid: K9Arbeidstid): ArbeidstidArbeidsgiver => {
-    const arbeidstidArbeidsgiver: ArbeidstidArbeidsgiver = {};
-    Object.keys(k9Arbeidstid.arbeidsgivere).forEach((orgnr) => {
+export const getArbeidsgivereArbeidstid = (k9Arbeidstid: K9Arbeidstid): ArbeidstidArbeidsgiverMap => {
+    const arbeidstidArbeidsgiver: ArbeidstidArbeidsgiverMap = {};
+    Object.keys(k9Arbeidstid.arbeidsgivereMap).forEach((orgnr) => {
         arbeidstidArbeidsgiver[orgnr] = {
-            faktisk: { ...k9Arbeidstid.arbeidsgivere[orgnr].faktisk },
-            normalt: { ...k9Arbeidstid.arbeidsgivere[orgnr].normalt },
+            faktisk: { ...k9Arbeidstid.arbeidsgivereMap[orgnr].faktisk },
+            normalt: { ...k9Arbeidstid.arbeidsgivereMap[orgnr].normalt },
         };
     });
     return arbeidstidArbeidsgiver;

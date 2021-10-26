@@ -73,7 +73,7 @@ const TidEnkeltdager: React.FunctionComponent<Props> = ({
                 erEndret: tid ? timeHasSameDuration(tid, tidOpprinnelig) === false : false,
             };
         })
-        .filter((d) => (visKunEndretTid ? false : d.erEndret === true))
+        .filter((d) => (visKunEndretTid ? d.erEndret === true : true))
         .sort(datoSorter);
 
     const ingenDagerRegistrertMelding = ingenEndringerMelding ? (
@@ -100,7 +100,11 @@ const TidEnkeltdager: React.FunctionComponent<Props> = ({
                                     <span style={{ textTransform: 'capitalize' }}>
                                         {dayjs(dagerMedTid[0].dato).format('MMMM YYYY')}
                                     </span>
-                                    {dagerMedTid.some((d) => d.erEndret === true) ? ' (endret)' : '(uendret)'}
+                                    {visKunEndretTid !== true && (
+                                        <span>
+                                            {dagerMedTid.some((d) => d.erEndret === true) ? ' (endret)' : '(uendret)'}
+                                        </span>
+                                    )}
                                 </Element>
                             }>
                             <DagerMedTidListe dagerMedTid={dagerMedTid} viseUke={true} />

@@ -14,7 +14,7 @@ interface Props {
     periodeIMåned: DateRange;
     arbeidstid: TidEnkeltdag;
     arbeidstidArbeidsgiverSak: K9ArbeidsgiverArbeidstid;
-    utilgjengeligeDager: Date[];
+    utilgjengeligeDatoer: Date[];
     erHistorisk: boolean;
     onCancel: () => void;
     onSubmit: (tid: TidEnkeltdag) => void;
@@ -43,7 +43,7 @@ const ArbeidstidMånedForm: React.FunctionComponent<Props> = ({
     periodeIMåned,
     arbeidstid,
     arbeidstidArbeidsgiverSak,
-    utilgjengeligeDager,
+    utilgjengeligeDatoer,
     erHistorisk,
     onSubmit,
     onCancel,
@@ -57,7 +57,7 @@ const ArbeidstidMånedForm: React.FunctionComponent<Props> = ({
     return (
         <TidKalenderForm
             periode={periodeIMåned}
-            utilgjengeligeDager={utilgjengeligeDager}
+            utilgjengeligeDatoer={utilgjengeligeDatoer}
             tid={tidIMåned}
             opprinneligTid={arbeidstidArbeidsgiverSak.faktisk}
             erEndret={erEndret}

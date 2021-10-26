@@ -17,7 +17,7 @@ interface Props {
     opprinneligTid?: TidEnkeltdag;
     isNarrow: boolean;
     isWide: boolean;
-    utilgjengeligeDager?: Date[];
+    utilgjengeligeDatoer?: Date[];
     visSomListe?: boolean;
     tidPerDagValidator?: TidPerDagValidator;
     ukeTittelRenderer?: (uke: Ukeinfo) => React.ReactNode;
@@ -43,7 +43,7 @@ const bem = bemUtils('tidUkerInput');
 
 const TidUkeInput: React.FunctionComponent<Props> = ({
     ukeinfo,
-    utilgjengeligeDager,
+    utilgjengeligeDatoer,
     visSomListe,
     getFieldName,
     dagLabelRenderer,
@@ -75,7 +75,7 @@ const TidUkeInput: React.FunctionComponent<Props> = ({
                     </div>
                 ))}
                 {dager.map((dag) => {
-                    const erUtilgjengelig = isDateInDates(dag.dato, utilgjengeligeDager);
+                    const erUtilgjengelig = isDateInDates(dag.dato, utilgjengeligeDatoer);
                     return (
                         <div
                             key={dag.isoDateString}

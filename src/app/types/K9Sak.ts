@@ -1,15 +1,15 @@
 import { DateRange } from '@navikt/sif-common-formik/lib';
-import { DagerIkkeSøktFor, DagerSøktFor } from '.';
+import { DagerIkkeSøktForMap, DagerSøktForMap } from '.';
 import { TidEnkeltdag } from './SoknadFormData';
 
 export type K9ArbeidsgiverArbeidstid = { faktisk: TidEnkeltdag; normalt: TidEnkeltdag };
 
-export type K9ArbeidsgivereArbeidstid = {
+export type K9ArbeidsgivereArbeidstidMap = {
     [orgnr: string]: K9ArbeidsgiverArbeidstid;
 };
 
 export interface K9Arbeidstid {
-    arbeidsgivere: K9ArbeidsgivereArbeidstid;
+    arbeidsgivereMap: K9ArbeidsgivereArbeidstidMap;
 }
 
 export interface K9Sak {
@@ -41,10 +41,10 @@ export interface K9SakMeta {
     endringsperiode: DateRange;
 
     /** Dager det er søkt for */
-    dagerSøktFor: DagerSøktFor;
+    dagerSøktForMap: DagerSøktForMap;
 
     /** Dager det ikke er søkt for */
-    dagerIkkeSøktFor: DagerIkkeSøktFor;
+    dagerIkkeSøktForMap: DagerIkkeSøktForMap;
 
     /** Søknadsperioder */
     søknadsperioder: DateRange[];
@@ -53,7 +53,7 @@ export interface K9SakMeta {
     alleMånederISøknadsperiode: DateRange[];
 
     /** Måneder som har dager det er søkt om */
-    månederMedSøknadsperiode: MånedMedSøknadsperioder;
+    månederMedSøknadsperiodeMap: MånedMedSøknadsperioderMap;
 
     /** Antall måneder som ikke har dager det er søkt for */
     antallMånederUtenSøknadsperiode: number;
@@ -63,8 +63,11 @@ export interface K9SakMeta {
 
     /** Utilgjengelige datoer */
     utilgjengeligeDatoer: Date[];
+
+    /** Utilgjengelige datoer per måned */
+    utilgjengeligeDatoerIMåned: { [månedIsoString: string]: Date[] };
 }
 
-export type MånedMedSøknadsperioder = {
+export type MånedMedSøknadsperioderMap = {
     [yearMonthKey: string]: DateRange[];
 };

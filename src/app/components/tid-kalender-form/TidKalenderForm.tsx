@@ -29,7 +29,7 @@ interface Props {
     tid: TidEnkeltdag;
     erEndret: boolean;
     opprinneligTid?: TidEnkeltdag;
-    utilgjengeligeDager?: Date[];
+    utilgjengeligeDatoer?: Date[];
     tidPerDagValidator: TidPerDagValidator;
     onSubmit: (tid: TidEnkeltdag) => void;
     onCancel?: () => void;
@@ -60,7 +60,7 @@ const TidKalenderForm = ({
     opprinneligTid,
     tittel,
     intro,
-    utilgjengeligeDager = [],
+    utilgjengeligeDatoer = [],
     erEndret,
     tidPerDagValidator,
     onSubmit,
@@ -103,14 +103,14 @@ const TidKalenderForm = ({
                             <Systemtittel tag="h1">{tittel}</Systemtittel>
                             {intro ? <Box margin="l">{intro}</Box> : undefined}
 
-                            {utilgjengeligeDager.length > 0 && (
+                            {utilgjengeligeDatoer.length > 0 && (
                                 <Box margin="m">
                                     <ExpandableInfo title={`Hvorfor er ikke alle dagene nedenfor tilgjengelig?`}>
                                         Her kommer en forklaring på hvorfor noen dager ikke er tilgjengelig nedenfor.
                                         Altså dager som det ikke er søkt om. Dager det ikke er søkt om i{' '}
                                         {dayjs(periode.from).format('MMMM YYYY')}:
                                         <ul>
-                                            {utilgjengeligeDager.map((d) => (
+                                            {utilgjengeligeDatoer.map((d) => (
                                                 <li key={d.toString()}>
                                                     <span className={'--capitalize'}>{dayjs(d).format('dddd DD')}</span>
                                                     .
@@ -126,7 +126,7 @@ const TidKalenderForm = ({
                                     fieldName={FormField.tid}
                                     periode={periode}
                                     opprinneligTid={opprinneligTid}
-                                    utilgjengeligeDager={utilgjengeligeDager}
+                                    utilgjengeligeDatoer={utilgjengeligeDatoer}
                                     brukPanel={false}
                                     tidPerDagValidator={tidPerDagValidator}
                                 />

@@ -21,7 +21,7 @@ interface Props {
     tidOmsorgstilbudSak: TidEnkeltdag;
     editLabel: string;
     addLabel: string;
-    utilgjengeligeDager?: Date[];
+    utilgjengeligeDatoer?: Date[];
     månedTittelHeadingLevel?: number;
     onEdit: (tid: TidEnkeltdag) => void;
 }
@@ -32,7 +32,7 @@ const OmsorgstilbudMånedInfo: React.FunctionComponent<Props> = ({
     tidOmsorgstilbudSak,
     editLabel,
     addLabel,
-    utilgjengeligeDager,
+    utilgjengeligeDatoer,
     månedTittelHeadingLevel = 2,
     onEdit,
 }) => {
@@ -77,7 +77,7 @@ const OmsorgstilbudMånedInfo: React.FunctionComponent<Props> = ({
                     tomUkeContentRenderer={() => <p>Det er ikke søkt om pleiepenger for dager i denne uken.</p>}
                     periodeIMåned={periodeIMåned}
                     dager={omsorgsdager}
-                    utilgjengeligeDager={utilgjengeligeDager}
+                    utilgjengeligeDatoer={utilgjengeligeDatoer}
                     utilgjengeligDagInfo={'Det er ikke søkt om pleiepenger for denne dagen'}
                     dagerOpprinnelig={omsorgsdagerSak}
                     skjulTommeDagerIListe={true}

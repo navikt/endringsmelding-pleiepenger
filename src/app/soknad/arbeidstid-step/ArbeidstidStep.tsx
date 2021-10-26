@@ -32,7 +32,7 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
             {arbeidsgivere && (
                 <div className="arbeidstid">
                     {arbeidsgivere.map((a) => {
-                        const arbeidstidArbeidsgiver = arbeidstidSak.arbeidsgivere[a.organisasjonsnummer];
+                        const arbeidstidArbeidsgiver = arbeidstidSak.arbeidsgivereMap[a.organisasjonsnummer];
                         return (
                             <div key={a.organisasjonsnummer} className="arbeidstid__arbeidsgiver">
                                 <Undertittel>{a.navn}</Undertittel>

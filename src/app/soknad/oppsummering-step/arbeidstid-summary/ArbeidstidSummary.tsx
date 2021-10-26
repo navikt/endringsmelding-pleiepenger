@@ -12,18 +12,23 @@ interface Props {
     arbeidstidK9: K9Arbeidstid;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const ArbeidstidSummary: React.FunctionComponent<Props> = ({ arbeidstid, arbeidsgivere, arbeidstidK9 }) => {
+const getArbeidsgiverByOrgnr = (orgnr: string, arbeidsgivere: Arbeidsgiver[]): Arbeidsgiver | undefined => {
+    return arbeidsgivere.find((a) => a.organisasjonsnummer === orgnr);
+};
+
+const ArbeidstidSummary: React.FunctionComponent<Props> = ({ arbeidstid, arbeidsgivere }) => {
     return (
         <SummarySection header="Arbeidstid">
-            {arbeidsgivere?.map((arbeidsgiver) => {
-                // const arbeidstidArbeidsgiver = arbeidstid.arbeidsgiver[arbeidsgiver.organisasjonsnummer];
-                return (
-                    <div key={arbeidsgiver.organisasjonsnummer}>
+            {arbeidstid.arbeidsgivere.map(({ faktiskArbeid, orgnr }) => {
+                const arbeidsgiver = getArbeidsgiverByOrgnr(orgnr, arbeidsgivere);
+                return arbeidsgiver !== undefined ? (
+                    <div key={orgnr}>
                         <SummaryBlock header={`${arbeidsgiver.navn} - ${arbeidsgiver.organisasjonsnummer}`}>
-                            <TidEnkeltdager dager={[]} />
+                            <TidEnkeltdager dager={faktiskArbeid} />
                         </SummaryBlock>
                     </div>
+                ) : (
+                    <span key={orgnr}>{orgnr} - ingen arbeidsgiverinfo</span>
                 );
             })}
         </SummarySection>

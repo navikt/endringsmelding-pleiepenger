@@ -15,7 +15,7 @@ interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, Va
     name: FieldNames;
     labels: ModalFormAndInfoLabels;
     periodeIMåned: DateRange;
-    utilgjengeligeDager?: Date[];
+    utilgjengeligeDatoerIMåned?: Date[];
     endringsdato: Date;
     tidIOmsorgstilbudSak: TidEnkeltdag;
     månedTittelHeadingLevel?: number;
@@ -28,7 +28,7 @@ function OmsorgstilbudFormAndInfo<FieldNames>({
     labels,
     endringsdato,
     tidIOmsorgstilbudSak,
-    utilgjengeligeDager = [],
+    utilgjengeligeDatoerIMåned = [],
     månedTittelHeadingLevel,
     validate,
     onAfterChange,
@@ -51,7 +51,7 @@ function OmsorgstilbudFormAndInfo<FieldNames>({
                         periodeIMåned={periodeIMåned}
                         tidOmsorgstilbud={data}
                         tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}
-                        utilgjengeligeDager={utilgjengeligeDager}
+                        utilgjengeligeDatoer={utilgjengeligeDatoerIMåned}
                         erHistorisk={erHistorisk}
                         onCancel={onCancel}
                         onSubmit={onSubmit}
@@ -64,7 +64,7 @@ function OmsorgstilbudFormAndInfo<FieldNames>({
                         periodeIMåned={periodeIMåned}
                         tidOmsorgstilbud={data}
                         tidOmsorgstilbudSak={tidIOmsorgstilbudSak}
-                        utilgjengeligeDager={utilgjengeligeDager}
+                        utilgjengeligeDatoer={utilgjengeligeDatoerIMåned}
                         månedTittelHeadingLevel={månedTittelHeadingLevel}
                         onEdit={onEdit}
                         editLabel={labels.editLabel}

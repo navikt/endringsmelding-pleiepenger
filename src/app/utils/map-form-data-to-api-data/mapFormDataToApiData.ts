@@ -5,6 +5,7 @@ import { SoknadApiData } from '../../types/SoknadApiData';
 import { SoknadFormData } from '../../types/SoknadFormData';
 import appSentryLogger from '../appSentryLogger';
 import { mapOmsorgstilbudToApiData } from './mapOmsorgstilbudToApiData';
+import { mapArbeidstidToApiData } from './mapArbeidstidToApiData';
 
 interface MapFormDataToApiDataValues {
     soknadId: string;
@@ -33,10 +34,14 @@ export const mapFormDataToApiData = (
                   søknadsperioder
               )
             : undefined,
+        arbeidstid: values.formData.arbeidstid
+            ? mapArbeidstidToApiData(values.formData.arbeidstid, k9sak, søknadsperioder)
+            : undefined,
     };
 
     if (apiValues === undefined && getEnvironmentVariable('APP_VERSION') === 'dev') {
         logErrorToSentry(JSON.stringify(values.formData));
     }
+
     return apiValues;
 };

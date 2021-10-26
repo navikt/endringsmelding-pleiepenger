@@ -99,10 +99,10 @@ export interface K9SakRemote {
 
 const getArbeidstidArbeidsgivere = (arbeidsgivere: ArbeidsgiverK9Remote[]): K9Arbeidstid => {
     const arbeidstid: K9Arbeidstid = {
-        arbeidsgivere: {},
+        arbeidsgivereMap: {},
     };
     arbeidsgivere.forEach((a) => {
-        arbeidstid.arbeidsgivere[a.organisasjonsnummer] = getArbeidsgiverArbeidstidFromK9Format(
+        arbeidstid.arbeidsgivereMap[a.organisasjonsnummer] = getArbeidsgiverArbeidstidFromK9Format(
             a.arbeidstidInfo.perioder
         );
     });

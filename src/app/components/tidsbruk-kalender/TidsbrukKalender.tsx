@@ -20,7 +20,7 @@ interface Props {
     periodeIMåned: DateRange;
     dager: DagMedTid[];
     dagerOpprinnelig?: DagMedTid[];
-    utilgjengeligeDager?: Date[];
+    utilgjengeligeDatoer?: Date[];
     utilgjengeligDagInfo?: string;
     skjulTommeDagerIListe?: boolean;
     visEndringsinformasjon?: boolean;
@@ -33,7 +33,7 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
     periodeIMåned,
     dager: dagerMedTid,
     dagerOpprinnelig = [],
-    utilgjengeligeDager,
+    utilgjengeligeDatoer,
     utilgjengeligDagInfo,
     skjulTommeDagerIListe,
     visEndringsinformasjon,
@@ -60,7 +60,7 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
     return (
         <CalendarGrid
             month={periodeIMåned}
-            disabledDates={utilgjengeligeDager}
+            disabledDates={utilgjengeligeDatoer}
             disabledDateInfo={utilgjengeligDagInfo}
             hideEmptyContentInListMode={skjulTommeDagerIListe}
             allDaysInWeekDisabledContentRenderer={tomUkeContentRenderer}

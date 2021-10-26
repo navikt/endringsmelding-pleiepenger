@@ -6,6 +6,7 @@ import SøknadsperioderMånedListe from '../../components/søknadsperioder-måne
 import { K9ArbeidsgiverArbeidstid, K9SakMeta } from '../../types/K9Sak';
 import { SoknadFormField, TidEnkeltdag } from '../../types/SoknadFormData';
 import ArbeidstidFormAndInfo from './arbeidstid-form-and-info/ArbeidstidFormAndInfo';
+import { getYearMonthKey } from '../../utils/k9utils';
 
 interface Props {
     formFieldName: SoknadFormField;
@@ -34,7 +35,7 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
                     <ArbeidstidFormAndInfo
                         formFieldName={formFieldName}
                         periodeIMåned={måned}
-                        utilgjengeligeDager={k9sakMeta.utilgjengeligeDatoer}
+                        utilgjengeligeDatoerIMåned={k9sakMeta.utilgjengeligeDatoerIMåned[getYearMonthKey(måned.from)]}
                         endringsdato={k9sakMeta.endringsdato}
                         arbeidstidArbeidsgiverSak={arbeidstidArbeidsgiverSak}
                         månedTittelHeadingLevel={k9sakMeta.søknadsperioderGårOverFlereÅr ? 4 : 3}

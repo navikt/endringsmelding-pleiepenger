@@ -16,15 +16,17 @@ export interface Omsorgstilbud {
     enkeltdager: TidEnkeltdag;
 }
 
-export type ArbeidstidArbeidsgiver = {
-    [orgnr: string]: {
-        faktisk: TidEnkeltdag;
-        normalt: TidEnkeltdag;
-    };
+export type ArbeidstidArbeidsgiverEnkeltdag = {
+    faktisk: TidEnkeltdag;
+    normalt: TidEnkeltdag;
 };
 
-export interface Arbeidstid {
-    arbeidsgiver: ArbeidstidArbeidsgiver;
+export type ArbeidstidArbeidsgiverMap = {
+    [orgnr: string]: ArbeidstidArbeidsgiverEnkeltdag;
+};
+
+export interface ArbeidstidFormValue {
+    arbeidsgiver: ArbeidstidArbeidsgiverMap;
 }
 
 export enum SoknadFormField {
@@ -42,7 +44,7 @@ export interface SoknadFormData {
     [SoknadFormField.harForståttRettigheterOgPlikter]: boolean;
     [SoknadFormField.harBekreftetOpplysninger]: boolean;
     [SoknadFormField.omsorgstilbud]?: Omsorgstilbud;
-    [SoknadFormField.arbeidstid]?: Arbeidstid;
+    [SoknadFormField.arbeidstid]?: ArbeidstidFormValue;
 }
 
 export const getArbeidsgiverArbeidstidFormFieldName = (a: Arbeidsgiver): SoknadFormField =>

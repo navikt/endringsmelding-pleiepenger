@@ -17,7 +17,7 @@ interface Props {
     periode: DateRange;
     brukPanel?: boolean;
     opprinneligTid?: TidEnkeltdag;
-    utilgjengeligeDager?: Date[];
+    utilgjengeligeDatoer?: Date[];
     ukeTittelRenderer?: (uke: Ukeinfo) => React.ReactNode;
     tidPerDagValidator?: TidPerDagValidator;
 }
@@ -29,7 +29,7 @@ export const TidUkerInput: React.FunctionComponent<Props> = ({
     periode,
     brukPanel,
     opprinneligTid,
-    utilgjengeligeDager,
+    utilgjengeligeDatoer,
     ukeTittelRenderer,
     tidPerDagValidator,
 }) => {
@@ -43,7 +43,7 @@ export const TidUkerInput: React.FunctionComponent<Props> = ({
     const alleDagerIMåned = getDagerIPeriode(månedDateRange.from, månedDateRange.to);
 
     const uker = getUkerFraDager(alleDagerIMåned).filter(
-        (uke) => uke.dager.filter((dag) => isDateInDates(dag.dato, utilgjengeligeDager)).length !== uke.dager.length
+        (uke) => uke.dager.filter((dag) => isDateInDates(dag.dato, utilgjengeligeDatoer)).length !== uke.dager.length
     );
 
     return (
@@ -55,7 +55,7 @@ export const TidUkerInput: React.FunctionComponent<Props> = ({
                         getFieldName={(dag) => getTidKalenderFieldName(fieldName, dag)}
                         ukeinfo={uke}
                         opprinneligTid={opprinneligTid}
-                        utilgjengeligeDager={utilgjengeligeDager}
+                        utilgjengeligeDatoer={utilgjengeligeDatoer}
                         isNarrow={isNarrow}
                         isWide={isWide}
                         visSomListe={true}
