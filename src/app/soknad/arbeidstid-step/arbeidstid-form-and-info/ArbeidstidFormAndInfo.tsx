@@ -11,7 +11,7 @@ import { K9ArbeidsgiverArbeidstid } from '../../../types/K9Sak';
 import { TidEnkeltdag } from '../../../types/SoknadFormData';
 import { getUtilgjengeligeDagerIMåned } from '../../../utils/utilgjengeligeDagerUtils';
 import ArbeidstidMånedForm from './ArbeidstidMånedForm';
-import ArbeidstidMånedInfo, { ArbeidstidIPeriodemånedTittelHeadingLevel } from './ArbeidstidMånedInfo';
+import ArbeidstidMånedInfo from './ArbeidstidMånedInfo';
 
 interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     formFieldName: FieldNames;
@@ -20,7 +20,7 @@ interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, Va
     utilgjengeligeDager?: Date[];
     endringsdato: Date;
     arbeidstidArbeidsgiverSak: K9ArbeidsgiverArbeidstid;
-    månedTittelHeadingLevel?: ArbeidstidIPeriodemånedTittelHeadingLevel;
+    månedTittelHeadingLevel?: number;
     onAfterChange?: (tid: TidEnkeltdag) => void;
 }
 

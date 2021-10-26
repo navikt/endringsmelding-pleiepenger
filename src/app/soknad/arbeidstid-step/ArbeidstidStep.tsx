@@ -1,5 +1,4 @@
 import React from 'react';
-import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { Undertittel } from 'nav-frontend-typografi';
 import StepIntroduction from '../../components/step-introduction/StepIntroduction';
 import { Arbeidsgiver } from '../../types/Arbeidsgiver';
@@ -31,11 +30,11 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
         <SoknadFormStep id={stepId} onStepCleanup={cleanupStep}>
             <StepIntroduction>Intro til steg</StepIntroduction>
             {arbeidsgivere && (
-                <>
+                <div className="arbeidstid">
                     {arbeidsgivere.map((a) => {
                         const arbeidstidArbeidsgiver = arbeidstidSak.arbeidsgivere[a.organisasjonsnummer];
                         return (
-                            <FormBlock key={a.organisasjonsnummer}>
+                            <div key={a.organisasjonsnummer} className="arbeidstid__arbeidsgiver">
                                 <Undertittel>{a.navn}</Undertittel>
                                 {arbeidstidArbeidsgiver === undefined ? (
                                     <p>Informasjon mangler om arbeidstid for denne arbeidsgiveren</p>
@@ -47,10 +46,10 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
                                         onArbeidstidChanged={onArbeidstidChanged}
                                     />
                                 )}
-                            </FormBlock>
+                            </div>
                         );
                     })}
-                </>
+                </div>
             )}
         </SoknadFormStep>
     );

@@ -14,6 +14,7 @@ interface Props {
     inputGroupFieldName: string;
     legend: React.ReactNode;
     description?: React.ReactNode;
+    årstallHeadingLevel?: number;
     årstallHeaderRenderer?: (årstall: number) => React.ReactNode;
     månedContentRenderer: (måned: DateRange, søknadsperioderIMåned: DateRange[], index: number) => React.ReactNode;
     onTidChanged?: (tid: TidEnkeltdag) => void;
@@ -23,7 +24,8 @@ const SøknadsperioderMånedListe: React.FunctionComponent<Props> = ({
     k9sakMeta,
     legend,
     description,
-    inputGroupFieldName: formFieldName,
+    inputGroupFieldName,
+    årstallHeadingLevel: headingLevel = 2,
     årstallHeaderRenderer,
     månedContentRenderer,
 }) => {
@@ -44,7 +46,7 @@ const SøknadsperioderMånedListe: React.FunctionComponent<Props> = ({
              * brukt.
              * Ikke optimalt, men det virker.
              */
-            name={`${formFieldName}_dager` as any}
+            name={`${inputGroupFieldName}_dager` as any}
             legend={legend}
             description={description}
             tag="div"
@@ -56,7 +58,9 @@ const SøknadsperioderMånedListe: React.FunctionComponent<Props> = ({
                     <FormBlock margin="l" key={dayjs(måned.from).format('MM.YYYY')}>
                         {årstallHeaderRenderer && visÅrstallHeading(index) && (
                             <Box margin="xl" padBottom="l">
-                                <Undertittel>{årstallHeaderRenderer(måned.from.getFullYear())}</Undertittel>
+                                <Undertittel tag={`h${headingLevel}`} className={'yearHeader'}>
+                                    {årstallHeaderRenderer(måned.from.getFullYear())}
+                                </Undertittel>
                             </Box>
                         )}
                         {månedContentRenderer(måned, søknadsperioderIMåned, index)}

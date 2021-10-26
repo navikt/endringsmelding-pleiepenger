@@ -18,8 +18,6 @@ import FormattedTimeText from '../../../components/formatted-time-text/Formatted
 import { K9ArbeidsgiverArbeidstid } from '../../../types/K9Sak';
 import { getEndringsdato } from '../../../utils/endringsperiode';
 
-export type ArbeidstidIPeriodemånedTittelHeadingLevel = 2 | 3;
-
 interface Props {
     periodeIMåned: DateRange;
     tidArbeidstid: TidEnkeltdag;
@@ -27,7 +25,7 @@ interface Props {
     editLabel: string;
     addLabel: string;
     utilgjengeligeDager?: Date[];
-    månedTittelHeadingLevel?: ArbeidstidIPeriodemånedTittelHeadingLevel;
+    månedTittelHeadingLevel?: number;
     onEdit: (tid: TidEnkeltdag) => void;
 }
 

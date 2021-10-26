@@ -15,8 +15,6 @@ import { TidEnkeltdag } from '../../../types/SoknadFormData';
 import { getDagerMedTidITidsrom } from '../../../utils/tidsbrukUtils';
 import { timeHasSameDuration } from '../../../utils/dateUtils';
 
-export type OmsorgstilbudIPeriodemånedTittelHeadingLevel = 2 | 3;
-
 interface Props {
     periodeIMåned: DateRange;
     tidOmsorgstilbud: TidEnkeltdag;
@@ -24,7 +22,7 @@ interface Props {
     editLabel: string;
     addLabel: string;
     utilgjengeligeDager?: Date[];
-    månedTittelHeadingLevel?: OmsorgstilbudIPeriodemånedTittelHeadingLevel;
+    månedTittelHeadingLevel?: number;
     onEdit: (tid: TidEnkeltdag) => void;
 }
 

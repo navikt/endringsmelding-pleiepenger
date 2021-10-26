@@ -2,8 +2,8 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import dayjs from 'dayjs';
-import AlertStripe from 'nav-frontend-alertstriper';
-import { Element } from 'nav-frontend-typografi';
+// import AlertStripe from 'nav-frontend-alertstriper';
+// import { Element } from 'nav-frontend-typografi';
 import SøknadsperioderMånedListe from '../../components/søknadsperioder-måned-liste/SøknadsperioderMånedListe';
 import { SoknadFormField, TidEnkeltdag } from '../../types/SoknadFormData';
 import OmsorgstilbudFormAndInfo from './omsorgstilbud-form-and-info/OmsorgstilbudFormAndInfo';
@@ -26,17 +26,17 @@ const OmsorgstilbudMånedListe: React.FunctionComponent<Props> = ({
             k9sakMeta={k9sakMeta}
             inputGroupFieldName={SoknadFormField.omsorgstilbud_dager_gruppe}
             legend={<span className="sr-only">Måneder med dager hvor det er søkt pleiepenger for.</span>}
-            description={
-                k9sakMeta.antallMånederUtenSøknadsperiode > 0 ? (
-                    <AlertStripe type="info" form="inline">
-                        <Element tag="h3">
-                            {k9sakMeta.antallMånederUtenSøknadsperiode} måneder er skjult i listen nedenfor
-                        </Element>
-                        <p>La inn antallet som er skult, slik at du evt. kan bruke det i teksten Siv.</p>
-                        Måneder som ikke har dager hvor det er søkt om pleiepenger for, vises ikke listen nedenfor.
-                    </AlertStripe>
-                ) : undefined
-            }
+            // description={
+            //     k9sakMeta.antallMånederUtenSøknadsperiode > 0 ? (
+            //         <AlertStripe type="info" form="inline">
+            //             <Element tag="h3">
+            //                 {k9sakMeta.antallMånederUtenSøknadsperiode} måneder er skjult i listen nedenfor
+            //             </Element>
+            //             <p>La inn antallet som er skult, slik at du evt. kan bruke det i teksten Siv.</p>
+            //             Måneder som ikke har dager hvor det er søkt om pleiepenger for, vises ikke listen nedenfor.
+            //         </AlertStripe>
+            //     ) : undefined
+            // }
             årstallHeaderRenderer={(årstall) => `Måneder det er søkt om pleiepenger i ${årstall}`}
             månedContentRenderer={(måned) => {
                 const mndOgÅrLabelPart = dayjs(måned.from).format('MMMM YYYY');

@@ -8,7 +8,7 @@ import {
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import dayjs from 'dayjs';
 import { TidEnkeltdag } from '../../../types/SoknadFormData';
-import OmsorgstilbudMånedInfo, { OmsorgstilbudIPeriodemånedTittelHeadingLevel } from './OmsorgstilbudMånedInfo';
+import OmsorgstilbudMånedInfo from './OmsorgstilbudMånedInfo';
 import OmsorgstilbudMånedForm from './OmsorgstilbudMånedForm';
 
 interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
@@ -18,7 +18,7 @@ interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, Va
     utilgjengeligeDager?: Date[];
     endringsdato: Date;
     tidIOmsorgstilbudSak: TidEnkeltdag;
-    månedTittelHeadingLevel?: OmsorgstilbudIPeriodemånedTittelHeadingLevel;
+    månedTittelHeadingLevel?: number;
     onAfterChange?: (omsorgsdager: TidEnkeltdag) => void;
 }
 
