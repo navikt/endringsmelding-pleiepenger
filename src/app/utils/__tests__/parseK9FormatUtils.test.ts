@@ -1,10 +1,6 @@
 import { ISODateRange } from '../../types';
-import {
-    ArbeidstidDagK9Format,
-    getArbeidsgiverArbeidstidFromK9Format,
-    getTilsynsdagerFromK9Format,
-    TilsynsordningPerioderK9Format,
-} from '../k9SakRemote';
+import { ArbeidstidDagK9Format, TilsynsordningPerioderK9Format } from '../../types/k9Format';
+import { getArbeidsgiverArbeidstidFromK9Format, getTilsynsdagerFromK9Format } from '../parseK9Format';
 
 const range1: ISODateRange = '2021-02-01/2021-02-04';
 const range2: ISODateRange = '2021-02-05/2021-02-05';

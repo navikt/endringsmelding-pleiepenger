@@ -1,7 +1,7 @@
 import { DateRange } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { getDagerIPeriode } from '../components/tid-uker-input/utils';
-import { getYearMonthKey } from './k9utils';
+import { getYearMonthKey } from './k9SakUtils';
 
 export const getUtilgjengeligeDatoerIMåned = (
     utilgjengeligeDatoer: Date[],
@@ -10,11 +10,14 @@ export const getUtilgjengeligeDatoerIMåned = (
 ): Date[] => {
     const yearMonthKey = getYearMonthKey(måned.from);
     const dagerFørFørsteDag = dayjs(måned.from).isSame(endringsperiode.from, 'month')
-        ? getDagerIPeriode(måned.from, dayjs(endringsperiode.from).subtract(1, 'day').toDate()).map((d) => d.dato)
+        ? getDagerIPeriode(
+              dayjs.min(dayjs(endringsperiode.from), dayjs(måned.from)).toDate(),
+              dayjs(endringsperiode.from).subtract(1, 'day').toDate()
+          ).map((d) => d.dato)
         : [];
 
     const dagerEtterSisteDag = dayjs(måned.from).isSame(endringsperiode.to, 'month')
-        ? getDagerIPeriode(dayjs(måned.to).add(1, 'day').toDate(), endringsperiode.to).map((d) => d.dato)
+        ? getDagerIPeriode(dayjs(endringsperiode.to).add(1, 'day').toDate(), måned.to).map((d) => d.dato)
         : [];
 
     return [

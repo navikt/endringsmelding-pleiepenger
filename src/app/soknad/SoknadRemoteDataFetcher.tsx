@@ -6,7 +6,7 @@ import ErrorPage from '@navikt/sif-common-soknad/lib/soknad-common-pages/ErrorPa
 import LoadingPage from '@navikt/sif-common-soknad/lib/soknad-common-pages/LoadingPage';
 import SoknadErrorMessages from '@navikt/sif-common-soknad/lib/soknad-error-messages/SoknadErrorMessages';
 import useSoknadEssentials, { SoknadEssentials } from '../hooks/useSoknadEssentials';
-import { trimK9SakForSøknad } from '../utils/k9utils';
+import { trimK9SakForSøknad } from '../utils/k9SakUtils';
 import Soknad from './Soknad';
 import { K9Sak, K9SakMeta } from '../types/K9Sak';
 

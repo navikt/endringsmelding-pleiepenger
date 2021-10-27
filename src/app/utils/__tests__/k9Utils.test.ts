@@ -3,7 +3,7 @@ import { InputTime } from '../../types';
 import { K9ArbeidsgiverArbeidstid } from '../../types/K9Sak';
 import { TidEnkeltdag } from '../../types/SoknadFormData';
 import { ISODateToDate } from '../dateUtils';
-import { getISODateObjectsWithinDateRange, trimArbeidstidTilTillatPeriode } from '../k9utils';
+import { getISODateObjectsWithinDateRange, trimArbeidstidTilTillatPeriode } from '../k9SakUtils';
 
 describe('trimArbeidstidTilTillatPeriode', () => {
     it('fjerner arbeidstid utenfor endringsperiode', () => {

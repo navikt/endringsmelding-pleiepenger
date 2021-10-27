@@ -1,5 +1,6 @@
 import { Locale } from '@navikt/sif-common-core/lib/types/Locale';
-import { ISODate, ISODuration } from '.';
+import { ISODate, ISODuration } from './';
+import { K9FormatYtelseInnsending } from './k9FormatInnsending';
 
 export enum SoknadApiDataField {
     'id' = 'id',
@@ -8,6 +9,7 @@ export enum SoknadApiDataField {
     'harBekreftetOpplysninger' = 'harBekreftetOpplysninger',
     'omsorgstilbud' = 'omsorgstilbud',
     'arbeidstid' = 'arbeidstid',
+    'ytelse' = 'ytelse',
 }
 
 export interface TidEnkeltdagApiData {
@@ -15,24 +17,10 @@ export interface TidEnkeltdagApiData {
     tid: ISODuration;
 }
 
-export interface ArbeidsgiverArbeidstidApiData {
-    orgnr: string;
-    faktiskArbeid: TidEnkeltdagApiData[];
-}
-
-export interface OmsorgstilbudApiData {
-    enkeltdager: TidEnkeltdagApiData[];
-}
-
-export interface ArbeidstidApiData {
-    arbeidsgivere: ArbeidsgiverArbeidstidApiData[];
-}
-
 export interface SoknadApiData {
     [SoknadApiDataField.id]: string;
     [SoknadApiDataField.språk]: Locale;
     [SoknadApiDataField.harForståttRettigheterOgPlikter]: boolean;
     [SoknadApiDataField.harBekreftetOpplysninger]: boolean;
-    [SoknadApiDataField.omsorgstilbud]?: OmsorgstilbudApiData;
-    [SoknadApiDataField.arbeidstid]?: ArbeidstidApiData;
+    [SoknadApiDataField.ytelse]: K9FormatYtelseInnsending;
 }

@@ -60,16 +60,6 @@ const VelkommenPageForm: React.FunctionComponent<Props> = ({ onStart, endringspe
                             ),
                             value: 'arbeidstid',
                         },
-                        {
-                            id: 'arbeidssituasjon',
-                            disabled: true,
-                            label: (
-                                <>
-                                    <Element>Arbeidssituasjon (ikke tilgjengelig)</Element>Oppdater din arbeidssituasjon
-                                </>
-                            ),
-                            value: 'arbeidssituasjon',
-                        },
                     ]}
                 />
             </FormBlock>

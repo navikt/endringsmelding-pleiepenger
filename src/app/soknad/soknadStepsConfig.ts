@@ -4,7 +4,6 @@ import { SoknadFormData } from '../types/SoknadFormData';
 
 export enum StepID {
     'OMSORGSTILBUD' = 'omsorgstilbud',
-    'ARBEIDSSITUASJON' = 'arbeidssituasjon',
     'ARBEIDSTID' = 'arbeidstid',
     'OPPSUMMERING' = 'oppsummering',
 }
@@ -14,7 +13,6 @@ const getSoknadSteps = (values: SoknadFormData): StepID[] => {
     const steps: StepID[] = [];
     steps.push(StepID.ARBEIDSTID);
     steps.push(StepID.OMSORGSTILBUD);
-    // steps.push(StepID.ARBEIDSSITUASJON);
     steps.push(StepID.OPPSUMMERING);
     return steps;
 };

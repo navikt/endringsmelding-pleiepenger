@@ -1,21 +1,34 @@
 import React from 'react';
 import SummaryBlock from '@navikt/sif-common-soknad/lib/soknad-summary/summary-block/SummaryBlock';
 import SummarySection from '@navikt/sif-common-soknad/lib/soknad-summary/summary-section/SummarySection';
-import { OmsorgstilbudApiData } from '../../../types/SoknadApiData';
 import TidEnkeltdager from '../../../components/dager-med-tid/TidEnkeltdager';
+import { TilsynsordningK9FormatInnsending } from '../../../types/k9FormatInnsending';
+import { TidEnkeltdagApiData } from '../../../types/SoknadApiData';
 import { TidEnkeltdag } from '../../../types/SoknadFormData';
 
 interface Props {
-    omsorgstilbud?: OmsorgstilbudApiData;
+    tilsynsordning: TilsynsordningK9FormatInnsending;
     tidIOmsorgstilbudSak?: TidEnkeltdag;
 }
 
-const OmsorgstilbudSummary: React.FunctionComponent<Props> = ({ omsorgstilbud, tidIOmsorgstilbudSak }) => {
+const OmsorgstilbudSummary: React.FunctionComponent<Props> = ({ tilsynsordning, tidIOmsorgstilbudSak }) => {
+    const dagerMedTid: TidEnkeltdagApiData[] = [];
+
+    Object.keys(tilsynsordning.perioder).forEach((key) => {
+        const { etablertTilsynTimerPerDag } = tilsynsordning.perioder[key];
+        if (etablertTilsynTimerPerDag) {
+            dagerMedTid.push({
+                dato: key,
+                tid: etablertTilsynTimerPerDag,
+            });
+        }
+    });
+
     return (
         <SummarySection header="Omsorgstilbud">
             <SummaryBlock header="Endret omsorgstilbud">
                 <TidEnkeltdager
-                    dager={omsorgstilbud?.enkeltdager}
+                    dager={dagerMedTid}
                     dagerOpprinnelig={tidIOmsorgstilbudSak}
                     ingenEndringerMelding={'Ingen endringer registrert på omsorgstilbud'}
                 />

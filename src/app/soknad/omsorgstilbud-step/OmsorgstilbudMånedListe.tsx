@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import SøknadsperioderMånedListe from '../../components/søknadsperioder-måned-liste/SøknadsperioderMånedListe';
 import { K9SakMeta } from '../../types/K9Sak';
 import { SoknadFormField, TidEnkeltdag } from '../../types/SoknadFormData';
-import { getYearMonthKey } from '../../utils/k9utils';
+import { getYearMonthKey } from '../../utils/k9SakUtils';
 import OmsorgstilbudFormAndInfo from './omsorgstilbud-form-and-info/OmsorgstilbudFormAndInfo';
 
 interface Props {

@@ -20,9 +20,9 @@ import SoknadFormStep from '../SoknadFormStep';
 import { StepID } from '../soknadStepsConfig';
 import ArbeidstidSummary from './arbeidstid-summary/ArbeidstidSummary';
 import ItsClosedGiffy from './ItsClosedGiffy';
-import OmsorgstilbudSummary from './omsorgstilbud-summary/OmsorgstilbudSummary';
 import SøkerSummary from './SøkerSummary';
 import { K9Sak } from '../../types/K9Sak';
+import OmsorgstilbudSummary from './omsorgstilbud-summary/OmsorgstilbudSummary';
 
 type Props = {
     apiValues?: SoknadApiData;
@@ -73,19 +73,21 @@ const OppsummeringStep: React.FunctionComponent<Props> = ({ søker, apiValues, a
                         <Box margin="xxl">
                             <ResponsivePanel border={true}>
                                 <SøkerSummary søker={søker} />
-                                {apiValues.omsorgstilbud && (
+                                {apiValues.ytelse.tilsynsordning && (
                                     <OmsorgstilbudSummary
-                                        omsorgstilbud={apiValues.omsorgstilbud}
+                                        tilsynsordning={apiValues.ytelse.tilsynsordning}
                                         tidIOmsorgstilbudSak={k9sak.ytelse.tilsynsordning.enkeltdager}
                                     />
                                 )}
-                                {apiValues.arbeidstid && arbeidsgivere && (
-                                    <ArbeidstidSummary
-                                        arbeidstid={apiValues.arbeidstid}
-                                        arbeidstidK9={k9sak.ytelse.arbeidstid}
-                                        arbeidsgivere={arbeidsgivere}
-                                    />
-                                )}
+                                {apiValues.ytelse.arbeidstid &&
+                                    apiValues.ytelse.arbeidstid.arbeidstakerList.length > 0 &&
+                                    arbeidsgivere && (
+                                        <ArbeidstidSummary
+                                            arbeidstid={apiValues.ytelse.arbeidstid}
+                                            arbeidstidK9={k9sak.ytelse.arbeidstid}
+                                            arbeidsgivere={arbeidsgivere}
+                                        />
+                                    )}
                             </ResponsivePanel>
                         </Box>
 

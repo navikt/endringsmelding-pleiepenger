@@ -20,7 +20,7 @@ import {
     ISODateToDate,
 } from './dateUtils';
 import { getEndringsdato, getEndringsperiode, getMaksEndringsperiode } from './endringsperiode';
-import { getUtilgjengeligeDatoerIMåned } from './utilgjengeligeDatoerUtils';
+import { getUtilgjengeligeDatoerIMåned } from './getUtilgjengeligeDatoerIMåned';
 
 type ISODateObject = { [key: string]: any };
 
