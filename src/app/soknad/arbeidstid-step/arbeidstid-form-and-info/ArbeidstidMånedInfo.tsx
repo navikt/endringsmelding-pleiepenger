@@ -4,7 +4,7 @@ import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import { DateRange, dateToISOString, Time } from '@navikt/sif-common-formik/lib';
+import { DateRange, dateToISOString } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Knapp from 'nav-frontend-knapper';
@@ -17,6 +17,7 @@ import { prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import FormattedTimeText from '../../../components/formatted-time-text/FormattedTimeText';
 import { K9ArbeidsgiverArbeidstid } from '../../../types/K9Sak';
 import { getEndringsdato } from '../../../utils/endringsperiode';
+import { InputTime } from '../../../types';
 
 interface Props {
     periodeIMåned: DateRange;
@@ -94,9 +95,9 @@ const ArbeidstidMånedInfo: React.FunctionComponent<Props> = ({
                     visEndringsinformasjon={true}
                     popoverContentRenderer={(date) => {
                         const dateKey = dateToISOString(date);
-                        const tid: Partial<Time> | undefined = getTidForDag(date);
-                        const opprinneligTid: Partial<Time> | undefined = arbeidstidArbeidsgiverSak.faktisk[dateKey];
-                        const jobberNormaltTid: Partial<Time> | undefined = arbeidstidArbeidsgiverSak.normalt[dateKey];
+                        const tid: InputTime | undefined = getTidForDag(date);
+                        const opprinneligTid: InputTime | undefined = arbeidstidArbeidsgiverSak.faktisk[dateKey];
+                        const jobberNormaltTid: InputTime | undefined = arbeidstidArbeidsgiverSak.normalt[dateKey];
                         const erEndret = timeHasSameDuration(tid, opprinneligTid) === false;
                         const erHistorisk = dayjs(date).isBefore(getEndringsdato());
                         return (

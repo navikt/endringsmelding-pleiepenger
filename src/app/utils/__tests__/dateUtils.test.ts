@@ -70,10 +70,10 @@ describe('timeHasSameDuration', () => {
         expect(timeHasSameDuration({ hours: '1', minutes: '0' }, { hours: '1', minutes: '0' })).toBeTruthy();
     });
     it('er lik når timer er lik og minutter er udefinert', () => {
-        expect(timeHasSameDuration({ hours: '1' }, { hours: '1' })).toBeTruthy();
+        expect(timeHasSameDuration({ hours: '1', minutes: '0' }, { hours: '1', minutes: '0' })).toBeTruthy();
     });
     it('er lik når timer er udefinert og minutter er lik', () => {
-        expect(timeHasSameDuration({ minutes: '0' }, { minutes: '0' })).toBeTruthy();
+        expect(timeHasSameDuration({ hours: '0', minutes: '0' }, { hours: '0', minutes: '0' })).toBeTruthy();
     });
     it('er lik når timer er lik og minutter er "0" eller udefinert', () => {
         expect(timeHasSameDuration({ hours: '1', minutes: '0' }, { hours: '1', minutes: undefined })).toBeTruthy();
@@ -85,14 +85,14 @@ describe('timeHasSameDuration', () => {
         expect(timeHasSameDuration({ hours: undefined, minutes: '2' })).toBeFalsy();
     });
     it('er ulik dersom timer er ulike', () => {
-        expect(timeHasSameDuration({ hours: undefined }, { hours: '1' })).toBeFalsy();
-        expect(timeHasSameDuration({ hours: '2' }, { hours: '1' })).toBeFalsy();
-        expect(timeHasSameDuration({ hours: '2' }, { hours: undefined })).toBeFalsy();
+        expect(timeHasSameDuration({ hours: undefined, minutes: '0' }, { hours: '1', minutes: '0' })).toBeFalsy();
+        expect(timeHasSameDuration({ hours: '2', minutes: '0' }, { hours: '1', minutes: '0' })).toBeFalsy();
+        expect(timeHasSameDuration({ hours: '2', minutes: '0' }, { hours: undefined, minutes: '0' })).toBeFalsy();
     });
     it('er ulik dersom minutter er ulike', () => {
-        expect(timeHasSameDuration({ minutes: undefined }, { minutes: '1' })).toBeFalsy();
-        expect(timeHasSameDuration({ minutes: '2' }, { minutes: '1' })).toBeFalsy();
-        expect(timeHasSameDuration({ minutes: '2' }, { minutes: undefined })).toBeFalsy();
+        expect(timeHasSameDuration({ minutes: undefined, hours: '0' }, { minutes: '1', hours: '0' })).toBeFalsy();
+        expect(timeHasSameDuration({ minutes: '2', hours: '0' }, { minutes: '1', hours: '0' })).toBeFalsy();
+        expect(timeHasSameDuration({ minutes: '2', hours: '0' }, { minutes: undefined, hours: '0' })).toBeFalsy();
     });
     it('er ulik dersom minutter er ulike og timer er definert', () => {
         expect(timeHasSameDuration({ hours: '1', minutes: undefined }, { hours: '1', minutes: '1' })).toBeFalsy();

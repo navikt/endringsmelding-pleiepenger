@@ -1,9 +1,9 @@
 import { ISODateRange } from '../../types';
 import {
-    ArbeidstidDagK9Remote,
+    ArbeidstidDagK9Format,
     getArbeidsgiverArbeidstidFromK9Format,
     getTilsynsdagerFromK9Format,
-    TilsynsordningPerioderK9Remote,
+    TilsynsordningPerioderK9Format,
 } from '../k9SakRemote';
 
 const range1: ISODateRange = '2021-02-01/2021-02-04';
@@ -12,7 +12,7 @@ const range3: ISODateRange = '2021-02-08/2021-02-09';
 
 describe('getTilsynsdagerFromK9Format', () => {
     it('henter ut korrekt data for to perioder med ulikt tilsyn', () => {
-        const tilsynsperioder: TilsynsordningPerioderK9Remote = {};
+        const tilsynsperioder: TilsynsordningPerioderK9Format = {};
         tilsynsperioder[range1] = { etablertTilsynTimerPerDag: 'PT0H30M' };
         tilsynsperioder[range3] = { etablertTilsynTimerPerDag: 'PT3H0M' };
         const result = getTilsynsdagerFromK9Format(tilsynsperioder);
@@ -30,7 +30,7 @@ describe('getTilsynsdagerFromK9Format', () => {
 });
 
 describe('getArbeidsgiverArbeidstidFromK9Format', () => {
-    const arbeidstid: ArbeidstidDagK9Remote = {};
+    const arbeidstid: ArbeidstidDagK9Format = {};
     arbeidstid[range1] = { jobberNormaltTimerPerDag: 'PT3H0M', faktiskArbeidTimerPerDag: 'PT0H0M' };
     arbeidstid[range2] = { jobberNormaltTimerPerDag: 'PT2H0M', faktiskArbeidTimerPerDag: 'PT2H30M' };
 

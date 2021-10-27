@@ -7,7 +7,7 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import minMax from 'dayjs/plugin/minMax';
 import { uniq } from 'lodash';
-import { ISODate, ISODateRange, ISODuration } from '../types';
+import { InputTime, ISODate, ISODateRange, ISODuration } from '../types';
 
 dayjs.extend(isoWeek);
 dayjs.extend(isBetween);
@@ -140,7 +140,7 @@ export const getDateRangeFromDateRanges = (ranges: DateRange[]): DateRange => {
     };
 };
 
-export const timeHasSameDuration = (time1?: Partial<Time>, time2?: Partial<Time>): boolean => {
+export const timeHasSameDuration = (time1?: InputTime, time2?: InputTime): boolean => {
     if (time1 === undefined && time2 === undefined) {
         return true;
     }

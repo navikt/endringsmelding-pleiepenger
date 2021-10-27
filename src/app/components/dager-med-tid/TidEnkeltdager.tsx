@@ -2,17 +2,16 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import { timeToIso8601Duration } from '@navikt/sif-common-core/lib/utils/timeUtils';
-import { Time } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import groupBy from 'lodash.groupby';
 import EkspanderbartPanel from 'nav-frontend-ekspanderbartpanel';
-import { ISODuration } from '../../types';
+import { Element } from 'nav-frontend-typografi';
+import { InputTime, ISODuration } from '../../types';
 import { TidEnkeltdagApiData } from '../../types/SoknadApiData';
 import { TidEnkeltdag } from '../../types/SoknadFormData';
 import { ISODateToDate, ISODurationToTime, timeHasSameDuration } from '../../utils/dateUtils';
-import DagerMedTidListe from './dager-med-tid-liste/DagerMedTidListe';
 import { datoSorter } from '../../utils/datoSorter';
-import { Element } from 'nav-frontend-typografi';
+import DagerMedTidListe from './dager-med-tid-liste/DagerMedTidListe';
 
 interface Props {
     dager?: TidEnkeltdagApiData[];
@@ -23,8 +22,8 @@ interface Props {
 
 export type DagMedEndretTid = {
     dato: Date;
-    tid?: Partial<Time>;
-    tidOpprinnelig?: Partial<Time>;
+    tid?: InputTime;
+    tidOpprinnelig?: InputTime;
     erEndret: boolean;
 };
 

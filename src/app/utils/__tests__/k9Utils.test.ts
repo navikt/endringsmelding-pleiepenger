@@ -1,4 +1,5 @@
 import { DateRange, Time } from '@navikt/sif-common-formik/lib';
+import { InputTime } from '../../types';
 import { K9ArbeidsgiverArbeidstid } from '../../types/K9Sak';
 import { TidEnkeltdag } from '../../types/SoknadFormData';
 import { ISODateToDate } from '../dateUtils';
@@ -11,7 +12,7 @@ describe('trimArbeidstidTilTillatPeriode', () => {
             to: ISODateToDate('2021-02-03'),
         };
 
-        const tid: Partial<Time> = {
+        const tid: InputTime = {
             hours: '0',
             minutes: '30',
         };

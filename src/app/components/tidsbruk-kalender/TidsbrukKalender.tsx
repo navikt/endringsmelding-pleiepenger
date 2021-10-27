@@ -1,16 +1,17 @@
 import React from 'react';
 import AriaAlternative from '@navikt/sif-common-core/lib/components/aria/AriaAlternative';
-import { DateRange, dateToISOString, Time } from '@navikt/sif-common-formik/lib';
+import { DateRange, dateToISOString } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { DagMedTid } from '../../types/SoknadFormData';
 import CalendarGrid, { CalendarGridPopoverContentRenderer } from '../calendar-grid/CalendarGrid';
 import TidsbrukKalenderDag from './TidsbrukKalenderDag';
+import { InputTime } from '../../types';
 
-export type TidRenderer = (tid: Partial<Time>, dato: Date) => React.ReactNode;
+export type TidRenderer = (tid: InputTime, dato: Date) => React.ReactNode;
 
 type KalenderDag = {
-    tid?: Partial<Time>;
-    tidOpprinnelig?: Partial<Time>;
+    tid?: InputTime;
+    tidOpprinnelig?: InputTime;
 };
 
 type Kalenderdager = {

@@ -1,6 +1,6 @@
-import { K9SakRemote } from './k9SakRemote';
+import { K9Format } from './k9SakRemote';
 
-export const k9SakMock: K9SakRemote = {
+export const k9SakMock: K9Format = {
     søknadId: '1',
     versjon: '2.0.0',
     mottattDato: '2020-10-12T12:53:21.046Z',

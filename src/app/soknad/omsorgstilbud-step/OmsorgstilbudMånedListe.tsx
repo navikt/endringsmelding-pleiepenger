@@ -32,7 +32,9 @@ const OmsorgstilbudMånedListe: React.FunctionComponent<Props> = ({
                     <OmsorgstilbudFormAndInfo
                         name={SoknadFormField.omsorgstilbud_enkeltdager}
                         periodeIMåned={måned}
-                        utilgjengeligeDatoerIMåned={k9sakMeta.utilgjengeligeDatoerIMåned[getYearMonthKey(måned.from)]}
+                        utilgjengeligeDatoerIMåned={
+                            k9sakMeta.utilgjengeligeDatoerIMånedMap[getYearMonthKey(måned.from)]
+                        }
                         endringsdato={k9sakMeta.endringsdato}
                         tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}
                         månedTittelHeadingLevel={k9sakMeta.søknadsperioderGårOverFlereÅr ? 3 : 2}

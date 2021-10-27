@@ -1,15 +1,15 @@
-import { Time } from '@navikt/sif-common-formik/lib';
+import { InputTime } from '.';
 import { Arbeidsgiver } from './Arbeidsgiver';
+export type TidEnkeltdag = { [isoDateString: string]: InputTime };
 
-export type TidEnkeltdag = { [isoDateString: string]: Partial<Time> };
 export interface DagMedTid {
     dato: Date;
-    tid: Partial<Time>;
+    tid: InputTime;
 }
 export interface DagMedTidEllerEndretTid {
     dato: Date;
-    tid?: Partial<Time>;
-    opprinneligTid?: Partial<Time>;
+    tid?: InputTime;
+    opprinneligTid?: InputTime;
 }
 
 export interface Omsorgstilbud {

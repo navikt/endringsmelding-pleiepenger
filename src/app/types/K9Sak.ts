@@ -41,10 +41,10 @@ export interface K9SakMeta {
     endringsperiode: DateRange;
 
     /** Dager det er søkt for */
-    dagerSøktFor: DagerSøktForMap;
+    dagerSøktForMap: DagerSøktForMap;
 
     /** Dager det ikke er søkt for */
-    dagerIkkeSøktFor: DagerIkkeSøktForMap;
+    dagerIkkeSøktForMap: DagerIkkeSøktForMap;
 
     /** Søknadsperioder */
     søknadsperioder: DateRange[];
@@ -65,7 +65,7 @@ export interface K9SakMeta {
     utilgjengeligeDatoer: Date[];
 
     /** Utilgjengelige datoer per måned */
-    utilgjengeligeDagerIMåned: { [månedIsoString: string]: Date[] };
+    utilgjengeligeDatoerIMånedMap: { [månedIsoString: string]: Date[] };
 }
 
 export type MånedMedSøknadsperioderMap = {

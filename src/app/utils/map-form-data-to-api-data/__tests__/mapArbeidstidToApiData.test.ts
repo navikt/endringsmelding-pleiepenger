@@ -13,16 +13,16 @@ const søknadsperioder: DateRange[] = [
 describe('mapArbeidsgiverArbeidstidToApiData', () => {
     it('returnerer tomt når ingen av dagene har endring ', () => {
         const result = mapArbeidsgiverArbeidstidToApiData(
-            { '2021-02-01': { hours: '2' } },
-            { '2021-02-01': { hours: '2' } },
+            { '2021-02-01': { hours: '2', minutes: undefined } },
+            { '2021-02-01': { hours: '2', minutes: undefined } },
             søknadsperioder
         );
         expect(result.length).toBe(0);
     });
     it('returnerer kun dager med endring ', () => {
         const result = mapArbeidsgiverArbeidstidToApiData(
-            { '2021-02-01': { hours: '2' }, '2021-02-02': { hours: '2' } },
-            { '2021-02-01': { hours: '2' } },
+            { '2021-02-01': { hours: '2', minutes: undefined }, '2021-02-02': { hours: '2', minutes: undefined } },
+            { '2021-02-01': { hours: '2', minutes: undefined } },
             søknadsperioder
         );
         expect(result.length).toBe(1);

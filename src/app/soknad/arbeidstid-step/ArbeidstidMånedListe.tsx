@@ -35,7 +35,9 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
                     <ArbeidstidFormAndInfo
                         formFieldName={formFieldName}
                         periodeIMåned={måned}
-                        utilgjengeligeDatoerIMåned={k9sakMeta.utilgjengeligeDatoerIMåned[getYearMonthKey(måned.from)]}
+                        utilgjengeligeDatoerIMåned={
+                            k9sakMeta.utilgjengeligeDatoerIMånedMap[getYearMonthKey(måned.from)]
+                        }
                         endringsdato={k9sakMeta.endringsdato}
                         arbeidstidArbeidsgiverSak={arbeidstidArbeidsgiverSak}
                         månedTittelHeadingLevel={k9sakMeta.søknadsperioderGårOverFlereÅr ? 4 : 3}

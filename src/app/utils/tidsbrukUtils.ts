@@ -8,8 +8,8 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import minMax from 'dayjs/plugin/minMax';
 import { DagMedTid, TidEnkeltdag } from '../types/SoknadFormData';
 import { timeHasSameDuration } from './dateUtils';
-import { Time } from '@navikt/sif-common-formik/lib';
 import { timeToIso8601Duration } from '@navikt/sif-common-core/lib/utils/timeUtils';
+import { InputTime } from '../types';
 
 dayjs.extend(minMax);
 dayjs.extend(isSameOrAfter);
@@ -33,7 +33,7 @@ export const getValidEnkeltdager = (tidEnkeltdag: TidEnkeltdag): TidEnkeltdag =>
     return cleanedTidEnkeltdag;
 };
 
-export const getValidTidEnkeltdag = ({ hours, minutes }: Partial<Time>): Partial<Time> => {
+export const getValidTidEnkeltdag = ({ hours, minutes }: InputTime): InputTime => {
     return {
         hours: hours ? (parseInt(hours, 10) > 0 ? hours : '0') : '0',
         minutes: minutes ? (parseInt(minutes, 10) > 0 ? minutes : '0') : '0',
@@ -106,6 +106,6 @@ export const fjernDagerMedUendretTid = (enkeltdager: TidEnkeltdag, dagerOpprinne
     return dagerMedEndring;
 };
 
-export const tidErIngenTid = (time: Partial<Time>): boolean => {
+export const tidErIngenTid = (time: InputTime): boolean => {
     return timeToIso8601Duration(time) === 'PT0H0M';
 };

@@ -99,33 +99,37 @@ export const getMånederMedSøknadsperioder = (søknadsperioder: DateRange[]): M
 
 const getK9SakMeta = (endringsdato: Date, søknadsperioder: DateRange[]): K9SakMeta => {
     const endringsperiode = getEndringsperiode(endringsdato, søknadsperioder);
-    const dagerIkkeSøktFor = getDagerIkkeSøktFor(søknadsperioder);
-    const dagerSøktFor = getDagerIkkeSøktFor(søknadsperioder);
+    const dagerIkkeSøktForMap = getDagerIkkeSøktFor(søknadsperioder);
+    const dagerSøktForMap = getDagerIkkeSøktFor(søknadsperioder);
     const alleMånederISøknadsperiode = getMonthsInDateRange(getDateRangeFromDateRanges(søknadsperioder));
     const månederMedSøknadsperiodeMap = getMånederMedSøknadsperioder(søknadsperioder);
     const antallMånederUtenSøknadsperiode =
         alleMånederISøknadsperiode.length - Object.keys(månederMedSøknadsperiodeMap).length;
     const søknadsperioderGårOverFlereÅr = getYearsInDateRanges(alleMånederISøknadsperiode).length > 1;
-    const utilgjengeligeDatoer: Date[] = Object.keys(dagerIkkeSøktFor).map((dato) => ISODateToDate(dato));
-    const utilgjengeligeDatoerIMåned = {};
+    const utilgjengeligeDatoer: Date[] = Object.keys(dagerIkkeSøktForMap).map((dato) => ISODateToDate(dato));
+    const utilgjengeligeDatoerIMånedMap = {};
 
     Object.keys(månederMedSøknadsperiodeMap).forEach((key) => {
         const måned = getDateRangeFromYearMonthKey(key);
-        utilgjengeligeDatoerIMåned[key] = getUtilgjengeligeDatoerIMåned(utilgjengeligeDatoer, måned, endringsperiode);
+        utilgjengeligeDatoerIMånedMap[key] = getUtilgjengeligeDatoerIMåned(
+            utilgjengeligeDatoer,
+            måned,
+            endringsperiode
+        );
     });
 
     return {
         endringsdato,
         endringsperiode,
         søknadsperioder,
-        dagerIkkeSøktForMap: dagerIkkeSøktFor,
-        dagerSøktForMap: dagerSøktFor,
-        månederMedSøknadsperiodeMap: månederMedSøknadsperiodeMap,
+        dagerIkkeSøktForMap,
+        dagerSøktForMap,
+        månederMedSøknadsperiodeMap,
         alleMånederISøknadsperiode,
         søknadsperioderGårOverFlereÅr,
         antallMånederUtenSøknadsperiode,
         utilgjengeligeDatoer,
-        utilgjengeligeDatoerIMåned,
+        utilgjengeligeDatoerIMånedMap,
     };
 };
 

@@ -12,26 +12,26 @@ import {
 } from '../utils/dateUtils';
 import { getEndringsdato, getSøknadsperioderInnenforTillattEndringsperiode } from '../utils/endringsperiode';
 
-export type TilsynsordningPerioderK9Remote = {
+export type TilsynsordningPerioderK9Format = {
     [key: ISODateRange]: { etablertTilsynTimerPerDag: ISODuration };
 };
 
-export type ArbeidstidDagK9Remote = {
+export type ArbeidstidDagK9Format = {
     [key: ISODateRange]: {
         jobberNormaltTimerPerDag: ISODuration;
         faktiskArbeidTimerPerDag: ISODuration;
     };
 };
 
-interface ArbeidsgiverK9Remote {
+interface ArbeidsgiverK9Format {
     norskIdentitetsnummer?: string;
     organisasjonsnummer: string;
     arbeidstidInfo: {
-        perioder: ArbeidstidDagK9Remote;
+        perioder: ArbeidstidDagK9Format;
     };
 }
 
-export const getTilsynsdagerFromK9Format = (data: TilsynsordningPerioderK9Remote): TidEnkeltdag => {
+export const getTilsynsdagerFromK9Format = (data: TilsynsordningPerioderK9Format): TidEnkeltdag => {
     const enkeltdager: TidEnkeltdag = {};
 
     Object.keys(data).forEach((isoDateRange) => {
@@ -47,7 +47,7 @@ export const getTilsynsdagerFromK9Format = (data: TilsynsordningPerioderK9Remote
 };
 
 export const getArbeidsgiverArbeidstidFromK9Format = (
-    data: ArbeidstidDagK9Remote,
+    data: ArbeidstidDagK9Format,
     maxRange?: DateRange
 ): K9ArbeidsgiverArbeidstid => {
     const arbeidstid: K9ArbeidsgiverArbeidstid = {
@@ -74,7 +74,7 @@ export const getArbeidsgiverArbeidstidFromK9Format = (
     return arbeidstid;
 };
 
-export interface K9SakRemote {
+export interface K9Format {
     søknadId: string;
     versjon: string;
     mottattDato: string;
@@ -89,15 +89,15 @@ export interface K9SakRemote {
         };
         søknadsperiode: ISODateRange[];
         tilsynsordning: {
-            perioder: TilsynsordningPerioderK9Remote;
+            perioder: TilsynsordningPerioderK9Format;
         };
         arbeidstid: {
-            arbeidstakerList: ArbeidsgiverK9Remote[];
+            arbeidstakerList: ArbeidsgiverK9Format[];
         };
     };
 }
 
-const getArbeidstidArbeidsgivere = (arbeidsgivere: ArbeidsgiverK9Remote[]): K9Arbeidstid => {
+const getArbeidstidArbeidsgivere = (arbeidsgivere: ArbeidsgiverK9Format[]): K9Arbeidstid => {
     const arbeidstid: K9Arbeidstid = {
         arbeidsgivereMap: {},
     };
@@ -109,7 +109,7 @@ const getArbeidstidArbeidsgivere = (arbeidsgivere: ArbeidsgiverK9Remote[]): K9Ar
     return arbeidstid;
 };
 
-export const parseK9SakRemote = (data: K9SakRemote): K9Sak => {
+export const parseK9SakRemote = (data: K9Format): K9Sak => {
     const { ytelse, søker, søknadId } = data;
     const endringsdato = getEndringsdato();
     const sak: K9Sak = {
