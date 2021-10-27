@@ -4,8 +4,8 @@ import { K9Sak } from '../../types/K9Sak';
 import { SoknadApiData } from '../../types/SoknadApiData';
 import { SoknadFormData } from '../../types/SoknadFormData';
 import appSentryLogger from '../appSentryLogger';
-import { mapOmsorgstilbudToApiData } from './mapOmsorgstilbudToApiData';
-import { mapArbeidstidToApiData } from './mapArbeidstidToApiData';
+import { mapArbeidstidToK9FormatInnsending } from './mapArbeidstidToK9Format';
+import { mapOmsorgstilbudToK9FormatInnsending } from './mapOmsorgstilbudToK9Format';
 
 interface MapFormDataToApiDataValues {
     soknadId: string;
@@ -17,7 +17,7 @@ const logErrorToSentry = (details: string): void => {
     appSentryLogger.logError('mapFormDataToApiData failed', details);
 };
 
-export const mapFormDataToApiData = (
+export const mapFormDataToK9Format = (
     values: MapFormDataToApiDataValues,
     søknadsperioder: DateRange[],
     k9sak: K9Sak
@@ -27,16 +27,19 @@ export const mapFormDataToApiData = (
         harForståttRettigheterOgPlikter: values.formData.harForståttRettigheterOgPlikter,
         id: '123',
         språk: 'nb',
-        omsorgstilbud: values.formData.omsorgstilbud
-            ? mapOmsorgstilbudToApiData(
-                  values.formData.omsorgstilbud,
-                  k9sak.ytelse.tilsynsordning.enkeltdager,
-                  søknadsperioder
-              )
-            : undefined,
-        arbeidstid: values.formData.arbeidstid
-            ? mapArbeidstidToApiData(values.formData.arbeidstid, k9sak, søknadsperioder)
-            : undefined,
+        ytelse: {
+            type: k9sak.ytelse.type,
+            arbeidstid: values.formData.arbeidstid
+                ? mapArbeidstidToK9FormatInnsending(values.formData.arbeidstid, k9sak, søknadsperioder)
+                : undefined,
+            tilsynsordning: values.formData.omsorgstilbud
+                ? mapOmsorgstilbudToK9FormatInnsending(
+                      values.formData.omsorgstilbud,
+                      k9sak.ytelse.tilsynsordning.enkeltdager,
+                      søknadsperioder
+                  )
+                : undefined,
+        },
     };
 
     if (apiValues === undefined && getEnvironmentVariable('APP_VERSION') === 'dev') {

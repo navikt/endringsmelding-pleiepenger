@@ -86,7 +86,9 @@ const TidEnkeltdager: React.FunctionComponent<Props> = ({
     }
 
     const months = groupBy(days, ({ dato }) => `${dato.getFullYear()}.${dato.getMonth()}`);
-    return (
+    return Object.keys(months).length === 0 ? (
+        <span>Ingen endringer registrert</span>
+    ) : (
         <div>
             {Object.keys(months).map((key) => {
                 const dagerMedTid = months[key];

@@ -16,8 +16,7 @@ import { Arbeidsgiver } from '../types/Arbeidsgiver';
 import { Person } from '../types/Person';
 import { SoknadFormData } from '../types/SoknadFormData';
 import { getAvailableSteps } from '../utils/getAvailableSteps';
-import { mapFormDataToApiData } from '../utils/map-form-data-to-api-data/mapFormDataToApiData';
-import ArbeidssituasjonStep from './arbeidssituasjon-step/ArbeidssituasjonStep';
+import { mapFormDataToK9Format } from '../utils/map-form-data-to-api-data/mapFormDataToK9Format';
 import ArbeidstidStep from './arbeidstid-step/ArbeidstidStep';
 import OmsorgstilbudStep from './omsorgstilbud-step/OmsorgstilbudStep';
 import OppsummeringStep from './oppsummering-step/OppsummeringStep';
@@ -66,8 +65,6 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, arbeid
                         }}
                     />
                 );
-            case StepID.ARBEIDSSITUASJON:
-                return <ArbeidssituasjonStep />;
             case StepID.ARBEIDSTID:
                 return (
                     <ArbeidstidStep
@@ -80,7 +77,7 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, arbeid
                     />
                 );
             case StepID.OPPSUMMERING:
-                const apiValues = mapFormDataToApiData(
+                const apiValues = mapFormDataToK9Format(
                     {
                         soknadId: soknadId,
                         locale: intl.locale,

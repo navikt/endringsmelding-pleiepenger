@@ -1,6 +1,11 @@
 import { apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { DateRange, Time } from '@navikt/sif-common-formik/lib';
-import { ISODate, ISODateRange, ISODuration } from '../types';
+import {
+    ArbeidsgiverK9Format,
+    ArbeidstidDagK9Format,
+    K9Format,
+    TilsynsordningPerioderK9Format,
+} from '../types/k9Format';
 import { K9ArbeidsgiverArbeidstid, K9Arbeidstid, K9Sak } from '../types/K9Sak';
 import { TidEnkeltdag } from '../types/SoknadFormData';
 import {
@@ -9,27 +14,20 @@ import {
     ISODateRangeToDateRange,
     ISODateToDate,
     ISODurationToTime,
-} from '../utils/dateUtils';
-import { getEndringsdato, getSøknadsperioderInnenforTillattEndringsperiode } from '../utils/endringsperiode';
+} from './dateUtils';
+import { getEndringsdato, getSøknadsperioderInnenforTillattEndringsperiode } from './endringsperiode';
 
-export type TilsynsordningPerioderK9Format = {
-    [key: ISODateRange]: { etablertTilsynTimerPerDag: ISODuration };
-};
-
-export type ArbeidstidDagK9Format = {
-    [key: ISODateRange]: {
-        jobberNormaltTimerPerDag: ISODuration;
-        faktiskArbeidTimerPerDag: ISODuration;
+const getArbeidstidArbeidsgivere = (arbeidsgivere: ArbeidsgiverK9Format[]): K9Arbeidstid => {
+    const arbeidstid: K9Arbeidstid = {
+        arbeidsgivereMap: {},
     };
+    arbeidsgivere.forEach((a) => {
+        arbeidstid.arbeidsgivereMap[a.organisasjonsnummer] = getArbeidsgiverArbeidstidFromK9Format(
+            a.arbeidstidInfo.perioder
+        );
+    });
+    return arbeidstid;
 };
-
-interface ArbeidsgiverK9Format {
-    norskIdentitetsnummer?: string;
-    organisasjonsnummer: string;
-    arbeidstidInfo: {
-        perioder: ArbeidstidDagK9Format;
-    };
-}
 
 export const getTilsynsdagerFromK9Format = (data: TilsynsordningPerioderK9Format): TidEnkeltdag => {
     const enkeltdager: TidEnkeltdag = {};
@@ -74,42 +72,7 @@ export const getArbeidsgiverArbeidstidFromK9Format = (
     return arbeidstid;
 };
 
-export interface K9Format {
-    søknadId: string;
-    versjon: string;
-    mottattDato: string;
-    søker: {
-        norskIdentitetsnummer: string;
-    };
-    ytelse: {
-        type: 'PLEIEPENGER_SYKT_BARN';
-        barn: {
-            norskIdentitetsnummer: string;
-            fødselsdato: ISODate;
-        };
-        søknadsperiode: ISODateRange[];
-        tilsynsordning: {
-            perioder: TilsynsordningPerioderK9Format;
-        };
-        arbeidstid: {
-            arbeidstakerList: ArbeidsgiverK9Format[];
-        };
-    };
-}
-
-const getArbeidstidArbeidsgivere = (arbeidsgivere: ArbeidsgiverK9Format[]): K9Arbeidstid => {
-    const arbeidstid: K9Arbeidstid = {
-        arbeidsgivereMap: {},
-    };
-    arbeidsgivere.forEach((a) => {
-        arbeidstid.arbeidsgivereMap[a.organisasjonsnummer] = getArbeidsgiverArbeidstidFromK9Format(
-            a.arbeidstidInfo.perioder
-        );
-    });
-    return arbeidstid;
-};
-
-export const parseK9SakRemote = (data: K9Format): K9Sak => {
+export const parseK9Format = (data: K9Format): K9Sak => {
     const { ytelse, søker, søknadId } = data;
     const endringsdato = getEndringsdato();
     const sak: K9Sak = {

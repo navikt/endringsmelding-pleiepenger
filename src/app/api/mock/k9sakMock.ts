@@ -1,4 +1,4 @@
-import { K9Format } from './k9SakRemote';
+import { K9Format } from '../../types/k9Format';
 
 export const k9SakMock: K9Format = {
     søknadId: '1',
@@ -19,7 +19,7 @@ export const k9SakMock: K9Format = {
             '2021-10-04/2021-10-15',
             '2022-01-04/2022-01-10',
             '2022-01-14/2022-08-25',
-            // '2022-02-01/2023-02-05',
+            '2022-02-01/2023-02-05',
         ],
         tilsynsordning: {
             perioder: {
@@ -40,17 +40,17 @@ export const k9SakMock: K9Format = {
 
         arbeidstid: {
             arbeidstakerList: [
-                {
-                    organisasjonsnummer: '112233445',
-                    arbeidstidInfo: {
-                        perioder: {
-                            '2021-01-01/2023-08-11': {
-                                jobberNormaltTimerPerDag: 'PT1H0M',
-                                faktiskArbeidTimerPerDag: 'PT0H',
-                            },
-                        },
-                    },
-                },
+                // {
+                //     organisasjonsnummer: '112233445',
+                //     arbeidstidInfo: {
+                //         perioder: {
+                //             '2021-01-01/2023-08-11': {
+                //                 jobberNormaltTimerPerDag: 'PT1H0M',
+                //                 faktiskArbeidTimerPerDag: 'PT0H',
+                //             },
+                //         },
+                //     },
+                // },
                 {
                     organisasjonsnummer: '123451234',
                     arbeidstidInfo: {

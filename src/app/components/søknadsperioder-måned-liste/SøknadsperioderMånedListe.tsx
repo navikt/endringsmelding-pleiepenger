@@ -7,7 +7,7 @@ import { Undertittel } from 'nav-frontend-typografi';
 import SoknadFormComponents from '../../soknad/SoknadFormComponents';
 import { TidEnkeltdag } from '../../types/SoknadFormData';
 import { K9SakMeta } from '../../types/K9Sak';
-import { getYearMonthKey } from '../../utils/k9utils';
+import { getYearMonthKey } from '../../utils/k9SakUtils';
 
 interface Props {
     k9sakMeta: K9SakMeta;
