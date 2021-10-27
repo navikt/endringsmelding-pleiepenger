@@ -2,7 +2,7 @@ import { DateRange } from '@navikt/sif-common-formik/lib';
 import { TilsynsordningK9FormatInnsending } from '../../types/k9FormatInnsending';
 import { TidEnkeltdagApiData } from '../../types/SoknadApiData';
 import { Omsorgstilbud, TidEnkeltdag } from '../../types/SoknadFormData';
-import { getEnkeltdagerIPeriodeApiData } from '../tidsbrukApiUtils';
+import { getTidEnkeltdagApiDataIPeriodeApiData } from '../tidsbrukApiUtils';
 import { fjernDagerMedUendretTid } from '../tidsbrukUtils';
 
 export const mapOmsorgstilbudToK9FormatInnsending = (
@@ -16,7 +16,9 @@ export const mapOmsorgstilbudToK9FormatInnsending = (
         : enkeltdager;
 
     const dager: TidEnkeltdagApiData[] = [];
-    søknadsperioder.forEach((periode) => dager.push(...getEnkeltdagerIPeriodeApiData(dagerMedEndring, periode)));
+    søknadsperioder.forEach((periode) =>
+        dager.push(...getTidEnkeltdagApiDataIPeriodeApiData(dagerMedEndring, periode))
+    );
 
     const tilsynsordning: TilsynsordningK9FormatInnsending = {
         perioder: {},

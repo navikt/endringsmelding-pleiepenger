@@ -3,7 +3,7 @@ import { ArbeidstidDagK9FormatInnsending, ArbeidstidK9FormatInnsending } from '.
 import { K9Sak } from '../../types/K9Sak';
 import { TidEnkeltdagApiData } from '../../types/SoknadApiData';
 import { ArbeidstidFormValue, TidEnkeltdag } from '../../types/SoknadFormData';
-import { getEnkeltdagerIPeriodeApiData } from '../tidsbrukApiUtils';
+import { getTidEnkeltdagApiDataIPeriodeApiData } from '../tidsbrukApiUtils';
 import { fjernDagerMedUendretTid } from '../tidsbrukUtils';
 
 export const mapArbeidsgiverArbeidstidToK9FormatInnsending = (
@@ -17,7 +17,7 @@ export const mapArbeidsgiverArbeidstidToK9FormatInnsending = (
 
     const faktiskArbeid: TidEnkeltdagApiData[] = [];
     søknadsperioder.forEach((periode) =>
-        faktiskArbeid.push(...getEnkeltdagerIPeriodeApiData(dagerMedEndring, periode))
+        faktiskArbeid.push(...getTidEnkeltdagApiDataIPeriodeApiData(dagerMedEndring, periode))
     );
 
     const arbeidstidK9Format: ArbeidstidDagK9FormatInnsending = {};
