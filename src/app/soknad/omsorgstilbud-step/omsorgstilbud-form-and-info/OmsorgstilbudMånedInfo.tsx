@@ -10,7 +10,7 @@ import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Knapp from 'nav-frontend-knapper';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import FormattedTimeText from '../../../components/formatted-time-text/FormattedTimeText';
-import TidsbrukKalender from '../../../components/tidsbruk-kalender/TidsbrukKalender';
+import TidsbrukKalender, { TidRenderer } from '../../../components/tidsbruk-kalender/TidsbrukKalender';
 import { TidEnkeltdag } from '../../../types/SoknadFormData';
 import { getDagerMedTidITidsrom } from '../../../utils/tidsbrukUtils';
 import { timeHasSameDuration } from '../../../utils/dateUtils';
@@ -25,6 +25,8 @@ interface Props {
     månedTittelHeadingLevel?: number;
     onEdit: (tid: TidEnkeltdag) => void;
 }
+
+const tidRenderer: TidRenderer = (timeInput): React.ReactNode => <FormattedTimeText time={timeInput} />;
 
 const OmsorgstilbudMånedInfo: React.FunctionComponent<Props> = ({
     periodeIMåned,
@@ -82,9 +84,7 @@ const OmsorgstilbudMånedInfo: React.FunctionComponent<Props> = ({
                     dagerOpprinnelig={omsorgsdagerSak}
                     skjulTommeDagerIListe={true}
                     visEndringsinformasjon={true}
-                    tidRenderer={(tid) => {
-                        return <FormattedTimeText time={tid} />;
-                    }}
+                    tidRenderer={tidRenderer}
                 />
                 <FormBlock margin="l">
                     <Knapp htmlType="button" mini={true} onClick={() => onEdit(tidOmsorgstilbud)}>

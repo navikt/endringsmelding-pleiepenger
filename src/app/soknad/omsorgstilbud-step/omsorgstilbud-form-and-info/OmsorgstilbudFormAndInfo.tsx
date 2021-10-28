@@ -45,6 +45,7 @@ function OmsorgstilbudFormAndInfo<FieldNames>({
             dialogClassName={'calendarDialog'}
             wrapInfoInPanel={false}
             defaultValue={{}}
+            useFastField={true}
             formRenderer={({ onSubmit, onCancel, data = {} }) => {
                 return (
                     <OmsorgstilbudMånedForm

@@ -46,6 +46,7 @@ function ArbeidstidFormAndInfo<FieldNames>({
             dialogClassName={'calendarDialog'}
             wrapInfoInPanel={false}
             defaultValue={{}}
+            useFastField={true}
             formRenderer={({ onSubmit, onCancel, data = {} }) => {
                 return (
                     <ArbeidstidMånedForm

@@ -2,6 +2,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 require('dotenv').config();
 
@@ -23,12 +24,6 @@ const webpackConfig = {
     },
     module: {
         rules: [
-            {
-                test: /\.(ts|tsx)$/,
-                loader: require.resolve('eslint-loader'),
-                enforce: 'pre',
-                exclude: /node_modules/,
-            },
             {
                 test: /\.(ts|tsx)$/,
                 use: 'ts-loader',
@@ -57,6 +52,9 @@ const webpackConfig = {
         ],
     },
     plugins: [
+        new ESLintPlugin({
+            extensions: ['.ts', '.tsx'],
+        }),
         new CaseSensitivePathsPlugin(),
         new MiniCssExtractPlugin({
             filename: 'css/[name].css?[fullhash]-[chunkhash]-[name]',
