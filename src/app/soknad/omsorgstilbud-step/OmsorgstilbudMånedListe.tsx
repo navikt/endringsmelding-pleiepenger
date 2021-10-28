@@ -7,6 +7,7 @@ import { K9SakMeta } from '../../types/K9Sak';
 import { SoknadFormField, TidEnkeltdag } from '../../types/SoknadFormData';
 import { getYearMonthKey } from '../../utils/k9SakUtils';
 import OmsorgstilbudFormAndInfo from './omsorgstilbud-form-and-info/OmsorgstilbudFormAndInfo';
+// import MånederUtenDagerSøktForInfo from '../../components/måneder-uten-dager-søkt-for-info/MånederUtenDagerSøktForInfo';
 
 interface Props {
     tidIOmsorgstilbudSak: TidEnkeltdag;
@@ -24,8 +25,10 @@ const OmsorgstilbudMånedListe: React.FunctionComponent<Props> = ({
         <SøknadsperioderMånedListe
             k9sakMeta={k9sakMeta}
             inputGroupFieldName={SoknadFormField.omsorgstilbud_dager_gruppe}
+            // legend={'Velg måned du ønsker å se omsorgstilbud '}
             legend={<span className="sr-only">Måneder med dager hvor det er søkt pleiepenger for.</span>}
-            årstallHeaderRenderer={(årstall) => `Måneder det er søkt om pleiepenger i ${årstall}`}
+            årstallHeaderRenderer={(årstall) => `Måneder i ${årstall} du har søkt om pleiepenger og kan endre`}
+            // description={k9sakMeta.antallMånederUtenSøknadsperiode > 0 ? <MånederUtenDagerSøktForInfo /> : undefined}
             månedContentRenderer={(måned) => {
                 const mndOgÅrLabelPart = dayjs(måned.from).format('MMMM YYYY');
                 return (

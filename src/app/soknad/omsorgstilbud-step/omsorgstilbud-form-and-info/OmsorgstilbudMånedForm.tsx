@@ -73,11 +73,6 @@ const OmsorgstilbudMånedForm: React.FunctionComponent<Props> = ({
                             id={erHistorisk ? 'omsorgstilbud.form.intro_fortid.1' : 'omsorgstilbud.form.intro.1'}
                         />
                     </p>
-                    <p>
-                        <strong>
-                            <FormattedMessage id="omsorgstilbud.form.intro.2" />
-                        </strong>
-                    </p>
                 </>
             }
             tidPerDagValidator={getTidIOmsorgValidator}

@@ -105,18 +105,9 @@ const TidKalenderForm = ({
 
                             {utilgjengeligeDatoer.length > 0 && (
                                 <Box margin="m">
-                                    <ExpandableInfo title={`Hvorfor er ikke alle dagene nedenfor tilgjengelig?`}>
-                                        Her kommer en forklaring på hvorfor noen dager ikke er tilgjengelig nedenfor.
-                                        Altså dager som det ikke er søkt om. Dager det ikke er søkt om i{' '}
-                                        {dayjs(periode.from).format('MMMM YYYY')}:
-                                        <ul>
-                                            {utilgjengeligeDatoer.map((d) => (
-                                                <li key={d.toString()}>
-                                                    <span className={'--capitalize'}>{dayjs(d).format('dddd DD')}</span>
-                                                    .
-                                                </li>
-                                            ))}
-                                        </ul>
+                                    <ExpandableInfo title={`Hvorfor vises ikke alle dagene nedenfor?`}>
+                                        Det er bare dager du har søkt om som vises nedenfor, og som er tilgjengelige for
+                                        å endre.
                                     </ExpandableInfo>
                                 </Box>
                             )}

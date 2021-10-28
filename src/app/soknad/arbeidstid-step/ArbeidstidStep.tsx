@@ -7,6 +7,8 @@ import { getArbeidsgiverArbeidstidFormFieldName, SoknadFormData } from '../../ty
 import SoknadFormStep from '../SoknadFormStep';
 import { StepID } from '../soknadStepsConfig';
 import ArbeidstidMånedListe from './ArbeidstidMånedListe';
+// import MånederUtenDagerSøktForInfo from '../../components/måneder-uten-dager-søkt-for-info/MånederUtenDagerSøktForInfo';
+// import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 
 const cleanupStep = (formData: SoknadFormData): SoknadFormData => {
     return formData;
@@ -29,6 +31,13 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
     return (
         <SoknadFormStep id={stepId} onStepCleanup={cleanupStep}>
             <StepIntroduction>Intro til steg</StepIntroduction>
+
+            {/* {k9sakMeta.antallMånederUtenSøknadsperiode > 0 && (
+                <FormBlock>
+                    <MånederUtenDagerSøktForInfo />
+                </FormBlock>
+            )} */}
+
             {arbeidsgivere && (
                 <div className="arbeidstid">
                     {arbeidsgivere.map((a) => {

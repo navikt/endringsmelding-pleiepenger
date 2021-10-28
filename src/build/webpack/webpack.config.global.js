@@ -18,12 +18,16 @@ const webpackConfig = {
         extensions: ['.ts', '.tsx', '.js', '.json', '.jsx'],
         alias: {},
     },
+    watchOptions: {
+        ignored: /node_modules/,
+    },
     module: {
         rules: [
             {
                 test: /\.(ts|tsx)$/,
                 loader: require.resolve('eslint-loader'),
                 enforce: 'pre',
+                exclude: /node_modules/,
             },
             {
                 test: /\.(ts|tsx)$/,
