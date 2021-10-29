@@ -100,7 +100,10 @@ export const dateRangeToISODateRange = (dateRange: DateRange): ISODateRange => {
 };
 
 export const _dateToISODate = (date: Date): ISODate => dayjs(date).format('YYYY-MM-DD');
-export const dateToISODate = moize(_dateToISODate);
+export const dateToISODate = moize(_dateToISODate, {
+    isSerialized: true,
+    serializer: (args) => [args[0].toDateString()],
+});
 
 export const ISODurationToTime = (duration: ISODuration): Time | undefined => {
     const time = isoDurationToTime(duration);

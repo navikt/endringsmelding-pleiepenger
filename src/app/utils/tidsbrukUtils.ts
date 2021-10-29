@@ -77,7 +77,7 @@ export const getTidEnkeltdagerInnenforPeriode = (dager: TidEnkeltdag, periode: D
     return dagerIPerioden;
 };
 
-export const getDagerMedTidITidsrom = (data: TidEnkeltdag, tidsrom: DateRange): DagMedTid[] => {
+export const _getDagerMedTidITidsrom = (data: TidEnkeltdag, tidsrom: DateRange): DagMedTid[] => {
     const dager: DagMedTid[] = [];
     Object.keys(data || {}).forEach((isoDateString) => {
         const date = ISODateToDate(isoDateString);
@@ -94,7 +94,7 @@ export const getDagerMedTidITidsrom = (data: TidEnkeltdag, tidsrom: DateRange): 
     });
     return dager;
 };
-// export const getDagerMedTidITidsrom = memoize(_getDagerMedTidITidsrom);
+export const getDagerMedTidITidsrom = moize(_getDagerMedTidITidsrom);
 
 export const fjernDagerMedUendretTid = (enkeltdager: TidEnkeltdag, dagerOpprinnelig: TidEnkeltdag): TidEnkeltdag => {
     const dagerMedEndring: TidEnkeltdag = {};
