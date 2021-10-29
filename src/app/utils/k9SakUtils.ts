@@ -1,6 +1,7 @@
 import { DateRange } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { flatten } from 'lodash';
+import moize from 'moize';
 import { DagerIkkeSøktForMap, DagerSøktForMap } from '../types';
 import {
     K9ArbeidsgiverArbeidstid,
@@ -22,7 +23,6 @@ import {
 } from './dateUtils';
 import { getEndringsdato, getEndringsperiode, getMaksEndringsperiode } from './endringsperiode';
 import { getUtilgjengeligeDatoerIMåned } from './getUtilgjengeligeDatoerIMåned';
-import { memoize } from 'lodash';
 
 type ISODateObject = { [key: string]: any };
 
@@ -83,8 +83,8 @@ export const getDagerSøktFor = (søknadsperioder: DateRange[]): DagerSøktForMa
     return dagerSøktFor;
 };
 
-const _getYearMonthKey = (date: Date): string => dayjs(date).format('YYYY-MM');
-export const getYearMonthKey = memoize(_getYearMonthKey);
+export const _getYearMonthKey = (date: Date): string => dayjs(date).format('YYYY-MM');
+export const getYearMonthKey = moize(_getYearMonthKey);
 
 export const getDateRangeFromYearMonthKey = (yearMonthKey: string): DateRange => {
     const [year, month] = yearMonthKey.split('-');

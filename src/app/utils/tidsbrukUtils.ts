@@ -6,10 +6,10 @@ import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import minMax from 'dayjs/plugin/minMax';
 import { DagMedTid, TidEnkeltdag } from '../types/SoknadFormData';
-import { dateIsWithinDateRange, ISODateToDate, timeHasSameDuration } from './dateUtils';
+import { ISODateToDate, timeHasSameDuration, _dateIsWithinDateRange } from './dateUtils';
 import { timeToIso8601Duration } from '@navikt/sif-common-core/lib/utils/timeUtils';
 import { InputTime } from '../types';
-import { memoize } from 'lodash';
+import moize from 'moize';
 
 dayjs.extend(minMax);
 dayjs.extend(isSameOrAfter);
@@ -77,11 +77,11 @@ export const getTidEnkeltdagerInnenforPeriode = (dager: TidEnkeltdag, periode: D
     return dagerIPerioden;
 };
 
-const _getDagerMedTidITidsrom = (data: TidEnkeltdag, tidsrom: DateRange): DagMedTid[] => {
+export const _getDagerMedTidITidsrom = (data: TidEnkeltdag, tidsrom: DateRange): DagMedTid[] => {
     const dager: DagMedTid[] = [];
     Object.keys(data || {}).forEach((isoDateString) => {
         const date = ISODateToDate(isoDateString);
-        if (date && dateIsWithinDateRange(date, tidsrom)) {
+        if (date && _dateIsWithinDateRange(date, tidsrom)) {
             const time = data[isoDateString];
             if (time) {
                 dager.push({
@@ -94,7 +94,7 @@ const _getDagerMedTidITidsrom = (data: TidEnkeltdag, tidsrom: DateRange): DagMed
     });
     return dager;
 };
-export const getDagerMedTidITidsrom = memoize(_getDagerMedTidITidsrom);
+export const getDagerMedTidITidsrom = moize(_getDagerMedTidITidsrom);
 
 export const fjernDagerMedUendretTid = (enkeltdager: TidEnkeltdag, dagerOpprinnelig: TidEnkeltdag): TidEnkeltdag => {
     const dagerMedEndring: TidEnkeltdag = {};
@@ -107,10 +107,10 @@ export const fjernDagerMedUendretTid = (enkeltdager: TidEnkeltdag, dagerOpprinne
     return dagerMedEndring;
 };
 
-const _tidErIngenTid = (time: InputTime): boolean => {
+export const _tidErIngenTid = (time: InputTime): boolean => {
     return timeToIso8601Duration(time) === 'PT0H0M';
 };
-export const tidErIngenTid = memoize(_tidErIngenTid);
+export const tidErIngenTid = moize(_tidErIngenTid);
 
-const _datoErHistorisk = (dato: Date, datoIDag: Date): boolean => dayjs(dato).isBefore(datoIDag, 'day');
-export const datoErHistorisk = memoize(_datoErHistorisk);
+export const _datoErHistorisk = (dato: Date, datoIDag: Date): boolean => dayjs(dato).isBefore(datoIDag, 'day');
+export const datoErHistorisk = moize(_datoErHistorisk);

@@ -6,15 +6,16 @@ import isBetween from 'dayjs/plugin/isBetween';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import minMax from 'dayjs/plugin/minMax';
-import { uniq, memoize } from 'lodash';
+import { uniq } from 'lodash';
 import { InputTime, ISODate, ISODateRange, ISODuration } from '../types';
+import moize from 'moize';
 
 dayjs.extend(isoWeek);
 dayjs.extend(isBetween);
 dayjs.extend(minMax);
 dayjs.extend(isSameOrBefore);
 
-const _getMonthsInDateRange = (range: DateRange): DateRange[] => {
+export const _getMonthsInDateRange = (range: DateRange): DateRange[] => {
     const months: DateRange[] = [];
     let current = dayjs(range.from);
     do {
@@ -27,9 +28,9 @@ const _getMonthsInDateRange = (range: DateRange): DateRange[] => {
     } while (current.isBefore(range.to, 'day'));
     return months;
 };
-export const getMonthsInDateRange = memoize(_getMonthsInDateRange);
+export const getMonthsInDateRange = moize(_getMonthsInDateRange);
 
-const _getWeeksInDateRange = (range: DateRange): DateRange[] => {
+export const _getWeeksInDateRange = (range: DateRange): DateRange[] => {
     const weeks: DateRange[] = [];
     let current = dayjs(range.from);
     do {
@@ -42,7 +43,7 @@ const _getWeeksInDateRange = (range: DateRange): DateRange[] => {
     } while (current.isBefore(range.to, 'day'));
     return weeks;
 };
-export const getWeeksInDateRange = memoize(_getWeeksInDateRange);
+export const getWeeksInDateRange = moize(_getWeeksInDateRange);
 
 export const getDatesInDateRange = (range: DateRange, onlyWeekDays = true): Date[] => {
     const dates: Date[] = [];
@@ -81,10 +82,10 @@ export const getMonthDateRange = (date: Date): DateRange => ({
     to: dayjs(date).endOf('month').toDate(),
 });
 
-const _ISODateToDate = (isoDate: ISODate): Date => {
+export const _ISODateToDate = (isoDate: ISODate): Date => {
     return apiStringDateToDate(isoDate);
 };
-export const ISODateToDate = memoize(_ISODateToDate);
+export const ISODateToDate = moize(_ISODateToDate);
 
 export const ISODateRangeToDateRange = (isoDateRange: ISODateRange): DateRange => {
     const parts = isoDateRange.split('/');
@@ -98,8 +99,8 @@ export const dateRangeToISODateRange = (dateRange: DateRange): ISODateRange => {
     return `${dateToISODate(dateRange.from)}/${dateToISODate(dateRange.to)}`;
 };
 
-const _dateToISODate = (date: Date): ISODate => dayjs(date).format('YYYY-MM-DD');
-export const dateToISODate = memoize(_dateToISODate);
+export const _dateToISODate = (date: Date): ISODate => dayjs(date).format('YYYY-MM-DD');
+export const dateToISODate = moize(_dateToISODate);
 
 export const ISODurationToTime = (duration: ISODuration): Time | undefined => {
     const time = iso8601DurationToTime(duration);
@@ -131,7 +132,7 @@ export const getDateRangeFromDateRanges = (ranges: DateRange[]): DateRange => {
     };
 };
 
-const _timeHasSameDuration = (time1?: InputTime, time2?: InputTime): boolean => {
+export const _timeHasSameDuration = (time1?: InputTime, time2?: InputTime): boolean => {
     if (time1 === undefined && time2 === undefined) {
         return true;
     }
@@ -142,7 +143,7 @@ const _timeHasSameDuration = (time1?: InputTime, time2?: InputTime): boolean => 
     const opprinneligTid = timeToIso8601Duration(time2);
     return endretTid === opprinneligTid;
 };
-export const timeHasSameDuration = memoize(_timeHasSameDuration);
+export const timeHasSameDuration = moize(_timeHasSameDuration);
 
 export const isDateInDates = (date: Date, dates?: Date[]): boolean => {
     if (!dates) {
@@ -152,10 +153,10 @@ export const isDateInDates = (date: Date, dates?: Date[]): boolean => {
 };
 
 /** Includes start and end date */
-const _dateIsWithinDateRange = (date: Date, dateRange: DateRange): boolean => {
+export const _dateIsWithinDateRange = (date: Date, dateRange: DateRange): boolean => {
     return dayjs(date).isBetween(dateRange.from, dateRange.to, 'day', '[]');
 };
-export const dateIsWithinDateRange = memoize(_dateIsWithinDateRange);
+export const dateIsWithinDateRange = moize(_dateIsWithinDateRange);
 
 export const dateIsWeekDay = (date: Date): boolean => {
     return dayjs(date).isoWeekday() <= 5;

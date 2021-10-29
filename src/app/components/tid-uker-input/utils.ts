@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
-import { groupBy, memoize } from 'lodash';
+import { groupBy } from 'lodash';
+import moize from 'moize';
 import React from 'react';
 import { dateToISODate } from '../../utils/dateUtils';
 import { Daginfo, Ukeinfo } from './types';
@@ -10,7 +11,7 @@ const getEmptyElements = (num: number): JSX.Element[] | undefined => {
         : Array.from({ length: num }).map((_, index) => React.createElement('span', { key: index }));
 };
 
-const _getDagInfo = (date: Date): Daginfo => {
+export const _getDagInfo = (date: Date): Daginfo => {
     const dayjsDato = dayjs(date);
     return {
         isoDateString: dateToISODate(dayjsDato.toDate()),
@@ -24,7 +25,7 @@ const _getDagInfo = (date: Date): Daginfo => {
         labelFull: `${dayjsDato.format('dddd')} ${dayjsDato.format('D. MMMM')}`,
     };
 };
-export const getDagInfo = memoize(_getDagInfo);
+export const getDagInfo = moize(_getDagInfo);
 
 export const getDagerIPeriode = (from: Date, to: Date): Daginfo[] => {
     const dager: Daginfo[] = [];
