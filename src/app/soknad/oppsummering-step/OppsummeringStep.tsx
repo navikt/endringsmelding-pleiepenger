@@ -31,9 +31,11 @@ type Props = {
     k9sak: K9Sak;
 };
 
+const kittyMode = false;
+
 const OppsummeringStep: React.FunctionComponent<Props> = ({ søker, apiValues, arbeidsgivere, k9sak }) => {
     const intl = useIntl();
-    const { sendSoknadStatus } = useSoknadContext();
+    const { sendSoknadStatus, sendSoknad } = useSoknadContext();
     const [showGiffy, setShowGiffy] = useState(false);
     const apiDataIsValid = apiValues !== undefined && verifySoknadApiData(apiValues);
 
@@ -45,10 +47,14 @@ const OppsummeringStep: React.FunctionComponent<Props> = ({ søker, apiValues, a
             onSendSoknad={
                 apiValues
                     ? (): void => {
-                          setShowGiffy(true);
-                          setTimeout(() => {
-                              setShowGiffy(false);
-                          }, 8000);
+                          if (kittyMode) {
+                              setShowGiffy(true);
+                              setTimeout(() => {
+                                  setShowGiffy(false);
+                              }, 8000);
+                          } else {
+                              sendSoknad(apiValues);
+                          }
                       }
                     : undefined
             }>
