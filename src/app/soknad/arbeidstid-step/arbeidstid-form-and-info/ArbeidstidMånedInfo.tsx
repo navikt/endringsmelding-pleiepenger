@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
@@ -41,13 +41,23 @@ const ArbeidstidMånedInfo: React.FunctionComponent<Props> = ({
     onEdit,
 }) => {
     const intl = useIntl();
-    const dager = getDagerMedTidITidsrom(tidArbeidstid, periodeIMåned);
-    const dagerSak: DagMedTid[] = getDagerMedTidITidsrom(arbeidstidArbeidsgiverSak.faktisk, periodeIMåned);
+    const { faktisk } = arbeidstidArbeidsgiverSak;
 
-    const harEndringer = dager.some((dag) => {
-        const key = dateToISOString(dag.dato);
-        return timeHasSameDuration(tidArbeidstid[key], arbeidstidArbeidsgiverSak.faktisk[key]) === false;
-    });
+    const dager = useMemo(() => getDagerMedTidITidsrom(tidArbeidstid, periodeIMåned), [tidArbeidstid, periodeIMåned]);
+
+    const dagerSak: DagMedTid[] = useMemo(
+        () => getDagerMedTidITidsrom(faktisk, periodeIMåned),
+        [faktisk, periodeIMåned]
+    );
+
+    const harEndringer = useMemo(
+        () =>
+            dager.some((dag) => {
+                const key = dateToISOString(dag.dato);
+                return timeHasSameDuration(tidArbeidstid[key], faktisk[key]) === false;
+            }),
+        [dager, faktisk, tidArbeidstid]
+    );
 
     const dagerMedRegistrertArbeidstid = dager.filter((d) => tidErIngenTid(d.tid) === false);
 

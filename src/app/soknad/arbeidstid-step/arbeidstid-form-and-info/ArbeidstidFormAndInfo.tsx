@@ -23,6 +23,18 @@ interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, Va
     onAfterChange?: (tid: TidEnkeltdag) => void;
 }
 
+declare type ModalFormRenderer<DataType> = (props: {
+    data?: DataType;
+    onSubmit: (data: DataType) => void;
+    onCancel: () => void;
+}) => React.ReactNode;
+
+declare type InfoRenderer<DataType> = (props: {
+    data: DataType;
+    onEdit: (data: DataType) => void;
+    onDelete: (data: DataType) => void;
+}) => React.ReactNode;
+
 function ArbeidstidFormAndInfo<FieldNames>({
     formFieldName,
     periodeIMåned,
@@ -36,6 +48,33 @@ function ArbeidstidFormAndInfo<FieldNames>({
 }: Props<FieldNames>) {
     const erHistorisk = dayjs(periodeIMåned.to).isBefore(endringsdato, 'day');
 
+    const renderForm: ModalFormRenderer<TidEnkeltdag> = ({ onSubmit, onCancel, data = {} }) => (
+        <ArbeidstidMånedForm
+            periodeIMåned={periodeIMåned}
+            arbeidstid={data}
+            arbeidstidArbeidsgiverSak={arbeidstidArbeidsgiverSak}
+            utilgjengeligeDatoer={utilgjengeligeDatoerIMåned}
+            erHistorisk={erHistorisk}
+            onCancel={onCancel}
+            onSubmit={onSubmit}
+        />
+    );
+
+    const renderInfo: InfoRenderer<TidEnkeltdag> = ({ data, onEdit }) => {
+        return (
+            <ArbeidstidMånedInfo
+                periodeIMåned={periodeIMåned}
+                tidArbeidstid={data}
+                arbeidstidArbeidsgiverSak={arbeidstidArbeidsgiverSak}
+                utilgjengeligeDatoer={utilgjengeligeDatoerIMåned}
+                månedTittelHeadingLevel={månedTittelHeadingLevel}
+                onEdit={onEdit}
+                editLabel={labels.editLabel}
+                addLabel={labels.addLabel}
+            />
+        );
+    };
+
     return (
         <FormikModalFormAndInfo<FieldNames, TidEnkeltdag, ValidationError>
             name={formFieldName}
@@ -47,33 +86,8 @@ function ArbeidstidFormAndInfo<FieldNames>({
             wrapInfoInPanel={false}
             defaultValue={{}}
             useFastField={true}
-            formRenderer={({ onSubmit, onCancel, data = {} }) => {
-                return (
-                    <ArbeidstidMånedForm
-                        periodeIMåned={periodeIMåned}
-                        arbeidstid={data}
-                        arbeidstidArbeidsgiverSak={arbeidstidArbeidsgiverSak}
-                        utilgjengeligeDatoer={utilgjengeligeDatoerIMåned}
-                        erHistorisk={erHistorisk}
-                        onCancel={onCancel}
-                        onSubmit={onSubmit}
-                    />
-                );
-            }}
-            infoRenderer={({ data, onEdit }) => {
-                return (
-                    <ArbeidstidMånedInfo
-                        periodeIMåned={periodeIMåned}
-                        tidArbeidstid={data}
-                        arbeidstidArbeidsgiverSak={arbeidstidArbeidsgiverSak}
-                        utilgjengeligeDatoer={utilgjengeligeDatoerIMåned}
-                        månedTittelHeadingLevel={månedTittelHeadingLevel}
-                        onEdit={onEdit}
-                        editLabel={labels.editLabel}
-                        addLabel={labels.addLabel}
-                    />
-                );
-            }}
+            formRenderer={renderForm}
+            infoRenderer={renderInfo}
             onAfterChange={onAfterChange}
         />
     );
