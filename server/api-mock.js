@@ -8,6 +8,7 @@ server.use((req, res, next) => {
     const allowedOrigins = [
         'http://host.docker.internal:8080',
         'http://localhost:8090',
+        'http://localhost:8080',
         'http://web:8080',
         'http://192.168.0.115:8080',
     ];

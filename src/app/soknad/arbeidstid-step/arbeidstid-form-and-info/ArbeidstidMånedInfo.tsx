@@ -4,20 +4,20 @@ import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import { DateRange, dateToISOString } from '@navikt/sif-common-formik/lib';
+import { DateRange } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Knapp from 'nav-frontend-knapper';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import TidsbrukKalender from '../../../components/tidsbruk-kalender/TidsbrukKalender';
 import { DagMedTid, TidEnkeltdag } from '../../../types/SoknadFormData';
-import { timeHasSameDuration } from '../../../utils/dateUtils';
-import { getDagerMedTidITidsrom, tidErIngenTid } from '../../../utils/tidsbrukUtils';
-import { prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { dateToISODate, timeHasSameDuration, _dateToISODate, _timeHasSameDuration } from '../../../utils/dateUtils';
+import { datoErHistorisk, getDagerMedTidITidsrom, tidErIngenTid } from '../../../utils/tidsbrukUtils';
 import FormattedTimeText from '../../../components/formatted-time-text/FormattedTimeText';
 import { K9ArbeidsgiverArbeidstid } from '../../../types/K9Sak';
 import { getEndringsdato } from '../../../utils/endringsperiode';
 import { InputTime } from '../../../types';
+import dateFormatter from '../../../utils/dateFormatterUtils';
 
 interface Props {
     periodeIMåned: DateRange;
@@ -41,12 +41,15 @@ const ArbeidstidMånedInfo: React.FunctionComponent<Props> = ({
     onEdit,
 }) => {
     const intl = useIntl();
+    const { faktisk } = arbeidstidArbeidsgiverSak;
+
     const dager = getDagerMedTidITidsrom(tidArbeidstid, periodeIMåned);
-    const dagerSak: DagMedTid[] = getDagerMedTidITidsrom(arbeidstidArbeidsgiverSak.faktisk, periodeIMåned);
+
+    const dagerSak: DagMedTid[] = getDagerMedTidITidsrom(faktisk, periodeIMåned);
 
     const harEndringer = dager.some((dag) => {
-        const key = dateToISOString(dag.dato);
-        return timeHasSameDuration(tidArbeidstid[key], arbeidstidArbeidsgiverSak.faktisk[key]) === false;
+        const key = _dateToISODate(dag.dato);
+        return _timeHasSameDuration(tidArbeidstid[key], faktisk[key]) === false;
     });
 
     const dagerMedRegistrertArbeidstid = dager.filter((d) => tidErIngenTid(d.tid) === false);
@@ -94,15 +97,15 @@ const ArbeidstidMånedInfo: React.FunctionComponent<Props> = ({
                     skjulTommeDagerIListe={true}
                     visEndringsinformasjon={true}
                     popoverContentRenderer={(date) => {
-                        const dateKey = dateToISOString(date);
+                        const dateKey = dateToISODate(date);
                         const tid: InputTime | undefined = getTidForDag(date);
                         const opprinneligTid: InputTime | undefined = arbeidstidArbeidsgiverSak.faktisk[dateKey];
                         const jobberNormaltTid: InputTime | undefined = arbeidstidArbeidsgiverSak.normalt[dateKey];
                         const erEndret = timeHasSameDuration(tid, opprinneligTid) === false;
-                        const erHistorisk = dayjs(date).isBefore(getEndringsdato());
+                        const erHistorisk = datoErHistorisk(date, getEndringsdato());
                         return (
                             <div style={{ minWidth: '8rem', textAlign: 'left' }}>
-                                <Element>{prettifyDate(date)}</Element>
+                                <Element>{dateFormatter.short(date)}</Element>
                                 <ul className="clean">
                                     {tid && (
                                         <li>

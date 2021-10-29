@@ -1,4 +1,3 @@
-import { apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { DateRange, Time } from '@navikt/sif-common-formik/lib';
 import {
     ArbeidsgiverK9Format,
@@ -81,7 +80,7 @@ export const parseK9Format = (data: K9Format): K9Sak => {
         ytelse: {
             type: 'PLEIEPENGER_SYKT_BARN',
             barn: {
-                fødselsdato: apiStringDateToDate(ytelse.barn.fødselsdato),
+                fødselsdato: ISODateToDate(ytelse.barn.fødselsdato),
                 norskIdentitetsnummer: ytelse.barn.norskIdentitetsnummer,
             },
             søknadsperioder: getSøknadsperioderInnenforTillattEndringsperiode(

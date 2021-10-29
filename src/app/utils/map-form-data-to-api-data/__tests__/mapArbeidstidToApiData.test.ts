@@ -1,6 +1,6 @@
-import { timeToIso8601Duration } from '@navikt/sif-common-core/lib/utils/timeUtils';
 import { DateRange } from '@navikt/sif-common-formik/lib';
 import { ISODateToDate } from '../../dateUtils';
+import { timeToISODuration } from '../../timeUtils';
 import { mapArbeidsgiverArbeidstidToK9FormatInnsending } from '../mapArbeidstidToK9Format';
 
 const søknadsperioder: DateRange[] = [
@@ -27,6 +27,6 @@ describe('mapArbeidsgiverArbeidstidToApiData', () => {
         );
         expect(result).toBeDefined();
         expect(Object.keys(result).length).toEqual(1);
-        expect(result['2021-02-02'].faktiskArbeidTimerPerDag).toEqual(timeToIso8601Duration({ hours: 2, minutes: 20 }));
+        expect(result['2021-02-02'].faktiskArbeidTimerPerDag).toEqual(timeToISODuration({ hours: '2', minutes: '20' }));
     });
 });

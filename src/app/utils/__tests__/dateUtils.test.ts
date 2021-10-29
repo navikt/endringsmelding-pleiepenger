@@ -1,5 +1,4 @@
-import { apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { DateRange, dateToISOString } from '@navikt/sif-common-formik/lib';
+import { DateRange } from '@navikt/sif-common-formik/lib';
 import { ISODateRange } from '../../types';
 import {
     getISODatesInISODateRangeWeekendExcluded,
@@ -7,6 +6,7 @@ import {
     timeHasSameDuration,
     ISODateToDate,
     getDateRangesBetweenDateRanges,
+    dateToISODate,
 } from '../dateUtils';
 
 describe('getISODatesInISODateRange', () => {
@@ -44,23 +44,23 @@ describe('getISODatesInISODateRange', () => {
 describe('getDateRangeFromDateRanges', () => {
     it('én periode', () => {
         const result = getDateRangeFromDateRanges([
-            { from: apiStringDateToDate('2021-02-01'), to: apiStringDateToDate('2021-02-02') },
+            { from: ISODateToDate('2021-02-01'), to: ISODateToDate('2021-02-02') },
         ]);
         expect(result).toBeDefined();
         if (result) {
-            expect(dateToISOString(result.from)).toEqual('2021-02-01');
-            expect(dateToISOString(result.to)).toEqual('2021-02-02');
+            expect(dateToISODate(result.from)).toEqual('2021-02-01');
+            expect(dateToISODate(result.to)).toEqual('2021-02-02');
         }
     });
     it('to perioder', () => {
         const result = getDateRangeFromDateRanges([
-            { from: apiStringDateToDate('2021-02-01'), to: apiStringDateToDate('2021-02-02') },
-            { from: apiStringDateToDate('2020-01-01'), to: apiStringDateToDate('2021-01-01') },
+            { from: ISODateToDate('2021-02-01'), to: ISODateToDate('2021-02-02') },
+            { from: ISODateToDate('2020-01-01'), to: ISODateToDate('2021-01-01') },
         ]);
         expect(result).toBeDefined();
         if (result) {
-            expect(dateToISOString(result.from)).toEqual('2020-01-01');
-            expect(dateToISOString(result.to)).toEqual('2021-02-02');
+            expect(dateToISODate(result.from)).toEqual('2020-01-01');
+            expect(dateToISODate(result.to)).toEqual('2021-02-02');
         }
     });
 });
@@ -134,16 +134,16 @@ describe('getDateRangesBetweenDateRanges', () => {
     it('returnerer 1 periode på 1 dag når det er 1 dag mellom to perioder', () => {
         const result = getDateRangesBetweenDateRanges([range1, range2]);
         expect(result.length).toBe(1);
-        expect(dateToISOString(result[0].from)).toEqual('2021-02-03');
-        expect(dateToISOString(result[0].to)).toEqual('2021-02-03');
+        expect(dateToISODate(result[0].from)).toEqual('2021-02-03');
+        expect(dateToISODate(result[0].to)).toEqual('2021-02-03');
     });
     it('returnerer 2 perioder når det er 1 dag mellom hver periode', () => {
         const result = getDateRangesBetweenDateRanges([range1, range2, range3]);
         expect(result.length).toBe(2);
-        expect(dateToISOString(result[0].from)).toEqual('2021-02-03');
-        expect(dateToISOString(result[0].to)).toEqual('2021-02-03');
-        expect(dateToISOString(result[1].from)).toEqual('2021-02-06');
-        expect(dateToISOString(result[1].to)).toEqual('2021-02-06');
+        expect(dateToISODate(result[0].from)).toEqual('2021-02-03');
+        expect(dateToISODate(result[0].to)).toEqual('2021-02-03');
+        expect(dateToISODate(result[1].from)).toEqual('2021-02-06');
+        expect(dateToISODate(result[1].to)).toEqual('2021-02-06');
     });
     it('returnerer ingen perioder når det er ingen dager mellom 2 periode', () => {
         const result = getDateRangesBetweenDateRanges([range3, range4]);

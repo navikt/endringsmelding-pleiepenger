@@ -1,7 +1,6 @@
-import { apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { DateRange, dateToISOString } from '@navikt/sif-common-formik/lib';
+import { DateRange } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
-import { ISODateRangeToDateRange } from '../dateUtils';
+import { dateToISODate, ISODateRangeToDateRange, ISODateToDate } from '../dateUtils';
 import {
     getEndringsperiode,
     getMaksEndringsperiode,
@@ -10,33 +9,33 @@ import {
 
 describe('getEndringsperiode', () => {
     it('returnerer maks endringsdato dersom søknadsperiode er større enn endringsperiode', () => {
-        const endringsdato: Date = apiStringDateToDate('2021-02-01');
+        const endringsdato: Date = ISODateToDate('2021-02-01');
         const søknadsperiode: DateRange = ISODateRangeToDateRange('2020-01-01/2023-12-01');
         const result = getEndringsperiode(endringsdato, [søknadsperiode]);
         expect(result).toBeDefined();
-        expect(dateToISOString(result.from)).toEqual('2020-11-01');
-        expect(dateToISOString(result.to)).toEqual('2022-02-01');
+        expect(dateToISODate(result.from)).toEqual('2020-11-01');
+        expect(dateToISODate(result.to)).toEqual('2022-02-01');
     });
     it('returnerer søknadsperiode datoer dersom søknadsperiode er innenfor enn endringsperiode', () => {
-        const endringsdato: Date = apiStringDateToDate('2021-02-01');
+        const endringsdato: Date = ISODateToDate('2021-02-01');
         const søknadsperiode: DateRange = ISODateRangeToDateRange('2021-01-01/2021-03-01');
         const result = getEndringsperiode(endringsdato, [søknadsperiode]);
         expect(result).toBeDefined();
-        expect(dateToISOString(result.from)).toEqual('2021-01-01');
-        expect(dateToISOString(result.to)).toEqual('2021-03-01');
+        expect(dateToISODate(result.from)).toEqual('2021-01-01');
+        expect(dateToISODate(result.to)).toEqual('2021-03-01');
     });
 });
 
 describe('getSøknadsperioderInnenforTillattEndringsperiode', () => {
-    const endringsdato = apiStringDateToDate('2021-02-01');
+    const endringsdato = ISODateToDate('2021-02-01');
     const maksgrense = getMaksEndringsperiode(endringsdato);
     const søknadsperioderEn: DateRange = ISODateRangeToDateRange('2021-01-01/2021-03-01');
 
     it('returnerer periode start/slutt innenfor maksgrense', () => {
         const result = getSøknadsperioderInnenforTillattEndringsperiode(endringsdato, [søknadsperioderEn]);
         expect(result.length).toBe(1);
-        expect(dateToISOString(result[0].from)).toEqual('2021-01-01');
-        expect(dateToISOString(result[0].to)).toEqual('2021-03-01');
+        expect(dateToISODate(result[0].from)).toEqual('2021-01-01');
+        expect(dateToISODate(result[0].to)).toEqual('2021-03-01');
     });
 
     it('fjerner perioder som avsluttes før maksgrense.from', () => {
@@ -64,8 +63,8 @@ describe('getSøknadsperioderInnenforTillattEndringsperiode', () => {
             },
         ]);
         expect(result.length).toBe(1);
-        expect(dateToISOString(result[0].from)).toEqual(dateToISOString(maksgrense.from));
-        expect(dateToISOString(result[0].to)).toEqual(dateToISOString(maksgrense.to));
+        expect(dateToISODate(result[0].from)).toEqual(dateToISODate(maksgrense.from));
+        expect(dateToISODate(result[0].to)).toEqual(dateToISODate(maksgrense.to));
     });
     it('avkorter perioder som starter og slutter utenfor maks grense', () => {
         const result = getSøknadsperioderInnenforTillattEndringsperiode(endringsdato, [
@@ -79,7 +78,7 @@ describe('getSøknadsperioderInnenforTillattEndringsperiode', () => {
             },
         ]);
         expect(result.length).toBe(2);
-        expect(dateToISOString(result[0].from)).toEqual(dateToISOString(maksgrense.from));
-        expect(dateToISOString(result[1].to)).toEqual(dateToISOString(maksgrense.to));
+        expect(dateToISODate(result[0].from)).toEqual(dateToISODate(maksgrense.from));
+        expect(dateToISODate(result[1].to)).toEqual(dateToISODate(maksgrense.to));
     });
 });

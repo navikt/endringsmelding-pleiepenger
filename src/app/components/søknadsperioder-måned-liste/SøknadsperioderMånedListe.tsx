@@ -38,6 +38,22 @@ const SøknadsperioderMånedListe: React.FunctionComponent<Props> = ({
         );
     };
 
+    const renderMåned = (måned: DateRange, index: number) => {
+        const søknadsperioderIMåned = k9sakMeta.månederMedSøknadsperiodeMap[getYearMonthKey(måned.from)];
+        return søknadsperioderIMåned === undefined ? null : (
+            <FormBlock margin="l" key={dayjs(måned.from).format('MM.YYYY')}>
+                {årstallHeaderRenderer && visÅrstallHeading(index) && (
+                    <Box margin="xl" padBottom="l">
+                        <Undertittel tag={`h${headingLevel}`} className={'yearHeader'}>
+                            {årstallHeaderRenderer(måned.from.getFullYear())}
+                        </Undertittel>
+                    </Box>
+                )}
+                {månedContentRenderer(måned, søknadsperioderIMåned, index)}
+            </FormBlock>
+        );
+    };
+
     return (
         <SoknadFormComponents.InputGroup
             /** På grunn av at dialogen jobber mot ett felt i formik, kan ikke
@@ -52,21 +68,7 @@ const SøknadsperioderMånedListe: React.FunctionComponent<Props> = ({
             tag="div"
             // validate={() => validateOmsorgstilbudEnkeltdagerIPeriode(tidIOmsorgstilbud, periode, gjelderFortid)}
         >
-            {k9sakMeta.alleMånederISøknadsperiode.map((måned, index) => {
-                const søknadsperioderIMåned = k9sakMeta.månederMedSøknadsperiodeMap[getYearMonthKey(måned.from)];
-                return søknadsperioderIMåned === undefined ? null : (
-                    <FormBlock margin="l" key={dayjs(måned.from).format('MM.YYYY')}>
-                        {årstallHeaderRenderer && visÅrstallHeading(index) && (
-                            <Box margin="xl" padBottom="l">
-                                <Undertittel tag={`h${headingLevel}`} className={'yearHeader'}>
-                                    {årstallHeaderRenderer(måned.from.getFullYear())}
-                                </Undertittel>
-                            </Box>
-                        )}
-                        {månedContentRenderer(måned, søknadsperioderIMåned, index)}
-                    </FormBlock>
-                );
-            })}
+            {k9sakMeta.alleMånederISøknadsperiode.map(renderMåned)}
         </SoknadFormComponents.InputGroup>
     );
 };

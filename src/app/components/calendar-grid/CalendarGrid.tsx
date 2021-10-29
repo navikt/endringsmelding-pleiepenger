@@ -1,7 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
-import { prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { DateRange } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
@@ -10,6 +9,7 @@ import { guid } from 'nav-frontend-js-utils';
 import { dateIsWeekDay, getFirstDateOfWeek, isDateInDates } from '../../utils/dateUtils';
 import CalendarGridDate from './CalendarGridDate';
 import './calendarGrid.less';
+import dateFormatter from '../../utils/dateFormatterUtils';
 
 dayjs.extend(isSameOrBefore);
 
@@ -72,11 +72,72 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
     hideEmptyContentInListMode,
     popoverContentRenderer,
     dateContentRenderer,
-    dateRendererShort = prettifyDate,
-    dateRendererFull = (date) => dayjs(date).format('dddd DD. MMM'),
+    dateRendererShort = dateFormatter.short,
+    dateRendererFull = dateFormatter.dayDateAndMonth,
     allDaysInWeekDisabledContentRenderer,
 }) => {
     const weeks = getWeeks(getDatesToRender(month), month.from);
+
+    const renderDate = (date: Date) => {
+        const dateKey = date.toDateString();
+        const dateIsDisabled = isDateInDates(date, disabledDates);
+        return dayjs(date).isSame(month.from, 'month') === false ? (
+            <div key={dateKey} aria-hidden={true} className={bem.classNames(bem.element('day', 'outsideMonth'))} />
+        ) : (
+            <div
+                title={dateIsDisabled ? disabledDateInfo : undefined}
+                key={dateKey}
+                className={bem.classNames(
+                    bem.child('day').block,
+                    bem.child('day').modifierConditional('disabled', dateIsDisabled)
+                )}>
+                <CalendarGridDate
+                    date={date}
+                    dateRendererFull={dateRendererFull}
+                    dateRendererShort={dateRendererShort}
+                    popoverContentRenderer={dateIsDisabled ? undefined : popoverContentRenderer}
+                />
+                <div className={bem.child('day').element('content')}>
+                    {dateContentRenderer(date, dateIsDisabled)}
+                    {/* TODO 
+                    <div className="tidsinfo__group">
+                        <div className="tidnormalt tidsinfo">
+                            Nor: <span className="tidsinfo__value">7:30</span>
+                        </div>
+                        <div className="tidomsorg tidsinfo">
+                            Oms.: <span className="tidsinfo__value">7:30</span>
+                        </div>
+                    </div> */}
+                </div>
+            </div>
+        );
+    };
+
+    const renderWeek = (week: WeekToRender) => {
+        const datesInWeek = week.dates;
+        const weekNum = week.weekNumber;
+        const areAllDaysInWeekDisabled =
+            allDaysInWeekDisabledContentRenderer !== undefined &&
+            datesInWeek.filter((date) => isDateInDates(date, disabledDates) === true).length === datesInWeek.length;
+        return [
+            <div
+                role="presentation"
+                aria-hidden={true}
+                className={bem.element('weekNum', areAllDaysInWeekDisabled ? 'empty' : undefined)}
+                key={guid()}>
+                <span className={bem.element('weekNum_label')}>
+                    <FormattedMessage id="Uke" /> {` `}
+                </span>
+                <span>{weekNum}</span>
+                {areAllDaysInWeekDisabled && allDaysInWeekDisabledContentRenderer ? (
+                    <div className={bem.element('allWeekDisabledContent')}>
+                        {allDaysInWeekDisabledContentRenderer()}
+                    </div>
+                ) : undefined}
+            </div>,
+            datesInWeek.map(renderDate),
+        ];
+    };
     return (
         <div
             className={bem.classNames(
@@ -102,68 +163,7 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
             <span role="presentation" aria-hidden={true} className={bem.element('dayHeader')}>
                 <FormattedMessage id="Fredag" />
             </span>
-            {weeks.map((week) => {
-                const datesInWeek = week.dates;
-                const weekNum = week.weekNumber;
-                const areAllDaysInWeekDisabled =
-                    allDaysInWeekDisabledContentRenderer !== undefined &&
-                    datesInWeek.filter((date) => isDateInDates(date, disabledDates) === true).length ===
-                        datesInWeek.length;
-                return [
-                    <div
-                        role="presentation"
-                        aria-hidden={true}
-                        className={bem.element('weekNum', areAllDaysInWeekDisabled ? 'empty' : undefined)}
-                        key={guid()}>
-                        <span className={bem.element('weekNum_label')}>
-                            <FormattedMessage id="Uke" /> {` `}
-                        </span>
-                        <span>{weekNum}</span>
-                        {areAllDaysInWeekDisabled && allDaysInWeekDisabledContentRenderer ? (
-                            <div className={bem.element('allWeekDisabledContent')}>
-                                {allDaysInWeekDisabledContentRenderer()}
-                            </div>
-                        ) : undefined}
-                    </div>,
-                    datesInWeek.map((date) => {
-                        const dateIsDisabled = isDateInDates(date, disabledDates);
-                        return dayjs(date).isSame(month.from, 'month') === false ? (
-                            <div
-                                key={guid()}
-                                aria-hidden={true}
-                                className={bem.classNames(bem.element('day', 'outsideMonth'))}
-                            />
-                        ) : (
-                            <div
-                                title={dateIsDisabled ? disabledDateInfo : undefined}
-                                key={guid()}
-                                className={bem.classNames(
-                                    bem.child('day').block,
-                                    bem.child('day').modifierConditional('disabled', dateIsDisabled)
-                                )}>
-                                <CalendarGridDate
-                                    date={date}
-                                    dateRendererFull={dateRendererFull}
-                                    dateRendererShort={dateRendererShort}
-                                    popoverContentRenderer={dateIsDisabled ? undefined : popoverContentRenderer}
-                                />
-                                <div className={bem.child('day').element('content')}>
-                                    {dateContentRenderer(date, dateIsDisabled)}
-                                    {/* TODO 
-                                    <div className="tidsinfo__group">
-                                        <div className="tidnormalt tidsinfo">
-                                            Nor: <span className="tidsinfo__value">7:30</span>
-                                        </div>
-                                        <div className="tidomsorg tidsinfo">
-                                            Oms.: <span className="tidsinfo__value">7:30</span>
-                                        </div>
-                                    </div> */}
-                                </div>
-                            </div>
-                        );
-                    }),
-                ];
-            })}
+            {weeks.map(renderWeek)}
         </div>
     );
 };

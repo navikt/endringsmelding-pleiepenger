@@ -1,6 +1,7 @@
-import { DateRange, dateToISOString } from '@navikt/sif-common-formik/lib';
+import { DateRange } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { flatten } from 'lodash';
+import moize from 'moize';
 import { DagerIkkeSøktForMap, DagerSøktForMap } from '../types';
 import {
     K9ArbeidsgiverArbeidstid,
@@ -11,6 +12,7 @@ import {
 } from '../types/K9Sak';
 import {
     dateIsWithinDateRange,
+    dateToISODate,
     getDateRangeFromDateRanges,
     getDateRangesBetweenDateRanges,
     getDatesInDateRange,
@@ -67,7 +69,7 @@ export const getDagerIkkeSøktFor = (søknadsperioder: DateRange[]): DagerIkkeS�
     const dagerIkkeSøktFor: DagerIkkeSøktForMap = {};
     hull.forEach((periode) => {
         const datoer = getDatesInDateRange(periode, false);
-        datoer.forEach((d) => (dagerIkkeSøktFor[dateToISOString(d)] = true));
+        datoer.forEach((d) => (dagerIkkeSøktFor[dateToISODate(d)] = true));
     });
     return dagerIkkeSøktFor;
 };
@@ -76,12 +78,13 @@ export const getDagerSøktFor = (søknadsperioder: DateRange[]): DagerSøktForMa
     const dagerSøktFor: DagerSøktForMap = {};
     søknadsperioder.forEach((periode) => {
         const datoer = getDatesInDateRange(periode, true);
-        datoer.forEach((d) => (dagerSøktFor[dateToISOString(d)] = true));
+        datoer.forEach((d) => (dagerSøktFor[dateToISODate(d)] = true));
     });
     return dagerSøktFor;
 };
 
-export const getYearMonthKey = (date: Date): string => dayjs(date).format('YYYY-MM');
+export const _getYearMonthKey = (date: Date): string => dayjs(date).format('YYYY-MM');
+export const getYearMonthKey = moize(_getYearMonthKey);
 
 export const getDateRangeFromYearMonthKey = (yearMonthKey: string): DateRange => {
     const [year, month] = yearMonthKey.split('-');
