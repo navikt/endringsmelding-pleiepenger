@@ -1,7 +1,7 @@
-import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
-import { groupBy } from 'lodash';
+import { groupBy, memoize } from 'lodash';
 import React from 'react';
+import { dateToISODate } from '../../utils/dateUtils';
 import { Daginfo, Ukeinfo } from './types';
 
 const getEmptyElements = (num: number): JSX.Element[] | undefined => {
@@ -10,10 +10,10 @@ const getEmptyElements = (num: number): JSX.Element[] | undefined => {
         : Array.from({ length: num }).map((_, index) => React.createElement('span', { key: index }));
 };
 
-export const getDagInfo = (date: Date): Daginfo => {
+const _getDagInfo = (date: Date): Daginfo => {
     const dayjsDato = dayjs(date);
     return {
-        isoDateString: dateToISOString(dayjsDato.toDate()),
+        isoDateString: dateToISODate(dayjsDato.toDate()),
         dato: dayjsDato.toDate(),
         ukedag: dayjsDato.isoWeekday(),
         ukenummer: dayjsDato.isoWeek(),
@@ -24,6 +24,7 @@ export const getDagInfo = (date: Date): Daginfo => {
         labelFull: `${dayjsDato.format('dddd')} ${dayjsDato.format('D. MMMM')}`,
     };
 };
+export const getDagInfo = memoize(_getDagInfo);
 
 export const getDagerIPeriode = (from: Date, to: Date): Daginfo[] => {
     const dager: Daginfo[] = [];

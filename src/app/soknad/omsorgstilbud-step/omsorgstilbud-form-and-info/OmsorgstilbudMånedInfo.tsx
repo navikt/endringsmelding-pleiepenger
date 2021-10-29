@@ -4,7 +4,7 @@ import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import { DateRange, dateToISOString } from '@navikt/sif-common-formik/lib';
+import { DateRange } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Knapp from 'nav-frontend-knapper';
@@ -13,7 +13,7 @@ import FormattedTimeText from '../../../components/formatted-time-text/Formatted
 import TidsbrukKalender, { TidRenderer } from '../../../components/tidsbruk-kalender/TidsbrukKalender';
 import { TidEnkeltdag } from '../../../types/SoknadFormData';
 import { getDagerMedTidITidsrom } from '../../../utils/tidsbrukUtils';
-import { timeHasSameDuration } from '../../../utils/dateUtils';
+import { dateToISODate, timeHasSameDuration } from '../../../utils/dateUtils';
 
 interface Props {
     periodeIMåned: DateRange;
@@ -43,7 +43,7 @@ const OmsorgstilbudMånedInfo: React.FunctionComponent<Props> = ({
     const omsorgsdagerSak = getDagerMedTidITidsrom(tidOmsorgstilbudSak, periodeIMåned);
 
     const harEndringer = omsorgsdager.some((dag) => {
-        const key = dateToISOString(dag.dato);
+        const key = dateToISODate(dag.dato);
         return timeHasSameDuration(tidOmsorgstilbud[key], tidOmsorgstilbudSak[key]) === false;
     });
 

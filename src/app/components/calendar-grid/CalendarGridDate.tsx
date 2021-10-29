@@ -1,9 +1,9 @@
 import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
 import { prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import Popover from 'nav-frontend-popover';
 import React, { useState } from 'react';
+import { dateToISODate } from '../../utils/dateUtils';
 import { CalendarGridPopoverContentRenderer } from './CalendarGrid';
 
 interface Props {
@@ -22,7 +22,7 @@ const CalendarGridDate: React.FunctionComponent<Props> = ({
     dateRendererFull = (date) => dayjs(date).format('dddd DD. MMM'),
 }) => {
     const [anker, setAnker] = useState<HTMLElement>();
-    const id = `${dateToISOString(date)}_date`;
+    const id = `${dateToISODate(date)}_date`;
 
     const content = (
         <>

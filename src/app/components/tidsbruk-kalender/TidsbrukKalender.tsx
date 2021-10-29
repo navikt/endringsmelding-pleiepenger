@@ -1,11 +1,12 @@
 import React from 'react';
 import AriaAlternative from '@navikt/sif-common-core/lib/components/aria/AriaAlternative';
-import { DateRange, dateToISOString } from '@navikt/sif-common-formik/lib';
+import { DateRange } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { DagMedTid } from '../../types/SoknadFormData';
 import CalendarGrid, { CalendarGridPopoverContentRenderer } from '../calendar-grid/CalendarGrid';
 import TidsbrukKalenderDag from './TidsbrukKalenderDag';
 import { InputTime } from '../../types';
+import { dateToISODate } from '../../utils/dateUtils';
 
 export type TidRenderer = (tid: InputTime, dato: Date) => React.ReactNode;
 
@@ -44,14 +45,14 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
 }) => {
     const kalenderdager: Kalenderdager = {};
     dagerMedTid.forEach((d) => {
-        const datostring = dateToISOString(d.dato);
+        const datostring = dateToISODate(d.dato);
         kalenderdager[datostring] = {
             ...kalenderdager[datostring],
             tid: d.tid,
         };
     });
     dagerOpprinnelig.forEach((d) => {
-        const datostring = dateToISOString(d.dato);
+        const datostring = dateToISODate(d.dato);
         kalenderdager[datostring] = {
             ...kalenderdager[datostring],
             tidOpprinnelig: d.tid,
@@ -73,7 +74,7 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
                 />
             )}
             dateContentRenderer={(dato) => {
-                const dag = kalenderdager[dateToISOString(dato)];
+                const dag = kalenderdager[dateToISODate(dato)];
                 return dag ? (
                     <TidsbrukKalenderDag
                         dato={dato}

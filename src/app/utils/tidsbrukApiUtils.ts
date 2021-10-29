@@ -1,9 +1,9 @@
-import { DateRange, datoErInnenforTidsrom } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { timeToIso8601Duration } from '@navikt/sif-common-core/lib/utils/timeUtils';
-import { dateToISOString, ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { TidEnkeltdagApiData } from '../types/SoknadApiData';
 import { TidEnkeltdag } from '../types/SoknadFormData';
+import { dateIsWithinDateRange, dateToISODate, ISODateToDate } from './dateUtils';
 
 const sortTidEnkeltdagApiData = (d1: TidEnkeltdagApiData, d2: TidEnkeltdagApiData): number =>
     dayjs(d1.dato).isBefore(d2.dato, 'day') ? -1 : 1;
@@ -19,10 +19,10 @@ export const getTidEnkeltdagApiDataIPeriodeApiData = (
     }
 
     Object.keys(enkeltdager).forEach((dag) => {
-        const dato = ISOStringToDate(dag);
-        if (dato && datoErInnenforTidsrom(dato, periode)) {
+        const dato = ISODateToDate(dag);
+        if (dato && dateIsWithinDateRange(dato, periode)) {
             dager.push({
-                dato: dateToISOString(dato),
+                dato: dateToISODate(dato),
                 tid: timeToIso8601Duration(enkeltdager[dag]),
             });
         }

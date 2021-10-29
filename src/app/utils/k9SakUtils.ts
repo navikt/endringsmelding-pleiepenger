@@ -1,4 +1,4 @@
-import { DateRange, dateToISOString } from '@navikt/sif-common-formik/lib';
+import { DateRange } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { flatten } from 'lodash';
 import { DagerIkkeSøktForMap, DagerSøktForMap } from '../types';
@@ -11,6 +11,7 @@ import {
 } from '../types/K9Sak';
 import {
     dateIsWithinDateRange,
+    dateToISODate,
     getDateRangeFromDateRanges,
     getDateRangesBetweenDateRanges,
     getDatesInDateRange,
@@ -21,6 +22,7 @@ import {
 } from './dateUtils';
 import { getEndringsdato, getEndringsperiode, getMaksEndringsperiode } from './endringsperiode';
 import { getUtilgjengeligeDatoerIMåned } from './getUtilgjengeligeDatoerIMåned';
+import { memoize } from 'lodash';
 
 type ISODateObject = { [key: string]: any };
 
@@ -67,7 +69,7 @@ export const getDagerIkkeSøktFor = (søknadsperioder: DateRange[]): DagerIkkeS�
     const dagerIkkeSøktFor: DagerIkkeSøktForMap = {};
     hull.forEach((periode) => {
         const datoer = getDatesInDateRange(periode, false);
-        datoer.forEach((d) => (dagerIkkeSøktFor[dateToISOString(d)] = true));
+        datoer.forEach((d) => (dagerIkkeSøktFor[dateToISODate(d)] = true));
     });
     return dagerIkkeSøktFor;
 };
@@ -76,12 +78,13 @@ export const getDagerSøktFor = (søknadsperioder: DateRange[]): DagerSøktForMa
     const dagerSøktFor: DagerSøktForMap = {};
     søknadsperioder.forEach((periode) => {
         const datoer = getDatesInDateRange(periode, true);
-        datoer.forEach((d) => (dagerSøktFor[dateToISOString(d)] = true));
+        datoer.forEach((d) => (dagerSøktFor[dateToISODate(d)] = true));
     });
     return dagerSøktFor;
 };
 
-export const getYearMonthKey = (date: Date): string => dayjs(date).format('YYYY-MM');
+const _getYearMonthKey = (date: Date): string => dayjs(date).format('YYYY-MM');
+export const getYearMonthKey = memoize(_getYearMonthKey);
 
 export const getDateRangeFromYearMonthKey = (yearMonthKey: string): DateRange => {
     const [year, month] = yearMonthKey.split('-');

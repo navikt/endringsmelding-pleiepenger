@@ -1,11 +1,11 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { timeToIso8601Duration } from '@navikt/sif-common-core/lib/utils/timeUtils';
-import { DateRange, dateToISOString } from '@navikt/sif-common-formik/lib';
+import { DateRange } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import TidKalenderForm from '../../../components/tid-kalender-form/TidKalenderForm';
 import { TidEnkeltdag } from '../../../types/SoknadFormData';
-import { timeHasSameDuration } from '../../../utils/dateUtils';
+import { dateToISODate, timeHasSameDuration } from '../../../utils/dateUtils';
 import { getDagerMedTidITidsrom, getTidEnkeltdagerInnenforPeriode, tidErIngenTid } from '../../../utils/tidsbrukUtils';
 import { getArbeidstidValidator } from '../../../validation/validateArbeidstidFields';
 import { K9ArbeidsgiverArbeidstid } from '../../../types/K9Sak';
@@ -51,7 +51,7 @@ const ArbeidstidMånedForm: React.FunctionComponent<Props> = ({
     const tidIMåned = getTidEnkeltdagerInnenforPeriode(arbeidstid, periodeIMåned);
     const dager = getDagerMedTidITidsrom(arbeidstid, periodeIMåned);
     const erEndret = dager.some((dag) => {
-        const key = dateToISOString(dag.dato);
+        const key = dateToISODate(dag.dato);
         return timeHasSameDuration(arbeidstid[key], arbeidstidArbeidsgiverSak.faktisk[key]) === false;
     });
     return (

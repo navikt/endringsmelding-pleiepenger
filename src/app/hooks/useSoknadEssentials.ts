@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { combine, initial, pending, RemoteData } from '@devexperts/remote-data-ts';
 import { isUserLoggedOut } from '@navikt/sif-common-core/lib/utils/apiUtils';
-import { dateToISOString } from '@navikt/sif-common-formik/lib';
 import { AxiosError } from 'axios';
 import getArbeidsgivereRemoteData from '../api/getArbeidsgivere';
 import getSokerRemoteData from '../api/getSoker';
@@ -13,6 +12,7 @@ import { Person } from '../types/Person';
 import { SoknadTempStorageData } from '../types/SoknadTempStorageData';
 import { getEndringsdato, getEndringsperiode } from '../utils/endringsperiode';
 import { relocateToLoginPage } from '../utils/navigationUtils';
+import { dateToISODate } from '../utils/dateUtils';
 
 export type SoknadEssentials = [Person, K9Sak, Arbeidsgiver[], SoknadTempStorageData];
 
@@ -31,8 +31,8 @@ function useSoknadEssentials(): SoknadEssentialsRemoteData {
             const k9sak: K9Sak = (k9SakResult as any).value as any;
             const endringsperiode = getEndringsperiode(getEndringsdato(), k9sak.ytelse.søknadsperioder);
             const arbeidsgivereResult = await getArbeidsgivereRemoteData(
-                dateToISOString(endringsperiode.from),
-                dateToISOString(endringsperiode.to)
+                dateToISODate(endringsperiode.from),
+                dateToISODate(endringsperiode.to)
             );
             setData(combine(sokerResult, k9SakResult, arbeidsgivereResult, soknadTempStorageResult));
         } catch (remoteDataError) {
