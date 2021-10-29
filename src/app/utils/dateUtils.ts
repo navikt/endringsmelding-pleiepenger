@@ -1,20 +1,20 @@
 import { apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { iso8601DurationToTime, timeToIso8601Duration } from '@navikt/sif-common-core/lib/utils/timeUtils';
 import { DateRange, Time } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import minMax from 'dayjs/plugin/minMax';
-import { memoize, uniq } from 'lodash';
+import { uniq, memoize } from 'lodash';
 import { InputTime, ISODate, ISODateRange, ISODuration } from '../types';
+import { isoDurationToTime, timeToISODuration } from './timeUtils';
 
 dayjs.extend(isoWeek);
 dayjs.extend(isBetween);
 dayjs.extend(minMax);
 dayjs.extend(isSameOrBefore);
 
-const rawGetMonthsInDateRange = (range: DateRange): DateRange[] => {
+export const _getMonthsInDateRange = (range: DateRange): DateRange[] => {
     const months: DateRange[] = [];
     let current = dayjs(range.from);
     do {
@@ -27,9 +27,9 @@ const rawGetMonthsInDateRange = (range: DateRange): DateRange[] => {
     } while (current.isBefore(range.to, 'day'));
     return months;
 };
-export const getMonthsInDateRange = memoize(rawGetMonthsInDateRange);
+export const getMonthsInDateRange = memoize(_getMonthsInDateRange);
 
-export const getWeeksInDateRange = (range: DateRange): DateRange[] => {
+export const _getWeeksInDateRange = (range: DateRange): DateRange[] => {
     const weeks: DateRange[] = [];
     let current = dayjs(range.from);
     do {
@@ -42,8 +42,9 @@ export const getWeeksInDateRange = (range: DateRange): DateRange[] => {
     } while (current.isBefore(range.to, 'day'));
     return weeks;
 };
+export const getWeeksInDateRange = memoize(_getWeeksInDateRange);
 
-const rawGetDatesInDateRange = (range: DateRange, onlyWeekDays = true): Date[] => {
+export const getDatesInDateRange = (range: DateRange, onlyWeekDays = true): Date[] => {
     const dates: Date[] = [];
     let current = dayjs(range.from); //.subtract(dayjs(range.from).isoWeekday() - 1, 'days');
     do {
@@ -55,9 +56,8 @@ const rawGetDatesInDateRange = (range: DateRange, onlyWeekDays = true): Date[] =
     } while (current.isSameOrBefore(range.to, 'day'));
     return dates;
 };
-export const getDatesInDateRange = memoize(rawGetDatesInDateRange);
 
-const rawGetDatesInMonth = (month: Date, onlyWeekDays = true): Date[] => {
+export const getDatesInMonth = (month: Date, onlyWeekDays = true): Date[] => {
     const dates: Date[] = [];
     const range = getMonthDateRange(month);
     let current = dayjs(range.from); //.subtract(dayjs(range.from).isoWeekday() - 1, 'days');
@@ -70,49 +70,46 @@ const rawGetDatesInMonth = (month: Date, onlyWeekDays = true): Date[] => {
     } while (current.isSameOrBefore(range.to, 'day'));
     return dates;
 };
-export const getDatesInMonth = memoize(rawGetDatesInMonth);
 
 export const getFirstDateOfWeek = (dateInWeek: Date): Date =>
     dayjs(dateInWeek)
         .subtract(dayjs(dateInWeek).isoWeekday() - 1, 'days')
         .toDate();
 
-const rawGetMonthDateRange = (date: Date): DateRange => ({
+export const getMonthDateRange = (date: Date): DateRange => ({
     from: dayjs(date).startOf('month').toDate(),
     to: dayjs(date).endOf('month').toDate(),
 });
-export const getMonthDateRange = memoize(rawGetMonthDateRange);
 
-const rawISODateToDate = (isoDate: ISODate): Date => {
+export const _ISODateToDate = (isoDate: ISODate): Date => {
     return apiStringDateToDate(isoDate);
 };
-export const ISODateToDate = memoize(rawISODateToDate);
+export const ISODateToDate = memoize(_ISODateToDate);
 
-const rawISODateRangeToDateRange = (isoDateRange: ISODateRange): DateRange => {
+export const ISODateRangeToDateRange = (isoDateRange: ISODateRange): DateRange => {
     const parts = isoDateRange.split('/');
     return {
-        from: apiStringDateToDate(parts[0]),
-        to: apiStringDateToDate(parts[1]),
+        from: ISODateToDate(parts[0]),
+        to: ISODateToDate(parts[1]),
     };
 };
-export const ISODateRangeToDateRange = memoize(rawISODateRangeToDateRange);
 
-const rawDateRangeToISODateRange = (dateRange: DateRange): ISODateRange => {
+export const dateRangeToISODateRange = (dateRange: DateRange): ISODateRange => {
     return `${dateToISODate(dateRange.from)}/${dateToISODate(dateRange.to)}`;
 };
-export const dateRangeToISODateRange = memoize(rawDateRangeToISODateRange);
 
-const dateToISODate = (date: Date): ISODate => dayjs(date).format('YYYY-MM-DD');
+export const _dateToISODate = (date: Date): ISODate => dayjs(date).format('YYYY-MM-DD');
+export const dateToISODate = memoize(_dateToISODate);
 
 export const ISODurationToTime = (duration: ISODuration): Time | undefined => {
-    const time = iso8601DurationToTime(duration);
+    const time = isoDurationToTime(duration);
     return {
         hours: time?.hours ? `${time?.hours}` : '0',
         minutes: time?.minutes ? `${time?.minutes}` : '0',
     };
 };
 
-const rawGetISODatesInISODateRangeWeekendExcluded = (range: ISODateRange): ISODate[] => {
+export const getISODatesInISODateRangeWeekendExcluded = (range: ISODateRange): ISODate[] => {
     const dateRange = ISODateRangeToDateRange(range);
     const { from, to } = dateRange;
     let currentDate = dayjs(from);
@@ -126,7 +123,6 @@ const rawGetISODatesInISODateRangeWeekendExcluded = (range: ISODateRange): ISODa
     } while (dayjs(currentDate).isSameOrBefore(to, 'day'));
     return dates;
 };
-export const getISODatesInISODateRangeWeekendExcluded = memoize(rawGetISODatesInISODateRangeWeekendExcluded);
 
 export const getDateRangeFromDateRanges = (ranges: DateRange[]): DateRange => {
     return {
@@ -135,31 +131,31 @@ export const getDateRangeFromDateRanges = (ranges: DateRange[]): DateRange => {
     };
 };
 
-const rawTimeHasSameDuration = (time1?: InputTime, time2?: InputTime): boolean => {
+export const _timeHasSameDuration = (time1?: InputTime, time2?: InputTime): boolean => {
     if (time1 === undefined && time2 === undefined) {
         return true;
     }
     if (time1 === undefined || time2 === undefined) {
         return false;
     }
-    const endretTid = timeToIso8601Duration(time1);
-    const opprinneligTid = timeToIso8601Duration(time2);
+    const endretTid = timeToISODuration(time1);
+    const opprinneligTid = timeToISODuration(time2);
     return endretTid === opprinneligTid;
 };
-export const timeHasSameDuration = memoize(rawTimeHasSameDuration);
+export const timeHasSameDuration = memoize(_timeHasSameDuration);
 
-const rawIsDateInDates = (date: Date, dates?: Date[]): boolean => {
+export const isDateInDates = (date: Date, dates?: Date[]): boolean => {
     if (!dates) {
         return false;
     }
     return dates.some((d) => dayjs(date).isSame(d, 'day'));
 };
-export const isDateInDates = memoize(rawIsDateInDates);
 
 /** Includes start and end date */
-export const dateIsWithinDateRange = (date: Date, dateRange: DateRange): boolean => {
+export const _dateIsWithinDateRange = (date: Date, dateRange: DateRange): boolean => {
     return dayjs(date).isBetween(dateRange.from, dateRange.to, 'day', '[]');
 };
+export const dateIsWithinDateRange = memoize(_dateIsWithinDateRange);
 
 export const dateIsWeekDay = (date: Date): boolean => {
     return dayjs(date).isoWeekday() <= 5;

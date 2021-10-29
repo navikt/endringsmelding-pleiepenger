@@ -1,7 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
-import { timeToIso8601Duration } from '@navikt/sif-common-core/lib/utils/timeUtils';
 import dayjs from 'dayjs';
 import groupBy from 'lodash.groupby';
 import EkspanderbartPanel from 'nav-frontend-ekspanderbartpanel';
@@ -12,6 +11,7 @@ import { TidEnkeltdag } from '../../types/SoknadFormData';
 import { ISODateToDate, ISODurationToTime, timeHasSameDuration } from '../../utils/dateUtils';
 import { datoSorter } from '../../utils/datoSorter';
 import DagerMedTidListe from './dager-med-tid-liste/DagerMedTidListe';
+import { timeToISODuration } from '../../utils/timeUtils';
 
 interface Props {
     dager?: TidEnkeltdagApiData[];
@@ -54,7 +54,7 @@ const TidEnkeltdager: React.FunctionComponent<Props> = ({
         Object.keys(dagerOpprinnelig).forEach((isoDate) => {
             kalenderdager[isoDate] = {
                 ...kalenderdager[isoDate],
-                tidOpprinnelig: timeToIso8601Duration(dagerOpprinnelig[isoDate]),
+                tidOpprinnelig: timeToISODuration(dagerOpprinnelig[isoDate]),
             };
         });
     }

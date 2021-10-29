@@ -6,11 +6,11 @@ import {
     TypedFormInputValidationProps,
 } from '@navikt/sif-common-formik';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
-import dayjs from 'dayjs';
 import { K9ArbeidsgiverArbeidstid } from '../../../types/K9Sak';
 import { TidEnkeltdag } from '../../../types/SoknadFormData';
 import ArbeidstidMånedForm from './ArbeidstidMånedForm';
 import ArbeidstidMånedInfo from './ArbeidstidMånedInfo';
+import { datoErHistorisk } from '../../../utils/tidsbrukUtils';
 
 interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     formFieldName: FieldNames;
@@ -46,7 +46,7 @@ function ArbeidstidFormAndInfo<FieldNames>({
     validate,
     onAfterChange,
 }: Props<FieldNames>) {
-    const erHistorisk = dayjs(periodeIMåned.to).isBefore(endringsdato, 'day');
+    const erHistorisk = datoErHistorisk(periodeIMåned.to, endringsdato);
 
     const renderForm: ModalFormRenderer<TidEnkeltdag> = ({ onSubmit, onCancel, data = {} }) => (
         <ArbeidstidMånedForm

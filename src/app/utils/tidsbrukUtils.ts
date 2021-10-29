@@ -1,15 +1,15 @@
-import { DateRange, datoErInnenforTidsrom } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { timeToDecimalTime } from '@navikt/sif-common-core/lib/utils/timeUtils';
-import { ISOStringToDate } from '@navikt/sif-common-formik/lib';
 import { isValidTime } from '@navikt/sif-common-formik/lib/components/formik-time-input/TimeInput';
 import { hasValue } from '@navikt/sif-common-formik/lib/validation/validationUtils';
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import minMax from 'dayjs/plugin/minMax';
 import { DagMedTid, TidEnkeltdag } from '../types/SoknadFormData';
-import { timeHasSameDuration } from './dateUtils';
-import { timeToIso8601Duration } from '@navikt/sif-common-core/lib/utils/timeUtils';
+import { dateIsWithinDateRange, ISODateToDate, timeHasSameDuration } from './dateUtils';
 import { InputTime } from '../types';
+import { memoize } from 'lodash';
+import { timeToISODuration } from './timeUtils';
 
 dayjs.extend(minMax);
 dayjs.extend(isSameOrAfter);
@@ -55,7 +55,7 @@ export const sumTimerEnkeltdager = (dager: TidEnkeltdag): number => {
 export const mapTidEnkeltdagToDagMedTid = (tidEnkeltdag: TidEnkeltdag): DagMedTid[] => {
     const dager: DagMedTid[] = [];
     Object.keys(tidEnkeltdag).forEach((key) => {
-        const dato = ISOStringToDate(key);
+        const dato = ISODateToDate(key);
         if (dato) {
             dager.push({
                 dato,
@@ -69,7 +69,7 @@ export const mapTidEnkeltdagToDagMedTid = (tidEnkeltdag: TidEnkeltdag): DagMedTi
 export const getTidEnkeltdagerInnenforPeriode = (dager: TidEnkeltdag, periode: DateRange): TidEnkeltdag => {
     const dagerIPerioden: TidEnkeltdag = {};
     Object.keys(dager).forEach((dag) => {
-        const dato = ISOStringToDate(dag);
+        const dato = ISODateToDate(dag);
         if (dato && dayjs(dato).isBetween(periode.from, periode.to, 'day', '[]')) {
             dagerIPerioden[dag] = dager[dag];
         }
@@ -80,8 +80,8 @@ export const getTidEnkeltdagerInnenforPeriode = (dager: TidEnkeltdag, periode: D
 export const getDagerMedTidITidsrom = (data: TidEnkeltdag, tidsrom: DateRange): DagMedTid[] => {
     const dager: DagMedTid[] = [];
     Object.keys(data || {}).forEach((isoDateString) => {
-        const date = ISOStringToDate(isoDateString);
-        if (date && datoErInnenforTidsrom(date, tidsrom)) {
+        const date = ISODateToDate(isoDateString);
+        if (date && dateIsWithinDateRange(date, tidsrom)) {
             const time = data[isoDateString];
             if (time) {
                 dager.push({
@@ -94,6 +94,7 @@ export const getDagerMedTidITidsrom = (data: TidEnkeltdag, tidsrom: DateRange): 
     });
     return dager;
 };
+// export const getDagerMedTidITidsrom = memoize(_getDagerMedTidITidsrom);
 
 export const fjernDagerMedUendretTid = (enkeltdager: TidEnkeltdag, dagerOpprinnelig: TidEnkeltdag): TidEnkeltdag => {
     const dagerMedEndring: TidEnkeltdag = {};
@@ -106,6 +107,10 @@ export const fjernDagerMedUendretTid = (enkeltdager: TidEnkeltdag, dagerOpprinne
     return dagerMedEndring;
 };
 
-export const tidErIngenTid = (time: InputTime): boolean => {
-    return timeToIso8601Duration(time) === 'PT0H0M';
+export const _tidErIngenTid = (time: InputTime): boolean => {
+    return timeToISODuration(time) === 'PT0H0M';
 };
+export const tidErIngenTid = memoize(_tidErIngenTid);
+
+export const _datoErHistorisk = (date: Date, today: Date) => dayjs(date).isBefore(today, 'day');
+export const datoErHistorisk = memoize(_datoErHistorisk);

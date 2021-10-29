@@ -12,7 +12,7 @@ import DinePlikterContent from './dine-plikter/DinePlikter';
 import BehandlingAvPersonopplysningerContent from './personopplysninger/Personopplysninger';
 import { DateRange, FormikCheckboxPanelGroup } from '@navikt/sif-common-formik/lib';
 import { Element } from 'nav-frontend-typografi';
-import { prettifyDateFull } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import dateFormatter from '../../utils/dateFormatterUtils';
 
 interface DialogState {
     dinePlikterModalOpen?: boolean;
@@ -33,8 +33,8 @@ const VelkommenPageForm: React.FunctionComponent<Props> = ({ onStart, endringspe
         <SoknadFormComponents.Form onValidSubmit={onStart} includeButtons={false}>
             <FormBlock>
                 <p>
-                    Du kan endre informasjon i perioden {prettifyDateFull(endringsperiode.from)} til{' '}
-                    {prettifyDateFull(endringsperiode.to)}.
+                    Du kan endre informasjon i perioden {dateFormatter.full(endringsperiode.from)} til{' '}
+                    {dateFormatter.full(endringsperiode.to)}.
                 </p>
             </FormBlock>
             <FormBlock>

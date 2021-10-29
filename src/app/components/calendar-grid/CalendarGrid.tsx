@@ -1,7 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
-import { prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { DateRange } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
@@ -10,6 +9,7 @@ import { guid } from 'nav-frontend-js-utils';
 import { dateIsWeekDay, getFirstDateOfWeek, isDateInDates } from '../../utils/dateUtils';
 import CalendarGridDate from './CalendarGridDate';
 import './calendarGrid.less';
+import dateFormatter from '../../utils/dateFormatterUtils';
 
 dayjs.extend(isSameOrBefore);
 
@@ -72,8 +72,8 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
     hideEmptyContentInListMode,
     popoverContentRenderer,
     dateContentRenderer,
-    dateRendererShort = prettifyDate,
-    dateRendererFull = (date) => dayjs(date).format('dddd DD. MMM'),
+    dateRendererShort = dateFormatter.short,
+    dateRendererFull = dateFormatter.dayDateAndMonth,
     allDaysInWeekDisabledContentRenderer,
 }) => {
     const weeks = getWeeks(getDatesToRender(month), month.from);
