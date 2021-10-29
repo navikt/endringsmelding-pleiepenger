@@ -8,8 +8,8 @@ import minMax from 'dayjs/plugin/minMax';
 import { DagMedTid, TidEnkeltdag } from '../types/SoknadFormData';
 import { dateIsWithinDateRange, ISODateToDate, timeHasSameDuration } from './dateUtils';
 import { InputTime } from '../types';
-import { memoize } from 'lodash';
 import { timeToISODuration } from './timeUtils';
+import moize from 'moize';
 
 dayjs.extend(minMax);
 dayjs.extend(isSameOrAfter);
@@ -110,7 +110,7 @@ export const fjernDagerMedUendretTid = (enkeltdager: TidEnkeltdag, dagerOpprinne
 export const _tidErIngenTid = (time: InputTime): boolean => {
     return timeToISODuration(time) === 'PT0H0M';
 };
-export const tidErIngenTid = memoize(_tidErIngenTid);
+export const tidErIngenTid = moize(_tidErIngenTid);
 
 export const _datoErHistorisk = (date: Date, today: Date) => dayjs(date).isBefore(today, 'day');
-export const datoErHistorisk = memoize(_datoErHistorisk);
+export const datoErHistorisk = moize(_datoErHistorisk);

@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
-import { groupBy, memoize } from 'lodash';
+import { groupBy } from 'lodash';
+import moize from 'moize';
 import React from 'react';
 import { dateToISODate } from '../../utils/dateUtils';
 import { Daginfo, Ukeinfo } from './types';
@@ -24,7 +25,7 @@ export const _getDagInfo = (date: Date): Daginfo => {
         labelFull: `${dayjsDato.format('dddd')} ${dayjsDato.format('D. MMMM')}`,
     };
 };
-export const getDagInfo = memoize(_getDagInfo);
+export const getDagInfo = moize(_getDagInfo);
 
 export const _getDagerIPeriode = (from: Date, to: Date): Daginfo[] => {
     const dager: Daginfo[] = [];
@@ -38,7 +39,7 @@ export const _getDagerIPeriode = (from: Date, to: Date): Daginfo[] => {
     }
     return dager;
 };
-export const getDagerIPeriode = memoize(_getDagerIPeriode);
+export const getDagerIPeriode = moize(_getDagerIPeriode);
 
 export const getUkerFraDager = (dager: Daginfo[]): Ukeinfo[] => {
     const ukerOgDager = groupBy(dager, (dag) => dag.årOgUke);
