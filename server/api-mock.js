@@ -151,7 +151,7 @@ const startExpressServer = () => {
         res.sendStatus(401);
     });
 
-    server.post('/endring/melding', (req, res) => {
+    server.post('/endringsmelding', (req, res) => {
         const body = req.body;
         console.log('[POST] body', body);
         setTimeout(() => {
