@@ -4,15 +4,16 @@ import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import InfoDialog from '@navikt/sif-common-core/lib/components/dialogs/info-dialog/InfoDialog';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
+import { DateRange } from '@navikt/sif-common-formik/lib';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import Lenke from 'nav-frontend-lenker';
+import { Element } from 'nav-frontend-typografi';
 import SoknadFormComponents from '../../soknad/SoknadFormComponents';
 import { SoknadFormField } from '../../types/SoknadFormData';
 import DinePlikterContent from './dine-plikter/DinePlikter';
 import BehandlingAvPersonopplysningerContent from './personopplysninger/Personopplysninger';
-import { DateRange, FormikCheckboxPanelGroup } from '@navikt/sif-common-formik/lib';
-import { Element } from 'nav-frontend-typografi';
-import dateFormatter from '../../utils/dateFormatterUtils';
+import { getCheckedValidator, getRequiredFieldValidator } from '@navikt/sif-common-formik/lib/validation';
+import getIntlFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
 
 interface DialogState {
     dinePlikterModalOpen?: boolean;
@@ -24,23 +25,21 @@ interface Props {
     onStart: () => void;
 }
 
-const VelkommenPageForm: React.FunctionComponent<Props> = ({ onStart, endringsperiode }) => {
+const VelkommenPageForm: React.FunctionComponent<Props> = ({ onStart }) => {
     const [dialogState, setDialogState] = useState<DialogState>({});
     const { dinePlikterModalOpen, behandlingAvPersonopplysningerModalOpen } = dialogState;
     const intl = useIntl();
 
     return (
-        <SoknadFormComponents.Form onValidSubmit={onStart} includeButtons={false}>
+        <SoknadFormComponents.Form
+            onValidSubmit={onStart}
+            includeButtons={false}
+            formErrorHandler={getIntlFormErrorHandler(intl, 'validation')}>
             <FormBlock>
-                <p>
-                    Du kan endre informasjon i perioden {dateFormatter.full(endringsperiode.from)} til{' '}
-                    {dateFormatter.full(endringsperiode.to)}.
-                </p>
-            </FormBlock>
-            <FormBlock>
-                <FormikCheckboxPanelGroup
-                    name={'endreHva'}
+                <SoknadFormComponents.CheckboxPanelGroup
+                    name={SoknadFormField.hvaSkalEndres}
                     legend={'Velg hva du ønsker å endre:'}
+                    validate={getRequiredFieldValidator()}
                     checkboxes={[
                         {
                             id: 'omsorgstilbud',
@@ -73,11 +72,7 @@ const VelkommenPageForm: React.FunctionComponent<Props> = ({ onStart, endringspe
                 <SoknadFormComponents.ConfirmationCheckbox
                     label={intlHelper(intl, 'samtykke.tekst')}
                     name={SoknadFormField.harForståttRettigheterOgPlikter}
-                    validate={(value) => {
-                        return value !== true
-                            ? intlHelper(intl, 'validation.harForståttRettigheterOgPlikter.noValue')
-                            : undefined;
-                    }}>
+                    validate={getCheckedValidator()}>
                     <FormattedMessage
                         id="samtykke.harForståttLabel"
                         values={{

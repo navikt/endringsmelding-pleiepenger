@@ -32,6 +32,7 @@ export interface ArbeidstidFormValue {
 export enum SoknadFormField {
     harForståttRettigheterOgPlikter = 'harForståttRettigheterOgPlikter',
     harBekreftetOpplysninger = 'harBekreftetOpplysninger',
+    hvaSkalEndres = 'hvaSkalEndres',
     omsorgstilbud = 'omsorgstilbud',
     omsorgstilbud_dager_gruppe = 'omsorgstilbud_dager_gruppe',
     omsorgstilbud_enkeltdager = 'omsorgstilbud.enkeltdager',
@@ -40,9 +41,15 @@ export enum SoknadFormField {
     arbeidstid_arbeidsgiver = 'arbeidstid.arbeidsgiver',
 }
 
+enum HvaSkalEndres {
+    omsorgstilbud = 'omsorgstilbud',
+    arbeidstid = 'arbeidstid',
+}
+
 export interface SoknadFormData {
     [SoknadFormField.harForståttRettigheterOgPlikter]: boolean;
     [SoknadFormField.harBekreftetOpplysninger]: boolean;
+    [SoknadFormField.hvaSkalEndres]?: HvaSkalEndres;
     [SoknadFormField.omsorgstilbud]?: Omsorgstilbud;
     [SoknadFormField.arbeidstid]?: ArbeidstidFormValue;
 }

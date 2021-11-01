@@ -98,5 +98,6 @@
     "step.oppsummering.sendMelding.feilmelding.andreGang": "Det oppstod fortsatt en feil under innsending. Vennligst vent litt og prøv på nytt.",
 
     "validation.harForståttRettigheterOgPlikter.noValue": "Du må bekrefte at du har lest og forstått dine plikter.",
-    "validation.harBekreftetOpplysninger.notChecked": "Du må bekrefte opplysningene."
+    "validation.harBekreftetOpplysninger.notChecked": "Du må bekrefte opplysningene.",
+    "validation.hvaSkalEndres.noValue": "Du må krysse av for hva du ønsker å endre"
 }
