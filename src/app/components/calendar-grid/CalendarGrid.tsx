@@ -85,10 +85,9 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
             <div key={dateKey} aria-hidden={true} className={bem.classNames(bem.element('day', 'outsideMonth'))} />
         ) : (
             <div
+                key={dateKey}
                 title={dateIsDisabled ? disabledDateInfo : undefined}
                 aria-hidden={dateIsDisabled}
-                role={dateIsDisabled ? 'presentation' : undefined}
-                key={dateKey}
                 className={bem.classNames(
                     bem.child('day').block,
                     bem.child('day').modifierConditional('disabled', dateIsDisabled)
@@ -112,7 +111,6 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
             datesInWeek.filter((date) => isDateInDates(date, disabledDates) === true).length === datesInWeek.length;
         return [
             <div
-                role="presentation"
                 aria-hidden={true}
                 className={bem.element('weekNum', areAllDaysInWeekDisabled ? 'empty' : undefined)}
                 key={guid()}>
@@ -139,22 +137,22 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
                 bem.modifierConditional('hideEmptyContentInListMode', hideEmptyContentInListMode),
                 bem.modifier(renderAsList ? 'list' : 'grid')
             )}>
-            <span role="presentation" aria-hidden={true} className={bem.element('dayHeader', 'week')}>
+            <span aria-hidden={true} className={bem.element('dayHeader', 'week')}>
                 <FormattedMessage id="Uke" />
             </span>
-            <span role="presentation" aria-hidden={true} className={bem.element('dayHeader')}>
+            <span aria-hidden={true} className={bem.element('dayHeader')}>
                 <FormattedMessage id="Mandag" />
             </span>
-            <span role="presentation" aria-hidden={true} className={bem.element('dayHeader')}>
+            <span aria-hidden={true} className={bem.element('dayHeader')}>
                 <FormattedMessage id="Tirsdag" />
             </span>
-            <span role="presentation" aria-hidden={true} className={bem.element('dayHeader')}>
+            <span aria-hidden={true} className={bem.element('dayHeader')}>
                 <FormattedMessage id="Onsdag" />
             </span>
-            <span role="presentation" aria-hidden={true} className={bem.element('dayHeader')}>
+            <span aria-hidden={true} className={bem.element('dayHeader')}>
                 <FormattedMessage id="Torsdag" />
             </span>
-            <span role="presentation" aria-hidden={true} className={bem.element('dayHeader')}>
+            <span aria-hidden={true} className={bem.element('dayHeader')}>
                 <FormattedMessage id="Fredag" />
             </span>
             {weeks.map(renderWeek)}

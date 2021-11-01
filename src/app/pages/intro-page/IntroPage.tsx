@@ -21,7 +21,7 @@ const IntroPage: React.FunctionComponent = () => {
             topContentRenderer={() => <StepBanner tag="h1" text={intlHelper(intl, 'application.title')} />}>
             <Box margin="xxxl">
                 <section aria-label="Introduksjon">
-                    <InformationPoster>Introduksjon</InformationPoster>
+                    <InformationPoster>Dette er en løsning som er under utvikling.</InformationPoster>
                 </section>
             </Box>
             <FormBlock>

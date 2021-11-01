@@ -51,7 +51,7 @@ const IntroForm: React.FunctionComponent<Props> = ({ onValidSubmit }) => {
                             }
                             submitButtonLabel="Gå videre">
                             <FormQuestion
-                                legend={'Har du pleiepenger ... eller noe sånt?'}
+                                legend={'Har du søkt om pleiepenger for sykt barn?'}
                                 name={IntroFormField.harPleiepenger}
                                 validate={getYesOrNoValidator()}
                             />

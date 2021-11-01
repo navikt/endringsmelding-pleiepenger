@@ -65,11 +65,7 @@ const TidUkeInput: React.FunctionComponent<Props> = ({
 
             <div className={bem.element('uke__ukedager', isWide && visSomListe !== true ? 'grid' : 'liste')}>
                 {getForegåendeDagerIUke(dager[0]).map((dag) => (
-                    <div
-                        className={bem.element('dag', 'utenforPeriode')}
-                        key={dag.isoDateString}
-                        role="presentation"
-                        aria-hidden={true}>
+                    <div className={bem.element('dag', 'utenforPeriode')} key={dag.isoDateString} aria-hidden={true}>
                         {renderDagLabel(dag, dagLabelRenderer)}
                         <div className={bem.element('dag__utenforPeriodeIkon')}>-</div>
                     </div>

@@ -10,7 +10,8 @@ server.use((req, res, next) => {
         'http://localhost:8090',
         'http://localhost:8080',
         'http://web:8080',
-        'http://192.168.0.115:8080',
+        'http://192.168.0.121:8080',
+        '*',
     ];
     const requestOrigin = req.headers.origin;
     if (allowedOrigins.indexOf(requestOrigin) >= 0) {
