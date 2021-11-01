@@ -34,6 +34,7 @@ import SoknadRoutes from './SoknadRoutes';
 import { getSoknadStepsConfig, StepID } from './soknadStepsConfig';
 import soknadTempStorage, { isStorageDataValid } from './soknadTempStorage';
 import { getInitialFormData } from '../utils/initialFormDataUtils';
+import { getAvailableSteps } from '../utils/getAvailableSteps';
 
 interface Props {
     søker: Person;
@@ -86,19 +87,17 @@ const Soknad: React.FunctionComponent<Props> = ({
         relocateToSoknad();
     };
 
-    const startSoknad = async (): Promise<void> => {
+    const startSoknad = async (values: SoknadFormData): Promise<void> => {
         await resetSoknad();
         const sId = ulid();
         setSoknadId(sId);
-        const firstStep = StepID.ARBEIDSTID;
+
+        const firstStep = getAvailableSteps(values, søker)[0];
+        console.log({ firstStep, values });
+
         if (isFeatureEnabled(Feature.PERSISTENCE)) {
             await soknadTempStorage.create();
-            await soknadTempStorage.update(
-                sId,
-                { harBekreftetOpplysninger: false, harForståttRettigheterOgPlikter: true },
-                firstStep,
-                { søker }
-            );
+            await soknadTempStorage.update(sId, { ...values }, firstStep, { søker });
         }
         await logSoknadStartet(SKJEMANAVN);
         setTimeout(() => {
@@ -229,7 +228,7 @@ const Soknad: React.FunctionComponent<Props> = ({
                                         continueSoknadLater: soknadId
                                             ? (stepId) => continueSoknadLater(soknadId, stepId, values)
                                             : undefined,
-                                        startSoknad,
+                                        startSoknad: () => startSoknad(values),
                                         sendSoknad: (values) => triggerSend(values, resetForm),
                                         gotoNextStepFromStep: (stepId: StepID) => {
                                             persistAndNavigate(
