@@ -50,7 +50,9 @@ const TidsbrukKalenderDag: React.FunctionComponent<Props> = ({
                             )}
                         </>
                     ) : (
-                        <span className="tidsbrukTidDag">{renderTid(tid)}</span>
+                        <span className="tidsbrukTidDag">
+                            {renderTid(tid)} <span className="sr-only">(uendret)</span>
+                        </span>
                     )}
                 </div>
             )}

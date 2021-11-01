@@ -4,6 +4,7 @@ import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { timeToDecimalTime } from '@navikt/sif-common-core/lib/utils/timeUtils';
 import { Time } from '@navikt/sif-common-formik';
 import { InputTime } from '../../types';
+import AriaAlternative from '@navikt/sif-common-core/lib/components/aria/AriaAlternative';
 
 const ensureTime = (time: InputTime): Time => {
     return {
@@ -44,20 +45,19 @@ const FormattedTimeText = ({
                 </span>
             );
         default:
+            if (hideEmptyValues && timer === '0' && minutter !== '0') {
+                return <></>;
+            }
+            const ariaText = `${intlHelper(intl, 'timer', { timer })}
+            ${intlHelper(intl, 'minutter', { minutter })}`;
             return (
-                <>
-                    {hideEmptyValues && timer === '0' && minutter !== '0' ? null : (
-                        <span style={{ whiteSpace: 'nowrap' }}>
-                            {fullText ? intlHelper(intl, 'timer', { timer }) : <>{timer} t.</>}
-                        </span>
+                <span style={{ whiteSpace: 'nowrap' }}>
+                    {fullText ? (
+                        <>{ariaText}</>
+                    ) : (
+                        <AriaAlternative visibleText={`${timer} t. ${minutter} m.`} ariaText={ariaText} />
                     )}
-                    {` `}
-                    {hideEmptyValues && minutter === '0' && timer !== '0' ? null : (
-                        <span style={{ whiteSpace: 'nowrap' }}>
-                            {fullText ? intlHelper(intl, 'minutter', { minutter }) : <>{minutter} m.</>}
-                        </span>
-                    )}
-                </>
+                </span>
             );
     }
 };

@@ -8,16 +8,12 @@ import { DateRange } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Knapp from 'nav-frontend-knapper';
-import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import TidsbrukKalender from '../../../components/tidsbruk-kalender/TidsbrukKalender';
-import { DagMedTid, TidEnkeltdag } from '../../../types/SoknadFormData';
-import { dateToISODate, timeHasSameDuration, _dateToISODate, _timeHasSameDuration } from '../../../utils/dateUtils';
-import { datoErHistorisk, getDagerMedTidITidsrom, tidErIngenTid } from '../../../utils/tidsbrukUtils';
-import FormattedTimeText from '../../../components/formatted-time-text/FormattedTimeText';
 import { K9ArbeidsgiverArbeidstid } from '../../../types/K9Sak';
-import { getEndringsdato } from '../../../utils/endringsperiode';
-import { InputTime } from '../../../types';
-import dateFormatter from '../../../utils/dateFormatterUtils';
+import { DagMedTid, TidEnkeltdag } from '../../../types/SoknadFormData';
+import { dateToISODate, timeHasSameDuration } from '../../../utils/dateUtils';
+import { getDagerMedTidITidsrom, tidErIngenTid } from '../../../utils/tidsbrukUtils';
 
 interface Props {
     periodeIMåned: DateRange;
@@ -48,16 +44,11 @@ const ArbeidstidMånedInfo: React.FunctionComponent<Props> = ({
     const dagerSak: DagMedTid[] = getDagerMedTidITidsrom(faktisk, periodeIMåned);
 
     const harEndringer = dager.some((dag) => {
-        const key = _dateToISODate(dag.dato);
-        return _timeHasSameDuration(tidArbeidstid[key], faktisk[key]) === false;
+        const key = dateToISODate(dag.dato);
+        return timeHasSameDuration(tidArbeidstid[key], faktisk[key]) === false;
     });
 
     const dagerMedRegistrertArbeidstid = dager.filter((d) => tidErIngenTid(d.tid) === false);
-
-    const getTidForDag = (dato: Date) => {
-        const dag = dager.find((d) => dayjs(d.dato).isSame(dato, 'day'));
-        return dag ? dag.tid : undefined;
-    };
 
     return (
         <Ekspanderbartpanel
@@ -92,41 +83,10 @@ const ArbeidstidMånedInfo: React.FunctionComponent<Props> = ({
                     periodeIMåned={periodeIMåned}
                     dager={dager}
                     utilgjengeligeDatoer={utilgjengeligeDatoer}
-                    utilgjengeligDagInfo={'Det er ikke søkt om pleiepenger for denne dagen'}
+                    // utilgjengeligDagInfo={'Det er ikke søkt om pleiepenger for denne dagen'}
                     dagerOpprinnelig={dagerSak}
                     skjulTommeDagerIListe={true}
                     visEndringsinformasjon={true}
-                    popoverContentRenderer={(date) => {
-                        const dateKey = dateToISODate(date);
-                        const tid: InputTime | undefined = getTidForDag(date);
-                        const opprinneligTid: InputTime | undefined = arbeidstidArbeidsgiverSak.faktisk[dateKey];
-                        const jobberNormaltTid: InputTime | undefined = arbeidstidArbeidsgiverSak.normalt[dateKey];
-                        const erEndret = timeHasSameDuration(tid, opprinneligTid) === false;
-                        const erHistorisk = datoErHistorisk(date, getEndringsdato());
-                        return (
-                            <div style={{ minWidth: '8rem', textAlign: 'left' }}>
-                                <Element>{dateFormatter.short(date)}</Element>
-                                <ul className="clean">
-                                    {tid && (
-                                        <li>
-                                            {erHistorisk ? 'Jobbet' : 'Skal jobbe'}: <FormattedTimeText time={tid} />
-                                        </li>
-                                    )}
-                                    {erEndret && opprinneligTid && (
-                                        <li>
-                                            Endret fra: <FormattedTimeText time={opprinneligTid} />
-                                        </li>
-                                    )}
-                                    {jobberNormaltTid && (
-                                        <li>
-                                            {erHistorisk ? 'Jobbet normalt' : 'Jobber normalt'}:{' '}
-                                            <FormattedTimeText time={jobberNormaltTid} />
-                                        </li>
-                                    )}
-                                </ul>
-                            </div>
-                        );
-                    }}
                 />
                 <FormBlock margin="l">
                     <Knapp htmlType="button" mini={true} onClick={() => onEdit(tidArbeidstid)}>

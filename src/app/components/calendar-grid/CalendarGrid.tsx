@@ -86,6 +86,8 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
         ) : (
             <div
                 title={dateIsDisabled ? disabledDateInfo : undefined}
+                aria-hidden={dateIsDisabled}
+                role={dateIsDisabled ? 'presentation' : undefined}
                 key={dateKey}
                 className={bem.classNames(
                     bem.child('day').block,
@@ -97,18 +99,7 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
                     dateRendererShort={dateRendererShort}
                     popoverContentRenderer={dateIsDisabled ? undefined : popoverContentRenderer}
                 />
-                <div className={bem.child('day').element('content')}>
-                    {dateContentRenderer(date, dateIsDisabled)}
-                    {/* TODO 
-                    <div className="tidsinfo__group">
-                        <div className="tidnormalt tidsinfo">
-                            Nor: <span className="tidsinfo__value">7:30</span>
-                        </div>
-                        <div className="tidomsorg tidsinfo">
-                            Oms.: <span className="tidsinfo__value">7:30</span>
-                        </div>
-                    </div> */}
-                </div>
+                <div className={bem.child('day').element('content')}>{dateContentRenderer(date, dateIsDisabled)}</div>
             </div>
         );
     };
@@ -125,10 +116,13 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
                 aria-hidden={true}
                 className={bem.element('weekNum', areAllDaysInWeekDisabled ? 'empty' : undefined)}
                 key={guid()}>
-                <span className={bem.element('weekNum_label')}>
+                <span className={bem.element('weekNum_label')} role="presentation" aria-hidden={true}>
                     <FormattedMessage id="Uke" /> {` `}
                 </span>
-                <span>{weekNum}</span>
+                <span>
+                    <span className="sr-only">Uke </span>
+                    {weekNum}
+                </span>
                 {areAllDaysInWeekDisabled && allDaysInWeekDisabledContentRenderer ? (
                     <div className={bem.element('allWeekDisabledContent')}>
                         {allDaysInWeekDisabledContentRenderer()}
