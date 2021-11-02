@@ -89,6 +89,7 @@ function ArbeidstidFormAndInfo<FieldNames>({
             formRenderer={renderForm}
             infoRenderer={renderInfo}
             onAfterChange={onAfterChange}
+            wrapInfoInFieldset={false}
         />
     );
 }

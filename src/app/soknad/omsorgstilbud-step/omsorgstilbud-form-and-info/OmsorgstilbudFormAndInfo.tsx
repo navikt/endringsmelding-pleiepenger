@@ -44,6 +44,7 @@ function OmsorgstilbudFormAndInfo<FieldNames>({
             renderDeleteButton={false}
             dialogClassName={'calendarDialog'}
             wrapInfoInPanel={false}
+            wrapInfoInFieldset={false}
             defaultValue={{}}
             useFastField={true}
             formRenderer={({ onSubmit, onCancel, data = {} }) => {

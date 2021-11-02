@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { groupBy } from 'lodash';
 import { guid } from 'nav-frontend-js-utils';
-import { dateIsWeekDay, getFirstDateOfWeek, isDateInDates } from '../../utils/dateUtils';
+import { getDatesInMonth, isDateInDates } from '../../utils/dateUtils';
 import CalendarGridDate from './CalendarGridDate';
 import './calendarGrid.less';
 import dateFormatter from '../../utils/dateFormatterUtils';
@@ -26,25 +26,13 @@ interface Props {
     disabledDates?: Date[];
     disabledDateInfo?: string;
     hideEmptyContentInListMode?: boolean;
+    hideWeeksWithOnlyDisabledContent?: boolean;
     popoverContentRenderer?: CalendarGridPopoverContentRenderer;
     dateContentRenderer: (date: Date, isDisabled?: boolean) => React.ReactNode;
     dateRendererShort?: (date: Date) => React.ReactNode;
     dateRendererFull?: (date: Date) => React.ReactNode;
     allDaysInWeekDisabledContentRenderer?: () => React.ReactNode;
 }
-
-const getDatesToRender = ({ from, to }: DateRange): Date[] => {
-    const dates: Date[] = [];
-    let current = dayjs(getFirstDateOfWeek(from));
-    do {
-        const date = current.toDate();
-        if (dateIsWeekDay(current.toDate())) {
-            dates.push(date);
-        }
-        current = current.add(1, 'day');
-    } while (current.isSameOrBefore(to, 'day'));
-    return dates;
-};
 
 const getWeeks = (datesToRender: Date[], month: Date): WeekToRender[] => {
     const weeksAndDays = groupBy(datesToRender, (date) => `week_${dayjs(date).isoWeek()}`);
@@ -70,13 +58,14 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
     disabledDateInfo,
     renderAsList,
     hideEmptyContentInListMode,
+    hideWeeksWithOnlyDisabledContent,
     popoverContentRenderer,
     dateContentRenderer,
     dateRendererShort = dateFormatter.short,
     dateRendererFull = dateFormatter.dayDateAndMonth,
     allDaysInWeekDisabledContentRenderer,
 }) => {
-    const weeks = getWeeks(getDatesToRender(month), month.from);
+    const weeks = getWeeks(getDatesInMonth(month.from), month.from);
 
     const renderDate = (date: Date) => {
         const dateKey = date.toDateString();
@@ -107,8 +96,11 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
         const datesInWeek = week.dates;
         const weekNum = week.weekNumber;
         const areAllDaysInWeekDisabled =
-            allDaysInWeekDisabledContentRenderer !== undefined &&
             datesInWeek.filter((date) => isDateInDates(date, disabledDates) === true).length === datesInWeek.length;
+
+        if (hideWeeksWithOnlyDisabledContent && areAllDaysInWeekDisabled) {
+            return null;
+        }
         return [
             <div
                 aria-hidden={true}
@@ -121,6 +113,7 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
                     <span className="sr-only">Uke </span>
                     {weekNum}
                 </span>
+
                 {areAllDaysInWeekDisabled && allDaysInWeekDisabledContentRenderer ? (
                     <div className={bem.element('allWeekDisabledContent')}>
                         {allDaysInWeekDisabledContentRenderer()}

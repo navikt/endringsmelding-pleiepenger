@@ -65,6 +65,7 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
             disabledDates={utilgjengeligeDatoer}
             disabledDateInfo={utilgjengeligDagInfo}
             hideEmptyContentInListMode={skjulTommeDagerIListe}
+            hideWeeksWithOnlyDisabledContent={true}
             allDaysInWeekDisabledContentRenderer={tomUkeContentRenderer}
             popoverContentRenderer={popoverContentRenderer}
             dateRendererShort={(date: Date) => (

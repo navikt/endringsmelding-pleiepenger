@@ -8,7 +8,7 @@ import { DateRange } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Knapp from 'nav-frontend-knapper';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 import TidsbrukKalender from '../../../components/tidsbruk-kalender/TidsbrukKalender';
 import { K9ArbeidsgiverArbeidstid } from '../../../types/K9Sak';
 import { DagMedTid, TidEnkeltdag } from '../../../types/SoknadFormData';
@@ -55,14 +55,14 @@ const ArbeidstidMånedInfo: React.FunctionComponent<Props> = ({
             renderContentWhenClosed={false}
             tittel={
                 <>
-                    <Undertittel tag={`h${månedTittelHeadingLevel}`}>
+                    <Element tag={`h${månedTittelHeadingLevel}`}>
                         <span className="--capitalize">
                             {intlHelper(intl, 'arbeidstid.ukeOgÅr', {
                                 ukeOgÅr: dayjs(periodeIMåned.from).format('MMMM YYYY'),
                             })}
                         </span>
                         {harEndringer && ' (endret)'}
-                    </Undertittel>
+                    </Element>
                     {1 + 1 === 4 && (
                         <Box margin="m">
                             <Normaltekst>
@@ -81,7 +81,6 @@ const ArbeidstidMånedInfo: React.FunctionComponent<Props> = ({
             }>
             <ResponsivePanel style={{ padding: '1rem' }}>
                 <TidsbrukKalender
-                    tomUkeContentRenderer={() => <p>Det er ikke søkt om pleiepenger for dager i denne uken.</p>}
                     periodeIMåned={periodeIMåned}
                     dager={dager}
                     utilgjengeligeDatoer={utilgjengeligeDatoer}

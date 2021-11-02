@@ -43,7 +43,7 @@ const SøknadsperioderMånedListe: React.FunctionComponent<Props> = ({
     const renderMåned = (måned: DateRange, index: number) => {
         const søknadsperioderIMåned = k9sakMeta.månederMedSøknadsperiodeMap[getYearMonthKey(måned.from)];
         return søknadsperioderIMåned === undefined ? null : (
-            <FormBlock margin="s" key={dayjs(måned.from).format('MM.YYYY')}>
+            <FormBlock margin="m" key={dayjs(måned.from).format('MM.YYYY')}>
                 {årstallHeaderRenderer && visÅrstallHeading(index) && (
                     <Box margin="xl" padBottom="l">
                         <Undertittel tag={`h${headingLevel}`} className={'yearHeader'}>

@@ -1,6 +1,5 @@
 import React from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import { useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
@@ -8,7 +7,7 @@ import { DateRange } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Knapp from 'nav-frontend-knapper';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Element } from 'nav-frontend-typografi';
 import FormattedTimeText from '../../../components/formatted-time-text/FormattedTimeText';
 import TidsbrukKalender, { TidRenderer } from '../../../components/tidsbruk-kalender/TidsbrukKalender';
 import { TidEnkeltdag } from '../../../types/SoknadFormData';
@@ -52,15 +51,15 @@ const OmsorgstilbudMånedInfo: React.FunctionComponent<Props> = ({
             renderContentWhenClosed={false}
             tittel={
                 <>
-                    <Undertittel tag={`h${månedTittelHeadingLevel}`}>
+                    <Element tag={`h${månedTittelHeadingLevel}`}>
                         <span className="--capitalize">
                             {intlHelper(intl, 'omsorgstilbud.ukeOgÅr', {
                                 ukeOgÅr: dayjs(periodeIMåned.from).format('MMMM YYYY'),
                             })}
                         </span>
                         {harEndringer ? ' (endret)' : ''}
-                    </Undertittel>
-                    <Box margin="m">
+                    </Element>
+                    {/* <Box margin="m">
                         <Normaltekst>
                             {omsorgsdager.length === 0 ? (
                                 <FormattedMessage id="omsorgstilbud.iPeriodePanel.info.ingenDager" />
@@ -71,16 +70,14 @@ const OmsorgstilbudMånedInfo: React.FunctionComponent<Props> = ({
                                 />
                             )}
                         </Normaltekst>
-                    </Box>
+                    </Box> */}
                 </>
             }>
             <ResponsivePanel style={{ padding: '1rem' }}>
                 <TidsbrukKalender
-                    tomUkeContentRenderer={() => <p>Det er ikke søkt om pleiepenger for dager i denne uken.</p>}
                     periodeIMåned={periodeIMåned}
                     dager={omsorgsdager}
                     utilgjengeligeDatoer={utilgjengeligeDatoer}
-                    utilgjengeligDagInfo={'Det er ikke søkt om pleiepenger for denne dagen'}
                     dagerOpprinnelig={omsorgsdagerSak}
                     skjulTommeDagerIListe={true}
                     visEndringsinformasjon={true}

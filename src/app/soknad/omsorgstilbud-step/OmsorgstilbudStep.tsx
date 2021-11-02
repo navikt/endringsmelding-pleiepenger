@@ -1,11 +1,14 @@
 import React from 'react';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import { useFormikContext } from 'formik';
 import StepIntroduction from '../../components/step-introduction/StepIntroduction';
+import { K9SakMeta } from '../../types/K9Sak';
 import { SoknadFormData, TidEnkeltdag } from '../../types/SoknadFormData';
+import { validateOmsorgstilbud } from '../../validation/fieldValidations';
+import SoknadFormComponents from '../SoknadFormComponents';
 import SoknadFormStep from '../SoknadFormStep';
 import { StepID } from '../soknadStepsConfig';
 import OmsorgstilbudMånedListe from './OmsorgstilbudMånedListe';
-import { K9SakMeta } from '../../types/K9Sak';
 
 const cleanupOmsorgstilbudStep = (formData: SoknadFormData): SoknadFormData => {
     return formData;
@@ -23,6 +26,7 @@ const OmsorgstilbudStep: React.FunctionComponent<Props> = ({
     tidIOmsorgstilbudSak = {},
 }) => {
     const stepId = StepID.OMSORGSTILBUD;
+    const { values } = useFormikContext<SoknadFormData>();
     return (
         <SoknadFormStep id={stepId} onStepCleanup={cleanupOmsorgstilbudStep}>
             <StepIntroduction>
@@ -41,11 +45,21 @@ const OmsorgstilbudStep: React.FunctionComponent<Props> = ({
             </StepIntroduction>
 
             <Box margin="xl">
-                <OmsorgstilbudMånedListe
-                    tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}
-                    k9sakMeta={k9sakMeta}
-                    onOmsorgstilbudChanged={onOmsorgstilbudChanged}
-                />
+                <SoknadFormComponents.InputGroup
+                    legend={'Måneder du har søkt om pleiepenger og kan endre'}
+                    name={'omsorgstilbud_liste' as any}
+                    validate={() =>
+                        validateOmsorgstilbud({
+                            tidOpprinnelig: tidIOmsorgstilbudSak,
+                            tid: values.omsorgstilbud?.enkeltdager,
+                        })
+                    }>
+                    <OmsorgstilbudMånedListe
+                        tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}
+                        k9sakMeta={k9sakMeta}
+                        onOmsorgstilbudChanged={onOmsorgstilbudChanged}
+                    />
+                </SoknadFormComponents.InputGroup>
             </Box>
         </SoknadFormStep>
     );

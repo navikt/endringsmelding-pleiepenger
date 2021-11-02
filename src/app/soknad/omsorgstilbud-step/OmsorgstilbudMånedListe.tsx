@@ -7,9 +7,7 @@ import SøknadsperioderMånedListe from '../../components/søknadsperioder-måne
 import { K9SakMeta } from '../../types/K9Sak';
 import { SoknadFormData, SoknadFormField, TidEnkeltdag } from '../../types/SoknadFormData';
 import { getYearMonthKey } from '../../utils/k9SakUtils';
-import { validateOmsorgstilbud } from '../../validation/fieldValidations';
 import OmsorgstilbudFormAndInfo from './omsorgstilbud-form-and-info/OmsorgstilbudFormAndInfo';
-import Box from '@navikt/sif-common-core/lib/components/box/Box';
 
 interface Props {
     tidIOmsorgstilbudSak: TidEnkeltdag;
@@ -23,19 +21,10 @@ const OmsorgstilbudMånedListe: React.FunctionComponent<Props> = ({
     onOmsorgstilbudChanged,
 }) => {
     const intl = useIntl();
-    const { values, validateForm } = useFormikContext<SoknadFormData>();
+    const { validateForm } = useFormikContext<SoknadFormData>();
     return (
         <SøknadsperioderMånedListe
             k9sakMeta={k9sakMeta}
-            fieldset={{
-                inputGroupFieldName: SoknadFormField.omsorgstilbud_dager_gruppe,
-                legend: <Box margin="m">Måneder med dager hvor det er søkt om pleiepenger</Box>,
-                validate: () =>
-                    validateOmsorgstilbud({
-                        tidOpprinnelig: tidIOmsorgstilbudSak,
-                        tid: values.omsorgstilbud?.enkeltdager,
-                    }),
-            }}
             årstallHeaderRenderer={(årstall) => `Måneder i ${årstall} du har søkt om pleiepenger og kan endre`}
             månedContentRenderer={(måned) => {
                 const mndOgÅrLabelPart = dayjs(måned.from).format('MMMM YYYY');
@@ -66,13 +55,6 @@ const OmsorgstilbudMånedListe: React.FunctionComponent<Props> = ({
                             modalTitle: intlHelper(intl, 'omsorgstilbud.modalTitle', {
                                 periode: mndOgÅrLabelPart,
                             }),
-                            infoTitle: (
-                                <span className="sr-only">
-                                    {intlHelper(intl, 'omsorgstilbud.modalTitle', {
-                                        periode: mndOgÅrLabelPart,
-                                    })}
-                                </span>
-                            ),
                         }}
                     />
                 );

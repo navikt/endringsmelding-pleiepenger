@@ -57,7 +57,7 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
                         periode: mndOgÅrLabelPart,
                     }),
                     infoTitle: (
-                        <span className="sr-only">
+                        <span>
                             {intlHelper(intl, 'arbeidstid.modalTitle', {
                                 periode: mndOgÅrLabelPart,
                             })}
