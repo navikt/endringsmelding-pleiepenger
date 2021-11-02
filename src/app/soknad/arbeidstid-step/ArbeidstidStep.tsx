@@ -7,8 +7,9 @@ import { getArbeidsgiverArbeidstidFormFieldName, SoknadFormData } from '../../ty
 import SoknadFormStep from '../SoknadFormStep';
 import { StepID } from '../soknadStepsConfig';
 import ArbeidstidMånedListe from './ArbeidstidMånedListe';
-// import MånederUtenDagerSøktForInfo from '../../components/måneder-uten-dager-søkt-for-info/MånederUtenDagerSøktForInfo';
-// import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
+import SoknadFormComponents from '../SoknadFormComponents';
+import { validateArbeidstidAlleArbeidsgivere } from '../../validation/fieldValidations';
+import { useFormikContext } from 'formik';
 
 const cleanupStep = (formData: SoknadFormData): SoknadFormData => {
     return formData;
@@ -28,37 +29,43 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
     onArbeidstidChanged,
 }) => {
     const stepId = StepID.ARBEIDSTID;
+    const { values } = useFormikContext<SoknadFormData>();
+
     return (
         <SoknadFormStep id={stepId} onStepCleanup={cleanupStep}>
             <StepIntroduction>Intro til steg</StepIntroduction>
-
-            {/* {k9sakMeta.antallMånederUtenSøknadsperiode > 0 && (
-                <FormBlock>
-                    <MånederUtenDagerSøktForInfo />
-                </FormBlock>
-            )} */}
-
             {arbeidsgivere && (
-                <div className="arbeidstid">
-                    {arbeidsgivere.map((a) => {
-                        const arbeidstidArbeidsgiver = arbeidstidSak.arbeidsgivereMap[a.organisasjonsnummer];
-                        return (
-                            <div key={a.organisasjonsnummer} className="arbeidstid__arbeidsgiver">
-                                <Undertittel>{a.navn}</Undertittel>
-                                {arbeidstidArbeidsgiver === undefined ? (
-                                    <p>Informasjon mangler om arbeidstid for denne arbeidsgiveren</p>
-                                ) : (
-                                    <ArbeidstidMånedListe
-                                        formFieldName={getArbeidsgiverArbeidstidFormFieldName(a)}
-                                        arbeidstidArbeidsgiverSak={arbeidstidArbeidsgiver}
-                                        k9sakMeta={k9sakMeta}
-                                        onArbeidstidChanged={onArbeidstidChanged}
-                                    />
-                                )}
-                            </div>
-                        );
-                    })}
-                </div>
+                <SoknadFormComponents.InputGroup
+                    name={'alle_arbeidsgivere_liste' as any}
+                    validate={() => {
+                        const result = validateArbeidstidAlleArbeidsgivere({
+                            arbeidsgivereMap: values.arbeidstid?.arbeidsgiver,
+                            arbeidsgivereSakMap: arbeidstidSak.arbeidsgivereMap,
+                        });
+                        return result;
+                    }}>
+                    <div className="arbeidstid">
+                        {arbeidsgivere.map((a) => {
+                            const arbeidstidArbeidsgiver = arbeidstidSak.arbeidsgivereMap[a.organisasjonsnummer];
+                            return (
+                                <div key={a.organisasjonsnummer} className="arbeidstid__arbeidsgiver">
+                                    <Undertittel>{a.navn}</Undertittel>
+                                    {arbeidstidArbeidsgiver === undefined ? (
+                                        <p>Informasjon mangler om arbeidstid for denne arbeidsgiveren</p>
+                                    ) : (
+                                        <ArbeidstidMånedListe
+                                            organisasjonsnummer={a.organisasjonsnummer}
+                                            formFieldName={getArbeidsgiverArbeidstidFormFieldName(a)}
+                                            arbeidstidArbeidsgiverSak={arbeidstidArbeidsgiver}
+                                            k9sakMeta={k9sakMeta}
+                                            onArbeidstidChanged={onArbeidstidChanged}
+                                        />
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+                </SoknadFormComponents.InputGroup>
             )}
         </SoknadFormStep>
     );

@@ -9,6 +9,7 @@ import { SoknadFormData, SoknadFormField, TidEnkeltdag } from '../../types/Sokna
 import { getYearMonthKey } from '../../utils/k9SakUtils';
 import { validateOmsorgstilbud } from '../../validation/fieldValidations';
 import OmsorgstilbudFormAndInfo from './omsorgstilbud-form-and-info/OmsorgstilbudFormAndInfo';
+import Box from '@navikt/sif-common-core/lib/components/box/Box';
 
 interface Props {
     tidIOmsorgstilbudSak: TidEnkeltdag;
@@ -26,10 +27,16 @@ const OmsorgstilbudMånedListe: React.FunctionComponent<Props> = ({
     return (
         <SøknadsperioderMånedListe
             k9sakMeta={k9sakMeta}
-            inputGroupFieldName={SoknadFormField.omsorgstilbud_dager_gruppe}
-            legend={<span className="sr-only">Måneder med dager hvor det er søkt pleiepenger for.</span>}
+            fieldset={{
+                inputGroupFieldName: SoknadFormField.omsorgstilbud_dager_gruppe,
+                legend: <Box margin="m">Måneder med dager hvor det er søkt om pleiepenger</Box>,
+                validate: () =>
+                    validateOmsorgstilbud({
+                        tidOpprinnelig: tidIOmsorgstilbudSak,
+                        tid: values.omsorgstilbud?.enkeltdager,
+                    }),
+            }}
             årstallHeaderRenderer={(årstall) => `Måneder i ${årstall} du har søkt om pleiepenger og kan endre`}
-            validate={() => validateOmsorgstilbud(tidIOmsorgstilbudSak)(values.omsorgstilbud?.enkeltdager)}
             månedContentRenderer={(måned) => {
                 const mndOgÅrLabelPart = dayjs(måned.from).format('MMMM YYYY');
                 return (

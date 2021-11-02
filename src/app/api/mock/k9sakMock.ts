@@ -40,17 +40,17 @@ export const k9SakMock: K9Format = {
 
         arbeidstid: {
             arbeidstakerList: [
-                // {
-                //     organisasjonsnummer: '112233445',
-                //     arbeidstidInfo: {
-                //         perioder: {
-                //             '2021-01-01/2023-08-11': {
-                //                 jobberNormaltTimerPerDag: 'PT1H0M',
-                //                 faktiskArbeidTimerPerDag: 'PT0H',
-                //             },
-                //         },
-                //     },
-                // },
+                {
+                    organisasjonsnummer: '112233445',
+                    arbeidstidInfo: {
+                        perioder: {
+                            '2021-01-01/2023-08-11': {
+                                jobberNormaltTimerPerDag: 'PT1H0M',
+                                faktiskArbeidTimerPerDag: 'PT0H',
+                            },
+                        },
+                    },
+                },
                 {
                     organisasjonsnummer: '123451234',
                     arbeidstidInfo: {

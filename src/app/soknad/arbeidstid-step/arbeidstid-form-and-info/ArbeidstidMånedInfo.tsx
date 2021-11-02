@@ -61,20 +61,22 @@ const ArbeidstidMånedInfo: React.FunctionComponent<Props> = ({
                                 ukeOgÅr: dayjs(periodeIMåned.from).format('MMMM YYYY'),
                             })}
                         </span>
-                        {harEndringer ? ' (endret)' : ''}
+                        {harEndringer && ' (endret)'}
                     </Undertittel>
-                    <Box margin="m">
-                        <Normaltekst>
-                            {dagerMedRegistrertArbeidstid.length === 0 ? (
-                                <FormattedMessage id="arbeidstid.iPeriodePanel.info.ingenDager" />
-                            ) : (
-                                <FormattedMessage
-                                    id="arbeidstid.iPeriodePanel.info"
-                                    values={{ dager: dagerMedRegistrertArbeidstid.length }}
-                                />
-                            )}
-                        </Normaltekst>
-                    </Box>
+                    {1 + 1 === 4 && (
+                        <Box margin="m">
+                            <Normaltekst>
+                                {dagerMedRegistrertArbeidstid.length === 0 ? (
+                                    <FormattedMessage id="arbeidstid.iPeriodePanel.info.ingenDager" />
+                                ) : (
+                                    <FormattedMessage
+                                        id="arbeidstid.iPeriodePanel.info"
+                                        values={{ dager: dagerMedRegistrertArbeidstid.length }}
+                                    />
+                                )}
+                            </Normaltekst>
+                        </Box>
+                    )}
                 </>
             }>
             <ResponsivePanel style={{ padding: '1rem' }}>
@@ -83,7 +85,6 @@ const ArbeidstidMånedInfo: React.FunctionComponent<Props> = ({
                     periodeIMåned={periodeIMåned}
                     dager={dager}
                     utilgjengeligeDatoer={utilgjengeligeDatoer}
-                    // utilgjengeligDagInfo={'Det er ikke søkt om pleiepenger for denne dagen'}
                     dagerOpprinnelig={dagerSak}
                     skjulTommeDagerIListe={true}
                     visEndringsinformasjon={true}

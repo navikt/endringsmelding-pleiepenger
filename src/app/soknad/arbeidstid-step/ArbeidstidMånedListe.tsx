@@ -3,13 +3,15 @@ import { useIntl } from 'react-intl';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { DateRange } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
+import { useFormikContext } from 'formik';
 import SøknadsperioderMånedListe from '../../components/søknadsperioder-måned-liste/SøknadsperioderMånedListe';
 import { K9ArbeidsgiverArbeidstid, K9SakMeta } from '../../types/K9Sak';
-import { SoknadFormField, TidEnkeltdag } from '../../types/SoknadFormData';
+import { SoknadFormData, SoknadFormField, TidEnkeltdag } from '../../types/SoknadFormData';
 import { getYearMonthKey } from '../../utils/k9SakUtils';
 import ArbeidstidFormAndInfo from './arbeidstid-form-and-info/ArbeidstidFormAndInfo';
 
 interface Props {
+    organisasjonsnummer: string;
     formFieldName: SoknadFormField;
     arbeidstidArbeidsgiverSak: K9ArbeidsgiverArbeidstid;
     k9sakMeta: K9SakMeta;
@@ -23,6 +25,7 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
     onArbeidstidChanged,
 }) => {
     const intl = useIntl();
+    const { validateForm } = useFormikContext<SoknadFormData>();
 
     const månedContentRenderer = (måned: DateRange) => {
         const mndOgÅrLabelPart = dayjs(måned.from).format('MMMM YYYY');
@@ -36,7 +39,10 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
                 endringsdato={k9sakMeta.endringsdato}
                 arbeidstidArbeidsgiverSak={arbeidstidArbeidsgiverSak}
                 månedTittelHeadingLevel={k9sakMeta.søknadsperioderGårOverFlereÅr ? 4 : 3}
-                onAfterChange={onArbeidstidChanged}
+                onAfterChange={(tid) => {
+                    validateForm();
+                    onArbeidstidChanged ? onArbeidstidChanged(tid) : undefined;
+                }}
                 labels={{
                     addLabel: intlHelper(intl, 'arbeidstid.addLabel', {
                         periode: mndOgÅrLabelPart,
@@ -64,9 +70,7 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
 
     return (
         <SøknadsperioderMånedListe
-            inputGroupFieldName={`${formFieldName}_gruppe`}
             k9sakMeta={k9sakMeta}
-            legend={<span className="sr-only">Måneder med dager hvor det er søkt pleiepenger for.</span>}
             årstallHeadingLevel={3}
             årstallHeaderRenderer={(årstall) => `${årstall}`}
             månedContentRenderer={månedContentRenderer}

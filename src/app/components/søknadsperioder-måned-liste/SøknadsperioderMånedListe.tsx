@@ -5,17 +5,19 @@ import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import dayjs from 'dayjs';
 import { Undertittel } from 'nav-frontend-typografi';
 import SoknadFormComponents from '../../soknad/SoknadFormComponents';
-import { SoknadFormField, TidEnkeltdag } from '../../types/SoknadFormData';
+import { TidEnkeltdag } from '../../types/SoknadFormData';
 import { K9SakMeta } from '../../types/K9Sak';
 import { getYearMonthKey } from '../../utils/k9SakUtils';
-import { TypedFormInputValidationProps } from '@navikt/sif-common-formik/lib';
-import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
+import { ValidationError, ValidationFunction } from '@navikt/sif-common-formik/lib/validation/types';
 
-interface Props extends TypedFormInputValidationProps<SoknadFormField, ValidationError> {
+interface Props {
     k9sakMeta: K9SakMeta;
-    inputGroupFieldName: string;
-    legend: React.ReactNode;
-    description?: React.ReactNode;
+    fieldset?: {
+        inputGroupFieldName: string;
+        legend: React.ReactNode;
+        description?: React.ReactNode;
+        validate?: ValidationFunction<ValidationError>;
+    };
     årstallHeadingLevel?: number;
     årstallHeaderRenderer?: (årstall: number) => React.ReactNode;
     månedContentRenderer: (måned: DateRange, søknadsperioderIMåned: DateRange[], index: number) => React.ReactNode;
@@ -24,11 +26,8 @@ interface Props extends TypedFormInputValidationProps<SoknadFormField, Validatio
 
 const SøknadsperioderMånedListe: React.FunctionComponent<Props> = ({
     k9sakMeta,
-    legend,
-    description,
-    inputGroupFieldName,
+    fieldset,
     årstallHeadingLevel: headingLevel = 2,
-    validate,
     årstallHeaderRenderer,
     månedContentRenderer,
 }) => {
@@ -44,7 +43,7 @@ const SøknadsperioderMånedListe: React.FunctionComponent<Props> = ({
     const renderMåned = (måned: DateRange, index: number) => {
         const søknadsperioderIMåned = k9sakMeta.månederMedSøknadsperiodeMap[getYearMonthKey(måned.from)];
         return søknadsperioderIMåned === undefined ? null : (
-            <FormBlock margin="l" key={dayjs(måned.from).format('MM.YYYY')}>
+            <FormBlock margin="s" key={dayjs(måned.from).format('MM.YYYY')}>
                 {årstallHeaderRenderer && visÅrstallHeading(index) && (
                     <Box margin="xl" padBottom="l">
                         <Undertittel tag={`h${headingLevel}`} className={'yearHeader'}>
@@ -57,7 +56,7 @@ const SøknadsperioderMånedListe: React.FunctionComponent<Props> = ({
         );
     };
 
-    return (
+    return fieldset ? (
         <SoknadFormComponents.InputGroup
             /** På grunn av at dialogen jobber mot ett felt i formik, kan ikke
              * validate på dialogen brukes. Da vil siste periode alltid bli brukt ved validering.
@@ -65,13 +64,15 @@ const SøknadsperioderMånedListe: React.FunctionComponent<Props> = ({
              * brukt.
              * Ikke optimalt, men det virker.
              */
-            name={`${inputGroupFieldName}` as any}
-            legend={legend}
-            description={description}
+            name={`${fieldset.inputGroupFieldName}` as any}
+            legend={fieldset.legend}
+            description={fieldset.description}
             tag="div"
-            validate={validate}>
+            validate={fieldset.validate}>
             {k9sakMeta.alleMånederISøknadsperiode.map(renderMåned)}
         </SoknadFormComponents.InputGroup>
+    ) : (
+        <>{k9sakMeta.alleMånederISøknadsperiode.map(renderMåned)}</>
     );
 };
 
