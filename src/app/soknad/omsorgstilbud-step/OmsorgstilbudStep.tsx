@@ -31,9 +31,9 @@ const OmsorgstilbudStep: React.FunctionComponent<Props> = ({
         <SoknadFormStep id={stepId} onStepCleanup={cleanupOmsorgstilbudStep}>
             <StepIntroduction>
                 Her melder du fra om endringer når tiden barnet oppholder seg i et{' '}
-                <strong>fast og regelmessig omsorgstilbud</strong>
-                endrer seg. Du skal ikke melde fra om endring hvis bruken av omsorgstilbudet er uforutsigbart og
-                uregelmessig. Du skal melde fra om endringer i omsorgstilbud når
+                <strong>fast og regelmessig omsorgstilbud</strong> endrer seg. Du skal ikke melde fra om endring hvis
+                bruken av omsorgstilbudet er uforutsigbart og uregelmessig. Du skal melde fra om endringer i
+                omsorgstilbud når
                 <ul>
                     <li>
                         tiden barnet oppholder seg i et fast og regelmessig omsorgstilbud endrer seg,
