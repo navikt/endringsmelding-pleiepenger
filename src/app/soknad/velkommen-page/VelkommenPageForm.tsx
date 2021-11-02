@@ -9,7 +9,7 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import Lenke from 'nav-frontend-lenker';
 import { Element } from 'nav-frontend-typografi';
 import SoknadFormComponents from '../../soknad/SoknadFormComponents';
-import { SoknadFormField } from '../../types/SoknadFormData';
+import { HvaSkalEndres, SoknadFormField } from '../../types/SoknadFormData';
 import DinePlikterContent from './dine-plikter/DinePlikter';
 import BehandlingAvPersonopplysningerContent from './personopplysninger/Personopplysninger';
 import { getCheckedValidator, getRequiredFieldValidator } from '@navikt/sif-common-formik/lib/validation';
@@ -42,22 +42,22 @@ const VelkommenPageForm: React.FunctionComponent<Props> = ({ onStart }) => {
                     validate={getRequiredFieldValidator()}
                     checkboxes={[
                         {
-                            id: 'omsorgstilbud',
-                            label: (
-                                <>
-                                    <Element>Omsorgstilbud</Element>Legg til, endre eller fjern tid i omsorgstilbud
-                                </>
-                            ),
-                            value: 'omsorgstilbud',
-                        },
-                        {
                             id: 'arbeidstid',
                             label: (
                                 <>
                                     <Element>Arbeidstid</Element>Legg til, endre eller fjern arbeidstid
                                 </>
                             ),
-                            value: 'arbeidstid',
+                            value: HvaSkalEndres.arbeidstid,
+                        },
+                        {
+                            id: 'omsorgstilbud',
+                            label: (
+                                <>
+                                    <Element>Omsorgstilbud</Element>Legg til, endre eller fjern tid i omsorgstilbud
+                                </>
+                            ),
+                            value: HvaSkalEndres.omsorgstilbud,
                         },
                     ]}
                 />

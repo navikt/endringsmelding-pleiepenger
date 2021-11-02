@@ -41,15 +41,15 @@ export enum SoknadFormField {
     arbeidstid_arbeidsgiver = 'arbeidstid.arbeidsgiver',
 }
 
-enum HvaSkalEndres {
-    omsorgstilbud = 'omsorgstilbud',
-    arbeidstid = 'arbeidstid',
+export enum HvaSkalEndres {
+    'arbeidstid' = 'arbeidstid',
+    'omsorgstilbud' = 'omsorgstilbud',
 }
 
 export interface SoknadFormData {
     [SoknadFormField.harForståttRettigheterOgPlikter]: boolean;
     [SoknadFormField.harBekreftetOpplysninger]: boolean;
-    [SoknadFormField.hvaSkalEndres]?: HvaSkalEndres;
+    [SoknadFormField.hvaSkalEndres]: HvaSkalEndres[];
     [SoknadFormField.omsorgstilbud]?: Omsorgstilbud;
     [SoknadFormField.arbeidstid]?: ArbeidstidFormValue;
 }
