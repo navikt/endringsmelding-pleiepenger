@@ -24,9 +24,10 @@ export const mapArbeidsgiverArbeidstidToK9FormatInnsending = (
 
     const arbeidstidK9Format: ArbeidstidDagK9FormatInnsending = {};
     faktiskArbeid.forEach((dag) => {
+        const jobberNormalt = arbeidsgiverSakInfo.normalt[dag.dato];
         arbeidstidK9Format[ISODateToISODateRange(dag.dato)] = {
             faktiskArbeidTimerPerDag: dag.tid,
-            jobberNormaltTimerPerDag: timeToISODuration(arbeidsgiverSakInfo.normalt[dag.dato]),
+            jobberNormaltTimerPerDag: jobberNormalt ? timeToISODuration(jobberNormalt) : undefined,
         };
     });
     return arbeidstidK9Format;

@@ -27,12 +27,14 @@ describe('mapArbeidsgiverArbeidstidToApiData', () => {
             { '2021-02-01': { hours: '2', minutes: '20' }, '2021-02-02': { hours: '2', minutes: '20' } },
             {
                 faktisk: { '2021-02-01': { hours: '2', minutes: '20' } },
-                normalt: { '2021-02-01': { hours: '2', minutes: '20' } },
+                normalt: { '2021-02-01': { hours: '2', minutes: '20' }, '2021-02-02': { hours: '2', minutes: '20' } },
             },
             søknadsperioder
         );
         expect(result).toBeDefined();
         expect(Object.keys(result).length).toEqual(1);
-        expect(result['2021-02-02'].faktiskArbeidTimerPerDag).toEqual(timeToISODuration({ hours: '2', minutes: '20' }));
+        expect(result['2021-02-02/2021-02-02'].faktiskArbeidTimerPerDag).toEqual(
+            timeToISODuration({ hours: '2', minutes: '20' })
+        );
     });
 });
