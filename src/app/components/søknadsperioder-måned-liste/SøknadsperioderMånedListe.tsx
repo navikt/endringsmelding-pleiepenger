@@ -5,11 +5,13 @@ import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import dayjs from 'dayjs';
 import { Undertittel } from 'nav-frontend-typografi';
 import SoknadFormComponents from '../../soknad/SoknadFormComponents';
-import { TidEnkeltdag } from '../../types/SoknadFormData';
+import { SoknadFormField, TidEnkeltdag } from '../../types/SoknadFormData';
 import { K9SakMeta } from '../../types/K9Sak';
 import { getYearMonthKey } from '../../utils/k9SakUtils';
+import { TypedFormInputValidationProps } from '@navikt/sif-common-formik/lib';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 
-interface Props {
+interface Props extends TypedFormInputValidationProps<SoknadFormField, ValidationError> {
     k9sakMeta: K9SakMeta;
     inputGroupFieldName: string;
     legend: React.ReactNode;
@@ -26,6 +28,7 @@ const SøknadsperioderMånedListe: React.FunctionComponent<Props> = ({
     description,
     inputGroupFieldName,
     årstallHeadingLevel: headingLevel = 2,
+    validate,
     årstallHeaderRenderer,
     månedContentRenderer,
 }) => {
@@ -62,12 +65,11 @@ const SøknadsperioderMånedListe: React.FunctionComponent<Props> = ({
              * brukt.
              * Ikke optimalt, men det virker.
              */
-            name={`${inputGroupFieldName}_dager` as any}
+            name={`${inputGroupFieldName}` as any}
             legend={legend}
             description={description}
             tag="div"
-            // validate={() => validateOmsorgstilbudEnkeltdagerIPeriode(tidIOmsorgstilbud, periode, gjelderFortid)}
-        >
+            validate={validate}>
             {k9sakMeta.alleMånederISøknadsperiode.map(renderMåned)}
         </SoknadFormComponents.InputGroup>
     );
