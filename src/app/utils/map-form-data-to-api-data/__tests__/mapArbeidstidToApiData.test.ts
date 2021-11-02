@@ -14,7 +14,10 @@ describe('mapArbeidsgiverArbeidstidToApiData', () => {
     it('returnerer tomt når ingen av dagene har endring ', () => {
         const result = mapArbeidsgiverArbeidstidToK9FormatInnsending(
             { '2021-02-01': { hours: '2', minutes: undefined } },
-            { '2021-02-01': { hours: '2', minutes: undefined } },
+            {
+                faktisk: { '2021-02-01': { hours: '2', minutes: undefined } },
+                normalt: { '2021-02-01': { hours: '2', minutes: undefined } },
+            },
             søknadsperioder
         );
         expect(Object.keys(result).length).toEqual(0);
@@ -22,7 +25,10 @@ describe('mapArbeidsgiverArbeidstidToApiData', () => {
     it('returnerer kun dager med endring ', () => {
         const result = mapArbeidsgiverArbeidstidToK9FormatInnsending(
             { '2021-02-01': { hours: '2', minutes: '20' }, '2021-02-02': { hours: '2', minutes: '20' } },
-            { '2021-02-01': { hours: '2', minutes: '20' } },
+            {
+                faktisk: { '2021-02-01': { hours: '2', minutes: '20' } },
+                normalt: { '2021-02-01': { hours: '2', minutes: '20' } },
+            },
             søknadsperioder
         );
         expect(result).toBeDefined();

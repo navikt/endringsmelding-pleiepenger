@@ -5,6 +5,7 @@ import TidEnkeltdager from '../../../components/dager-med-tid/TidEnkeltdager';
 import { TilsynsordningK9FormatInnsending } from '../../../types/k9FormatInnsending';
 import { TidEnkeltdagApiData } from '../../../types/SoknadApiData';
 import { TidEnkeltdag } from '../../../types/SoknadFormData';
+import { ISODateRangeToISODates } from '../../../utils/dateUtils';
 
 interface Props {
     tilsynsordning: TilsynsordningK9FormatInnsending;
@@ -18,7 +19,7 @@ const OmsorgstilbudSummary: React.FunctionComponent<Props> = ({ tilsynsordning, 
         const { etablertTilsynTimerPerDag } = tilsynsordning.perioder[key];
         if (etablertTilsynTimerPerDag) {
             dagerMedTid.push({
-                dato: key,
+                dato: ISODateRangeToISODates(key).from,
                 tid: etablertTilsynTimerPerDag,
             });
         }

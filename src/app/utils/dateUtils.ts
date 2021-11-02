@@ -82,6 +82,8 @@ export const getMonthDateRange = (date: Date): DateRange => ({
     to: dayjs(date).endOf('month').toDate(),
 });
 
+export const ISODateToISODateRange = (isoDate: ISODate): ISODateRange => `${isoDate}/${isoDate}`;
+
 export const _ISODateToDate = (isoDate: ISODate): Date => {
     return apiStringDateToDate(isoDate);
 };
@@ -92,6 +94,14 @@ export const ISODateRangeToDateRange = (isoDateRange: ISODateRange): DateRange =
     return {
         from: ISODateToDate(parts[0]),
         to: ISODateToDate(parts[1]),
+    };
+};
+
+export const ISODateRangeToISODates = (isoDateRange: ISODateRange): { from: ISODate; to: ISODate } => {
+    const parts = isoDateRange.split('/');
+    return {
+        from: parts[0],
+        to: parts[1],
     };
 };
 

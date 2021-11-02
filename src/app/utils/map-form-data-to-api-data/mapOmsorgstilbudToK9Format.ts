@@ -2,6 +2,7 @@ import { DateRange } from '@navikt/sif-common-formik/lib';
 import { TilsynsordningK9FormatInnsending } from '../../types/k9FormatInnsending';
 import { TidEnkeltdagApiData } from '../../types/SoknadApiData';
 import { Omsorgstilbud, TidEnkeltdag } from '../../types/SoknadFormData';
+import { ISODateToISODateRange } from '../dateUtils';
 import { getTidEnkeltdagApiDataIPeriodeApiData } from '../tidsbrukApiUtils';
 import { fjernDagerMedUendretTid } from '../tidsbrukUtils';
 
@@ -25,7 +26,7 @@ export const mapOmsorgstilbudToK9FormatInnsending = (
     };
 
     dager.forEach((dag) => {
-        tilsynsordning.perioder[dag.dato] = {
+        tilsynsordning.perioder[ISODateToISODateRange(dag.dato)] = {
             etablertTilsynTimerPerDag: dag.tid,
         };
     });
