@@ -3,7 +3,11 @@ import { InputTime } from '../../types';
 import { K9ArbeidsgiverArbeidstid } from '../../types/K9Sak';
 import { TidEnkeltdag } from '../../types/SoknadFormData';
 import { ISODateToDate } from '../dateUtils';
-import { getISODateObjectsWithinDateRange, trimArbeidstidTilTillatPeriode } from '../k9SakUtils';
+import {
+    getISODateObjectsWithinDateRange,
+    k9ArbeidsgivereFinnesIAAreg,
+    trimArbeidstidTilTillatPeriode,
+} from '../k9SakUtils';
 
 describe('trimArbeidstidTilTillatPeriode', () => {
     it('fjerner arbeidstid utenfor endringsperiode', () => {
@@ -59,5 +63,30 @@ describe('trimArbeidstidTilTillatPeriode', () => {
     });
     it('fjerner dager med arbeidstid som er på dager det ikke er søkt om', () => {
         expect(1).toBe(1);
+    });
+});
+
+describe('k9ArbeidsgivereFinnesIAAreg', () => {
+    it('returnerer true når alle k9 arbeidsgivere (1) finnes i AA-reg', () => {
+        const result = k9ArbeidsgivereFinnesIAAreg([{ navn: 'a', organisasjonsnummer: '1' }], {
+            '1': { faktisk: {}, normalt: {} },
+        });
+        expect(result).toBeTruthy();
+    });
+    it('returnerer true når ingen arbeidsgivere finnes i k9sak', () => {
+        const result = k9ArbeidsgivereFinnesIAAreg([{ navn: 'a', organisasjonsnummer: '1' }], {});
+        expect(result).toBeTruthy();
+    });
+    it('returnerer false når en k9 arbeidsgiver ikke finnes i AA-reg', () => {
+        const result = k9ArbeidsgivereFinnesIAAreg([{ navn: 'a', organisasjonsnummer: '1' }], {
+            '2': { faktisk: {}, normalt: {} },
+        });
+        expect(result).toBeFalsy();
+    });
+    it('returnerer false når ingen arbeidsgivere finnes i AA-reg', () => {
+        const result = k9ArbeidsgivereFinnesIAAreg([], {
+            '2': { faktisk: {}, normalt: {} },
+        });
+        expect(result).toBeFalsy();
     });
 });

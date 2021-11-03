@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 import { failure, pending, success } from '@devexperts/remote-data-ts';
 import { ApplikasjonHendelse, useAmplitudeInstance } from '@navikt/sif-common-amplitude';
 import LoadWrapper from '@navikt/sif-common-core/lib/components/load-wrapper/LoadWrapper';
 import { isUserLoggedOut } from '@navikt/sif-common-core/lib/utils/apiUtils';
+import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
+import ErrorPage from '@navikt/sif-common-soknad/lib/soknad-common-pages/ErrorPage';
 import { SoknadApplicationType, StepConfig } from '@navikt/sif-common-soknad/lib/soknad-step/soknadStepTypes';
 import soknadStepUtils from '@navikt/sif-common-soknad/lib/soknad-step/soknadStepUtils';
 import { ulid } from 'ulid';
@@ -19,6 +22,9 @@ import { SoknadFormData } from '../types/SoknadFormData';
 import { SoknadTempStorageData } from '../types/SoknadTempStorageData';
 import appSentryLogger from '../utils/appSentryLogger';
 import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
+import { getAvailableSteps } from '../utils/getAvailableSteps';
+import { getInitialFormData } from '../utils/initialFormDataUtils';
+import { k9ArbeidsgivereFinnesIAAreg } from '../utils/k9SakUtils';
 import {
     navigateTo,
     navigateToErrorPage,
@@ -33,8 +39,6 @@ import SoknadFormComponents from './SoknadFormComponents';
 import SoknadRoutes from './SoknadRoutes';
 import { getSoknadStepsConfig, StepID } from './soknadStepsConfig';
 import soknadTempStorage, { isStorageDataValid } from './soknadTempStorage';
-import { getInitialFormData } from '../utils/initialFormDataUtils';
-import { getAvailableSteps } from '../utils/getAvailableSteps';
 
 interface Props {
     søker: Person;
@@ -56,6 +60,7 @@ const Soknad: React.FunctionComponent<Props> = ({
 }) => {
     const history = useHistory();
     const [initializing, setInitializing] = useState(true);
+    const intl = useIntl();
 
     const [sendSoknadStatus, setSendSoknadStatus] = useState<SendSoknadStatus>(initialSendSoknadState);
     const [soknadId, setSoknadId] = useState<string | undefined>();
@@ -93,7 +98,6 @@ const Soknad: React.FunctionComponent<Props> = ({
         setSoknadId(sId);
 
         const firstStep = getAvailableSteps(values, søker)[0];
-        console.log({ firstStep, values });
 
         if (isFeatureEnabled(Feature.PERSISTENCE)) {
             await soknadTempStorage.create();
@@ -210,6 +214,14 @@ const Soknad: React.FunctionComponent<Props> = ({
             contentRenderer={(): React.ReactNode => {
                 if (søker.myndig === false) {
                     return <IkkeMyndigPage />;
+                }
+                if (k9ArbeidsgivereFinnesIAAreg(arbeidsgivere, k9sak.ytelse.arbeidstid.arbeidsgivereMap) === false) {
+                    return (
+                        <ErrorPage
+                            bannerTitle={intlHelper(intl, 'application.title')}
+                            contentRenderer={() => <>Informasjon om arbeidsgivere mangler</>}
+                        />
+                    );
                 }
                 const initialData = getInitialFormData(k9sak, søker, tempStorage);
                 return (

@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import { flatten } from 'lodash';
 import moize from 'moize';
 import { DagerIkkeSøktForMap, DagerSøktForMap } from '../types';
+import { Arbeidsgiver } from '../types/Arbeidsgiver';
 import {
     K9ArbeidsgiverArbeidstid,
     K9ArbeidsgivereArbeidstidMap,
@@ -174,4 +175,15 @@ export const trimK9SakForSøknad = (k9sak: K9Sak): { sak: K9Sak; meta: K9SakMeta
     }
 
     return { sak, meta };
+};
+
+export const k9ArbeidsgivereFinnesIAAreg = (
+    arbeidsgivere: Arbeidsgiver[],
+    k9arbeidsgivereMap: K9ArbeidsgivereArbeidstidMap
+): boolean => {
+    return (
+        Object.keys(k9arbeidsgivereMap).some(
+            (orgnr) => arbeidsgivere.some((a) => a.organisasjonsnummer === orgnr) === false
+        ) === false
+    );
 };
