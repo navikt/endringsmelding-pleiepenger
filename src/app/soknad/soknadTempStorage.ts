@@ -1,4 +1,5 @@
 import persistence, { PersistenceInterface } from '@navikt/sif-common-core/lib/utils/persistence/persistence';
+import { DateRange } from '@navikt/sif-common-formik/lib';
 import { AxiosResponse } from 'axios';
 import hash from 'object-hash';
 import { axiosConfigPsb } from '../api/api';
@@ -14,6 +15,7 @@ export const STORAGE_VERSION = '2.1';
 export interface UserHashInfo {
     søker: Person;
     arbeidsgivere: Arbeidsgiver[] | undefined;
+    k9søknadsperioder: DateRange[];
 }
 
 interface SoknadTemporaryStorage extends Omit<PersistenceInterface<SoknadTempStorageData>, 'update'> {

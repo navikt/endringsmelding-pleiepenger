@@ -31,7 +31,9 @@ export const getInitialFormData = (
         arbeidstid: {
             arbeidsgiver: getArbeidsgivereArbeidstid(k9sak.ytelse.arbeidstid),
         },
-        ...(isStorageDataValid(tempStorage, { søker, arbeidsgivere }) ? tempStorage.formData : {}),
+        ...(isStorageDataValid(tempStorage, { søker, arbeidsgivere, k9søknadsperioder: k9sak.ytelse.søknadsperioder })
+            ? tempStorage.formData
+            : {}),
     };
     return initialData;
 };

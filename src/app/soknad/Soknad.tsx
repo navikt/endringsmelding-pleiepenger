@@ -65,6 +65,10 @@ const Soknad: React.FunctionComponent<Props> = ({
     const [sendSoknadStatus, setSendSoknadStatus] = useState<SendSoknadStatus>(initialSendSoknadState);
     const [soknadId, setSoknadId] = useState<string | undefined>();
 
+    const {
+        ytelse: { søknadsperioder: k9søknadsperioder },
+    } = k9sak;
+
     const { logSoknadStartet, logSoknadFailed, logHendelse, logUserLoggedOut } = useAmplitudeInstance();
 
     const resetSoknad = async (redirectToFrontpage = true): Promise<void> => {
@@ -101,7 +105,11 @@ const Soknad: React.FunctionComponent<Props> = ({
 
         if (isFeatureEnabled(Feature.PERSISTENCE)) {
             await soknadTempStorage.create();
-            await soknadTempStorage.update(sId, { ...values }, firstStep, { søker, arbeidsgivere });
+            await soknadTempStorage.update(sId, { ...values }, firstStep, {
+                søker,
+                arbeidsgivere,
+                k9søknadsperioder: k9søknadsperioder,
+            });
         }
         await logSoknadStartet(SKJEMANAVN);
         setTimeout(() => {
@@ -111,7 +119,11 @@ const Soknad: React.FunctionComponent<Props> = ({
 
     const continueSoknadLater = async (sId: string, stepID: StepID, values: SoknadFormData): Promise<void> => {
         if (isFeatureEnabled(Feature.PERSISTENCE)) {
-            await soknadTempStorage.update(sId, values, stepID, { søker, arbeidsgivere });
+            await soknadTempStorage.update(sId, values, stepID, {
+                søker,
+                arbeidsgivere,
+                k9søknadsperioder: k9søknadsperioder,
+            });
         }
         await logHendelse(ApplikasjonHendelse.fortsettSenere);
         relocateToNavFrontpage();
@@ -168,7 +180,11 @@ const Soknad: React.FunctionComponent<Props> = ({
         if (nextStep && soknadId) {
             try {
                 if (isFeatureEnabled(Feature.PERSISTENCE)) {
-                    await soknadTempStorage.update(soknadId, values, nextStep, { søker, arbeidsgivere });
+                    await soknadTempStorage.update(soknadId, values, nextStep, {
+                        søker,
+                        arbeidsgivere,
+                        k9søknadsperioder: k9søknadsperioder,
+                    });
                 }
             } catch (error) {
                 if (isUserLoggedOut(error)) {
@@ -185,7 +201,7 @@ const Soknad: React.FunctionComponent<Props> = ({
     };
 
     useEffect(() => {
-        if (isStorageDataValid(tempStorage, { søker, arbeidsgivere })) {
+        if (isStorageDataValid(tempStorage, { søker, arbeidsgivere, k9søknadsperioder: k9søknadsperioder })) {
             setSoknadId(tempStorage.metadata.soknadId);
             const currentRoute = history.location.pathname;
             const lastStepRoute = soknadStepUtils.getStepRoute(
@@ -206,7 +222,7 @@ const Soknad: React.FunctionComponent<Props> = ({
         } else {
             resetSoknad(history.location.pathname !== AppRoutes.SOKNAD);
         }
-    }, [history, tempStorage, søker, arbeidsgivere]);
+    }, [history, tempStorage, søker, arbeidsgivere, k9søknadsperioder]);
 
     return (
         <LoadWrapper
