@@ -158,7 +158,7 @@ const Soknad: React.FunctionComponent<Props> = ({
     };
 
     const triggerSend = async (apiValues: SoknadApiData, resetForm: resetFormFunc): Promise<void> => {
-        const apiDataIsValid = verifySoknadApiData(apiValues);
+        const apiDataIsValid = verifySoknadApiData(apiValues, k9sak);
         if (apiDataIsValid) {
             setTimeout(() => {
                 setSendSoknadStatus({ ...sendSoknadStatus, status: pending });

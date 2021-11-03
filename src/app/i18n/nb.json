@@ -101,5 +101,6 @@
     "validation.harBekreftetOpplysninger.notChecked": "Du må bekrefte opplysningene.",
     "validation.hvaSkalEndres.noValue": "Du må krysse av for hva du ønsker å endre",
     "validation.omsorgstilbud_liste.ingenEndringer": "Det er ikke registrert noen endringer i omsorgstilbudet",
-    "validation.alle_arbeidsgivere_liste.ingenEndringer": "Det er ikke registrert noen endringer i arbeidstid"
+    "validation.alle_arbeidsgivere_liste.ingenEndringer": "Det er ikke registrert noen endringer i arbeidstid",
+    "oppsummering.advarsel.invalidApiValues": "Det oppstod en feil under behandlingen av informasjonen, og som gjør at du ikke kan sende inn meldingen om endring."
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { isFailure, isPending } from '@devexperts/remote-data-ts';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
@@ -10,19 +10,19 @@ import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { getCheckedValidator } from '@navikt/sif-common-formik/lib/validation';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Arbeidsgiver } from '../../types/Arbeidsgiver';
+import { K9Sak } from '../../types/K9Sak';
 import { Person } from '../../types/Person';
 import { SoknadApiData } from '../../types/SoknadApiData';
 import { SoknadFormField } from '../../types/SoknadFormData';
+import appSentryLogger from '../../utils/appSentryLogger';
 import { verifySoknadApiData } from '../../validation/verifySoknadApiData';
 import { useSoknadContext } from '../SoknadContext';
 import SoknadFormComponents from '../SoknadFormComponents';
 import SoknadFormStep from '../SoknadFormStep';
 import { StepID } from '../soknadStepsConfig';
 import ArbeidstidSummary from './arbeidstid-summary/ArbeidstidSummary';
-import ItsClosedGiffy from './ItsClosedGiffy';
-import SøkerSummary from './SøkerSummary';
-import { K9Sak } from '../../types/K9Sak';
 import OmsorgstilbudSummary from './omsorgstilbud-summary/OmsorgstilbudSummary';
+import SøkerSummary from './SøkerSummary';
 
 type Props = {
     apiValues?: SoknadApiData;
@@ -31,30 +31,26 @@ type Props = {
     k9sak: K9Sak;
 };
 
-const kittyMode = false;
-
 const OppsummeringStep: React.FunctionComponent<Props> = ({ søker, apiValues, arbeidsgivere, k9sak }) => {
     const intl = useIntl();
     const { sendSoknadStatus, sendSoknad } = useSoknadContext();
-    const [showGiffy, setShowGiffy] = useState(false);
-    const apiDataIsValid = apiValues !== undefined && verifySoknadApiData(apiValues);
+    const apiDataValidationResult = verifySoknadApiData(apiValues, k9sak);
+
+    useEffect(() => {
+        if (apiDataValidationResult.isValid === false) {
+            appSentryLogger.logError('apiValues not valid', JSON.stringify(apiDataValidationResult.errors));
+        }
+    }, []);
 
     return (
         <SoknadFormStep
             id={StepID.OPPSUMMERING}
             showButtonSpinner={isPending(sendSoknadStatus.status)}
-            buttonDisabled={isPending(sendSoknadStatus.status) || apiDataIsValid === false}
+            buttonDisabled={isPending(sendSoknadStatus.status) || apiDataValidationResult.isValid === false}
             onSendSoknad={
                 apiValues
-                    ? (): void => {
-                          if (kittyMode) {
-                              setShowGiffy(true);
-                              setTimeout(() => {
-                                  setShowGiffy(false);
-                              }, 8000);
-                          } else {
-                              sendSoknad(apiValues);
-                          }
+                    ? () => {
+                          sendSoknad(apiValues);
                       }
                     : undefined
             }>
@@ -69,10 +65,12 @@ const OppsummeringStep: React.FunctionComponent<Props> = ({ søker, apiValues, a
                         </AlertStripeFeil>
                     </Box>
                 )}
-                {apiValues !== undefined && apiDataIsValid === false && (
-                    <AlertStripeFeil>
-                        <FormattedMessage id="oppsummering.advarsel.invalidApiValues" />
-                    </AlertStripeFeil>
+                {apiValues !== undefined && apiDataValidationResult.isValid === false && (
+                    <FormBlock>
+                        <AlertStripeFeil>
+                            <FormattedMessage id="oppsummering.advarsel.invalidApiValues" />
+                        </AlertStripeFeil>
+                    </FormBlock>
                 )}
                 {apiValues !== undefined && (
                     <>
@@ -96,8 +94,6 @@ const OppsummeringStep: React.FunctionComponent<Props> = ({ søker, apiValues, a
                                     )}
                             </ResponsivePanel>
                         </Box>
-
-                        {showGiffy && <ItsClosedGiffy />}
 
                         <Box margin="l">
                             <SoknadFormComponents.ConfirmationCheckbox

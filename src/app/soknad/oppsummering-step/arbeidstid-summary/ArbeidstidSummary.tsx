@@ -47,7 +47,7 @@ const ArbeidstidSummary: React.FunctionComponent<Props> = ({ arbeidstid, arbeids
                         </Box>
                     );
                 }
-                return <span key={organisasjonsnummer}>{organisasjonsnummer} - ingen arbeidsgiverinfo</span>;
+                return null;
             })}
         </SummarySection>
     );
