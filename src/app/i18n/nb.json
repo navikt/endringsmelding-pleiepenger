@@ -53,6 +53,12 @@
     "application.loadError.title": "Noe gikk galt ...",
     "application.loadError.message": "Beklager, her har det dessverre skjedd en feil. Dersom feilen fortsetter, prøv igjen litt senere.",
 
+    "fortsettSøknadSenereDialog.avbrytSøknadLabel": "Ja, fortsett senere",
+    "fortsettSøknadSenereDialog.fortsettSøknadLabel": "Nei",
+    "fortsettSøknadSenereDialog.intro": "Vi lagrer søknaden din for deg i 72 timer.",
+    "fortsettSøknadSenereDialog.spørsmål": "Vil du avslutte nå og fortsette senere? Dersom du ønsker å fortsette senere kan du gå tilbake til Dine pleiepenger for å fortsette med endringen.",
+    "fortsettSøknadSenereDialog.tittel": "Avslutt og fortsett senere",
+
     "stepIntroduction.ariaTitle": "Introduksjon",
 
     "page.error.pageTitle": "Noe gikk galt ...",

@@ -1,6 +1,5 @@
 import { MessageFileFormat } from '@navikt/sif-common-core/lib/dev-utils/intl/devIntlUtils';
 import { allCommonMessages } from '@navikt/sif-common-core/lib/i18n/allCommonMessages';
-import annetBarnMessages from '@navikt/sif-common-forms/lib/annet-barn/annetBarnMessages';
 import soknadErrorIntlMessages from '@navikt/sif-common-soknad/lib/soknad-error-messages/soknadErrorIntlMessages';
 import soknadIntlMessages from '@navikt/sif-common-soknad/lib/soknad-intl-messages/soknadIntlMessages';
 import arbeidstidMessages from '../soknad/arbeidstid-step/arbeidstidMessages';
@@ -17,7 +16,6 @@ const bokmålstekster = {
     ...introFormMessagesNB,
     ...dinePlikterNB,
     ...personopplysningerNB,
-    ...annetBarnMessages.nb,
     ...soknadErrorIntlMessages.nb,
     ...soknadIntlMessages.nb,
     ...omsorgstilbudMessages.nb,
