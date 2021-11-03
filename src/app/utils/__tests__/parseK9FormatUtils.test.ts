@@ -1,6 +1,8 @@
+import { DateRange } from '@navikt/sif-common-formik/lib';
 import { ISODateRange } from '../../types';
 import { ArbeidstidDagK9Format, TilsynsordningPerioderK9Format } from '../../types/k9Format';
-import { getArbeidsgiverArbeidstidFromK9Format, getTilsynsdagerFromK9Format } from '../parseK9Format';
+import { ISODateToDate } from '../dateUtils';
+import { getAktivitetArbeidstidFromK9Format, getTilsynsdagerFromK9Format } from '../parseK9Format';
 
 const range1: ISODateRange = '2021-02-01/2021-02-04';
 const range2: ISODateRange = '2021-02-05/2021-02-05';
@@ -31,7 +33,13 @@ describe('getArbeidsgiverArbeidstidFromK9Format', () => {
     arbeidstid[range2] = { jobberNormaltTimerPerDag: 'PT2H0M', faktiskArbeidTimerPerDag: 'PT2H30M' };
 
     it('henter ut riktig data for tre perioder med ulik arbeidsfinformasjon', () => {
-        const result = getArbeidsgiverArbeidstidFromK9Format(arbeidstid);
+        const søknadsperioder: DateRange[] = [
+            {
+                from: ISODateToDate('2021-02-01'),
+                to: ISODateToDate('2021-02-05'),
+            },
+        ];
+        const result = getAktivitetArbeidstidFromK9Format(arbeidstid, søknadsperioder);
         expect(result).toBeDefined();
         expect(Object.keys(result.faktisk).length).toBe(5);
         expect(result.normalt['2021-02-01'].hours).toEqual('3');

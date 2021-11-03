@@ -55,9 +55,15 @@
 
     "fortsettSøknadSenereDialog.avbrytSøknadLabel": "Ja, fortsett senere",
     "fortsettSøknadSenereDialog.fortsettSøknadLabel": "Nei",
-    "fortsettSøknadSenereDialog.intro": "Vi lagrer søknaden din for deg i 72 timer.",
-    "fortsettSøknadSenereDialog.spørsmål": "Vil du avslutte nå og fortsette senere? Dersom du ønsker å fortsette senere kan du gå tilbake til Dine pleiepenger for å fortsette med endringen.",
+    "fortsettSøknadSenereDialog.intro": "Vi lagrer endringsmeldingen din for deg i 72 timer.",
+    "fortsettSøknadSenereDialog.spørsmål": "Vil du avslutte nå og fortsette senere? Dersom du ønsker å fortsette senere finner du denne endringen igjen på Dine pleiepenger.",
     "fortsettSøknadSenereDialog.tittel": "Avslutt og fortsett senere",
+
+    "avbrytSøknadDialog.avbrytSøknadLabel": "Ja, avbryt endring",
+    "avbrytSøknadDialog.fortsettSøknadLabel": "Nei",
+    "avbrytSøknadDialog.intro": "Det du har fylt ut i endringen blir slettet, og du kommer tilbake til Dine pleiepenger.",
+    "avbrytSøknadDialog.spørsmål": "Ønsker du å slette endringen?",
+    "avbrytSøknadDialog.tittel": "Avbryt og slett endring",
 
     "stepIntroduction.ariaTitle": "Introduksjon",
 

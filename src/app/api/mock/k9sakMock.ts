@@ -14,7 +14,7 @@ export const k9SakMock: K9Format = {
             fødselsdato: '2018-10-30',
         },
         søknadsperiode: [
-            '2018-01-12/2018-10-15',
+            // '2018-01-12/2018-10-15',
             '2021-09-09/2021-09-15',
             '2021-10-04/2021-10-15',
             // '2022-01-04/2022-01-10',
@@ -37,7 +37,6 @@ export const k9SakMock: K9Format = {
                 },
             },
         },
-
         arbeidstid: {
             arbeidstakerList: [
                 {
@@ -91,6 +90,14 @@ export const k9SakMock: K9Format = {
                     },
                 },
             ],
+            frilanserArbeidstidInfo: {
+                perioder: {
+                    '2021-01-01/2023-08-11': {
+                        jobberNormaltTimerPerDag: 'PT3H0M',
+                        faktiskArbeidTimerPerDag: 'PT3H',
+                    },
+                },
+            },
         },
     },
 };

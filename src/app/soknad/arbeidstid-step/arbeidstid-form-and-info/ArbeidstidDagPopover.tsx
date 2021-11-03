@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { Element } from 'nav-frontend-typografi';
 import FormattedTimeText from '../../../components/formatted-time-text/FormattedTimeText';
 import { InputTime } from '../../../types';
-import { K9ArbeidsgiverArbeidstid } from '../../../types/K9Sak';
+import { K9AktivitetArbeidstid } from '../../../types/K9Sak';
 import { DagMedTid } from '../../../types/SoknadFormData';
 import dateFormatter from '../../../utils/dateFormatterUtils';
 import { dateToISODate, timeHasSameDuration } from '../../../utils/dateUtils';
@@ -13,7 +13,7 @@ import { datoErHistorisk } from '../../../utils/tidsbrukUtils';
 interface Props {
     dato: Date;
     dager: DagMedTid[];
-    arbeidstidArbeidsgiverSak: K9ArbeidsgiverArbeidstid;
+    arbeidstidArbeidsgiverSak: K9AktivitetArbeidstid;
 }
 
 const getTidForDag = (dato: Date, dager: DagMedTid[]) => {

@@ -1,7 +1,7 @@
 import { Time } from '@navikt/sif-common-formik/lib';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
-import { K9ArbeidsgivereArbeidstidMap } from '../types/K9Sak';
-import { ArbeidstidArbeidsgiverMap, TidEnkeltdag } from '../types/SoknadFormData';
+import { K9Arbeidstid } from '../types/K9Sak';
+import { ArbeidstidFormValue, TidEnkeltdag } from '../types/SoknadFormData';
 import { timeHasSameDuration } from '../utils/dateUtils';
 
 export type TidPerDagValidator = (dag: string) => (tid: Time) => ValidationError | undefined;
@@ -39,27 +39,36 @@ export const validateArbeidstid = ({
     return undefined;
 };
 
-export const validateArbeidstidAlleArbeidsgivere = ({
-    arbeidsgivereMap,
-    arbeidsgivereSakMap,
+export const validateAktivitetArbeidstid = ({
+    arbeidstid,
+    arbeidstidSak,
 }: {
-    arbeidsgivereMap?: ArbeidstidArbeidsgiverMap;
-    arbeidsgivereSakMap: K9ArbeidsgivereArbeidstidMap;
+    arbeidstid?: ArbeidstidFormValue;
+    arbeidstidSak: K9Arbeidstid;
 }): ValidationError | undefined => {
-    if (arbeidsgivereMap === undefined) {
+    if (arbeidstid === undefined) {
         return 'ingenEndringer';
     }
     let endret = false;
-    Object.keys(arbeidsgivereMap).forEach((a) => {
-        if (endret) {
-            return;
-        }
-        if (erTidEndret(arbeidsgivereMap[a].faktisk, arbeidsgivereSakMap[a].faktisk)) {
+    if (arbeidstid.arbeidsgiver) {
+        Object.keys(arbeidstid.arbeidsgiver).forEach((a) => {
+            if (endret) {
+                return;
+            }
+            if (erTidEndret(arbeidstid.arbeidsgiver[a].faktisk, arbeidstidSak.arbeidsgivereMap[a].faktisk)) {
+                endret = true;
+            }
+        });
+    }
+    if (!endret && arbeidstid.frilanser && arbeidstidSak.frilanser) {
+        if (erTidEndret(arbeidstid.frilanser.faktisk, arbeidstidSak.frilanser.faktisk)) {
             endret = true;
         }
-    });
-    if (endret === false) {
-        return 'ingenEndringer';
     }
-    return undefined;
+    if (!endret && arbeidstid.selvstendig && arbeidstidSak.selvstendig) {
+        if (erTidEndret(arbeidstid.selvstendig.faktisk, arbeidstidSak.selvstendig.faktisk)) {
+            endret = true;
+        }
+    }
+    return endret ? undefined : 'ingenEndringer';
 };

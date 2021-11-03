@@ -1,7 +1,7 @@
 import { DateRange } from '@navikt/sif-common-formik/lib';
 import { ISODateToDate } from '../../dateUtils';
 import { timeToISODuration } from '../../timeUtils';
-import { mapArbeidsgiverArbeidstidToK9FormatInnsending } from '../mapArbeidstidToK9Format';
+import { mapAktivitetArbeidstidToK9FormatInnsending } from '../mapArbeidstidToK9Format';
 
 const søknadsperioder: DateRange[] = [
     {
@@ -12,7 +12,7 @@ const søknadsperioder: DateRange[] = [
 
 describe('mapArbeidsgiverArbeidstidToApiData', () => {
     it('returnerer tomt når ingen av dagene har endring ', () => {
-        const result = mapArbeidsgiverArbeidstidToK9FormatInnsending(
+        const result = mapAktivitetArbeidstidToK9FormatInnsending(
             { '2021-02-01': { hours: '2', minutes: undefined } },
             {
                 faktisk: { '2021-02-01': { hours: '2', minutes: undefined } },
@@ -23,7 +23,7 @@ describe('mapArbeidsgiverArbeidstidToApiData', () => {
         expect(Object.keys(result).length).toEqual(0);
     });
     it('returnerer kun dager med endring ', () => {
-        const result = mapArbeidsgiverArbeidstidToK9FormatInnsending(
+        const result = mapAktivitetArbeidstidToK9FormatInnsending(
             { '2021-02-01': { hours: '2', minutes: '20' }, '2021-02-02': { hours: '2', minutes: '20' } },
             {
                 faktisk: { '2021-02-01': { hours: '2', minutes: '20' } },

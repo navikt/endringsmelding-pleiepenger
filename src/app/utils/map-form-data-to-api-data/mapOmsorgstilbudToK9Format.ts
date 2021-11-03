@@ -10,7 +10,7 @@ export const mapOmsorgstilbudToK9FormatInnsending = (
     omsorgstilbud: Omsorgstilbud,
     dagerOpprinnelig: TidEnkeltdag = {},
     søknadsperioder: DateRange[]
-): TilsynsordningK9FormatInnsending => {
+): TilsynsordningK9FormatInnsending | undefined => {
     const { enkeltdager } = omsorgstilbud;
     const dagerMedEndring: TidEnkeltdag = dagerOpprinnelig
         ? fjernDagerMedUendretTid(enkeltdager, dagerOpprinnelig)
@@ -21,6 +21,10 @@ export const mapOmsorgstilbudToK9FormatInnsending = (
         dager.push(...getTidEnkeltdagApiDataIPeriodeApiData(dagerMedEndring, periode))
     );
 
+    if (dager.length === 0) {
+        return undefined;
+    }
+
     const tilsynsordning: TilsynsordningK9FormatInnsending = {
         perioder: {},
     };
@@ -30,6 +34,5 @@ export const mapOmsorgstilbudToK9FormatInnsending = (
             etablertTilsynTimerPerDag: dag.tid,
         };
     });
-
     return tilsynsordning;
 };

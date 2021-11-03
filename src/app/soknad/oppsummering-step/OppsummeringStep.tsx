@@ -11,7 +11,6 @@ import { getCheckedValidator } from '@navikt/sif-common-formik/lib/validation';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Arbeidsgiver } from '../../types/Arbeidsgiver';
 import { K9Sak } from '../../types/K9Sak';
-import { Person } from '../../types/Person';
 import { SoknadApiData } from '../../types/SoknadApiData';
 import { SoknadFormField } from '../../types/SoknadFormData';
 import appSentryLogger from '../../utils/appSentryLogger';
@@ -22,16 +21,14 @@ import SoknadFormStep from '../SoknadFormStep';
 import { StepID } from '../soknadStepsConfig';
 import ArbeidstidSummary from './arbeidstid-summary/ArbeidstidSummary';
 import OmsorgstilbudSummary from './omsorgstilbud-summary/OmsorgstilbudSummary';
-import SøkerSummary from './SøkerSummary';
 
 type Props = {
     apiValues?: SoknadApiData;
-    søker: Person;
     arbeidsgivere: Arbeidsgiver[];
     k9sak: K9Sak;
 };
 
-const OppsummeringStep: React.FunctionComponent<Props> = ({ søker, apiValues, arbeidsgivere, k9sak }) => {
+const OppsummeringStep: React.FunctionComponent<Props> = ({ apiValues, arbeidsgivere, k9sak }) => {
     const intl = useIntl();
     const { sendSoknadStatus, sendSoknad } = useSoknadContext();
     const apiDataValidationResult = verifySoknadApiData(apiValues, k9sak);
@@ -76,22 +73,19 @@ const OppsummeringStep: React.FunctionComponent<Props> = ({ søker, apiValues, a
                     <>
                         <Box margin="xxl">
                             <ResponsivePanel border={true}>
-                                <SøkerSummary søker={søker} />
                                 {apiValues.ytelse.tilsynsordning && (
                                     <OmsorgstilbudSummary
                                         tilsynsordning={apiValues.ytelse.tilsynsordning}
                                         tidIOmsorgstilbudSak={k9sak.ytelse.tilsynsordning.enkeltdager}
                                     />
                                 )}
-                                {apiValues.ytelse.arbeidstid &&
-                                    apiValues.ytelse.arbeidstid.arbeidstakerList.length > 0 &&
-                                    arbeidsgivere && (
-                                        <ArbeidstidSummary
-                                            arbeidstid={apiValues.ytelse.arbeidstid}
-                                            arbeidstidK9={k9sak.ytelse.arbeidstid}
-                                            arbeidsgivere={arbeidsgivere}
-                                        />
-                                    )}
+                                {apiValues.ytelse.arbeidstid && (
+                                    <ArbeidstidSummary
+                                        arbeidstid={apiValues.ytelse.arbeidstid}
+                                        arbeidstidK9={k9sak.ytelse.arbeidstid}
+                                        arbeidsgivere={arbeidsgivere}
+                                    />
+                                )}
                             </ResponsivePanel>
                         </Box>
 

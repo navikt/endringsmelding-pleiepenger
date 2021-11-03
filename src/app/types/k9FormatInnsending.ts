@@ -22,6 +22,12 @@ export interface ArbeidsgiverK9FormatInnsending {
 }
 export interface ArbeidstidK9FormatInnsending {
     arbeidstakerList: ArbeidsgiverK9FormatInnsending[];
+    frilanserArbeidstidInfo?: {
+        perioder: ArbeidstidDagK9FormatInnsending;
+    };
+    selvstendigNæringsdrivendeArbeidstidInfo?: {
+        perioder: ArbeidstidDagK9FormatInnsending;
+    };
 }
 
 export interface K9FormatYtelseInnsending {
