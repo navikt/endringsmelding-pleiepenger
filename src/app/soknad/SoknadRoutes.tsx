@@ -47,7 +47,7 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, arbeid
         if (soknadId) {
             if (persistRequest) {
                 setPersistRequest(undefined);
-                persist(soknadId, persistRequest.stepID, { søker });
+                persist(soknadId, persistRequest.stepID, { søker, arbeidsgivere });
             }
         }
     }, [soknadId, persistRequest, persist, søker]);

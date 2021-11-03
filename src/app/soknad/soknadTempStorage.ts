@@ -3,6 +3,7 @@ import { AxiosResponse } from 'axios';
 import hash from 'object-hash';
 import { axiosConfigPsb } from '../api/api';
 import { ApiEndpointPsb } from '../types/ApiEndpoint';
+import { Arbeidsgiver } from '../types/Arbeidsgiver';
 import { Person } from '../types/Person';
 import { SoknadFormData } from '../types/SoknadFormData';
 import { SoknadTempStorageData } from '../types/SoknadTempStorageData';
@@ -12,6 +13,7 @@ export const STORAGE_VERSION = '2.1';
 
 export interface UserHashInfo {
     søker: Person;
+    arbeidsgivere: Arbeidsgiver[] | undefined;
 }
 
 interface SoknadTemporaryStorage extends Omit<PersistenceInterface<SoknadTempStorageData>, 'update'> {

@@ -101,7 +101,7 @@ const Soknad: React.FunctionComponent<Props> = ({
 
         if (isFeatureEnabled(Feature.PERSISTENCE)) {
             await soknadTempStorage.create();
-            await soknadTempStorage.update(sId, { ...values }, firstStep, { søker });
+            await soknadTempStorage.update(sId, { ...values }, firstStep, { søker, arbeidsgivere });
         }
         await logSoknadStartet(SKJEMANAVN);
         setTimeout(() => {
@@ -111,7 +111,7 @@ const Soknad: React.FunctionComponent<Props> = ({
 
     const continueSoknadLater = async (sId: string, stepID: StepID, values: SoknadFormData): Promise<void> => {
         if (isFeatureEnabled(Feature.PERSISTENCE)) {
-            await soknadTempStorage.update(sId, values, stepID, { søker });
+            await soknadTempStorage.update(sId, values, stepID, { søker, arbeidsgivere });
         }
         await logHendelse(ApplikasjonHendelse.fortsettSenere);
         relocateToNavFrontpage();
@@ -168,7 +168,7 @@ const Soknad: React.FunctionComponent<Props> = ({
         if (nextStep && soknadId) {
             try {
                 if (isFeatureEnabled(Feature.PERSISTENCE)) {
-                    await soknadTempStorage.update(soknadId, values, nextStep, { søker });
+                    await soknadTempStorage.update(soknadId, values, nextStep, { søker, arbeidsgivere });
                 }
             } catch (error) {
                 if (isUserLoggedOut(error)) {
@@ -185,7 +185,7 @@ const Soknad: React.FunctionComponent<Props> = ({
     };
 
     useEffect(() => {
-        if (isStorageDataValid(tempStorage, { søker })) {
+        if (isStorageDataValid(tempStorage, { søker, arbeidsgivere })) {
             setSoknadId(tempStorage.metadata.soknadId);
             const currentRoute = history.location.pathname;
             const lastStepRoute = soknadStepUtils.getStepRoute(
@@ -206,7 +206,7 @@ const Soknad: React.FunctionComponent<Props> = ({
         } else {
             resetSoknad(history.location.pathname !== AppRoutes.SOKNAD);
         }
-    }, [history, tempStorage, søker]);
+    }, [history, tempStorage, søker, arbeidsgivere]);
 
     return (
         <LoadWrapper
@@ -223,7 +223,7 @@ const Soknad: React.FunctionComponent<Props> = ({
                         />
                     );
                 }
-                const initialData = getInitialFormData(k9sak, søker, tempStorage);
+                const initialData = getInitialFormData(k9sak, søker, arbeidsgivere, tempStorage);
                 return (
                     <SoknadFormComponents.FormikWrapper
                         initialValues={initialData}
