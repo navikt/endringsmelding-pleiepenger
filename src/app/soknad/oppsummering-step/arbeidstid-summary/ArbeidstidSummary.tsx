@@ -1,5 +1,4 @@
 import React from 'react';
-import SummaryBlock from '@navikt/sif-common-soknad/lib/soknad-summary/summary-block/SummaryBlock';
 import SummarySection from '@navikt/sif-common-soknad/lib/soknad-summary/summary-section/SummarySection';
 import TidEnkeltdager from '../../../components/dager-med-tid/TidEnkeltdager';
 import { Arbeidsgiver } from '../../../types/Arbeidsgiver';
@@ -9,6 +8,8 @@ import { TidEnkeltdagApiData } from '../../../types/SoknadApiData';
 import { TidEnkeltdag } from '../../../types/SoknadFormData';
 import { ISODateRangeToISODates } from '../../../utils/dateUtils';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
+import { Element } from 'nav-frontend-typografi';
 
 interface Props {
     arbeidsgivere: Arbeidsgiver[];
@@ -34,9 +35,10 @@ const ArbeidstidSummary: React.FunctionComponent<Props> = ({ arbeidstid, arbeids
         });
         return (
             <Box padBottom="s" margin="none">
-                <SummaryBlock header={tittel}>
+                <FormBlock>
+                    <Element tag="h3">{tittel}</Element>
                     <TidEnkeltdager dager={dagerMedTid} dagerOpprinnelig={arbeidstidOpprinnelig} />
-                </SummaryBlock>
+                </FormBlock>
             </Box>
         );
     };
