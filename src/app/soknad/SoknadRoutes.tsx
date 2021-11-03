@@ -90,14 +90,7 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, arbeid
                     k9sak.ytelse.søknadsperioder,
                     k9sak
                 );
-                return (
-                    <OppsummeringStep
-                        arbeidsgivere={arbeidsgivere || []}
-                        apiValues={apiValues}
-                        søker={søker}
-                        k9sak={k9sak}
-                    />
-                );
+                return <OppsummeringStep arbeidsgivere={arbeidsgivere || []} apiValues={apiValues} k9sak={k9sak} />;
         }
     };
 

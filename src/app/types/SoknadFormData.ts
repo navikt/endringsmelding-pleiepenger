@@ -16,17 +16,19 @@ export interface Omsorgstilbud {
     enkeltdager: TidEnkeltdag;
 }
 
-export type ArbeidstidArbeidsgiverEnkeltdag = {
+export type ArbeidstidAktivitetEnkeltdag = {
     faktisk: TidEnkeltdag;
     normalt: TidEnkeltdag;
 };
 
 export type ArbeidstidArbeidsgiverMap = {
-    [orgnr: string]: ArbeidstidArbeidsgiverEnkeltdag;
+    [orgnr: string]: ArbeidstidAktivitetEnkeltdag;
 };
 
 export interface ArbeidstidFormValue {
     arbeidsgiver: ArbeidstidArbeidsgiverMap;
+    frilanser?: ArbeidstidAktivitetEnkeltdag;
+    selvstendig?: ArbeidstidAktivitetEnkeltdag;
 }
 
 export enum SoknadFormField {
@@ -39,6 +41,8 @@ export enum SoknadFormField {
     arbeidstid = 'arbeidstid',
     arbeidstid_gruppe = 'arbeidstid_gruppe',
     arbeidstid_arbeidsgiver = 'arbeidstid.arbeidsgiver',
+    arbeidstid_frilanser = 'arbeidstid.frilanser',
+    arbeidstid_selvstendig = 'arbeidstid.selvstendig',
 }
 
 export enum HvaSkalEndres {
@@ -56,3 +60,9 @@ export interface SoknadFormData {
 
 export const getArbeidsgiverArbeidstidFormFieldName = (a: Arbeidsgiver): SoknadFormField =>
     `${SoknadFormField.arbeidstid_arbeidsgiver}.${a.organisasjonsnummer}.faktisk` as any;
+
+export const getFrilanserArbeidstidFormFieldName = (): SoknadFormField =>
+    `${SoknadFormField.arbeidstid_frilanser}.faktisk` as any;
+
+export const getSelvstendigArbeidstidFormFieldName = (): SoknadFormField =>
+    `${SoknadFormField.arbeidstid_selvstendig}.faktisk` as any;

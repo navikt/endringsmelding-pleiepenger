@@ -5,7 +5,7 @@ import {
     K9Format,
     TilsynsordningPerioderK9Format,
 } from '../types/k9Format';
-import { K9ArbeidsgiverArbeidstid, K9Arbeidstid, K9Sak } from '../types/K9Sak';
+import { K9AktivitetArbeidstid, K9ArbeidsgivereArbeidstidMap, K9Sak } from '../types/K9Sak';
 import { TidEnkeltdag } from '../types/SoknadFormData';
 import {
     dateIsWithinDateRange,
@@ -16,18 +16,6 @@ import {
 } from './dateUtils';
 import { getEndringsdato, getSøknadsperioderInnenforTillattEndringsperiode } from './endringsperiode';
 
-const getArbeidstidArbeidsgivere = (arbeidsgivere: ArbeidsgiverK9Format[]): K9Arbeidstid => {
-    const arbeidstid: K9Arbeidstid = {
-        arbeidsgivereMap: {},
-    };
-    arbeidsgivere.forEach((a) => {
-        arbeidstid.arbeidsgivereMap[a.organisasjonsnummer] = getArbeidsgiverArbeidstidFromK9Format(
-            a.arbeidstidInfo.perioder
-        );
-    });
-    return arbeidstid;
-};
-
 export const getTilsynsdagerFromK9Format = (data: TilsynsordningPerioderK9Format): TidEnkeltdag => {
     const enkeltdager: TidEnkeltdag = {};
 
@@ -35,7 +23,6 @@ export const getTilsynsdagerFromK9Format = (data: TilsynsordningPerioderK9Format
         const duration = data[isoDateRange].etablertTilsynTimerPerDag;
         const time = ISODurationToTime(duration);
         const isoDates = getISODatesInISODateRangeWeekendExcluded(isoDateRange);
-
         isoDates.forEach((isoDate) => {
             enkeltdager[isoDate] = { hours: time?.hours, minutes: time?.minutes };
         });
@@ -43,11 +30,14 @@ export const getTilsynsdagerFromK9Format = (data: TilsynsordningPerioderK9Format
     return enkeltdager;
 };
 
-export const getArbeidsgiverArbeidstidFromK9Format = (
+const dateIsIWithinDateRanges = (date: Date, dateRanges: DateRange[]) =>
+    dateRanges.some((dateRange) => dateIsWithinDateRange(date, dateRange));
+
+export const getAktivitetArbeidstidFromK9Format = (
     data: ArbeidstidDagK9Format,
-    maxRange?: DateRange
-): K9ArbeidsgiverArbeidstid => {
-    const arbeidstid: K9ArbeidsgiverArbeidstid = {
+    søknadsperioder: DateRange[]
+): K9AktivitetArbeidstid => {
+    const arbeidstid: K9AktivitetArbeidstid = {
         faktisk: {},
         normalt: {},
     };
@@ -61,7 +51,9 @@ export const getArbeidsgiverArbeidstidFromK9Format = (
     Object.keys(data).forEach((isoDateRange) => {
         const isoDates = getISODatesInISODateRangeWeekendExcluded(isoDateRange);
         isoDates.forEach((isoDate) => {
-            if (maxRange === undefined || dateIsWithinDateRange(ISODateToDate(isoDate), maxRange)) {
+            const date = ISODateToDate(isoDate);
+            const dateIsInSøknadsperioder = dateIsIWithinDateRanges(date, søknadsperioder);
+            if (dateIsInSøknadsperioder) {
                 arbeidstid.faktisk[isoDate] = getTid(ISODurationToTime(data[isoDateRange].faktiskArbeidTimerPerDag));
                 arbeidstid.normalt[isoDate] = getTid(ISODurationToTime(data[isoDateRange].jobberNormaltTimerPerDag));
             }
@@ -71,9 +63,27 @@ export const getArbeidsgiverArbeidstidFromK9Format = (
     return arbeidstid;
 };
 
+const getArbeidstidArbeidsgivere = (
+    arbeidsgivere: ArbeidsgiverK9Format[],
+    søknadsperioder: DateRange[]
+): K9ArbeidsgivereArbeidstidMap => {
+    const arbeidsgivereMap: K9ArbeidsgivereArbeidstidMap = {};
+    arbeidsgivere.forEach((a) => {
+        arbeidsgivereMap[a.organisasjonsnummer] = getAktivitetArbeidstidFromK9Format(
+            a.arbeidstidInfo.perioder,
+            søknadsperioder
+        );
+    });
+    return arbeidsgivereMap;
+};
+
 export const parseK9Format = (data: K9Format): K9Sak => {
     const { ytelse, søker, søknadId } = data;
     const endringsdato = getEndringsdato();
+    const søknadsperioder = getSøknadsperioderInnenforTillattEndringsperiode(
+        endringsdato,
+        ytelse.søknadsperiode.map((periode) => ISODateRangeToDateRange(periode))
+    );
     const sak: K9Sak = {
         søker: søker,
         søknadId: søknadId,
@@ -83,15 +93,28 @@ export const parseK9Format = (data: K9Format): K9Sak => {
                 fødselsdato: ISODateToDate(ytelse.barn.fødselsdato),
                 norskIdentitetsnummer: ytelse.barn.norskIdentitetsnummer,
             },
-            søknadsperioder: getSøknadsperioderInnenforTillattEndringsperiode(
-                endringsdato,
-                ytelse.søknadsperiode.map((periode) => ISODateRangeToDateRange(periode))
-            ),
+            søknadsperioder,
             tilsynsordning: {
                 enkeltdager: getTilsynsdagerFromK9Format(ytelse.tilsynsordning.perioder),
             },
-            arbeidstid: getArbeidstidArbeidsgivere(ytelse.arbeidstid.arbeidstakerList),
+            arbeidstid: {
+                arbeidsgivereMap: getArbeidstidArbeidsgivere(ytelse.arbeidstid.arbeidstakerList, søknadsperioder),
+                frilanser: ytelse.arbeidstid.frilanserArbeidstidInfo
+                    ? getAktivitetArbeidstidFromK9Format(
+                          ytelse.arbeidstid.frilanserArbeidstidInfo.perioder,
+                          søknadsperioder
+                      )
+                    : undefined,
+                selvstendig: ytelse.arbeidstid.selvstendigNæringsdrivendeArbeidstidInfo
+                    ? getAktivitetArbeidstidFromK9Format(
+                          ytelse.arbeidstid.selvstendigNæringsdrivendeArbeidstidInfo.perioder,
+                          søknadsperioder
+                      )
+                    : undefined,
+            },
         },
     };
+    console.log(sak);
+
     return sak;
 };

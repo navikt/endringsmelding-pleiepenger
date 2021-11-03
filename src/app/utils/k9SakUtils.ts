@@ -5,7 +5,7 @@ import moize from 'moize';
 import { DagerIkkeSøktForMap, DagerSøktForMap } from '../types';
 import { Arbeidsgiver } from '../types/Arbeidsgiver';
 import {
-    K9ArbeidsgiverArbeidstid,
+    K9AktivitetArbeidstid,
     K9ArbeidsgivereArbeidstidMap,
     K9Sak,
     K9SakMeta,
@@ -46,11 +46,11 @@ export const getISODateObjectsWithinDateRange = <E extends ISODateObject>(
 };
 
 export const trimArbeidstidTilTillatPeriode = (
-    arbeidstid: K9ArbeidsgiverArbeidstid,
+    arbeidstid: K9AktivitetArbeidstid,
     maksEndringsperiode: DateRange,
     dagerIPeriodeDetIkkeErSøktFor: DagerIkkeSøktForMap
-): K9ArbeidsgiverArbeidstid => {
-    const result: K9ArbeidsgiverArbeidstid = {
+): K9AktivitetArbeidstid => {
+    const result: K9AktivitetArbeidstid = {
         faktisk: getISODateObjectsWithinDateRange(
             arbeidstid.faktisk,
             maksEndringsperiode,

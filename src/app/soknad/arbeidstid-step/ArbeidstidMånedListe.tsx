@@ -5,22 +5,21 @@ import { DateRange } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { useFormikContext } from 'formik';
 import SøknadsperioderMånedListe from '../../components/søknadsperioder-måned-liste/SøknadsperioderMånedListe';
-import { K9ArbeidsgiverArbeidstid, K9SakMeta } from '../../types/K9Sak';
+import { K9AktivitetArbeidstid, K9SakMeta } from '../../types/K9Sak';
 import { SoknadFormData, SoknadFormField, TidEnkeltdag } from '../../types/SoknadFormData';
 import { getYearMonthKey } from '../../utils/k9SakUtils';
 import ArbeidstidFormAndInfo from './arbeidstid-form-and-info/ArbeidstidFormAndInfo';
 
 interface Props {
-    organisasjonsnummer: string;
     formFieldName: SoknadFormField;
-    arbeidstidArbeidsgiverSak: K9ArbeidsgiverArbeidstid;
+    arbeidstidSak: K9AktivitetArbeidstid;
     k9sakMeta: K9SakMeta;
     onArbeidstidChanged?: (arbeidstid: TidEnkeltdag) => void;
 }
 
 const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
     formFieldName,
-    arbeidstidArbeidsgiverSak,
+    arbeidstidSak,
     k9sakMeta,
     onArbeidstidChanged,
 }) => {
@@ -37,7 +36,7 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
                 periodeIMåned={måned}
                 utilgjengeligeDatoerIMåned={utilgjengeligeDatoerIMåned}
                 endringsdato={k9sakMeta.endringsdato}
-                arbeidstidArbeidsgiverSak={arbeidstidArbeidsgiverSak}
+                arbeidstidArbeidsgiverSak={arbeidstidSak}
                 månedTittelHeadingLevel={k9sakMeta.søknadsperioderGårOverFlereÅr ? 4 : 3}
                 onAfterChange={(tid) => {
                     validateForm();
