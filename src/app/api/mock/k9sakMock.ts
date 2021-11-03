@@ -41,7 +41,7 @@ export const k9SakMock: K9Format = {
         arbeidstid: {
             arbeidstakerList: [
                 {
-                    organisasjonsnummer: '112233445',
+                    organisasjonsnummer: '907670201',
                     arbeidstidInfo: {
                         perioder: {
                             '2021-01-01/2023-08-11': {
@@ -52,7 +52,7 @@ export const k9SakMock: K9Format = {
                     },
                 },
                 {
-                    organisasjonsnummer: '123451234',
+                    organisasjonsnummer: '967170232',
                     arbeidstidInfo: {
                         perioder: {
                             '2021-01-01/2021-08-11': {

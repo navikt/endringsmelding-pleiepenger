@@ -49,7 +49,9 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
                             const arbeidstidArbeidsgiver = arbeidstidSak.arbeidsgivereMap[a.organisasjonsnummer];
                             return (
                                 <div key={a.organisasjonsnummer} className="arbeidstid__arbeidsgiver">
-                                    <Undertittel>{a.navn}</Undertittel>
+                                    <Undertittel>
+                                        {a.navn} ({a.organisasjonsnummer})
+                                    </Undertittel>
                                     {arbeidstidArbeidsgiver === undefined ? (
                                         <p>Informasjon mangler om arbeidstid for denne arbeidsgiveren</p>
                                     ) : (

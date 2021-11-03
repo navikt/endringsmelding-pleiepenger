@@ -20,9 +20,8 @@ const getArbeidsgivereRemoteData = async (fom?: string, tom?: string): Promise<A
         // );
         return Promise.resolve(
             success([
-                { navn: 'Johs broderi', organisasjonsnummer: '123451234' },
-                { navn: 'Noras sveiseri', organisasjonsnummer: '112233445' },
-                // { navn: 'Schübertsen', organisasjonsnummer: '412233445' },
+                { organisasjonsnummer: '907670201', navn: 'KLONELABBEN' },
+                { organisasjonsnummer: '967170232', navn: 'SNILL TORPEDO' },
             ])
         );
     } catch (error) {
