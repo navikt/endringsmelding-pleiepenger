@@ -44,14 +44,15 @@ export const normalarbeidstidErUendret = (
     apiArbeidsgiverArbeidstid: ArbeidsgiverK9FormatInnsending[],
     k9ArbeidsgiverArbeidstid: K9ArbeidsgivereArbeidstidMap
 ): boolean => {
-    return (
-        apiArbeidsgiverArbeidstid.some((arbeidsgiver) => {
-            return normalarbeidstidErUendretForArbeidsgiver(
+    const harArbeidsgivereMedEndretNormalarbeidstid = apiArbeidsgiverArbeidstid.some((arbeidsgiver) => {
+        return (
+            normalarbeidstidErUendretForArbeidsgiver(
                 arbeidsgiver.arbeidstidInfo.perioder,
                 k9ArbeidsgiverArbeidstid[arbeidsgiver.organisasjonsnummer].normalt
-            );
-        }) === false
-    );
+            ) === false
+        );
+    });
+    return harArbeidsgivereMedEndretNormalarbeidstid === false;
 };
 
 export const verifySoknadApiData = (
