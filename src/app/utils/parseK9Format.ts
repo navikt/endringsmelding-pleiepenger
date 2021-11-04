@@ -1,11 +1,11 @@
 import { DateRange, Time } from '@navikt/sif-common-formik/lib';
 import {
-    ArbeidsgiverK9Format,
-    ArbeidstidDagK9Format,
+    K9FormatArbeidstaker,
+    K9FormatArbeidstidPeriode,
     K9Format,
-    TilsynsordningPerioderK9Format,
+    K9FormatTilsynsordningPerioder,
 } from '../types/k9Format';
-import { K9AktivitetArbeidstid, K9ArbeidsgivereArbeidstidMap, K9Sak } from '../types/K9Sak';
+import { K9ArbeidstidInfo, K9ArbeidstakerMap, K9Sak } from '../types/K9Sak';
 import { TidEnkeltdag } from '../types/SoknadFormData';
 import {
     dateIsWithinDateRange,
@@ -16,7 +16,7 @@ import {
 } from './dateUtils';
 import { getEndringsdato, getSøknadsperioderInnenforTillattEndringsperiode } from './endringsperiode';
 
-export const getTilsynsdagerFromK9Format = (data: TilsynsordningPerioderK9Format): TidEnkeltdag => {
+export const getTilsynsdagerFromK9Format = (data: K9FormatTilsynsordningPerioder): TidEnkeltdag => {
     const enkeltdager: TidEnkeltdag = {};
 
     Object.keys(data).forEach((isoDateRange) => {
@@ -34,10 +34,10 @@ const dateIsIWithinDateRanges = (date: Date, dateRanges: DateRange[]) =>
     dateRanges.some((dateRange) => dateIsWithinDateRange(date, dateRange));
 
 export const getAktivitetArbeidstidFromK9Format = (
-    data: ArbeidstidDagK9Format,
+    data: K9FormatArbeidstidPeriode,
     søknadsperioder: DateRange[]
-): K9AktivitetArbeidstid => {
-    const arbeidstid: K9AktivitetArbeidstid = {
+): K9ArbeidstidInfo => {
+    const arbeidstid: K9ArbeidstidInfo = {
         faktisk: {},
         normalt: {},
     };
@@ -64,10 +64,10 @@ export const getAktivitetArbeidstidFromK9Format = (
 };
 
 const getArbeidstidArbeidsgivere = (
-    arbeidsgivere: ArbeidsgiverK9Format[],
+    arbeidsgivere: K9FormatArbeidstaker[],
     søknadsperioder: DateRange[]
-): K9ArbeidsgivereArbeidstidMap => {
-    const arbeidsgivereMap: K9ArbeidsgivereArbeidstidMap = {};
+): K9ArbeidstakerMap => {
+    const arbeidsgivereMap: K9ArbeidstakerMap = {};
     arbeidsgivere.forEach((a) => {
         arbeidsgivereMap[a.organisasjonsnummer] = getAktivitetArbeidstidFromK9Format(
             a.arbeidstidInfo.perioder,
@@ -98,7 +98,7 @@ export const parseK9Format = (data: K9Format): K9Sak => {
                 enkeltdager: getTilsynsdagerFromK9Format(ytelse.tilsynsordning.perioder),
             },
             arbeidstid: {
-                arbeidsgivereMap: getArbeidstidArbeidsgivere(ytelse.arbeidstid.arbeidstakerList, søknadsperioder),
+                arbeidstakerMap: getArbeidstidArbeidsgivere(ytelse.arbeidstid.arbeidstakerList, søknadsperioder),
                 frilanser: ytelse.arbeidstid.frilanserArbeidstidInfo
                     ? getAktivitetArbeidstidFromK9Format(
                           ytelse.arbeidstid.frilanserArbeidstidInfo.perioder,

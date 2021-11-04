@@ -1,6 +1,6 @@
 import { isStorageDataValid } from '../soknad/soknadTempStorage';
 import { Arbeidsgiver } from '../types/Arbeidsgiver';
-import { K9AktivitetArbeidstid, K9Arbeidstid, K9Sak } from '../types/K9Sak';
+import { K9ArbeidstidInfo, K9Arbeidstid, K9Sak } from '../types/K9Sak';
 import { Person } from '../types/Person';
 import {
     ArbeidstidAktivitetEnkeltdag,
@@ -12,7 +12,7 @@ import { SoknadTempStorageData } from '../types/SoknadTempStorageData';
 
 /** TODO - skrive tester på disse */
 
-export const getAktivitetArbeidstid = (arbeidstid: K9AktivitetArbeidstid): ArbeidstidAktivitetEnkeltdag => {
+export const getAktivitetArbeidstid = (arbeidstid: K9ArbeidstidInfo): ArbeidstidAktivitetEnkeltdag => {
     return {
         faktisk: { ...arbeidstid.faktisk },
         normalt: { ...arbeidstid.normalt },
@@ -20,13 +20,13 @@ export const getAktivitetArbeidstid = (arbeidstid: K9AktivitetArbeidstid): Arbei
 };
 
 export const getArbeidsgivereArbeidstid = (k9Arbeidstid: K9Arbeidstid): ArbeidstidArbeidsgiverMap => {
-    const { arbeidsgivereMap } = k9Arbeidstid;
-    if (arbeidsgivereMap === undefined) {
+    const { arbeidstakerMap } = k9Arbeidstid;
+    if (arbeidstakerMap === undefined) {
         return {};
     }
     const arbeidstidArbeidsgiver: ArbeidstidArbeidsgiverMap = {};
-    Object.keys(arbeidsgivereMap).forEach((orgnr) => {
-        return getAktivitetArbeidstid(arbeidsgivereMap[orgnr]);
+    Object.keys(arbeidstakerMap).forEach((orgnr) => {
+        return getAktivitetArbeidstid(arbeidstakerMap[orgnr]);
     });
     return arbeidstidArbeidsgiver;
 };

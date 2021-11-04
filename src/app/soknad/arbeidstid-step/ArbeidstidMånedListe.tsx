@@ -5,14 +5,14 @@ import { DateRange } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { useFormikContext } from 'formik';
 import SøknadsperioderMånedListe from '../../components/søknadsperioder-måned-liste/SøknadsperioderMånedListe';
-import { K9AktivitetArbeidstid, K9SakMeta } from '../../types/K9Sak';
+import { K9ArbeidstidInfo, K9SakMeta } from '../../types/K9Sak';
 import { SoknadFormData, SoknadFormField, TidEnkeltdag } from '../../types/SoknadFormData';
 import { getYearMonthKey } from '../../utils/k9SakUtils';
 import ArbeidstidFormAndInfo from './arbeidstid-form-and-info/ArbeidstidFormAndInfo';
 
 interface Props {
     formFieldName: SoknadFormField;
-    arbeidstidSak: K9AktivitetArbeidstid;
+    arbeidstidSak: K9ArbeidstidInfo;
     k9sakMeta: K9SakMeta;
     onArbeidstidChanged?: (arbeidstid: TidEnkeltdag) => void;
 }

@@ -1,6 +1,6 @@
 import { DateRange } from '@navikt/sif-common-formik/lib';
 import { ISODateRange } from '../../types';
-import { ArbeidstidDagK9Format, TilsynsordningPerioderK9Format } from '../../types/k9Format';
+import { K9FormatArbeidstidPeriode, K9FormatTilsynsordningPerioder } from '../../types/k9Format';
 import { ISODateToDate } from '../dateUtils';
 import { getAktivitetArbeidstidFromK9Format, getTilsynsdagerFromK9Format } from '../parseK9Format';
 
@@ -10,7 +10,7 @@ const range3: ISODateRange = '2021-02-08/2021-02-09';
 
 describe('getTilsynsdagerFromK9Format', () => {
     it('henter ut korrekt data for to perioder med ulikt tilsyn', () => {
-        const tilsynsperioder: TilsynsordningPerioderK9Format = {};
+        const tilsynsperioder: K9FormatTilsynsordningPerioder = {};
         tilsynsperioder[range1] = { etablertTilsynTimerPerDag: 'PT0H30M' };
         tilsynsperioder[range3] = { etablertTilsynTimerPerDag: 'PT3H0M' };
         const result = getTilsynsdagerFromK9Format(tilsynsperioder);
@@ -28,7 +28,7 @@ describe('getTilsynsdagerFromK9Format', () => {
 });
 
 describe('getArbeidsgiverArbeidstidFromK9Format', () => {
-    const arbeidstid: ArbeidstidDagK9Format = {};
+    const arbeidstid: K9FormatArbeidstidPeriode = {};
     arbeidstid[range1] = { jobberNormaltTimerPerDag: 'PT3H0M', faktiskArbeidTimerPerDag: 'PT0H0M' };
     arbeidstid[range2] = { jobberNormaltTimerPerDag: 'PT2H0M', faktiskArbeidTimerPerDag: 'PT2H30M' };
 

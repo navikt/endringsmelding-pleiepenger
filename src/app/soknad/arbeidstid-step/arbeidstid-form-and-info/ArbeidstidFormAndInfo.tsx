@@ -6,7 +6,7 @@ import {
     TypedFormInputValidationProps,
 } from '@navikt/sif-common-formik';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
-import { K9AktivitetArbeidstid } from '../../../types/K9Sak';
+import { K9ArbeidstidInfo } from '../../../types/K9Sak';
 import { TidEnkeltdag } from '../../../types/SoknadFormData';
 import ArbeidstidMånedForm from './ArbeidstidMånedForm';
 import ArbeidstidMånedInfo from './ArbeidstidMånedInfo';
@@ -18,7 +18,7 @@ interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, Va
     periodeIMåned: DateRange;
     utilgjengeligeDatoerIMåned?: Date[];
     endringsdato: Date;
-    arbeidstidArbeidsgiverSak: K9AktivitetArbeidstid;
+    arbeidstidArbeidsgiverSak: K9ArbeidstidInfo;
     månedTittelHeadingLevel?: number;
     onAfterChange?: (tid: TidEnkeltdag) => void;
 }

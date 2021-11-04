@@ -1,5 +1,9 @@
-import { ArbeidsgiverK9FormatInnsending, ArbeidstidDagK9FormatInnsending } from '../types/k9FormatInnsending';
-import { K9ArbeidsgivereArbeidstidMap, K9Sak } from '../types/K9Sak';
+import {
+    ArbeidstakerK9FormatInnsending,
+    ArbeidstidDagK9FormatInnsending,
+    ArbeidstidK9FormatInnsending,
+} from '../types/k9FormatInnsending';
+import { K9ArbeidstakerMap, K9Arbeidstid, K9Sak } from '../types/K9Sak';
 import { SoknadApiData, SoknadApiDataField } from '../types/SoknadApiData';
 import { TidEnkeltdag } from '../types/SoknadFormData';
 import { ISODateRangeToISODates } from '../utils/dateUtils';
@@ -28,7 +32,7 @@ const runVerification = (keys: string[], values: SoknadApiData): SoknadApiDataFi
     return errors;
 };
 
-export const normalarbeidstidErUendretForArbeidsgiver = (
+export const erNormalarbeidstidEndretForPerioder = (
     apiPerioder: ArbeidstidDagK9FormatInnsending,
     k9normaltid: TidEnkeltdag
 ): boolean => {
@@ -38,21 +42,49 @@ export const normalarbeidstidErUendretForArbeidsgiver = (
         const k9IsoNormaltid = timeToISODuration(k9normaltid[from]);
         return apiNormaltid === undefined || apiNormaltid.jobberNormaltTimerPerDag !== k9IsoNormaltid;
     });
-    return harDagerSomHarUlikeNormalarbeidstid === false;
+    return harDagerSomHarUlikeNormalarbeidstid;
 };
-export const normalarbeidstidErUendret = (
-    apiArbeidsgiverArbeidstid: ArbeidsgiverK9FormatInnsending[],
-    k9ArbeidsgiverArbeidstid: K9ArbeidsgivereArbeidstidMap
+
+export const erNormalarbeidstidEndretForArbeidstaker = (
+    arbeidstakerList: ArbeidstakerK9FormatInnsending[],
+    arbeidstakerMap?: K9ArbeidstakerMap
 ): boolean => {
-    const harArbeidsgivereMedEndretNormalarbeidstid = apiArbeidsgiverArbeidstid.some((arbeidsgiver) => {
-        return (
-            normalarbeidstidErUendretForArbeidsgiver(
-                arbeidsgiver.arbeidstidInfo.perioder,
-                k9ArbeidsgiverArbeidstid[arbeidsgiver.organisasjonsnummer].normalt
-            ) === false
+    if (arbeidstakerMap === undefined) {
+        return true;
+    }
+    return arbeidstakerList.some((arbeidsgiver) => {
+        return erNormalarbeidstidEndretForPerioder(
+            arbeidsgiver.arbeidstidInfo.perioder,
+            arbeidstakerMap[arbeidsgiver.organisasjonsnummer].normalt
         );
     });
-    return harArbeidsgivereMedEndretNormalarbeidstid === false;
+};
+
+export const erNormalarbeidstidEndret = (
+    arbeidstidApiValues: ArbeidstidK9FormatInnsending,
+    { arbeidstakerMap, frilanser, selvstendig }: K9Arbeidstid
+): boolean => {
+    const { arbeidstakerList, frilanserArbeidstidInfo, selvstendigNæringsdrivendeArbeidstidInfo } = arbeidstidApiValues;
+
+    const harEndretNormalarbeidstidArbeidstaker =
+        erNormalarbeidstidEndretForArbeidstaker(arbeidstakerList, arbeidstakerMap) === true;
+
+    const harEndretNormalarbeidstidFrilanser =
+        frilanserArbeidstidInfo !== undefined &&
+        frilanser !== undefined &&
+        erNormalarbeidstidEndretForPerioder(frilanserArbeidstidInfo.perioder, frilanser.faktisk) === true;
+
+    const harEndretNormalarbeidstidSelvstendig =
+        selvstendigNæringsdrivendeArbeidstidInfo !== undefined &&
+        selvstendig !== undefined &&
+        erNormalarbeidstidEndretForPerioder(selvstendigNæringsdrivendeArbeidstidInfo.perioder, selvstendig.faktisk) ===
+            true;
+
+    return (
+        harEndretNormalarbeidstidArbeidstaker ||
+        harEndretNormalarbeidstidFrilanser ||
+        harEndretNormalarbeidstidSelvstendig
+    );
 };
 
 export const verifySoknadApiData = (
@@ -67,12 +99,7 @@ export const verifySoknadApiData = (
     }
     const errors = runVerification(Object.keys(SoknadApiDataField), apiData);
     if (apiData.ytelse.arbeidstid) {
-        const { arbeidsgivereMap } = k9sak.ytelse.arbeidstid;
-
-        if (
-            arbeidsgivereMap &&
-            normalarbeidstidErUendret(apiData.ytelse.arbeidstid.arbeidstakerList, arbeidsgivereMap) === false
-        ) {
+        if (erNormalarbeidstidEndret(apiData.ytelse.arbeidstid, k9sak.ytelse.arbeidstid)) {
             errors.push(SoknadApiDataField.arbeidstid);
         }
     }

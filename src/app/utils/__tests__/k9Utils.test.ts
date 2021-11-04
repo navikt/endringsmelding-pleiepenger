@@ -1,6 +1,6 @@
 import { DateRange, Time } from '@navikt/sif-common-formik/lib';
 import { InputTime } from '../../types';
-import { K9AktivitetArbeidstid } from '../../types/K9Sak';
+import { K9ArbeidstidInfo } from '../../types/K9Sak';
 import { TidEnkeltdag } from '../../types/SoknadFormData';
 import { ISODateToDate } from '../dateUtils';
 import {
@@ -22,7 +22,7 @@ describe('trimArbeidstidTilTillatPeriode', () => {
             minutes: '30',
         };
 
-        const arbeidstid: K9AktivitetArbeidstid = {
+        const arbeidstid: K9ArbeidstidInfo = {
             faktisk: {
                 '2021-02-01': tid,
                 '2021-02-02': tid,
@@ -99,7 +99,7 @@ describe('harK9SakArbeidstidInfo', () => {
     });
     it('returnerer true dersom det er info om arbeidstid for arbeidsgivere', () => {
         const result = harK9SakArbeidstidInfo([{ navn: 'a', organisasjonsnummer: '1' }], {
-            arbeidsgivereMap: { '1': { faktisk: {}, normalt: {} } },
+            arbeidstakerMap: { '1': { faktisk: {}, normalt: {} } },
         });
         expect(result).toBeTruthy();
     });

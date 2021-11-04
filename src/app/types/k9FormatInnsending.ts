@@ -13,7 +13,7 @@ export type ArbeidstidDagK9FormatInnsending = {
     [key: ISODateRange]: ArbeidstidEnkeltdagK9FormatInnsending;
 };
 
-export interface ArbeidsgiverK9FormatInnsending {
+export interface ArbeidstakerK9FormatInnsending {
     norskIdentitetsnummer?: string;
     organisasjonsnummer: string;
     arbeidstidInfo: {
@@ -21,7 +21,7 @@ export interface ArbeidsgiverK9FormatInnsending {
     };
 }
 export interface ArbeidstidK9FormatInnsending {
-    arbeidstakerList: ArbeidsgiverK9FormatInnsending[];
+    arbeidstakerList: ArbeidstakerK9FormatInnsending[];
     frilanserArbeidstidInfo?: {
         perioder: ArbeidstidDagK9FormatInnsending;
     };

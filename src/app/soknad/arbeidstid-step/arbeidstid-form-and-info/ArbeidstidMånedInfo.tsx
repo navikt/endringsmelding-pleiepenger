@@ -10,7 +10,7 @@ import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Knapp from 'nav-frontend-knapper';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import TidsbrukKalender from '../../../components/tidsbruk-kalender/TidsbrukKalender';
-import { K9AktivitetArbeidstid } from '../../../types/K9Sak';
+import { K9ArbeidstidInfo } from '../../../types/K9Sak';
 import { DagMedTid, TidEnkeltdag } from '../../../types/SoknadFormData';
 import { dateToISODate, timeHasSameDuration } from '../../../utils/dateUtils';
 import { getDagerMedTidITidsrom, tidErIngenTid } from '../../../utils/tidsbrukUtils';
@@ -18,7 +18,7 @@ import { getDagerMedTidITidsrom, tidErIngenTid } from '../../../utils/tidsbrukUt
 interface Props {
     periodeIMåned: DateRange;
     tidArbeidstid: TidEnkeltdag;
-    arbeidstidArbeidsgiverSak: K9AktivitetArbeidstid;
+    arbeidstidArbeidsgiverSak: K9ArbeidstidInfo;
     editLabel: string;
     addLabel: string;
     utilgjengeligeDatoer?: Date[];

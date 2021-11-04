@@ -35,7 +35,7 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
 }) => {
     const stepId = StepID.ARBEIDSTID;
     const { values } = useFormikContext<SoknadFormData>();
-    const { arbeidsgivereMap } = arbeidstidSak;
+    const { arbeidstakerMap } = arbeidstidSak;
     return (
         <SoknadFormStep id={stepId} onStepCleanup={cleanupStep}>
             <StepIntroduction>Intro til steg</StepIntroduction>
@@ -49,10 +49,10 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
                         });
                         return result;
                     }}>
-                    {arbeidsgivereMap && (
+                    {arbeidstakerMap && (
                         <>
                             {arbeidsgivere.map((a) => {
-                                const arbeidstidArbeidsgiver = arbeidsgivereMap[a.organisasjonsnummer];
+                                const arbeidstidArbeidsgiver = arbeidstakerMap[a.organisasjonsnummer];
                                 return (
                                     <div key={a.organisasjonsnummer} className="arbeidstid__aktivitet">
                                         <Undertittel>

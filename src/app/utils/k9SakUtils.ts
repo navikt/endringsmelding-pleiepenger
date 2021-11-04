@@ -5,8 +5,8 @@ import moize from 'moize';
 import { DagerIkkeSøktForMap, DagerSøktForMap } from '../types';
 import { Arbeidsgiver } from '../types/Arbeidsgiver';
 import {
-    K9AktivitetArbeidstid,
-    K9ArbeidsgivereArbeidstidMap,
+    K9ArbeidstidInfo,
+    K9ArbeidstakerMap,
     K9Arbeidstid,
     K9Sak,
     K9SakMeta,
@@ -47,11 +47,11 @@ export const getISODateObjectsWithinDateRange = <E extends ISODateObject>(
 };
 
 export const trimArbeidstidTilTillatPeriode = (
-    arbeidstid: K9AktivitetArbeidstid,
+    arbeidstid: K9ArbeidstidInfo,
     maksEndringsperiode: DateRange,
     dagerIPeriodeDetIkkeErSøktFor: DagerIkkeSøktForMap
-): K9AktivitetArbeidstid => {
-    const result: K9AktivitetArbeidstid = {
+): K9ArbeidstidInfo => {
+    const result: K9ArbeidstidInfo = {
         faktisk: getISODateObjectsWithinDateRange(
             arbeidstid.faktisk,
             maksEndringsperiode,
@@ -145,7 +145,7 @@ export const trimK9SakForSøknad = (k9sak: K9Sak): { sak: K9Sak; meta: K9SakMeta
     const {
         ytelse: {
             søknadsperioder,
-            arbeidstid: { arbeidsgivereMap: arbeidsgivere },
+            arbeidstid: { arbeidstakerMap: arbeidsgivere },
             tilsynsordning: { enkeltdager: tilsynEnkeltdager },
         },
     } = sak;
@@ -155,7 +155,7 @@ export const trimK9SakForSøknad = (k9sak: K9Sak): { sak: K9Sak; meta: K9SakMeta
 
     /** Trim arbeidstid ansatt */
     if (arbeidsgivere) {
-        const trimmedArbeidsgiverTid: K9ArbeidsgivereArbeidstidMap = {};
+        const trimmedArbeidsgiverTid: K9ArbeidstakerMap = {};
         Object.keys(arbeidsgivere).forEach((key) => {
             trimmedArbeidsgiverTid[key] = trimArbeidstidTilTillatPeriode(
                 arbeidsgivere[key],
@@ -163,7 +163,7 @@ export const trimK9SakForSøknad = (k9sak: K9Sak): { sak: K9Sak; meta: K9SakMeta
                 meta.dagerIkkeSøktForMap
             );
         });
-        sak.ytelse.arbeidstid.arbeidsgivereMap = trimmedArbeidsgiverTid;
+        sak.ytelse.arbeidstid.arbeidstakerMap = trimmedArbeidsgiverTid;
     }
 
     /** Trim tilsynsordning */
@@ -180,7 +180,7 @@ export const trimK9SakForSøknad = (k9sak: K9Sak): { sak: K9Sak; meta: K9SakMeta
 
 export const erArbeidsgivereIBådeSakOgAAreg = (
     arbeidsgivere: Arbeidsgiver[],
-    arbeidsgivereMap?: K9ArbeidsgivereArbeidstidMap
+    arbeidsgivereMap?: K9ArbeidstakerMap
 ): boolean =>
     arbeidsgivereMap !== undefined
         ? Object.keys(arbeidsgivereMap).some(
@@ -189,10 +189,7 @@ export const erArbeidsgivereIBådeSakOgAAreg = (
         : false;
 
 export const harK9SakArbeidstidInfo = (arbeidsgivere: Arbeidsgiver[], arbeidstidSak: K9Arbeidstid): boolean => {
-    const arbeidsgivereErBådeISakOgAAreg = erArbeidsgivereIBådeSakOgAAreg(
-        arbeidsgivere,
-        arbeidstidSak.arbeidsgivereMap
-    );
+    const arbeidsgivereErBådeISakOgAAreg = erArbeidsgivereIBådeSakOgAAreg(arbeidsgivere, arbeidstidSak.arbeidstakerMap);
     return (
         arbeidsgivereErBådeISakOgAAreg ||
         arbeidstidSak.frilanser !== undefined ||

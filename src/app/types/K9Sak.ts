@@ -2,16 +2,19 @@ import { DateRange } from '@navikt/sif-common-formik/lib';
 import { DagerIkkeSøktForMap, DagerSøktForMap } from '.';
 import { TidEnkeltdag } from './SoknadFormData';
 
-export type K9AktivitetArbeidstid = { faktisk: TidEnkeltdag; normalt: TidEnkeltdag };
+export type K9ArbeidstidInfo = {
+    faktisk: TidEnkeltdag;
+    normalt: TidEnkeltdag;
+};
 
-export type K9ArbeidsgivereArbeidstidMap = {
-    [orgnr: string]: K9AktivitetArbeidstid;
+export type K9ArbeidstakerMap = {
+    [orgnr: string]: K9ArbeidstidInfo;
 };
 
 export interface K9Arbeidstid {
-    arbeidsgivereMap?: K9ArbeidsgivereArbeidstidMap;
-    frilanser?: K9AktivitetArbeidstid;
-    selvstendig?: K9AktivitetArbeidstid;
+    arbeidstakerMap?: K9ArbeidstakerMap;
+    frilanser?: K9ArbeidstidInfo;
+    selvstendig?: K9ArbeidstidInfo;
 }
 
 export interface K9Sak {

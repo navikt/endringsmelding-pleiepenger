@@ -1,6 +1,6 @@
 import { DateRange } from '@navikt/sif-common-formik/lib';
 import { ArbeidstidDagK9FormatInnsending, ArbeidstidK9FormatInnsending } from '../../types/k9FormatInnsending';
-import { K9AktivitetArbeidstid, K9Sak } from '../../types/K9Sak';
+import { K9ArbeidstidInfo, K9Sak } from '../../types/K9Sak';
 import { TidEnkeltdagApiData } from '../../types/SoknadApiData';
 import { ArbeidstidFormValue, TidEnkeltdag } from '../../types/SoknadFormData';
 import { ISODateToISODateRange } from '../dateUtils';
@@ -10,7 +10,7 @@ import { timeToISODuration } from '../timeUtils';
 
 export const mapAktivitetArbeidstidToK9FormatInnsending = (
     faktiskArbeidstid: TidEnkeltdag,
-    arbeidstidSak: K9AktivitetArbeidstid,
+    arbeidstidSak: K9ArbeidstidInfo,
     søknadsperioder: DateRange[]
 ): ArbeidstidDagK9FormatInnsending => {
     const dagerMedEndring: TidEnkeltdag = arbeidstidSak.faktisk
@@ -44,10 +44,10 @@ export const mapArbeidstidToK9FormatInnsending = (
         arbeidstakerList: [],
     };
 
-    const { arbeidsgivereMap } = k9sak.ytelse.arbeidstid;
-    if (arbeidsgivereMap) {
+    const { arbeidstakerMap } = k9sak.ytelse.arbeidstid;
+    if (arbeidstakerMap) {
         Object.keys(arbeidsgiver).forEach((organisasjonsnummer) => {
-            const arbeidsgiverSakInfo = arbeidsgivereMap[organisasjonsnummer];
+            const arbeidsgiverSakInfo = arbeidstakerMap[organisasjonsnummer];
             const faktiskArbeidstidFormValues = arbeidsgiver[organisasjonsnummer].faktisk;
             const perioder = mapAktivitetArbeidstidToK9FormatInnsending(
                 faktiskArbeidstidFormValues,

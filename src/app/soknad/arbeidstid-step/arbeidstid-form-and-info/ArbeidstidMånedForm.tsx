@@ -7,13 +7,13 @@ import { TidEnkeltdag } from '../../../types/SoknadFormData';
 import { dateToISODate, timeHasSameDuration } from '../../../utils/dateUtils';
 import { getDagerMedTidITidsrom, getTidEnkeltdagerInnenforPeriode, tidErIngenTid } from '../../../utils/tidsbrukUtils';
 import { getArbeidstidValidator } from '../../../validation/validateArbeidstidFields';
-import { K9AktivitetArbeidstid } from '../../../types/K9Sak';
+import { K9ArbeidstidInfo } from '../../../types/K9Sak';
 import { timeToISODuration } from '../../../utils/timeUtils';
 
 interface Props {
     periodeIMåned: DateRange;
     arbeidstid: TidEnkeltdag;
-    arbeidstidArbeidsgiverSak: K9AktivitetArbeidstid;
+    arbeidstidArbeidsgiverSak: K9ArbeidstidInfo;
     utilgjengeligeDatoer: Date[];
     erHistorisk: boolean;
     onCancel: () => void;

@@ -1,32 +1,33 @@
 import { ISODate, ISODateRange, ISODuration } from '.';
 
-export type TilsynsordningPerioderK9Format = {
+export type K9FormatTilsynsordningPerioder = {
     [key: ISODateRange]: { etablertTilsynTimerPerDag: ISODuration };
 };
 
-export type ArbeidstidEnkeltdagK9Format = {
+export type K9FormatArbeidstidTid = {
     jobberNormaltTimerPerDag: ISODuration;
     faktiskArbeidTimerPerDag: ISODuration;
 };
 
-export type ArbeidstidDagK9Format = {
-    [key: ISODateRange]: ArbeidstidEnkeltdagK9Format;
+export type K9FormatArbeidstidPeriode = {
+    [key: ISODateRange]: K9FormatArbeidstidTid;
 };
 
-export interface ArbeidsgiverK9Format {
+export interface K9FormatArbeidstidInfo {
+    perioder: K9FormatArbeidstidPeriode;
+}
+export interface K9FormatArbeidstaker {
     norskIdentitetsnummer?: string;
     organisasjonsnummer: string;
-    arbeidstidInfo: {
-        perioder: ArbeidstidDagK9Format;
-    };
+    arbeidstidInfo: K9FormatArbeidstidInfo;
 }
-export interface ArbeidstidK9Format {
-    arbeidstakerList: ArbeidsgiverK9Format[];
+export interface K9FormatArbeidstid {
+    arbeidstakerList: K9FormatArbeidstaker[];
     frilanserArbeidstidInfo?: {
-        perioder: ArbeidstidDagK9Format;
+        perioder: K9FormatArbeidstidPeriode;
     };
     selvstendigNæringsdrivendeArbeidstidInfo?: {
-        perioder: ArbeidstidDagK9Format;
+        perioder: K9FormatArbeidstidPeriode;
     };
 }
 
@@ -38,9 +39,9 @@ export interface K9FormatYtelse {
     };
     søknadsperiode: ISODateRange[];
     tilsynsordning: {
-        perioder: TilsynsordningPerioderK9Format;
+        perioder: K9FormatTilsynsordningPerioder;
     };
-    arbeidstid: ArbeidstidK9Format;
+    arbeidstid: K9FormatArbeidstid;
 }
 
 export interface K9Format {

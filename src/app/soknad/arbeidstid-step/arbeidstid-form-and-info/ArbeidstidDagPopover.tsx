@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { Element } from 'nav-frontend-typografi';
 import FormattedTimeText from '../../../components/formatted-time-text/FormattedTimeText';
 import { InputTime } from '../../../types';
-import { K9AktivitetArbeidstid } from '../../../types/K9Sak';
+import { K9ArbeidstidInfo } from '../../../types/K9Sak';
 import { DagMedTid } from '../../../types/SoknadFormData';
 import dateFormatter from '../../../utils/dateFormatterUtils';
 import { dateToISODate, timeHasSameDuration } from '../../../utils/dateUtils';
@@ -13,7 +13,7 @@ import { datoErHistorisk } from '../../../utils/tidsbrukUtils';
 interface Props {
     dato: Date;
     dager: DagMedTid[];
-    arbeidstidArbeidsgiverSak: K9AktivitetArbeidstid;
+    arbeidstidSak: K9ArbeidstidInfo;
 }
 
 const getTidForDag = (dato: Date, dager: DagMedTid[]) => {
@@ -21,11 +21,11 @@ const getTidForDag = (dato: Date, dager: DagMedTid[]) => {
     return dag ? dag.tid : undefined;
 };
 
-const ArbeidstidDagPopoverContent: React.FunctionComponent<Props> = ({ dager, dato, arbeidstidArbeidsgiverSak }) => {
+const ArbeidstidDagPopoverContent: React.FunctionComponent<Props> = ({ dager, dato, arbeidstidSak }) => {
     const dateKey = dateToISODate(dato);
     const tid: InputTime | undefined = getTidForDag(dato, dager);
-    const opprinneligTid: InputTime | undefined = arbeidstidArbeidsgiverSak.faktisk[dateKey];
-    const jobberNormaltTid: InputTime | undefined = arbeidstidArbeidsgiverSak.normalt[dateKey];
+    const opprinneligTid: InputTime | undefined = arbeidstidSak.faktisk[dateKey];
+    const jobberNormaltTid: InputTime | undefined = arbeidstidSak.normalt[dateKey];
     const erEndret = timeHasSameDuration(tid, opprinneligTid) === false;
     const erHistorisk = datoErHistorisk(dato, getEndringsdato());
     return (

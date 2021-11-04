@@ -50,13 +50,13 @@ export const validateAktivitetArbeidstid = ({
         return 'ingenEndringer';
     }
     let endret = false;
-    const { arbeidsgivereMap } = arbeidstidSak;
-    if (arbeidstid.arbeidsgiver && arbeidsgivereMap) {
+    const { arbeidstakerMap } = arbeidstidSak;
+    if (arbeidstid.arbeidsgiver && arbeidstakerMap) {
         Object.keys(arbeidstid.arbeidsgiver).forEach((a) => {
             if (endret) {
                 return;
             }
-            if (erTidEndret(arbeidstid.arbeidsgiver[a].faktisk, arbeidsgivereMap[a].faktisk)) {
+            if (erTidEndret(arbeidstid.arbeidsgiver[a].faktisk, arbeidstakerMap[a].faktisk)) {
                 endret = true;
             }
         });
