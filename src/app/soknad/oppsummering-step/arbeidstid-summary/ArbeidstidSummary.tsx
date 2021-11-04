@@ -49,7 +49,7 @@ const ArbeidstidSummary: React.FunctionComponent<Props> = ({ arbeidstid, arbeids
                 const arbeidsgiverArbeidstid = arbeidstid.arbeidstakerList.find(
                     (a) => a.organisasjonsnummer === organisasjonsnummer
                 );
-                if (arbeidsgiverArbeidstid) {
+                if (arbeidsgiverArbeidstid && arbeidstidK9.arbeidsgivereMap) {
                     return renderAktivitetArbeidstid(
                         arbeidsgiverArbeidstid.arbeidstidInfo.perioder,
                         arbeidstidK9.arbeidsgivereMap[organisasjonsnummer].faktisk,

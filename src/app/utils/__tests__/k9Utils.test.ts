@@ -4,8 +4,9 @@ import { K9AktivitetArbeidstid } from '../../types/K9Sak';
 import { TidEnkeltdag } from '../../types/SoknadFormData';
 import { ISODateToDate } from '../dateUtils';
 import {
+    erArbeidsgivereIBådeSakOgAAreg,
     getISODateObjectsWithinDateRange,
-    k9ArbeidsgivereFinnesIAAreg,
+    harK9SakArbeidstidInfo,
     trimArbeidstidTilTillatPeriode,
 } from '../k9SakUtils';
 
@@ -66,27 +67,52 @@ describe('trimArbeidstidTilTillatPeriode', () => {
     });
 });
 
-describe('k9ArbeidsgivereFinnesIAAreg', () => {
+describe('erArbeidsgivereErBådeISakOgAAreg', () => {
     it('returnerer true når alle k9 arbeidsgivere (1) finnes i AA-reg', () => {
-        const result = k9ArbeidsgivereFinnesIAAreg([{ navn: 'a', organisasjonsnummer: '1' }], {
+        const result = erArbeidsgivereIBådeSakOgAAreg([{ navn: 'a', organisasjonsnummer: '1' }], {
             '1': { faktisk: {}, normalt: {} },
         });
         expect(result).toBeTruthy();
     });
     it('returnerer true når ingen arbeidsgivere finnes i k9sak', () => {
-        const result = k9ArbeidsgivereFinnesIAAreg([{ navn: 'a', organisasjonsnummer: '1' }], {});
+        const result = erArbeidsgivereIBådeSakOgAAreg([{ navn: 'a', organisasjonsnummer: '1' }], {});
         expect(result).toBeTruthy();
     });
     it('returnerer false når en k9 arbeidsgiver ikke finnes i AA-reg', () => {
-        const result = k9ArbeidsgivereFinnesIAAreg([{ navn: 'a', organisasjonsnummer: '1' }], {
+        const result = erArbeidsgivereIBådeSakOgAAreg([{ navn: 'a', organisasjonsnummer: '1' }], {
             '2': { faktisk: {}, normalt: {} },
         });
         expect(result).toBeFalsy();
     });
     it('returnerer false når ingen arbeidsgivere finnes i AA-reg', () => {
-        const result = k9ArbeidsgivereFinnesIAAreg([], {
+        const result = erArbeidsgivereIBådeSakOgAAreg([], {
             '2': { faktisk: {}, normalt: {} },
         });
         expect(result).toBeFalsy();
+    });
+});
+
+describe('harK9SakArbeidstidInfo', () => {
+    it('returnerer false dersom det er ikke er info om arbeidstid for arbeidsgivere, frilanser eller sn', () => {
+        const result = harK9SakArbeidstidInfo([], {});
+        expect(result).toBeFalsy();
+    });
+    it('returnerer true dersom det er info om arbeidstid for arbeidsgivere', () => {
+        const result = harK9SakArbeidstidInfo([{ navn: 'a', organisasjonsnummer: '1' }], {
+            arbeidsgivereMap: { '1': { faktisk: {}, normalt: {} } },
+        });
+        expect(result).toBeTruthy();
+    });
+    it('returnerer true dersom det er info om arbeidstid som frilanser', () => {
+        const result = harK9SakArbeidstidInfo([], {
+            frilanser: { faktisk: {}, normalt: {} },
+        });
+        expect(result).toBeTruthy();
+    });
+    it('returnerer true dersom det er info om arbeidstid from selvdstendig', () => {
+        const result = harK9SakArbeidstidInfo([], {
+            selvstendig: { faktisk: {}, normalt: {} },
+        });
+        expect(result).toBeTruthy();
     });
 });

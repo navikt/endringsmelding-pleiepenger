@@ -44,23 +44,26 @@ export const mapArbeidstidToK9FormatInnsending = (
         arbeidstakerList: [],
     };
 
-    Object.keys(arbeidsgiver).forEach((organisasjonsnummer) => {
-        const arbeidsgiverSakInfo = k9sak.ytelse.arbeidstid.arbeidsgivereMap[organisasjonsnummer];
-        const faktiskArbeidstidFormValues = arbeidsgiver[organisasjonsnummer].faktisk;
-        const perioder = mapAktivitetArbeidstidToK9FormatInnsending(
-            faktiskArbeidstidFormValues,
-            arbeidsgiverSakInfo,
-            søknadsperioder
-        );
-        if (Object.keys(perioder).length > 0) {
-            apiData.arbeidstakerList.push({
-                organisasjonsnummer,
-                arbeidstidInfo: {
-                    perioder,
-                },
-            });
-        }
-    });
+    const { arbeidsgivereMap } = k9sak.ytelse.arbeidstid;
+    if (arbeidsgivereMap) {
+        Object.keys(arbeidsgiver).forEach((organisasjonsnummer) => {
+            const arbeidsgiverSakInfo = arbeidsgivereMap[organisasjonsnummer];
+            const faktiskArbeidstidFormValues = arbeidsgiver[organisasjonsnummer].faktisk;
+            const perioder = mapAktivitetArbeidstidToK9FormatInnsending(
+                faktiskArbeidstidFormValues,
+                arbeidsgiverSakInfo,
+                søknadsperioder
+            );
+            if (Object.keys(perioder).length > 0) {
+                apiData.arbeidstakerList.push({
+                    organisasjonsnummer,
+                    arbeidstidInfo: {
+                        perioder,
+                    },
+                });
+            }
+        });
+    }
     if (arbeidstid.frilanser && k9sak.ytelse.arbeidstid.frilanser) {
         const perioder = mapAktivitetArbeidstidToK9FormatInnsending(
             arbeidstid.frilanser.faktisk,

@@ -9,7 +9,7 @@ export type K9ArbeidsgivereArbeidstidMap = {
 };
 
 export interface K9Arbeidstid {
-    arbeidsgivereMap: K9ArbeidsgivereArbeidstidMap;
+    arbeidsgivereMap?: K9ArbeidsgivereArbeidstidMap;
     frilanser?: K9AktivitetArbeidstid;
     selvstendig?: K9AktivitetArbeidstid;
 }

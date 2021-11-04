@@ -67,11 +67,11 @@ export const verifySoknadApiData = (
     }
     const errors = runVerification(Object.keys(SoknadApiDataField), apiData);
     if (apiData.ytelse.arbeidstid) {
+        const { arbeidsgivereMap } = k9sak.ytelse.arbeidstid;
+
         if (
-            normalarbeidstidErUendret(
-                apiData.ytelse.arbeidstid.arbeidstakerList,
-                k9sak.ytelse.arbeidstid.arbeidsgivereMap
-            ) === false
+            arbeidsgivereMap &&
+            normalarbeidstidErUendret(apiData.ytelse.arbeidstid.arbeidstakerList, arbeidsgivereMap) === false
         ) {
             errors.push(SoknadApiDataField.arbeidstid);
         }

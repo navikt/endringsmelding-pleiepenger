@@ -20,9 +20,13 @@ export const getAktivitetArbeidstid = (arbeidstid: K9AktivitetArbeidstid): Arbei
 };
 
 export const getArbeidsgivereArbeidstid = (k9Arbeidstid: K9Arbeidstid): ArbeidstidArbeidsgiverMap => {
+    const { arbeidsgivereMap } = k9Arbeidstid;
+    if (arbeidsgivereMap === undefined) {
+        return {};
+    }
     const arbeidstidArbeidsgiver: ArbeidstidArbeidsgiverMap = {};
-    Object.keys(k9Arbeidstid.arbeidsgivereMap).forEach((orgnr) => {
-        return getAktivitetArbeidstid(k9Arbeidstid.arbeidsgivereMap[orgnr]);
+    Object.keys(arbeidsgivereMap).forEach((orgnr) => {
+        return getAktivitetArbeidstid(arbeidsgivereMap[orgnr]);
     });
     return arbeidstidArbeidsgiver;
 };

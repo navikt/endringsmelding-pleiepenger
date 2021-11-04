@@ -24,7 +24,7 @@ import appSentryLogger from '../utils/appSentryLogger';
 import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 import { getAvailableSteps } from '../utils/getAvailableSteps';
 import { getInitialFormData } from '../utils/initialFormDataUtils';
-import { k9ArbeidsgivereFinnesIAAreg } from '../utils/k9SakUtils';
+import { harK9SakArbeidstidInfo } from '../utils/k9SakUtils';
 import {
     navigateTo,
     navigateToErrorPage,
@@ -231,11 +231,11 @@ const Soknad: React.FunctionComponent<Props> = ({
                 if (søker.myndig === false) {
                     return <IkkeMyndigPage />;
                 }
-                if (k9ArbeidsgivereFinnesIAAreg(arbeidsgivere, k9sak.ytelse.arbeidstid.arbeidsgivereMap) === false) {
+                if (harK9SakArbeidstidInfo(arbeidsgivere, k9sak.ytelse.arbeidstid) === false) {
                     return (
                         <ErrorPage
                             bannerTitle={intlHelper(intl, 'application.title')}
-                            contentRenderer={() => <>Informasjon om arbeidsgivere mangler</>}
+                            contentRenderer={() => <>Informasjon om arbeidstid mangler</>}
                         />
                     );
                 }

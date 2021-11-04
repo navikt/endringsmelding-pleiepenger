@@ -35,7 +35,7 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
 }) => {
     const stepId = StepID.ARBEIDSTID;
     const { values } = useFormikContext<SoknadFormData>();
-
+    const { arbeidsgivereMap } = arbeidstidSak;
     return (
         <SoknadFormStep id={stepId} onStepCleanup={cleanupStep}>
             <StepIntroduction>Intro til steg</StepIntroduction>
@@ -49,26 +49,30 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
                         });
                         return result;
                     }}>
-                    {arbeidsgivere.map((a) => {
-                        const arbeidstidArbeidsgiver = arbeidstidSak.arbeidsgivereMap[a.organisasjonsnummer];
-                        return (
-                            <div key={a.organisasjonsnummer} className="arbeidstid__aktivitet">
-                                <Undertittel>
-                                    {a.navn} ({a.organisasjonsnummer})
-                                </Undertittel>
-                                {arbeidstidArbeidsgiver === undefined ? (
-                                    <p>Informasjon mangler om arbeidstid for denne arbeidsgiveren</p>
-                                ) : (
-                                    <ArbeidstidMånedListe
-                                        formFieldName={getArbeidsgiverArbeidstidFormFieldName(a)}
-                                        arbeidstidSak={arbeidstidArbeidsgiver}
-                                        k9sakMeta={k9sakMeta}
-                                        onArbeidstidChanged={onArbeidstidChanged}
-                                    />
-                                )}
-                            </div>
-                        );
-                    })}
+                    {arbeidsgivereMap && (
+                        <>
+                            {arbeidsgivere.map((a) => {
+                                const arbeidstidArbeidsgiver = arbeidsgivereMap[a.organisasjonsnummer];
+                                return (
+                                    <div key={a.organisasjonsnummer} className="arbeidstid__aktivitet">
+                                        <Undertittel>
+                                            {a.navn} ({a.organisasjonsnummer})
+                                        </Undertittel>
+                                        {arbeidstidArbeidsgiver === undefined ? (
+                                            <p>Informasjon mangler om arbeidstid for denne arbeidsgiveren</p>
+                                        ) : (
+                                            <ArbeidstidMånedListe
+                                                formFieldName={getArbeidsgiverArbeidstidFormFieldName(a)}
+                                                arbeidstidSak={arbeidstidArbeidsgiver}
+                                                k9sakMeta={k9sakMeta}
+                                                onArbeidstidChanged={onArbeidstidChanged}
+                                            />
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </>
+                    )}
                     {arbeidstidSak.frilanser && (
                         <div className="arbeidstid__aktivitet">
                             <Undertittel>Frilanser</Undertittel>

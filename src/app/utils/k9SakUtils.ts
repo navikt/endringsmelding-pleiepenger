@@ -7,6 +7,7 @@ import { Arbeidsgiver } from '../types/Arbeidsgiver';
 import {
     K9AktivitetArbeidstid,
     K9ArbeidsgivereArbeidstidMap,
+    K9Arbeidstid,
     K9Sak,
     K9SakMeta,
     MånedMedSøknadsperioderMap as MånedMedSøknadsperioderMap,
@@ -177,13 +178,24 @@ export const trimK9SakForSøknad = (k9sak: K9Sak): { sak: K9Sak; meta: K9SakMeta
     return { sak, meta };
 };
 
-export const k9ArbeidsgivereFinnesIAAreg = (
+export const erArbeidsgivereIBådeSakOgAAreg = (
     arbeidsgivere: Arbeidsgiver[],
-    k9arbeidsgivereMap: K9ArbeidsgivereArbeidstidMap
-): boolean => {
+    arbeidsgivereMap?: K9ArbeidsgivereArbeidstidMap
+): boolean =>
+    arbeidsgivereMap !== undefined
+        ? Object.keys(arbeidsgivereMap).some(
+              (orgnr) => arbeidsgivere.some((a) => a.organisasjonsnummer === orgnr) === false
+          ) === false
+        : false;
+
+export const harK9SakArbeidstidInfo = (arbeidsgivere: Arbeidsgiver[], arbeidstidSak: K9Arbeidstid): boolean => {
+    const arbeidsgivereErBådeISakOgAAreg = erArbeidsgivereIBådeSakOgAAreg(
+        arbeidsgivere,
+        arbeidstidSak.arbeidsgivereMap
+    );
     return (
-        Object.keys(k9arbeidsgivereMap).some(
-            (orgnr) => arbeidsgivere.some((a) => a.organisasjonsnummer === orgnr) === false
-        ) === false
+        arbeidsgivereErBådeISakOgAAreg ||
+        arbeidstidSak.frilanser !== undefined ||
+        arbeidstidSak.selvstendig !== undefined
     );
 };
