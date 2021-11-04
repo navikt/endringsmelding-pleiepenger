@@ -13,7 +13,7 @@ export const getEndringsdato = (): Date => new Date();
 
 export const getMaksEndringsperiode = (endringsdato: Date): DateRange => ({
     from: dayjs(endringsdato).subtract(3, 'months').startOf('day').toDate(),
-    to: dayjs(endringsdato).add(12, 'months').endOf('day').toDate(),
+    to: dayjs(endringsdato).add(6, 'months').endOf('day').toDate(),
 });
 
 export const getEndringsperiode = (endringsdato: Date, søknadsperioder: DateRange[]): DateRange => {
