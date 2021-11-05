@@ -9,12 +9,13 @@ import {
 
 describe('getEndringsperiode', () => {
     it('returnerer maks endringsdato dersom søknadsperiode er større enn endringsperiode', () => {
+        /** Forutsetter maks periode til å være 6 måneder frem i tid fra dagens dato */
         const endringsdato: Date = ISODateToDate('2021-02-01');
         const søknadsperiode: DateRange = ISODateRangeToDateRange('2020-01-01/2023-12-01');
         const result = getEndringsperiode(endringsdato, [søknadsperiode]);
         expect(result).toBeDefined();
         expect(dateToISODate(result.from)).toEqual('2020-11-01');
-        expect(dateToISODate(result.to)).toEqual('2022-02-01');
+        expect(dateToISODate(result.to)).toEqual('2021-08-01');
     });
     it('returnerer søknadsperiode datoer dersom søknadsperiode er innenfor enn endringsperiode', () => {
         const endringsdato: Date = ISODateToDate('2021-02-01');
