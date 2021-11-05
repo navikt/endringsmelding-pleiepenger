@@ -1,3 +1,4 @@
+import { ISODateString } from 'nav-datovelger/lib/types';
 import { ISODate, ISODateRange, ISODuration } from '.';
 
 export type K9FormatTilsynsordningPerioder = {
@@ -31,6 +32,15 @@ export interface K9FormatArbeidstid {
     };
 }
 
+export interface K9FormatArbeidsgiver {
+    norskIdentitetsnummer?: string;
+    organisasjonsnummer: string;
+}
+export interface K9OpptjeningAktivitetFrilanser {
+    startdato: ISODateString;
+    sluttdato?: ISODateString;
+    jobberFortsattSomFrilanser: boolean;
+}
 export interface K9FormatYtelse {
     type: 'PLEIEPENGER_SYKT_BARN';
     barn: {
@@ -38,6 +48,10 @@ export interface K9FormatYtelse {
         fødselsdato: ISODate;
     };
     søknadsperiode: ISODateRange[];
+    opptjeningAktivitet: {
+        arbeidstaker: K9FormatArbeidsgiver[];
+        frilanser?: K9OpptjeningAktivitetFrilanser;
+    };
     tilsynsordning: {
         perioder: K9FormatTilsynsordningPerioder;
     };

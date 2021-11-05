@@ -13,6 +13,13 @@ export const k9SakMock: K9Format = {
             norskIdentitetsnummer: '22222222222',
             fødselsdato: '2018-10-30',
         },
+        opptjeningAktivitet: {
+            arbeidstaker: [
+                {
+                    organisasjonsnummer: '967170232',
+                },
+            ],
+        },
         søknadsperiode: [
             '2018-01-12/2018-10-15',
             '2021-09-09/2021-09-15',
@@ -39,17 +46,6 @@ export const k9SakMock: K9Format = {
         },
         arbeidstid: {
             arbeidstakerList: [
-                {
-                    organisasjonsnummer: '907670201',
-                    arbeidstidInfo: {
-                        perioder: {
-                            '2021-01-01/2023-08-11': {
-                                jobberNormaltTimerPerDag: 'PT1H0M',
-                                faktiskArbeidTimerPerDag: 'PT0H',
-                            },
-                        },
-                    },
-                },
                 {
                     organisasjonsnummer: '967170232',
                     arbeidstidInfo: {

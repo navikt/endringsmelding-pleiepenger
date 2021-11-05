@@ -19,3 +19,9 @@ export interface Ukeinfo {
     ukenummer: number;
     dager: Daginfo[];
 }
+
+export enum ArbeidsforholdType {
+    ANSATT = 'ANSATT',
+    FRILANSER = 'FRILANSER',
+    SELVSTENDIG = 'SELVSTENDIG',
+}

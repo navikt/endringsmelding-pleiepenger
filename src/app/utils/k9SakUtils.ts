@@ -4,6 +4,7 @@ import { flatten } from 'lodash';
 import moize from 'moize';
 import { DagerIkkeSøktForMap, DagerSøktForMap } from '../types';
 import { Arbeidsgiver } from '../types/Arbeidsgiver';
+import { K9FormatArbeidsgiver } from '../types/k9Format';
 import {
     K9ArbeidstidInfo,
     K9ArbeidstakerMap,
@@ -194,5 +195,15 @@ export const harK9SakArbeidstidInfo = (arbeidsgivere: Arbeidsgiver[], arbeidstid
         arbeidsgivereErBådeISakOgAAreg ||
         arbeidstidSak.frilanser !== undefined ||
         arbeidstidSak.selvstendig !== undefined
+    );
+};
+
+export const getNyeArbeidsforholdIkkeRegistrertIK9Sak = (
+    arbeidsgivere: Arbeidsgiver[],
+    k9sakArbeidsgivere: K9FormatArbeidsgiver[]
+): Arbeidsgiver[] => {
+    return arbeidsgivere.filter(
+        ({ organisasjonsnummer }) =>
+            k9sakArbeidsgivere.some((k9a) => k9a.organisasjonsnummer === organisasjonsnummer) === false
     );
 };

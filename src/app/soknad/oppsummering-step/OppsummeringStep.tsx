@@ -37,7 +37,7 @@ const OppsummeringStep: React.FunctionComponent<Props> = ({ apiValues, arbeidsgi
         if (apiDataValidationResult.isValid === false) {
             appSentryLogger.logError('apiValues not valid', JSON.stringify(apiDataValidationResult.errors));
         }
-    }, []);
+    }, [apiDataValidationResult]);
 
     return (
         <SoknadFormStep

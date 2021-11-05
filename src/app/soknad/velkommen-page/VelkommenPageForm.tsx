@@ -4,16 +4,18 @@ import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import InfoDialog from '@navikt/sif-common-core/lib/components/dialogs/info-dialog/InfoDialog';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import { DateRange } from '@navikt/sif-common-formik/lib';
+import { getCheckedValidator } from '@navikt/sif-common-formik/lib/validation';
+import getIntlFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
+import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import Lenke from 'nav-frontend-lenker';
 import { Element } from 'nav-frontend-typografi';
 import SoknadFormComponents from '../../soknad/SoknadFormComponents';
+import { Arbeidsgiver } from '../../types/Arbeidsgiver';
 import { HvaSkalEndres, SoknadFormField } from '../../types/SoknadFormData';
 import DinePlikterContent from './dine-plikter/DinePlikter';
 import BehandlingAvPersonopplysningerContent from './personopplysninger/Personopplysninger';
-import { getCheckedValidator, getRequiredFieldValidator } from '@navikt/sif-common-formik/lib/validation';
-import getIntlFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
+import { getHvaSkalEndresValidator } from '../../validation/fieldValidations';
 
 interface DialogState {
     dinePlikterModalOpen?: boolean;
@@ -21,11 +23,11 @@ interface DialogState {
 }
 
 interface Props {
-    endringsperiode: DateRange;
+    nyeArbeidsforhold: Arbeidsgiver[];
     onStart: () => void;
 }
 
-const VelkommenPageForm: React.FunctionComponent<Props> = ({ onStart }) => {
+const VelkommenPageForm: React.FunctionComponent<Props> = ({ nyeArbeidsforhold, onStart }) => {
     const [dialogState, setDialogState] = useState<DialogState>({});
     const { dinePlikterModalOpen, behandlingAvPersonopplysningerModalOpen } = dialogState;
     const intl = useIntl();
@@ -35,17 +37,35 @@ const VelkommenPageForm: React.FunctionComponent<Props> = ({ onStart }) => {
             onValidSubmit={onStart}
             includeButtons={false}
             formErrorHandler={getIntlFormErrorHandler(intl, 'validation')}>
+            {nyeArbeidsforhold.length > 0 && (
+                <AlertStripeInfo>
+                    Vi ser at du har fått nye arbeidsforhold siden sist. For å kunne sende inn en melding om endring, må
+                    du da også fylle ut informasjon om hvordan du jobber hos denne/disse.
+                </AlertStripeInfo>
+            )}
             <FormBlock>
                 <SoknadFormComponents.CheckboxPanelGroup
                     name={SoknadFormField.hvaSkalEndres}
-                    legend={'Velg hva du ønsker å endre:'}
-                    validate={getRequiredFieldValidator()}
+                    legend={'Hva du ønsker å gjøre?'}
+                    validate={getHvaSkalEndresValidator(nyeArbeidsforhold.length > 0)}
                     checkboxes={[
+                        {
+                            id: 'arbeidssituasjon',
+                            label: (
+                                <>
+                                    <Element>Oppdatere nytt arbeidsforhold - påkrevd</Element>Legg til informasjon om
+                                    hvordan og hvor mye du jobber når du jobber som normalt og ikke har noe fravær
+                                </>
+                            ),
+
+                            value: HvaSkalEndres.arbeidssituasjon,
+                        },
                         {
                             id: 'arbeidstid',
                             label: (
                                 <>
-                                    <Element>Arbeidstid</Element>Legg til, endre eller fjern arbeidstid
+                                    <Element>Endre arbeidstid</Element>Legg til eller endre hvor mye du har eller skal
+                                    jobbe
                                 </>
                             ),
                             value: HvaSkalEndres.arbeidstid,
@@ -54,7 +74,8 @@ const VelkommenPageForm: React.FunctionComponent<Props> = ({ onStart }) => {
                             id: 'omsorgstilbud',
                             label: (
                                 <>
-                                    <Element>Omsorgstilbud</Element>Legg til, endre eller fjern tid i omsorgstilbud
+                                    <Element>Endre tid i et omsorgstilbud</Element>Legg til eller endre hvor mye tid
+                                    barnet har vært i et fast og regelmessig omsorgstilbud
                                 </>
                             ),
                             value: HvaSkalEndres.omsorgstilbud,

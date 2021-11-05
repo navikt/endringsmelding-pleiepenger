@@ -93,6 +93,10 @@
     "step.omsorgstilbud.stepTitle": "Omsorgstilbud",
     "step.omsorgstilbud.nextButtonLabel": "Fortsett",
 
+    "step.arbeidssituasjon.pageTitle": "Arbeidssituasjon",
+    "step.arbeidssituasjon.stepTitle": "Arbeidssituasjon",
+    "step.arbeidssituasjon.nextButtonLabel": "Fortsett",
+
     "step.arbeidstid.pageTitle": "Arbeidstid",
     "step.arbeidstid.stepTitle": "Arbeidstid",
     "step.arbeidstid.nextButtonLabel": "Fortsett",
@@ -112,7 +116,15 @@
     "validation.harForståttRettigheterOgPlikter.notChecked": "Du må bekrefte at du har lest og forstått dine plikter.",
     "validation.harBekreftetOpplysninger.notChecked": "Du må bekrefte opplysningene.",
     "validation.hvaSkalEndres.noValue": "Du må krysse av for hva du ønsker å endre",
+    "validation.hvaSkalEndres.endreArbeidssituasjonIkkeValgt": "Du må krysse av for å endre arbeidssituasjon på grunn av at du har et nytt arbeidsforhold vi trenger informasjon om.",
     "validation.omsorgstilbud_liste.ingenEndringer": "Det er ikke registrert noen endringer i omsorgstilbudet",
     "validation.alle_arbeidsgivere_liste.ingenEndringer": "Det er ikke registrert noen endringer i arbeidstid",
+
+    "validation.arbeidsforhold.arbeidsform.noValue": "Du må svare på hvordan du {jobber} {hvor}.",
+    "validation.arbeidsforhold.jobberNormaltTimer.numberHasNoValue": "Du må oppgi hvor mange timer per uke du {jobber} {arbeidsform} {hvor}.",
+    "validation.arbeidsforhold.jobberNormaltTimer.numberHasInvalidFormat": "Antall timer du {jobber} {arbeidsform} per uke {hvor} kan kun bestå av tall.",
+    "validation.arbeidsforhold.jobberNormaltTimer.numberIsTooSmall": "Antall timer du {jobber} {arbeidsform} per uke {hvor} kan ikke være mindre enn {min}.",
+    "validation.arbeidsforhold.jobberNormaltTimer.numberIsTooLarge": "Antall timer du {jobber} {arbeidsform} per uke {hvor} kan ikke være mer enn {max}.",
+
     "oppsummering.advarsel.invalidApiValues": "Det oppstod en feil under behandlingen av informasjonen, og som gjør at du ikke kan sende inn meldingen om endring."
 }

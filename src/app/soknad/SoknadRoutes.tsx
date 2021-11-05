@@ -24,6 +24,7 @@ import { useSoknadContext } from './SoknadContext';
 import { StepID } from './soknadStepsConfig';
 import VelkommenPage from './velkommen-page/VelkommenPage';
 import { K9Sak, K9SakMeta } from '../types/K9Sak';
+import ArbeidssituasjonStep from './arbeidssituasjon-step/ArbeidssituasjonStep';
 
 interface Props {
     soknadId?: string;
@@ -31,13 +32,21 @@ interface Props {
     arbeidsgivere?: Arbeidsgiver[];
     k9sak: K9Sak;
     k9sakMeta: K9SakMeta;
+    nyeArbeidsforhold: Arbeidsgiver[];
 }
 
-const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, arbeidsgivere, k9sak, k9sakMeta }) => {
+const SoknadRoutes: React.FunctionComponent<Props> = ({
+    soknadId,
+    søker,
+    arbeidsgivere,
+    k9sak,
+    k9sakMeta,
+    nyeArbeidsforhold,
+}) => {
     const intl = useIntl();
     const history = useHistory();
     const { values } = useFormikContext<SoknadFormData>();
-    const availableSteps = getAvailableSteps(values, søker);
+    const availableSteps = getAvailableSteps(values, søker, nyeArbeidsforhold);
     const { soknadStepsConfig, sendSoknadStatus } = useSoknadContext();
     const { persist } = usePersistSoknad(history);
 
@@ -54,21 +63,12 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, arbeid
                 });
             }
         }
-    }, [soknadId, persistRequest, persist, søker]);
+    }, [soknadId, persistRequest, persist, søker, arbeidsgivere, k9sak]);
 
-    const { endringsperiode } = k9sakMeta;
     const renderSoknadStep = (soknadId: string, søker: Person, stepID: StepID): React.ReactNode => {
         switch (stepID) {
-            case StepID.OMSORGSTILBUD:
-                return (
-                    <OmsorgstilbudStep
-                        k9sakMeta={k9sakMeta}
-                        tidIOmsorgstilbudSak={k9sak.ytelse.tilsynsordning.enkeltdager}
-                        onOmsorgstilbudChanged={() => {
-                            setPersistRequest({ stepID: StepID.OMSORGSTILBUD });
-                        }}
-                    />
-                );
+            case StepID.ARBEIDSSITUASJON:
+                return <ArbeidssituasjonStep nyeArbeidsforhold={nyeArbeidsforhold} />;
             case StepID.ARBEIDSTID:
                 return (
                     <ArbeidstidStep
@@ -77,6 +77,16 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, arbeid
                         k9sakMeta={k9sakMeta}
                         onArbeidstidChanged={() => {
                             setPersistRequest({ stepID: StepID.ARBEIDSTID });
+                        }}
+                    />
+                );
+            case StepID.OMSORGSTILBUD:
+                return (
+                    <OmsorgstilbudStep
+                        k9sakMeta={k9sakMeta}
+                        tidIOmsorgstilbudSak={k9sak.ytelse.tilsynsordning.enkeltdager}
+                        onOmsorgstilbudChanged={() => {
+                            setPersistRequest({ stepID: StepID.OMSORGSTILBUD });
                         }}
                     />
                 );
@@ -119,7 +129,7 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, arbeid
                 />
             </Route>
             <Route path={AppRoutes.SOKNAD} exact={true}>
-                <VelkommenPage endringsperiode={endringsperiode} />
+                <VelkommenPage nyeArbeidsforhold={nyeArbeidsforhold} />
             </Route>
             {soknadId === undefined && <Redirect key="redirectToWelcome" to={AppRoutes.SOKNAD} />}
             {soknadId &&

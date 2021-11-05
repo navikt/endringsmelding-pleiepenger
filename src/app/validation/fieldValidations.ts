@@ -1,7 +1,8 @@
 import { Time } from '@navikt/sif-common-formik/lib';
+import { getNumberValidator, getRequiredFieldValidator } from '@navikt/sif-common-formik/lib/validation';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import { K9Arbeidstid } from '../types/K9Sak';
-import { ArbeidstidFormValue, TidEnkeltdag } from '../types/SoknadFormData';
+import { ArbeidstidFormValue, HvaSkalEndres, TidEnkeltdag } from '../types/SoknadFormData';
 import { timeHasSameDuration } from '../utils/dateUtils';
 
 export type TidPerDagValidator = (dag: string) => (tid: Time) => ValidationError | undefined;
@@ -12,6 +13,24 @@ const erTidEndret = (enkeltdager: TidEnkeltdag, tidOpprinnelig: TidEnkeltdag): b
     });
     return harEndringer;
 };
+
+export const getHvaSkalEndresValidator =
+    (skalEndreArbeidssituasjon: boolean) =>
+    (value: HvaSkalEndres[]): ValidationError | undefined => {
+        console.log(value);
+
+        if (skalEndreArbeidssituasjon === false) {
+            return getRequiredFieldValidator()(value);
+        }
+        const endreArbeidssituasjonErValgt = (value || []).some((a) => {
+            return a === HvaSkalEndres.arbeidssituasjon;
+        });
+
+        if (endreArbeidssituasjonErValgt === false) {
+            return 'endreArbeidssituasjonIkkeValgt';
+        }
+        return undefined;
+    };
 
 export const validateOmsorgstilbud = ({
     tid,
@@ -73,3 +92,41 @@ export const validateAktivitetArbeidstid = ({
     }
     return endret ? undefined : 'ingenEndringer';
 };
+
+export const getArbeidsformValidator = (intlValues: { hvor: string; jobber: string }) => (value: any) => {
+    const error = getRequiredFieldValidator()(value);
+    return error
+        ? {
+              key: 'validation.arbeidsforhold.arbeidsform.noValue',
+              values: intlValues,
+              keepKeyUnaltered: true,
+          }
+        : undefined;
+};
+
+export const MIN_TIMER_NORMAL_ARBEIDSFORHOLD = 0.01;
+export const MAX_TIMER_NORMAL_ARBEIDSFORHOLD = 100;
+
+export const getJobberNormaltTimerValidator =
+    (intlValues: { hvor: string; jobber: string; arbeidsform?: string }) => (value: any) => {
+        if (!intlValues.arbeidsform) {
+            return undefined;
+        }
+        const error = getNumberValidator({
+            required: true,
+            min: MIN_TIMER_NORMAL_ARBEIDSFORHOLD,
+            max: MAX_TIMER_NORMAL_ARBEIDSFORHOLD,
+        })(value);
+
+        return error
+            ? {
+                  key: `validation.arbeidsforhold.jobberNormaltTimer.${error}`,
+                  values: {
+                      ...intlValues,
+                      min: MIN_TIMER_NORMAL_ARBEIDSFORHOLD,
+                      max: MAX_TIMER_NORMAL_ARBEIDSFORHOLD,
+                  },
+                  keepKeyUnaltered: true,
+              }
+            : undefined;
+    };

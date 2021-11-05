@@ -30,6 +30,16 @@ const arbeidstidMessages = {
         'arbeidstid.modalTitle': 'Arbeidstid - {periode}',
         'arbeidstid.iPeriodePanel.info': '{dager, plural, one {# dag} other {# dager}} med jobb registrert.',
         'arbeidstid.iPeriodePanel.info.ingenDager': 'Ingen dager med jobb registrert.',
+
+        'arbeidsforhold.part.jobber': 'jobber',
+        'arbeidsforhold.part.jobbet': 'jobbet',
+        'arbeidsforhold.part.hosArbeidsgiver': 'hos {navn}',
+        'arbeidsforhold.part.som.ANSATT': 'hos {navn}',
+        'arbeidsforhold.part.som.FRILANSER': 'som frilanser',
+        'arbeidsforhold.part.som.SELVSTENDIG': 'som selvstendig næringsdrivende',
+        'arbeidsforhold.part.arbeidsform.FAST': 'fast',
+        'arbeidsforhold.part.arbeidsform.TURNUS': 'i snitt',
+        'arbeidsforhold.part.arbeidsform.VARIERENDE': 'i snitt',
     },
 };
 

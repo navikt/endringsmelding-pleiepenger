@@ -9,13 +9,13 @@ import { Sidetittel } from 'nav-frontend-typografi';
 import { useSoknadContext } from '../SoknadContext';
 import VelkommenPageForm from './VelkommenPageForm';
 import CounsellorPanel from '@navikt/sif-common-core/lib/components/counsellor-panel/CounsellorPanel';
-import { DateRange } from '@navikt/sif-common-formik/lib';
+import { Arbeidsgiver } from '../../types/Arbeidsgiver';
 
 interface Props {
-    endringsperiode: DateRange;
+    nyeArbeidsforhold: Arbeidsgiver[];
 }
 
-const VelkommenPage: React.FunctionComponent<Props> = ({ endringsperiode }) => {
+const VelkommenPage: React.FunctionComponent<Props> = ({ nyeArbeidsforhold }) => {
     const intl = useIntl();
     const { startSoknad } = useSoknadContext();
     useLogSidevisning('velkommen');
@@ -45,7 +45,7 @@ const VelkommenPage: React.FunctionComponent<Props> = ({ endringsperiode }) => {
                 </CounsellorPanel>
             </Box>
             <Box margin="xl">
-                <VelkommenPageForm onStart={startSoknad} endringsperiode={endringsperiode} />
+                <VelkommenPageForm onStart={startSoknad} nyeArbeidsforhold={nyeArbeidsforhold} />
             </Box>
         </Page>
     );

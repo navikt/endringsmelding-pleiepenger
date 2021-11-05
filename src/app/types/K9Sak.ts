@@ -1,5 +1,6 @@
 import { DateRange } from '@navikt/sif-common-formik/lib';
 import { DagerIkkeSøktForMap, DagerSøktForMap } from '.';
+import { K9FormatArbeidsgiver, K9OpptjeningAktivitetFrilanser } from './k9Format';
 import { TidEnkeltdag } from './SoknadFormData';
 
 export type K9ArbeidstidInfo = {
@@ -17,6 +18,7 @@ export interface K9Arbeidstid {
     selvstendig?: K9ArbeidstidInfo;
 }
 
+/** Eget versjon av K9Format som forenkler uthenting av informasjon i endringsdialogen */
 export interface K9Sak {
     søknadId: string;
     søker: {
@@ -29,6 +31,10 @@ export interface K9Sak {
             fødselsdato: Date;
         };
         søknadsperioder: DateRange[];
+        opptjeningAktivitet: {
+            arbeidstaker: K9FormatArbeidsgiver[];
+            frilanser?: K9OpptjeningAktivitetFrilanser;
+        };
         tilsynsordning: {
             enkeltdager: TidEnkeltdag;
         };

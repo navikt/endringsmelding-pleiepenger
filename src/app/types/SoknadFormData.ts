@@ -31,6 +31,23 @@ export interface ArbeidstidFormValue {
     selvstendig?: ArbeidstidAktivitetEnkeltdag;
 }
 
+export enum Arbeidsform {
+    fast = 'FAST',
+    turnus = 'TURNUS',
+    varierende = 'VARIERENDE',
+}
+
+export interface ArbeidssituasjonInfo {
+    arbeidsform: Arbeidsform;
+    jobberNormaltTimer: string;
+}
+
+export interface ArbeidssituasjonFormValue {
+    arbeidsgiver: {
+        [orgnr: string]: ArbeidssituasjonInfo;
+    };
+}
+
 export enum SoknadFormField {
     harForståttRettigheterOgPlikter = 'harForståttRettigheterOgPlikter',
     harBekreftetOpplysninger = 'harBekreftetOpplysninger',
@@ -43,19 +60,26 @@ export enum SoknadFormField {
     arbeidstid_arbeidsgiver = 'arbeidstid.arbeidsgiver',
     arbeidstid_frilanser = 'arbeidstid.frilanser',
     arbeidstid_selvstendig = 'arbeidstid.selvstendig',
+    arbeidssituasjon = 'arbeidssituasjon',
 }
 
 export enum HvaSkalEndres {
+    'arbeidssituasjon' = 'arbeidssituasjon',
     'arbeidstid' = 'arbeidstid',
     'omsorgstilbud' = 'omsorgstilbud',
 }
 
+export enum ArbeidsforholdField {
+    arbeidsform = 'arbeidsform',
+    jobberNormaltTimer = 'jobberNormaltTimer',
+}
 export interface SoknadFormData {
     [SoknadFormField.harForståttRettigheterOgPlikter]: boolean;
     [SoknadFormField.harBekreftetOpplysninger]: boolean;
     [SoknadFormField.hvaSkalEndres]: HvaSkalEndres[];
     [SoknadFormField.omsorgstilbud]?: Omsorgstilbud;
     [SoknadFormField.arbeidstid]?: ArbeidstidFormValue;
+    [SoknadFormField.arbeidssituasjon]?: ArbeidssituasjonFormValue;
 }
 
 export const getArbeidsgiverArbeidstidFormFieldName = (a: Arbeidsgiver): SoknadFormField =>

@@ -4,6 +4,7 @@ import soknadErrorIntlMessages from '@navikt/sif-common-soknad/lib/soknad-error-
 import soknadIntlMessages from '@navikt/sif-common-soknad/lib/soknad-intl-messages/soknadIntlMessages';
 import arbeidstidMessages from '../soknad/arbeidstid-step/arbeidstidMessages';
 import omsorgstilbudMessages from '../soknad/omsorgstilbud-step/omsorgstilbudMessages';
+import arbeidssituasjonMessages from '../soknad/arbeidssituasjon-step/arbeidssituasjonMessages';
 
 const appMessagesNB = require('./nb.json');
 const introFormMessagesNB = require('../pages/intro-page/introFormMessagesNB.json');
@@ -20,6 +21,7 @@ const bokmålstekster = {
     ...soknadIntlMessages.nb,
     ...omsorgstilbudMessages.nb,
     ...arbeidstidMessages.nb,
+    ...arbeidssituasjonMessages.nb,
 };
 
 export const applicationIntlMessages: MessageFileFormat = {

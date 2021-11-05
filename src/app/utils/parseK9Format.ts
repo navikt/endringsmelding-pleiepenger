@@ -94,6 +94,9 @@ export const parseK9Format = (data: K9Format): K9Sak => {
                 norskIdentitetsnummer: ytelse.barn.norskIdentitetsnummer,
             },
             søknadsperioder,
+            opptjeningAktivitet: {
+                ...data.ytelse.opptjeningAktivitet,
+            },
             tilsynsordning: {
                 enkeltdager: getTilsynsdagerFromK9Format(ytelse.tilsynsordning.perioder),
             },
