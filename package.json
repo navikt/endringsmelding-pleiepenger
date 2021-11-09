@@ -88,7 +88,7 @@
         "react-intl": "^5.21.0",
         "react-modal": "^3.14.3",
         "react-responsive": "^9.0.0-beta.4",
-        "react-router-dom": "^5.3.0",
+        "react-router-dom": "^6.0.1",
         "snyk": "^1.758.0",
         "ulid": "^2.3.0"
     },
