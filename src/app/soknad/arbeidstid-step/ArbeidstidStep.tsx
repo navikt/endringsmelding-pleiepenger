@@ -15,6 +15,9 @@ import ArbeidstidMånedListe from './ArbeidstidMånedListe';
 import SoknadFormComponents from '../SoknadFormComponents';
 import { validateAktivitetArbeidstid } from '../../validation/fieldValidations';
 import { useFormikContext } from 'formik';
+import { erNyttArbeidsforhold, getArbeidstidForArbeidsgiver } from '../../utils/arbeidssituasjonUtils';
+import dateFormatter from '../../utils/dateFormatterUtils';
+import Box from '@navikt/sif-common-core/lib/components/box/Box';
 
 const cleanupStep = (formData: SoknadFormData): SoknadFormData => {
     return formData;
@@ -24,13 +27,14 @@ interface Props {
     arbeidsgivere?: Arbeidsgiver[];
     k9sakMeta: K9SakMeta;
     arbeidstidSak: K9Arbeidstid;
+    nyeArbeidsforhold: Arbeidsgiver[];
     onArbeidstidChanged: () => void;
 }
-
 const ArbeidstidStep: React.FunctionComponent<Props> = ({
     arbeidsgivere,
     arbeidstidSak,
     k9sakMeta,
+    nyeArbeidsforhold,
     onArbeidstidChanged,
 }) => {
     const stepId = StepID.ARBEIDSTID;
@@ -49,30 +53,27 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
                         });
                         return result;
                     }}>
-                    {arbeidstakerMap && (
-                        <>
-                            {arbeidsgivere.map((a) => {
-                                const arbeidstidArbeidsgiver = arbeidstakerMap[a.organisasjonsnummer];
-                                return (
-                                    <div key={a.organisasjonsnummer} className="arbeidstid__aktivitet">
-                                        <Undertittel>
-                                            {a.navn} ({a.organisasjonsnummer})
-                                        </Undertittel>
-                                        {arbeidstidArbeidsgiver === undefined ? (
-                                            <p>Informasjon mangler om arbeidstid for denne arbeidsgiveren</p>
-                                        ) : (
-                                            <ArbeidstidMånedListe
-                                                formFieldName={getArbeidsgiverArbeidstidFormFieldName(a)}
-                                                arbeidstidSak={arbeidstidArbeidsgiver}
-                                                k9sakMeta={k9sakMeta}
-                                                onArbeidstidChanged={onArbeidstidChanged}
-                                            />
-                                        )}
-                                    </div>
-                                );
-                            })}
-                        </>
-                    )}
+                    <>
+                        {arbeidsgivere.map((a) => {
+                            const arbeidstidSak = getArbeidstidForArbeidsgiver(a.organisasjonsnummer, arbeidstakerMap);
+                            const erNytt = erNyttArbeidsforhold(a.organisasjonsnummer, nyeArbeidsforhold);
+                            return (
+                                <div key={a.organisasjonsnummer} className="arbeidstid__aktivitet">
+                                    <Undertittel>
+                                        {a.navn} ({a.organisasjonsnummer})
+                                    </Undertittel>
+                                    {erNytt && <Box margin="m">Startdato: {dateFormatter.extended(a.ansattFom)}</Box>}
+                                    <ArbeidstidMånedListe
+                                        formFieldName={getArbeidsgiverArbeidstidFormFieldName(a)}
+                                        arbeidstidSak={arbeidstidSak}
+                                        k9sakMeta={k9sakMeta}
+                                        startetDato={erNytt ? a.ansattFom : undefined}
+                                        onArbeidstidChanged={onArbeidstidChanged}
+                                    />
+                                </div>
+                            );
+                        })}
+                    </>
                     {arbeidstidSak.frilanser && (
                         <div className="arbeidstid__aktivitet">
                             <Undertittel>Frilanser</Undertittel>

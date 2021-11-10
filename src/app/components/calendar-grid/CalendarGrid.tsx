@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { groupBy } from 'lodash';
 import { guid } from 'nav-frontend-js-utils';
-import { getDatesInMonth, isDateInDates } from '../../utils/dateUtils';
+import { getDatesInMonth, getDatesInDateRange, isDateInDates } from '../../utils/dateUtils';
 import CalendarGridDate from './CalendarGridDate';
 import './calendarGrid.less';
 import dateFormatter from '../../utils/dateFormatterUtils';
@@ -34,16 +34,29 @@ interface Props {
     allDaysInWeekDisabledContentRenderer?: () => React.ReactNode;
 }
 
-const getWeeks = (datesToRender: Date[], month: Date): WeekToRender[] => {
+const getFullWeeksForDates = (dates: Date[], month: Date): Date[] => {
+    const dayOfWeek = dates[0].getUTCDay();
+    const firstDateInWeek = dayjs(dates[0]).startOf('isoWeek').toDate();
+    if (dayOfWeek > 0 && dayjs(firstDateInWeek).isSame(month, 'month') === false) {
+        return [
+            ...getDatesInDateRange({ from: firstDateInWeek, to: dayjs(dates[0]).subtract(1, 'day').toDate() }, true),
+            ...dates,
+        ];
+    }
+    return dates;
+};
+
+const getWeeks = (dates: Date[], month: Date): WeekToRender[] => {
+    const datesToRender = getFullWeeksForDates(dates, month);
     const weeksAndDays = groupBy(datesToRender, (date) => `week_${dayjs(date).isoWeek()}`);
     const weeks: WeekToRender[] = [];
     Object.keys(weeksAndDays).forEach((key) => {
-        const dates = weeksAndDays[key];
-        const weekHasDatesInMonth = dates.some((d) => dayjs(d).isSame(month, 'month'));
-        if (weekHasDatesInMonth && dates.length > 0) {
+        const weekDates = weeksAndDays[key];
+        const weekHasDatesInMonth = weekDates.some((d) => dayjs(d).isSame(month, 'month'));
+        if (weekHasDatesInMonth && weekDates.length > 0) {
             weeks.push({
-                weekNumber: dayjs(dates[0]).isoWeek(),
-                dates,
+                weekNumber: dayjs(weekDates[0]).isoWeek(),
+                dates: weekDates,
             });
         }
     });

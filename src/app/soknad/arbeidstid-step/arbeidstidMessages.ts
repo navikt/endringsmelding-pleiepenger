@@ -24,7 +24,7 @@ const arbeidstidMessages = {
         'arbeidstid.timerPerDag.timer': '{hours}t',
         'arbeidstid.timerPerDag.minutter': '{minutes}m',
 
-        'arbeidstid.addLabel': 'Registrer hvor mye du jobbet {periode}',
+        'arbeidstid.addLabel': 'Registrer hvor mye du {jobberJobbet} i {periode}',
         'arbeidstid.deleteLabel': 'Fjern alle timer',
         'arbeidstid.editLabel': 'Endre arbeidstid {periode}',
         'arbeidstid.modalTitle': 'Arbeidstid - {periode}',
@@ -33,13 +33,11 @@ const arbeidstidMessages = {
 
         'arbeidsforhold.part.jobber': 'jobber',
         'arbeidsforhold.part.jobbet': 'jobbet',
+        'arbeidsforhold.part.skalJobbe': 'skal jobbe',
         'arbeidsforhold.part.hosArbeidsgiver': 'hos {navn}',
         'arbeidsforhold.part.som.ANSATT': 'hos {navn}',
         'arbeidsforhold.part.som.FRILANSER': 'som frilanser',
         'arbeidsforhold.part.som.SELVSTENDIG': 'som selvstendig næringsdrivende',
-        'arbeidsforhold.part.arbeidsform.FAST': 'fast',
-        'arbeidsforhold.part.arbeidsform.TURNUS': 'i snitt',
-        'arbeidsforhold.part.arbeidsform.VARIERENDE': 'i snitt',
     },
 };
 

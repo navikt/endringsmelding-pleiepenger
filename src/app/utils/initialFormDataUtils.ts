@@ -1,4 +1,3 @@
-import { skalEndreArbeidssituasjon } from '../soknad/soknadStepsConfig';
 import { isStorageDataValid } from '../soknad/soknadTempStorage';
 import { Arbeidsgiver } from '../types/Arbeidsgiver';
 import { K9ArbeidstidInfo, K9Arbeidstid, K9Sak } from '../types/K9Sak';
@@ -6,7 +5,6 @@ import { Person } from '../types/Person';
 import {
     ArbeidstidAktivitetEnkeltdag,
     ArbeidstidArbeidsgiverMap,
-    HvaSkalEndres,
     SoknadFormData,
     SoknadFormField,
 } from '../types/SoknadFormData';
@@ -43,7 +41,7 @@ export const getInitialFormData = (
     const initialData: Partial<SoknadFormData> = {
         [SoknadFormField.harForståttRettigheterOgPlikter]: false,
         [SoknadFormField.harBekreftetOpplysninger]: false,
-        hvaSkalEndres: skalEndreArbeidssituasjon(nyeArbeidsforhold) ? [HvaSkalEndres.arbeidssituasjon] : [],
+        hvaSkalEndres: [],
         omsorgstilbud: k9sak.ytelse.tilsynsordning,
         arbeidstid: {
             arbeidsgiver: getArbeidsgivereArbeidstid(k9sak.ytelse.arbeidstid),

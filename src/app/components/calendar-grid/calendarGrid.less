@@ -123,11 +123,8 @@
 }
 
 .disabledDay() {
-    background: transparent !important; // repeating-linear-gradient(-45deg, #f1f1f1, #f1f1f1 10px, #eaeaea 10px, #eaeaea 20px);
-    border: 1px dashed rgba(0, 0, 0, 0.15);
-    svg {
-        opacity: 0.5;
-    }
+    background-color: #f1f2f2;
+    border-color: #f1f2f2;
     .calendarGrid__date__short,
     .calendarGrid__date__full {
         text-decoration: line-through;
@@ -144,8 +141,9 @@
         min-height: 5rem;
         position: relative;
         margin: 2px;
-        border-radius: 0; //0.125rem;
-        background-color: white;
+        border-radius: 0.125rem;
+        border: 1px solid #c6c2bf;
+        // background-color: white;
         &--outsideMonth {
             border: none; // 1px dashed rgba(0, 0, 0, 0.3);
             background-color: transparent;

@@ -4,7 +4,7 @@ import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import InfoDialog from '@navikt/sif-common-core/lib/components/dialogs/info-dialog/InfoDialog';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import { getCheckedValidator } from '@navikt/sif-common-formik/lib/validation';
+import { getCheckedValidator, getRequiredFieldValidator } from '@navikt/sif-common-formik/lib/validation';
 import getIntlFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
 import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { Hovedknapp } from 'nav-frontend-knapper';
@@ -15,7 +15,6 @@ import { Arbeidsgiver } from '../../types/Arbeidsgiver';
 import { HvaSkalEndres, SoknadFormField } from '../../types/SoknadFormData';
 import DinePlikterContent from './dine-plikter/DinePlikter';
 import BehandlingAvPersonopplysningerContent from './personopplysninger/Personopplysninger';
-import { getHvaSkalEndresValidator } from '../../validation/fieldValidations';
 
 interface DialogState {
     dinePlikterModalOpen?: boolean;
@@ -47,19 +46,8 @@ const VelkommenPageForm: React.FunctionComponent<Props> = ({ nyeArbeidsforhold, 
                 <SoknadFormComponents.CheckboxPanelGroup
                     name={SoknadFormField.hvaSkalEndres}
                     legend={'Hva du ønsker å gjøre?'}
-                    validate={getHvaSkalEndresValidator(nyeArbeidsforhold.length > 0)}
+                    validate={getRequiredFieldValidator()}
                     checkboxes={[
-                        {
-                            id: 'arbeidssituasjon',
-                            label: (
-                                <>
-                                    <Element>Oppdatere nytt arbeidsforhold - påkrevd</Element>Legg til informasjon om
-                                    hvordan og hvor mye du jobber når du jobber som normalt og ikke har noe fravær
-                                </>
-                            ),
-
-                            value: HvaSkalEndres.arbeidssituasjon,
-                        },
                         {
                             id: 'arbeidstid',
                             label: (

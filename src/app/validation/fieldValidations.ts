@@ -1,8 +1,9 @@
 import { Time } from '@navikt/sif-common-formik/lib';
-import { getNumberValidator, getRequiredFieldValidator } from '@navikt/sif-common-formik/lib/validation';
+import { getNumberValidator } from '@navikt/sif-common-formik/lib/validation';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import { K9Arbeidstid } from '../types/K9Sak';
-import { ArbeidstidFormValue, HvaSkalEndres, TidEnkeltdag } from '../types/SoknadFormData';
+import { ArbeidstidFormValue, TidEnkeltdag } from '../types/SoknadFormData';
+import { getArbeidstidForArbeidsgiver } from '../utils/arbeidssituasjonUtils';
 import { timeHasSameDuration } from '../utils/dateUtils';
 
 export type TidPerDagValidator = (dag: string) => (tid: Time) => ValidationError | undefined;
@@ -13,24 +14,6 @@ const erTidEndret = (enkeltdager: TidEnkeltdag, tidOpprinnelig: TidEnkeltdag): b
     });
     return harEndringer;
 };
-
-export const getHvaSkalEndresValidator =
-    (skalEndreArbeidssituasjon: boolean) =>
-    (value: HvaSkalEndres[]): ValidationError | undefined => {
-        console.log(value);
-
-        if (skalEndreArbeidssituasjon === false) {
-            return getRequiredFieldValidator()(value);
-        }
-        const endreArbeidssituasjonErValgt = (value || []).some((a) => {
-            return a === HvaSkalEndres.arbeidssituasjon;
-        });
-
-        if (endreArbeidssituasjonErValgt === false) {
-            return 'endreArbeidssituasjonIkkeValgt';
-        }
-        return undefined;
-    };
 
 export const validateOmsorgstilbud = ({
     tid,
@@ -71,11 +54,16 @@ export const validateAktivitetArbeidstid = ({
     let endret = false;
     const { arbeidstakerMap } = arbeidstidSak;
     if (arbeidstid.arbeidsgiver && arbeidstakerMap) {
-        Object.keys(arbeidstid.arbeidsgiver).forEach((a) => {
+        Object.keys(arbeidstid.arbeidsgiver).forEach((orgnr) => {
             if (endret) {
                 return;
             }
-            if (erTidEndret(arbeidstid.arbeidsgiver[a].faktisk, arbeidstakerMap[a].faktisk)) {
+            if (
+                erTidEndret(
+                    arbeidstid.arbeidsgiver[orgnr].faktisk,
+                    getArbeidstidForArbeidsgiver(orgnr, arbeidstakerMap).faktisk
+                )
+            ) {
                 endret = true;
             }
         });
@@ -91,17 +79,6 @@ export const validateAktivitetArbeidstid = ({
         }
     }
     return endret ? undefined : 'ingenEndringer';
-};
-
-export const getArbeidsformValidator = (intlValues: { hvor: string; jobber: string }) => (value: any) => {
-    const error = getRequiredFieldValidator()(value);
-    return error
-        ? {
-              key: 'validation.arbeidsforhold.arbeidsform.noValue',
-              values: intlValues,
-              keepKeyUnaltered: true,
-          }
-        : undefined;
 };
 
 export const MIN_TIMER_NORMAL_ARBEIDSFORHOLD = 0.01;

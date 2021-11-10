@@ -9,11 +9,14 @@ import { K9ArbeidstidInfo, K9SakMeta } from '../../types/K9Sak';
 import { SoknadFormData, SoknadFormField, TidEnkeltdag } from '../../types/SoknadFormData';
 import { getYearMonthKey } from '../../utils/k9SakUtils';
 import ArbeidstidFormAndInfo from './arbeidstid-form-and-info/ArbeidstidFormAndInfo';
+import { datoErHistorisk } from '../../utils/tidsbrukUtils';
+import { dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 interface Props {
     formFieldName: SoknadFormField;
     arbeidstidSak: K9ArbeidstidInfo;
     k9sakMeta: K9SakMeta;
+    startetDato?: Date;
     onArbeidstidChanged?: (arbeidstid: TidEnkeltdag) => void;
 }
 
@@ -21,6 +24,7 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
     formFieldName,
     arbeidstidSak,
     k9sakMeta,
+    startetDato,
     onArbeidstidChanged,
 }) => {
     const intl = useIntl();
@@ -29,6 +33,7 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
     const månedContentRenderer = (måned: DateRange) => {
         const mndOgÅrLabelPart = dayjs(måned.from).format('MMMM YYYY');
         const utilgjengeligeDatoerIMåned = k9sakMeta.utilgjengeligeDatoerIMånedMap[getYearMonthKey(måned.from)];
+        const erHistorisk = datoErHistorisk(måned.to, dateToday);
 
         return (
             <ArbeidstidFormAndInfo
@@ -45,6 +50,7 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
                 labels={{
                     addLabel: intlHelper(intl, 'arbeidstid.addLabel', {
                         periode: mndOgÅrLabelPart,
+                        jobberJobbet: intlHelper(intl, `arbeidsforhold.part.${erHistorisk ? 'jobbet' : 'skalJobbe'}`),
                     }),
                     deleteLabel: intlHelper(intl, 'arbeidstid.deleteLabel', {
                         periode: mndOgÅrLabelPart,
@@ -72,6 +78,7 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
             k9sakMeta={k9sakMeta}
             årstallHeadingLevel={3}
             årstallHeaderRenderer={(årstall) => `${årstall}`}
+            minDato={startetDato}
             månedContentRenderer={månedContentRenderer}
         />
     );

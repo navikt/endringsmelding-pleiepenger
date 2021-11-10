@@ -2,7 +2,6 @@ import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
-import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { DateRange } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
@@ -18,7 +17,7 @@ import { getDagerMedTidITidsrom, tidErIngenTid } from '../../../utils/tidsbrukUt
 interface Props {
     periodeIMåned: DateRange;
     tidArbeidstid: TidEnkeltdag;
-    arbeidstidArbeidsgiverSak: K9ArbeidstidInfo;
+    arbeidstidArbeidsgiverSak?: K9ArbeidstidInfo;
     editLabel: string;
     addLabel: string;
     utilgjengeligeDatoer?: Date[];
@@ -37,7 +36,7 @@ const ArbeidstidMånedInfo: React.FunctionComponent<Props> = ({
     onEdit,
 }) => {
     const intl = useIntl();
-    const { faktisk } = arbeidstidArbeidsgiverSak;
+    const { faktisk } = arbeidstidArbeidsgiverSak || { faktisk: {}, normalt: {} };
 
     const dager = getDagerMedTidITidsrom(tidArbeidstid, periodeIMåned);
 
@@ -79,21 +78,19 @@ const ArbeidstidMånedInfo: React.FunctionComponent<Props> = ({
                     )}
                 </>
             }>
-            <ResponsivePanel style={{ padding: '1rem' }}>
-                <TidsbrukKalender
-                    periodeIMåned={periodeIMåned}
-                    dager={dager}
-                    utilgjengeligeDatoer={utilgjengeligeDatoer}
-                    dagerOpprinnelig={dagerSak}
-                    skjulTommeDagerIListe={true}
-                    visEndringsinformasjon={true}
-                />
-                <FormBlock margin="l">
-                    <Knapp htmlType="button" mini={true} onClick={() => onEdit(tidArbeidstid)}>
-                        {dager.length === 0 ? addLabel : editLabel}
-                    </Knapp>
-                </FormBlock>
-            </ResponsivePanel>
+            <TidsbrukKalender
+                periodeIMåned={periodeIMåned}
+                dager={dager}
+                utilgjengeligeDatoer={utilgjengeligeDatoer}
+                dagerOpprinnelig={dagerSak}
+                skjulTommeDagerIListe={true}
+                visEndringsinformasjon={true}
+            />
+            <FormBlock margin="l">
+                <Knapp htmlType="button" mini={true} onClick={() => onEdit(tidArbeidstid)}>
+                    {dager.length === 0 ? addLabel : editLabel}
+                </Knapp>
+            </FormBlock>
         </Ekspanderbartpanel>
     );
 };

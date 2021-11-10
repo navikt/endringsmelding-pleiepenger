@@ -19,6 +19,7 @@ interface Props {
         validate?: ValidationFunction<ValidationError>;
     };
     årstallHeadingLevel?: number;
+    minDato?: Date;
     årstallHeaderRenderer?: (årstall: number) => React.ReactNode;
     månedContentRenderer: (måned: DateRange, søknadsperioderIMåned: DateRange[], index: number) => React.ReactNode;
     onTidChanged?: (tid: TidEnkeltdag) => void;
@@ -28,6 +29,7 @@ const SøknadsperioderMånedListe: React.FunctionComponent<Props> = ({
     k9sakMeta,
     fieldset,
     årstallHeadingLevel: headingLevel = 2,
+    minDato,
     årstallHeaderRenderer,
     månedContentRenderer,
 }) => {
@@ -45,7 +47,7 @@ const SøknadsperioderMånedListe: React.FunctionComponent<Props> = ({
         return søknadsperioderIMåned === undefined ? null : (
             <FormBlock margin="m" key={dayjs(måned.from).format('MM.YYYY')}>
                 {årstallHeaderRenderer && visÅrstallHeading(index) && (
-                    <Box margin="xl" padBottom="l">
+                    <Box margin={index === 0 ? 'l' : 'xl'} padBottom="l">
                         <Undertittel tag={`h${headingLevel}`} className={'yearHeader'}>
                             {årstallHeaderRenderer(måned.from.getFullYear())}
                         </Undertittel>
@@ -54,6 +56,14 @@ const SøknadsperioderMånedListe: React.FunctionComponent<Props> = ({
                 {månedContentRenderer(måned, søknadsperioderIMåned, index)}
             </FormBlock>
         );
+    };
+
+    const renderMåneder = (): JSX.Element => {
+        const måneder = minDato
+            ? k9sakMeta.alleMånederISøknadsperiode.filter((m) => dayjs(m.from).isSameOrAfter(minDato, 'day'))
+            : k9sakMeta.alleMånederISøknadsperiode;
+
+        return <>{måneder.map(renderMåned)}</>;
     };
 
     return fieldset ? (
@@ -69,10 +79,10 @@ const SøknadsperioderMånedListe: React.FunctionComponent<Props> = ({
             description={fieldset.description}
             tag="div"
             validate={fieldset.validate}>
-            {k9sakMeta.alleMånederISøknadsperiode.map(renderMåned)}
+            {renderMåneder()}
         </SoknadFormComponents.InputGroup>
     ) : (
-        <>{k9sakMeta.alleMånederISøknadsperiode.map(renderMåned)}</>
+        renderMåneder()
     );
 };
 
