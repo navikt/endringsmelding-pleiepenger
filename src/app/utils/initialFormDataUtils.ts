@@ -26,7 +26,7 @@ export const getArbeidsgivereArbeidstid = (k9Arbeidstid: K9Arbeidstid): Arbeidst
     }
     const arbeidstidArbeidsgiver: ArbeidstidArbeidsgiverMap = {};
     Object.keys(arbeidstakerMap).forEach((orgnr) => {
-        return getAktivitetArbeidstid(arbeidstakerMap[orgnr]);
+        arbeidstidArbeidsgiver[orgnr] = getAktivitetArbeidstid(arbeidstakerMap[orgnr]);
     });
     return arbeidstidArbeidsgiver;
 };
