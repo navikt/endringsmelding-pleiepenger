@@ -1,6 +1,5 @@
 import React from 'react';
 import { Undertittel } from 'nav-frontend-typografi';
-import StepIntroduction from '../../components/step-introduction/StepIntroduction';
 import { Arbeidsgiver } from '../../types/Arbeidsgiver';
 import { K9Arbeidstid, K9SakMeta } from '../../types/K9Sak';
 import {
@@ -18,6 +17,7 @@ import { useFormikContext } from 'formik';
 import { erNyttArbeidsforhold, getArbeidstidForArbeidsgiver } from '../../utils/arbeidssituasjonUtils';
 import dateFormatter from '../../utils/dateFormatterUtils';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import StepIntroduction from '../../components/step-introduction/StepIntroduction';
 
 const cleanupStep = (formData: SoknadFormData): SoknadFormData => {
     return formData;

@@ -13,7 +13,6 @@ import {
 import { getTimerTekst } from '../../../utils/arbeidssituasjonUtils';
 import SoknadFormComponents from '../../SoknadFormComponents';
 import { YesOrNo } from '@navikt/sif-common-core/lib/types/YesOrNo';
-import TidFasteDagerInput from '../../../components/tid-faste-dager-input/TidFasteDagerInput';
 
 interface Props {
     arbeidsgiver: Arbeidsgiver;
@@ -91,21 +90,6 @@ const ArbeidIPeriodenSpørsmål: React.FunctionComponent<Props> = ({
                                 />
                             </FormBlock>
                         )}
-
-                        {arbeidssituasjon.jobberSomVanlig === YesOrNo.NO &&
-                            arbeidssituasjon.erLiktHverUke === YesOrNo.YES && (
-                                <FormBlock margin="xl">
-                                    <SoknadFormComponents.InputGroup
-                                        legend={intlHelper(intl, 'arbeidIPeriode.planlagt.ukedager.tittel', intlValues)}
-                                        // validate={() => validateFasteArbeidstimerIUke(arbeidIPeriode, intlValues)}
-                                        name={'fasteDager_gruppe' as any}>
-                                        <TidFasteDagerInput
-                                            name={getFieldName(ArbeidsforholdField.fasteDager)}
-                                            // validator={getArbeidstimerFastDagValidator}
-                                        />
-                                    </SoknadFormComponents.InputGroup>
-                                </FormBlock>
-                            )}
                     </ResponsivePanel>
                 </FormBlock>
             )}
