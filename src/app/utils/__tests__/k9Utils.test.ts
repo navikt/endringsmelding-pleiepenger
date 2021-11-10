@@ -69,19 +69,28 @@ describe('trimArbeidstidTilTillatPeriode', () => {
 
 describe('erArbeidsgivereErBådeISakOgAAreg', () => {
     it('returnerer true når alle k9 arbeidsgivere (1) finnes i AA-reg', () => {
-        const result = erArbeidsgivereIBådeSakOgAAreg([{ navn: 'a', organisasjonsnummer: '1' }], {
-            '1': { faktisk: {}, normalt: {} },
-        });
+        const result = erArbeidsgivereIBådeSakOgAAreg(
+            [{ navn: 'a', organisasjonsnummer: '1', ansattFom: ISODateToDate('2021-10-01') }],
+            {
+                '1': { faktisk: {}, normalt: {} },
+            }
+        );
         expect(result).toBeTruthy();
     });
     it('returnerer true når ingen arbeidsgivere finnes i k9sak', () => {
-        const result = erArbeidsgivereIBådeSakOgAAreg([{ navn: 'a', organisasjonsnummer: '1' }], {});
+        const result = erArbeidsgivereIBådeSakOgAAreg(
+            [{ navn: 'a', organisasjonsnummer: '1', ansattFom: ISODateToDate('2021-10-01') }],
+            {}
+        );
         expect(result).toBeTruthy();
     });
     it('returnerer false når en k9 arbeidsgiver ikke finnes i AA-reg', () => {
-        const result = erArbeidsgivereIBådeSakOgAAreg([{ navn: 'a', organisasjonsnummer: '1' }], {
-            '2': { faktisk: {}, normalt: {} },
-        });
+        const result = erArbeidsgivereIBådeSakOgAAreg(
+            [{ navn: 'a', organisasjonsnummer: '1', ansattFom: ISODateToDate('2021-10-01') }],
+            {
+                '2': { faktisk: {}, normalt: {} },
+            }
+        );
         expect(result).toBeFalsy();
     });
     it('returnerer false når ingen arbeidsgivere finnes i AA-reg', () => {
@@ -98,9 +107,12 @@ describe('harK9SakArbeidstidInfo', () => {
         expect(result).toBeFalsy();
     });
     it('returnerer true dersom det er info om arbeidstid for arbeidsgivere', () => {
-        const result = harK9SakArbeidstidInfo([{ navn: 'a', organisasjonsnummer: '1' }], {
-            arbeidstakerMap: { '1': { faktisk: {}, normalt: {} } },
-        });
+        const result = harK9SakArbeidstidInfo(
+            [{ navn: 'a', organisasjonsnummer: '1', ansattFom: ISODateToDate('2021-10-01') }],
+            {
+                arbeidstakerMap: { '1': { faktisk: {}, normalt: {} } },
+            }
+        );
         expect(result).toBeTruthy();
     });
     it('returnerer true dersom det er info om arbeidstid som frilanser', () => {

@@ -2,13 +2,13 @@ import React from 'react';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { ValidationError, ValidationFunction } from '@navikt/sif-common-formik/lib/validation/types';
 import dayjs from 'dayjs';
 import { Undertittel } from 'nav-frontend-typografi';
 import SoknadFormComponents from '../../soknad/SoknadFormComponents';
-import { TidEnkeltdag } from '../../types/SoknadFormData';
 import { K9SakMeta } from '../../types/K9Sak';
+import { TidEnkeltdag } from '../../types/SoknadFormData';
 import { getYearMonthKey } from '../../utils/k9SakUtils';
-import { ValidationError, ValidationFunction } from '@navikt/sif-common-formik/lib/validation/types';
 
 interface Props {
     k9sakMeta: K9SakMeta;
@@ -19,6 +19,7 @@ interface Props {
         validate?: ValidationFunction<ValidationError>;
     };
     årstallHeadingLevel?: number;
+    minDato?: Date;
     årstallHeaderRenderer?: (årstall: number) => React.ReactNode;
     månedContentRenderer: (måned: DateRange, søknadsperioderIMåned: DateRange[], index: number) => React.ReactNode;
     onTidChanged?: (tid: TidEnkeltdag) => void;
@@ -28,6 +29,7 @@ const SøknadsperioderMånedListe: React.FunctionComponent<Props> = ({
     k9sakMeta,
     fieldset,
     årstallHeadingLevel: headingLevel = 2,
+    minDato,
     årstallHeaderRenderer,
     månedContentRenderer,
 }) => {
@@ -43,9 +45,9 @@ const SøknadsperioderMånedListe: React.FunctionComponent<Props> = ({
     const renderMåned = (måned: DateRange, index: number) => {
         const søknadsperioderIMåned = k9sakMeta.månederMedSøknadsperiodeMap[getYearMonthKey(måned.from)];
         return søknadsperioderIMåned === undefined ? null : (
-            <FormBlock margin="m" key={dayjs(måned.from).format('MM.YYYY')}>
+            <FormBlock margin="none" paddingBottom="m" key={dayjs(måned.from).format('MM.YYYY')}>
                 {årstallHeaderRenderer && visÅrstallHeading(index) && (
-                    <Box margin="xl" padBottom="l">
+                    <Box margin="l" padBottom="m">
                         <Undertittel tag={`h${headingLevel}`} className={'yearHeader'}>
                             {årstallHeaderRenderer(måned.from.getFullYear())}
                         </Undertittel>
@@ -54,6 +56,13 @@ const SøknadsperioderMånedListe: React.FunctionComponent<Props> = ({
                 {månedContentRenderer(måned, søknadsperioderIMåned, index)}
             </FormBlock>
         );
+    };
+    const renderMåneder = (): JSX.Element => {
+        const måneder = minDato
+            ? k9sakMeta.alleMånederISøknadsperiode.filter((m) => dayjs(m.from).isSameOrAfter(minDato, 'day'))
+            : k9sakMeta.alleMånederISøknadsperiode;
+
+        return <>{måneder.map(renderMåned)}</>;
     };
 
     return fieldset ? (
@@ -69,10 +78,10 @@ const SøknadsperioderMånedListe: React.FunctionComponent<Props> = ({
             description={fieldset.description}
             tag="div"
             validate={fieldset.validate}>
-            {k9sakMeta.alleMånederISøknadsperiode.map(renderMåned)}
+            {renderMåneder()}
         </SoknadFormComponents.InputGroup>
     ) : (
-        <>{k9sakMeta.alleMånederISøknadsperiode.map(renderMåned)}</>
+        renderMåneder()
     );
 };
 

@@ -75,6 +75,7 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({
                         arbeidsgivere={arbeidsgivere}
                         arbeidstidSak={k9sak.ytelse.arbeidstid}
                         k9sakMeta={k9sakMeta}
+                        nyeArbeidsforhold={nyeArbeidsforhold}
                         onArbeidstidChanged={() => {
                             setPersistRequest({ stepID: StepID.ARBEIDSTID });
                         }}

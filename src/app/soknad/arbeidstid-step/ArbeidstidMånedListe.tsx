@@ -11,16 +11,20 @@ import { getYearMonthKey } from '../../utils/k9SakUtils';
 import ArbeidstidFormAndInfo from './arbeidstid-form-and-info/ArbeidstidFormAndInfo';
 
 interface Props {
+    arbeidsstedNavn: string;
     formFieldName: SoknadFormField;
     arbeidstidSak: K9ArbeidstidInfo;
     k9sakMeta: K9SakMeta;
+    startetDato?: Date;
     onArbeidstidChanged?: (arbeidstid: TidEnkeltdag) => void;
 }
 
 const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
+    arbeidsstedNavn,
     formFieldName,
     arbeidstidSak,
     k9sakMeta,
+    startetDato,
     onArbeidstidChanged,
 }) => {
     const intl = useIntl();
@@ -32,6 +36,7 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
 
         return (
             <ArbeidstidFormAndInfo
+                arbeidsstedNavn={arbeidsstedNavn}
                 formFieldName={formFieldName}
                 periodeIMåned={måned}
                 utilgjengeligeDatoerIMåned={utilgjengeligeDatoerIMåned}
@@ -45,6 +50,7 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
                 labels={{
                     addLabel: intlHelper(intl, 'arbeidstid.addLabel', {
                         periode: mndOgÅrLabelPart,
+                        arbeidsstedNavn,
                     }),
                     deleteLabel: intlHelper(intl, 'arbeidstid.deleteLabel', {
                         periode: mndOgÅrLabelPart,
@@ -54,11 +60,13 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
                     }),
                     modalTitle: intlHelper(intl, 'arbeidstid.modalTitle', {
                         periode: mndOgÅrLabelPart,
+                        arbeidsstedNavn,
                     }),
                     infoTitle: (
                         <span>
                             {intlHelper(intl, 'arbeidstid.modalTitle', {
                                 periode: mndOgÅrLabelPart,
+                                arbeidsstedNavn,
                             })}
                         </span>
                     ),
@@ -72,6 +80,7 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
             k9sakMeta={k9sakMeta}
             årstallHeadingLevel={3}
             årstallHeaderRenderer={(årstall) => `${årstall}`}
+            minDato={startetDato}
             månedContentRenderer={månedContentRenderer}
         />
     );

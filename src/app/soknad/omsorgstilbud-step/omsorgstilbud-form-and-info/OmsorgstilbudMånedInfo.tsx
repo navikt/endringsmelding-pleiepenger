@@ -1,7 +1,6 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
-import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { DateRange } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
@@ -73,22 +72,20 @@ const OmsorgstilbudMånedInfo: React.FunctionComponent<Props> = ({
                     </Box> */}
                 </>
             }>
-            <ResponsivePanel style={{ padding: '1rem' }}>
-                <TidsbrukKalender
-                    periodeIMåned={periodeIMåned}
-                    dager={omsorgsdager}
-                    utilgjengeligeDatoer={utilgjengeligeDatoer}
-                    dagerOpprinnelig={omsorgsdagerSak}
-                    skjulTommeDagerIListe={true}
-                    visEndringsinformasjon={true}
-                    tidRenderer={tidRenderer}
-                />
-                <FormBlock margin="l">
-                    <Knapp htmlType="button" mini={true} onClick={() => onEdit(tidOmsorgstilbud)}>
-                        {omsorgsdager.length === 0 ? addLabel : editLabel}
-                    </Knapp>
-                </FormBlock>
-            </ResponsivePanel>
+            <TidsbrukKalender
+                periodeIMåned={periodeIMåned}
+                dager={omsorgsdager}
+                utilgjengeligeDatoer={utilgjengeligeDatoer}
+                dagerOpprinnelig={omsorgsdagerSak}
+                skjulTommeDagerIListe={true}
+                visEndringsinformasjon={true}
+                tidRenderer={tidRenderer}
+            />
+            <FormBlock margin="l">
+                <Knapp htmlType="button" mini={true} onClick={() => onEdit(tidOmsorgstilbud)}>
+                    {omsorgsdager.length === 0 ? addLabel : editLabel}
+                </Knapp>
+            </FormBlock>
         </Ekspanderbartpanel>
     );
 };

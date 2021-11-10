@@ -4,7 +4,6 @@ import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import Knapperad from '@navikt/sif-common-core/lib/components/knapperad/Knapperad';
-import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
@@ -112,32 +111,31 @@ const TidKalenderForm = ({
                                 </Box>
                             )}
 
-                            <ResponsivePanel>
-                                <TidUkerInput
-                                    fieldName={FormField.tid}
-                                    periode={periode}
-                                    opprinneligTid={opprinneligTid}
-                                    utilgjengeligeDatoer={utilgjengeligeDatoer}
-                                    brukPanel={false}
-                                    tidPerDagValidator={tidPerDagValidator}
-                                />
-                                {erEndret && (
-                                    <FormBlock>
-                                        <ExpandableInfo
-                                            title="Ønsker du å tilbakestille endringene dine?"
-                                            filledBackground={false}>
-                                            <p>Tilbakestille til sak eller etter at en åpnet dialogen?</p>
-                                            <p>
-                                                Du kan tilbakestille alle endringene dine for denne måneden ved å trykke
-                                                på knappen nedenfor.
-                                            </p>
-                                            <Knapp htmlType="button" type="standard" mini={true}>
-                                                Tilbakestill endringer til slik det er i sak
-                                            </Knapp>
-                                        </ExpandableInfo>
-                                    </FormBlock>
-                                )}
-                            </ResponsivePanel>
+                            <TidUkerInput
+                                fieldName={FormField.tid}
+                                periode={periode}
+                                opprinneligTid={opprinneligTid}
+                                utilgjengeligeDatoer={utilgjengeligeDatoer}
+                                brukPanel={false}
+                                tidPerDagValidator={tidPerDagValidator}
+                            />
+
+                            {erEndret && (
+                                <FormBlock>
+                                    <ExpandableInfo
+                                        title="Ønsker du å tilbakestille endringene dine?"
+                                        filledBackground={false}>
+                                        <p>Tilbakestille til sak eller etter at en åpnet dialogen?</p>
+                                        <p>
+                                            Du kan tilbakestille alle endringene dine for denne måneden ved å trykke på
+                                            knappen nedenfor.
+                                        </p>
+                                        <Knapp htmlType="button" type="standard" mini={true}>
+                                            Tilbakestill endringer til slik det er i sak
+                                        </Knapp>
+                                    </ExpandableInfo>
+                                </FormBlock>
+                            )}
                         </Form.Form>
                     );
                 }}

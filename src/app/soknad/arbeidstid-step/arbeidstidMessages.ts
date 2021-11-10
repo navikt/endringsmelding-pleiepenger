@@ -10,7 +10,7 @@ const arbeidstidMessages = {
             'Antall timer og minutter {dag} er for lavt. Tiden må være minst ett minutt.',
         'arbeidstid.uke': 'Uke {uke}',
         'arbeidstid.ukeOgÅr': '{ukeOgÅr}',
-        'arbeidstid.form.tittel': 'Arbeidstid - {måned}',
+        'arbeidstid.form.tittel': 'Arbeidstid i {måned} - {arbeidsstedNavn}',
         'arbeidstid.ukeForm.tittel': 'Uke {uke}, {år}',
         'arbeidstid.form.intro.1':
             'Fyll ut antall timer og minutter du skal jobbe. Du skal bare fylle ut den tiden du vet med sikkerhet. Du trenger ikke fylle ut noe de dagene du ikke skal jobbe. Husk å trykke lagre når du er ferdig med å fylle ut.',
@@ -24,22 +24,20 @@ const arbeidstidMessages = {
         'arbeidstid.timerPerDag.timer': '{hours}t',
         'arbeidstid.timerPerDag.minutter': '{minutes}m',
 
-        'arbeidstid.addLabel': 'Registrer hvor mye du jobbet {periode}',
+        'arbeidstid.addLabel': 'Endre arbeidstid {periode} - {arbeidsstedNavn}',
         'arbeidstid.deleteLabel': 'Fjern alle timer',
         'arbeidstid.editLabel': 'Endre arbeidstid {periode}',
-        'arbeidstid.modalTitle': 'Arbeidstid - {periode}',
+        'arbeidstid.modalTitle': 'Arbeidstid i {periode} - {arbeidsstedNavn}',
         'arbeidstid.iPeriodePanel.info': '{dager, plural, one {# dag} other {# dager}} med jobb registrert.',
         'arbeidstid.iPeriodePanel.info.ingenDager': 'Ingen dager med jobb registrert.',
 
         'arbeidsforhold.part.jobber': 'jobber',
         'arbeidsforhold.part.jobbet': 'jobbet',
+        'arbeidsforhold.part.skalJobbe': 'skal jobbe',
         'arbeidsforhold.part.hosArbeidsgiver': 'hos {navn}',
         'arbeidsforhold.part.som.ANSATT': 'hos {navn}',
         'arbeidsforhold.part.som.FRILANSER': 'som frilanser',
         'arbeidsforhold.part.som.SELVSTENDIG': 'som selvstendig næringsdrivende',
-        'arbeidsforhold.part.arbeidsform.FAST': 'fast',
-        'arbeidsforhold.part.arbeidsform.TURNUS': 'i snitt',
-        'arbeidsforhold.part.arbeidsform.VARIERENDE': 'i snitt',
     },
 };
 

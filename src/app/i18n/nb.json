@@ -116,7 +116,6 @@
     "validation.harForståttRettigheterOgPlikter.notChecked": "Du må bekrefte at du har lest og forstått dine plikter.",
     "validation.harBekreftetOpplysninger.notChecked": "Du må bekrefte opplysningene.",
     "validation.hvaSkalEndres.noValue": "Du må krysse av for hva du ønsker å endre",
-    "validation.hvaSkalEndres.endreArbeidssituasjonIkkeValgt": "Du må krysse av for å endre arbeidssituasjon på grunn av at du har et nytt arbeidsforhold vi trenger informasjon om.",
     "validation.omsorgstilbud_liste.ingenEndringer": "Det er ikke registrert noen endringer i omsorgstilbudet",
     "validation.alle_arbeidsgivere_liste.ingenEndringer": "Det er ikke registrert noen endringer i arbeidstid",
 

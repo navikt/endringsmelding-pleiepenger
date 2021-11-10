@@ -22,6 +22,7 @@ export const mapFormDataToK9Format = (
     søknadsperioder: DateRange[],
     k9sak: K9Sak
 ): SoknadApiData | undefined => {
+    const { arbeidssituasjon, arbeidstid, omsorgstilbud } = values.formData;
     const apiValues: SoknadApiData = {
         harBekreftetOpplysninger: values.formData.harBekreftetOpplysninger,
         harForståttRettigheterOgPlikter: values.formData.harForståttRettigheterOgPlikter,
@@ -29,12 +30,17 @@ export const mapFormDataToK9Format = (
         språk: 'nb',
         ytelse: {
             type: k9sak.ytelse.type,
-            arbeidstid: values.formData.arbeidstid
-                ? mapArbeidstidToK9FormatInnsending(values.formData.arbeidstid, k9sak, søknadsperioder)
+            arbeidstid: arbeidstid
+                ? mapArbeidstidToK9FormatInnsending({
+                      arbeidstid,
+                      arbeidssituasjon,
+                      k9sak,
+                      søknadsperioder,
+                  })
                 : undefined,
-            tilsynsordning: values.formData.omsorgstilbud
+            tilsynsordning: omsorgstilbud
                 ? mapOmsorgstilbudToK9FormatInnsending(
-                      values.formData.omsorgstilbud,
+                      omsorgstilbud,
                       k9sak.ytelse.tilsynsordning.enkeltdager,
                       søknadsperioder
                   )
