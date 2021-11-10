@@ -7,6 +7,7 @@ interface Lenker {
     dittNAV: string;
     medlemskapIFolketrygden: string;
     ettersendelse: string;
+    skrivTilOss: string;
 }
 
 const LenkerBokmål: Lenker = {
@@ -20,6 +21,7 @@ const LenkerBokmål: Lenker = {
     dittNAV: `https://www.nav.no/no/Ditt+NAV`,
     medlemskapIFolketrygden: `https://www.nav.no/no/person/flere-tema/arbeid-og-opphold-i-norge/relatert-informasjon/medlemskap-i-folketrygden`,
     ettersendelse: 'https://www.nav.no/soknader/nb/person/familie/omsorgspenger/NAV%2009-35.01/ettersendelse',
+    skrivTilOss: 'https://www.nav.no/person/kontakt-oss/nb/skriv-til-oss',
 };
 
 const getLenker = (locale?: string): Lenker => {
