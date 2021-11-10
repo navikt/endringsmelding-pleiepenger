@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { useLogSidevisning } from '@navikt/sif-common-amplitude';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FrontPageBanner from '@navikt/sif-common-core/lib/components/front-page-banner/FrontPageBanner';
@@ -10,6 +10,7 @@ import { useSoknadContext } from '../SoknadContext';
 import VelkommenPageForm from './VelkommenPageForm';
 import CounsellorPanel from '@navikt/sif-common-core/lib/components/counsellor-panel/CounsellorPanel';
 import { Arbeidsgiver } from '../../types/Arbeidsgiver';
+import VelkommenInfo from './VelkommenInfo';
 
 interface Props {
     nyeArbeidsforhold: Arbeidsgiver[];
@@ -38,12 +39,13 @@ const VelkommenPage: React.FunctionComponent<Props> = ({ nyeArbeidsforhold }) =>
             <Box margin="xl" textAlignCenter={true}>
                 <Sidetittel>{intlHelper(intl, 'step.velkommen.tittel')}</Sidetittel>
             </Box>
-            <Box margin="xl" textAlignCenter={true}>
-                <CounsellorPanel>
-                    <FormattedMessage tagName="p" id="step.velkommen.info.1" />
-                    <FormattedMessage tagName="p" id="step.velkommen.info.2" />
-                </CounsellorPanel>
-            </Box>
+            <section role="contentinfo" aria-label="Introduksjon">
+                <Box margin="xl" textAlignCenter={true}>
+                    <CounsellorPanel>
+                        <VelkommenInfo />
+                    </CounsellorPanel>
+                </Box>
+            </section>
             <Box margin="xl">
                 <VelkommenPageForm onStart={startSoknad} nyeArbeidsforhold={nyeArbeidsforhold} />
             </Box>
