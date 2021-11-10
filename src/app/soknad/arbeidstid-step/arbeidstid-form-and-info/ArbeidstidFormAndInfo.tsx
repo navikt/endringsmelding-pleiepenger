@@ -14,6 +14,7 @@ import { datoErHistorisk } from '../../../utils/tidsbrukUtils';
 
 interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     formFieldName: FieldNames;
+    arbeidsstedNavn: string;
     labels: ModalFormAndInfoLabels;
     periodeIMåned: DateRange;
     utilgjengeligeDatoerIMåned?: Date[];
@@ -36,6 +37,7 @@ declare type InfoRenderer<DataType> = (props: {
 }) => React.ReactNode;
 
 function ArbeidstidFormAndInfo<FieldNames>({
+    arbeidsstedNavn,
     formFieldName,
     periodeIMåned,
     labels,
@@ -50,6 +52,7 @@ function ArbeidstidFormAndInfo<FieldNames>({
 
     const renderForm: ModalFormRenderer<TidEnkeltdag> = ({ onSubmit, onCancel, data = {} }) => (
         <ArbeidstidMånedForm
+            arbeidsstedNavn={arbeidsstedNavn}
             periodeIMåned={periodeIMåned}
             arbeidstid={data}
             arbeidstidArbeidsgiverSak={arbeidstidArbeidsgiverSak}

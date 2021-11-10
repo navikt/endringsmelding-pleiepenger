@@ -6,10 +6,10 @@ import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { groupBy } from 'lodash';
 import { guid } from 'nav-frontend-js-utils';
-import { getDatesInMonth, getDatesInDateRange, isDateInDates } from '../../utils/dateUtils';
+import dateFormatter from '../../utils/dateFormatterUtils';
+import { getDatesInDateRange, getDatesInMonth, isDateInDates } from '../../utils/dateUtils';
 import CalendarGridDate from './CalendarGridDate';
 import './calendarGrid.less';
-import dateFormatter from '../../utils/dateFormatterUtils';
 
 dayjs.extend(isSameOrBefore);
 
@@ -108,16 +108,19 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
     const renderWeek = (week: WeekToRender) => {
         const datesInWeek = week.dates;
         const weekNum = week.weekNumber;
-        const areAllDaysInWeekDisabled =
-            datesInWeek.filter((date) => isDateInDates(date, disabledDates) === true).length === datesInWeek.length;
+        const areAllDaysInWeekDisabledOrOutsideMonth =
+            datesInWeek.filter(
+                (date) =>
+                    isDateInDates(date, disabledDates) === true || dayjs(date).isSame(month.from, 'month') === false
+            ).length === datesInWeek.length;
 
-        if (hideWeeksWithOnlyDisabledContent && areAllDaysInWeekDisabled) {
+        if (hideWeeksWithOnlyDisabledContent && areAllDaysInWeekDisabledOrOutsideMonth) {
             return null;
         }
         return [
             <div
                 aria-hidden={true}
-                className={bem.element('weekNum', areAllDaysInWeekDisabled ? 'empty' : undefined)}
+                className={bem.element('weekNum', areAllDaysInWeekDisabledOrOutsideMonth ? 'empty' : undefined)}
                 key={guid()}>
                 <span className={bem.element('weekNum_label')} role="presentation" aria-hidden={true}>
                     <FormattedMessage id="Uke" /> {` `}
@@ -127,7 +130,7 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
                     {weekNum}
                 </span>
 
-                {areAllDaysInWeekDisabled && allDaysInWeekDisabledContentRenderer ? (
+                {areAllDaysInWeekDisabledOrOutsideMonth && allDaysInWeekDisabledContentRenderer ? (
                     <div className={bem.element('allWeekDisabledContent')}>
                         {allDaysInWeekDisabledContentRenderer()}
                     </div>

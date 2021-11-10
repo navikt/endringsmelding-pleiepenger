@@ -9,10 +9,9 @@ import { K9ArbeidstidInfo, K9SakMeta } from '../../types/K9Sak';
 import { SoknadFormData, SoknadFormField, TidEnkeltdag } from '../../types/SoknadFormData';
 import { getYearMonthKey } from '../../utils/k9SakUtils';
 import ArbeidstidFormAndInfo from './arbeidstid-form-and-info/ArbeidstidFormAndInfo';
-import { datoErHistorisk } from '../../utils/tidsbrukUtils';
-import { dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 interface Props {
+    arbeidsstedNavn: string;
     formFieldName: SoknadFormField;
     arbeidstidSak: K9ArbeidstidInfo;
     k9sakMeta: K9SakMeta;
@@ -21,6 +20,7 @@ interface Props {
 }
 
 const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
+    arbeidsstedNavn,
     formFieldName,
     arbeidstidSak,
     k9sakMeta,
@@ -33,10 +33,10 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
     const månedContentRenderer = (måned: DateRange) => {
         const mndOgÅrLabelPart = dayjs(måned.from).format('MMMM YYYY');
         const utilgjengeligeDatoerIMåned = k9sakMeta.utilgjengeligeDatoerIMånedMap[getYearMonthKey(måned.from)];
-        const erHistorisk = datoErHistorisk(måned.to, dateToday);
 
         return (
             <ArbeidstidFormAndInfo
+                arbeidsstedNavn={arbeidsstedNavn}
                 formFieldName={formFieldName}
                 periodeIMåned={måned}
                 utilgjengeligeDatoerIMåned={utilgjengeligeDatoerIMåned}
@@ -50,7 +50,7 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
                 labels={{
                     addLabel: intlHelper(intl, 'arbeidstid.addLabel', {
                         periode: mndOgÅrLabelPart,
-                        jobberJobbet: intlHelper(intl, `arbeidsforhold.part.${erHistorisk ? 'jobbet' : 'skalJobbe'}`),
+                        arbeidsstedNavn,
                     }),
                     deleteLabel: intlHelper(intl, 'arbeidstid.deleteLabel', {
                         periode: mndOgÅrLabelPart,
@@ -60,11 +60,13 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
                     }),
                     modalTitle: intlHelper(intl, 'arbeidstid.modalTitle', {
                         periode: mndOgÅrLabelPart,
+                        arbeidsstedNavn,
                     }),
                     infoTitle: (
                         <span>
                             {intlHelper(intl, 'arbeidstid.modalTitle', {
                                 periode: mndOgÅrLabelPart,
+                                arbeidsstedNavn,
                             })}
                         </span>
                     ),

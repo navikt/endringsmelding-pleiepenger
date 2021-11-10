@@ -64,6 +64,7 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
                                     </Undertittel>
                                     {erNytt && <Box margin="m">Startdato: {dateFormatter.extended(a.ansattFom)}</Box>}
                                     <ArbeidstidMånedListe
+                                        arbeidsstedNavn={a.navn}
                                         formFieldName={getArbeidsgiverArbeidstidFormFieldName(a)}
                                         arbeidstidSak={arbeidstidSak}
                                         k9sakMeta={k9sakMeta}
@@ -78,6 +79,7 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
                         <div className="arbeidstid__aktivitet">
                             <Undertittel>Frilanser</Undertittel>
                             <ArbeidstidMånedListe
+                                arbeidsstedNavn="Frilanser"
                                 formFieldName={getFrilanserArbeidstidFormFieldName()}
                                 arbeidstidSak={arbeidstidSak.frilanser}
                                 k9sakMeta={k9sakMeta}
@@ -89,6 +91,7 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
                         <div className="arbeidstid__aktivitet">
                             <Undertittel>Selvstendig næringsdrivende</Undertittel>
                             <ArbeidstidMånedListe
+                                arbeidsstedNavn="Selvstendig næringsdrivende"
                                 formFieldName={getSelvstendigArbeidstidFormFieldName()}
                                 arbeidstidSak={arbeidstidSak.selvstendig}
                                 k9sakMeta={k9sakMeta}

@@ -17,7 +17,7 @@ import { getDagerMedTidITidsrom, tidErIngenTid } from '../../../utils/tidsbrukUt
 interface Props {
     periodeIMåned: DateRange;
     tidArbeidstid: TidEnkeltdag;
-    arbeidstidArbeidsgiverSak?: K9ArbeidstidInfo;
+    arbeidstidArbeidsgiverSak: K9ArbeidstidInfo;
     editLabel: string;
     addLabel: string;
     utilgjengeligeDatoer?: Date[];
@@ -36,7 +36,7 @@ const ArbeidstidMånedInfo: React.FunctionComponent<Props> = ({
     onEdit,
 }) => {
     const intl = useIntl();
-    const { faktisk } = arbeidstidArbeidsgiverSak || { faktisk: {}, normalt: {} };
+    const { faktisk } = arbeidstidArbeidsgiverSak;
 
     const dager = getDagerMedTidITidsrom(tidArbeidstid, periodeIMåned);
 

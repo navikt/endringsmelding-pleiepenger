@@ -11,6 +11,7 @@ import { K9ArbeidstidInfo } from '../../../types/K9Sak';
 import { timeToISODuration } from '../../../utils/timeUtils';
 
 interface Props {
+    arbeidsstedNavn: string;
     periodeIMåned: DateRange;
     arbeidstid: TidEnkeltdag;
     arbeidstidArbeidsgiverSak: K9ArbeidstidInfo;
@@ -40,6 +41,7 @@ const cleanupTidIPeriode = (
 };
 
 const ArbeidstidMånedForm: React.FunctionComponent<Props> = ({
+    arbeidsstedNavn,
     periodeIMåned,
     arbeidstid,
     arbeidstidArbeidsgiverSak,
@@ -64,7 +66,7 @@ const ArbeidstidMånedForm: React.FunctionComponent<Props> = ({
             tittel={
                 <FormattedMessage
                     id="arbeidstid.form.tittel"
-                    values={{ måned: dayjs(periodeIMåned.from).format('MMMM YYYY') }}
+                    values={{ måned: dayjs(periodeIMåned.from).format('MMMM YYYY'), arbeidsstedNavn }}
                 />
             }
             intro={

@@ -2,13 +2,13 @@ import React from 'react';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import { ValidationError, ValidationFunction } from '@navikt/sif-common-formik/lib/validation/types';
 import dayjs from 'dayjs';
 import { Undertittel } from 'nav-frontend-typografi';
 import SoknadFormComponents from '../../soknad/SoknadFormComponents';
-import { TidEnkeltdag } from '../../types/SoknadFormData';
 import { K9SakMeta } from '../../types/K9Sak';
+import { TidEnkeltdag } from '../../types/SoknadFormData';
 import { getYearMonthKey } from '../../utils/k9SakUtils';
-import { ValidationError, ValidationFunction } from '@navikt/sif-common-formik/lib/validation/types';
 
 interface Props {
     k9sakMeta: K9SakMeta;
@@ -45,9 +45,9 @@ const SøknadsperioderMånedListe: React.FunctionComponent<Props> = ({
     const renderMåned = (måned: DateRange, index: number) => {
         const søknadsperioderIMåned = k9sakMeta.månederMedSøknadsperiodeMap[getYearMonthKey(måned.from)];
         return søknadsperioderIMåned === undefined ? null : (
-            <FormBlock margin="m" key={dayjs(måned.from).format('MM.YYYY')}>
+            <FormBlock margin="none" paddingBottom="m" key={dayjs(måned.from).format('MM.YYYY')}>
                 {årstallHeaderRenderer && visÅrstallHeading(index) && (
-                    <Box margin={index === 0 ? 'l' : 'xl'} padBottom="l">
+                    <Box margin="l" padBottom="m">
                         <Undertittel tag={`h${headingLevel}`} className={'yearHeader'}>
                             {årstallHeaderRenderer(måned.from.getFullYear())}
                         </Undertittel>
@@ -57,7 +57,6 @@ const SøknadsperioderMånedListe: React.FunctionComponent<Props> = ({
             </FormBlock>
         );
     };
-
     const renderMåneder = (): JSX.Element => {
         const måneder = minDato
             ? k9sakMeta.alleMånederISøknadsperiode.filter((m) => dayjs(m.from).isSameOrAfter(minDato, 'day'))
