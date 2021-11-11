@@ -47,15 +47,14 @@ const VelkommenPageForm: React.FunctionComponent<Props> = ({ nyeArbeidsforhold, 
                     <SoknadFormComponents.CheckboxPanelGroup
                         id="abc"
                         name={SoknadFormField.hvaSkalEndres}
-                        legend={'Hva du ønsker å gjøre?'}
+                        legend={'Hva ønsker du å gjøre?'}
                         validate={getRequiredFieldValidator()}
                         checkboxes={[
                             {
                                 id: 'arbeidstid',
                                 label: (
                                     <>
-                                        <Element>Endre arbeidstid</Element>Legg til eller endre hvor mye du har eller
-                                        skal jobbe
+                                        <Element>Endre arbeidstid</Element>Legge til, fjerne eller endre arbeidstid
                                     </>
                                 ),
                                 value: HvaSkalEndres.arbeidstid,
@@ -64,8 +63,8 @@ const VelkommenPageForm: React.FunctionComponent<Props> = ({ nyeArbeidsforhold, 
                                 id: 'omsorgstilbud',
                                 label: (
                                     <>
-                                        <Element>Endre tid i et omsorgstilbud</Element>Legg til eller endre hvor mye tid
-                                        barnet har vært i et fast og regelmessig omsorgstilbud
+                                        <Element>Endre tid i et omsorgstilbud</Element>Legge til, fjerne eller endre tid
+                                        i omsorgstilbud
                                     </>
                                 ),
                                 value: HvaSkalEndres.omsorgstilbud,

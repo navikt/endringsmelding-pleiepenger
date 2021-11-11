@@ -25,7 +25,7 @@ const OmsorgstilbudMånedListe: React.FunctionComponent<Props> = ({
     return (
         <SøknadsperioderMånedListe
             k9sakMeta={k9sakMeta}
-            årstallHeaderRenderer={(årstall) => `Måneder i ${årstall} du har søkt om pleiepenger og kan endre`}
+            årstallHeaderRenderer={(årstall) => `${årstall}`}
             månedContentRenderer={(måned) => {
                 const mndOgÅrLabelPart = dayjs(måned.from).format('MMMM YYYY');
                 return (

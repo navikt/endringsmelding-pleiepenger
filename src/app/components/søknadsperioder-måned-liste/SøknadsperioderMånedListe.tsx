@@ -49,7 +49,7 @@ const SøknadsperioderMånedListe: React.FunctionComponent<Props> = ({
                 {årstallHeaderRenderer && visÅrstallHeading(index) && (
                     <Box margin="l" padBottom="m">
                         <Undertittel tag={`h${headingLevel}`} className={'yearHeader'}>
-                            {årstallHeaderRenderer(måned.from.getFullYear())}
+                            {årstallHeaderRenderer(måned.from.getFullYear())}:
                         </Undertittel>
                     </Box>
                 )}
