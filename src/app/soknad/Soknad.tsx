@@ -13,7 +13,6 @@ import { ulid } from 'ulid';
 import { sendEndringsmelding } from '../api/sendSoknad';
 import { SKJEMANAVN } from '../App';
 import AppRoutes, { getRouteUrl } from '../config/routeConfig';
-import IkkeMyndigPage from '../pages/ikke-myndig-page/IkkeMyndigPage';
 import { Arbeidsgiver } from '../types/Arbeidsgiver';
 import { K9Sak, K9SakMeta } from '../types/K9Sak';
 import { Person } from '../types/Person';
@@ -239,9 +238,6 @@ const Soknad: React.FunctionComponent<Props> = ({
         <LoadWrapper
             isLoading={initializing}
             contentRenderer={(): React.ReactNode => {
-                if (søker.myndig === false) {
-                    return <IkkeMyndigPage />;
-                }
                 if (harK9SakArbeidstidInfo(arbeidsgivere, k9sak.ytelse.arbeidstid) === false) {
                     return (
                         <ErrorPage

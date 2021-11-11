@@ -59,16 +59,6 @@ const søkerMock = {
     mellomnavn: null,
     etternavn: 'KRONJUVEL',
     kontonummer: '17246746060',
-    myndig: true,
-};
-
-const søkerMockIkkeMyndig = {
-    fødselsnummer: '30086421581',
-    fornavn: 'GODSLIG',
-    mellomnavn: null,
-    etternavn: 'KRONJUVEL',
-    kontonummer: '17246746060',
-    myndig: false,
 };
 
 // const barnMock = {
@@ -134,11 +124,6 @@ const startExpressServer = () => {
         res.send(arbeidsgivereMock);
     });
 
-    server.get('/soker-ikke-myndig', (req, res) => {
-        setTimeout(() => {
-            res.send(søkerMockIkkeMyndig);
-        }, 200);
-    });
     server.get('/soker-not-logged-in', (req, res) => {
         res.sendStatus(401);
     });

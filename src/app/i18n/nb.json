@@ -70,11 +70,7 @@
     "page.error.pageTitle": "Noe gikk galt ...",
     "page.form.ubesvarteSpørsmålInfo": "For å komme videre, må du svare på alle spørsmålene ovenfor",
 
-    "page.ikkeMyndig.sidetittel": "Endringsmelding - pleiepenger - ikke myndig",
-    "page.ikkeMyndig.banner.tittel": "Hei!",
-    "page.ikkeMyndig.banner.tekst": "Fordi du er under 18 år, må en av foreldrene dine eller en foresatt skrive under på meldingen sammen med deg. Du må derfor fylle ut skjemaet på papir og sende det i posten.",
-    "page.ikkeMyndig.banner.lastNed": "Melding om endring av pleiepenger",
-    "page.ikkeMyndig.tittel": "Endre pleiepenger",
+    "page.ikkeTilgang.tekst": "Du har ikke tilgang til denne siden.",
 
     "samtykke.tekst": "Jeg bekrefter at jeg har lest og forstått",
     "samtykke.harIkkeGodkjentVilkår": "Du må godkjenne vilkårene",
