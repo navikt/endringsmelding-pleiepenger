@@ -11,6 +11,8 @@ import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { Element } from 'nav-frontend-typografi';
 
+// TODO - legge på tekst dersom bruker har sagt en vil endre arbeidstid men ikke har gjort det.
+
 interface Props {
     arbeidsgivere: Arbeidsgiver[];
     arbeidstid: ArbeidstidK9FormatInnsending;

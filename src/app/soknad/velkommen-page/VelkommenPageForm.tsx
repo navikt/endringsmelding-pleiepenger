@@ -72,15 +72,6 @@ const VelkommenPageForm: React.FunctionComponent<Props> = ({ nyeArbeidsforhold, 
                         ]}
                     />
                 </FormBlock>
-                <Box margin="xl">
-                    <p>
-                        Vil du melde fra om andre endringer i din eller barnets situasjon?{' '}
-                        <Lenke href="https://www.nav.no/person/kontakt-oss/nb/skriv-til-oss">
-                            Gå til skriv til oss
-                        </Lenke>
-                        .
-                    </p>
-                </Box>
                 <FormBlock>
                     <SoknadFormComponents.ConfirmationCheckbox
                         label={intlHelper(intl, 'samtykke.tekst')}
@@ -105,9 +96,13 @@ const VelkommenPageForm: React.FunctionComponent<Props> = ({ nyeArbeidsforhold, 
                 </FormBlock>
             </section>
             <FormBlock>
-                <Lenke href="#" onClick={(): void => setDialogState({ behandlingAvPersonopplysningerModalOpen: true })}>
-                    <FormattedMessage id="step.velkommen.personopplysninger.lenketekst" />
-                </Lenke>
+                <div style={{ textAlign: 'center' }}>
+                    <Lenke
+                        href="#"
+                        onClick={(): void => setDialogState({ behandlingAvPersonopplysningerModalOpen: true })}>
+                        <FormattedMessage id="step.velkommen.personopplysninger.lenketekst" />
+                    </Lenke>
+                </div>
             </FormBlock>
             <InfoDialog
                 contentLabel={intlHelper(intl, 'modal.dinePlikter.dialog.tittel')}

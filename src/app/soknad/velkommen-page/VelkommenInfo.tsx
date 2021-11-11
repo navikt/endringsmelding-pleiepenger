@@ -12,14 +12,14 @@ const VelkommenInfo: React.FunctionComponent = () => {
     return 1 + 1 === 2 ? (
         <>
             <p>
-                Her kan du melde fra om endringer i tiden barnet er fast og regelmessig i et omsorgstilbud, samt hvor
-                mye du jobber mens du har pleiepenger. Du kan legge til, fjerne eller endre arbeidstid og tid i
-                omsorgstilbud.
+                Her kan du melde fra om endringer i tiden barnet er fast og regelmessig i omsorgstilbud, samt hvor mye
+                du jobber mens du har pleiepenger.
             </p>
             <p>
-                Du kan melde fra om endringer i pleiepengeperioden din i opptil 3 måneder tilbake i tid, og 12 måneder
-                frem i tid. Hvis du har behov for å melde fra om endringer utenfor denne tidsrammen må du sende en
-                melding via <Lenke href="https://www.nav.no/person/kontakt-oss/nb/skriv-til-oss">Skriv til oss</Lenke>.
+                Du kan melde fra om endringer i pleiepengeperioden din i opptil 3 måneder tilbake i tid, og 6 måneder
+                frem i tid. Hvis du har behov for å melde fra om endringer utenfor denne tidsrammen, eller andre
+                endringer, må du sende en melding via{' '}
+                <Lenke href="https://www.nav.no/person/kontakt-oss/nb/skriv-til-oss">Skriv til oss</Lenke>.
             </p>
         </>
     ) : (

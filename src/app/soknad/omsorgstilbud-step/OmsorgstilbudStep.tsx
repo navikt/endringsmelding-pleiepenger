@@ -1,16 +1,16 @@
 import React from 'react';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
-import { useFormikContext } from 'formik';
+// import { useFormikContext } from 'formik';
 import StepIntroduction from '../../components/step-introduction/StepIntroduction';
 import { K9SakMeta } from '../../types/K9Sak';
 import { SoknadFormData, TidEnkeltdag } from '../../types/SoknadFormData';
-import { validateOmsorgstilbud } from '../../validation/fieldValidations';
+// import { validateOmsorgstilbud } from '../../validation/fieldValidations';
 import SoknadFormComponents from '../SoknadFormComponents';
 import SoknadFormStep from '../SoknadFormStep';
 import { StepID } from '../soknadStepsConfig';
 import OmsorgstilbudMånedListe from './OmsorgstilbudMånedListe';
-import { Undertittel } from 'nav-frontend-typografi';
+// import { Undertittel } from 'nav-frontend-typografi';
 
 const cleanupOmsorgstilbudStep = (formData: SoknadFormData): SoknadFormData => {
     return formData;
@@ -28,7 +28,7 @@ const OmsorgstilbudStep: React.FunctionComponent<Props> = ({
     tidIOmsorgstilbudSak = {},
 }) => {
     const stepId = StepID.OMSORGSTILBUD;
-    const { values } = useFormikContext<SoknadFormData>();
+    // const { values } = useFormikContext<SoknadFormData>();
 
     return (
         <SoknadFormStep id={stepId} onStepCleanup={cleanupOmsorgstilbudStep}>
@@ -58,20 +58,21 @@ const OmsorgstilbudStep: React.FunctionComponent<Props> = ({
 
             <Box margin="xl">
                 <SoknadFormComponents.InputGroup
-                    legend={<Undertittel>Perioder du kan endre tid i omsorgstilbud</Undertittel>}
-                    description={
-                        <>
-                            Under ser du perioder du har søkt om pleiepenger. Det er kun dager du har søkt om
-                            pleiepenger som er tilgjengelige for endring.{' '}
-                        </>
-                    }
+                    // legend={<Undertittel>Perioder du kan endre tid i omsorgstilbud</Undertittel>}
+                    // description={
+                    //     <>
+                    //         Under ser du perioder du har søkt om pleiepenger. Det er kun dager du har søkt om
+                    //         pleiepenger som er tilgjengelige for endring.{' '}
+                    //     </>
+                    // }
                     name={'omsorgstilbud_liste' as any}
-                    validate={() =>
-                        validateOmsorgstilbud({
-                            tidOpprinnelig: tidIOmsorgstilbudSak,
-                            tid: values.omsorgstilbud?.enkeltdager,
-                        })
-                    }>
+                    // validate={() =>
+                    //     validateOmsorgstilbud({
+                    //         tidOpprinnelig: tidIOmsorgstilbudSak,
+                    //         tid: values.omsorgstilbud?.enkeltdager,
+                    //     })
+                    // }
+                >
                     <OmsorgstilbudMånedListe
                         tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}
                         k9sakMeta={k9sakMeta}
