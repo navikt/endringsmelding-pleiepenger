@@ -1,5 +1,5 @@
 import { useAmplitudeInstance } from '@navikt/sif-common-amplitude/lib';
-import { isForbidden, isUnauthorized } from '@navikt/sif-common-core/lib/utils/apiUtils';
+import { isUnauthorized } from '@navikt/sif-common-core/lib/utils/apiUtils';
 import { useFormikContext } from 'formik';
 import { History } from 'history';
 import { StepID } from '../soknad/soknadStepsConfig';
@@ -15,7 +15,7 @@ function usePersistSoknad(history: History) {
     async function doPersist(soknadId: string, stepID: StepID, hashInfo: UserHashInfo) {
         setTimeout(() => {
             soknadTempStorage.update(soknadId, values, stepID, hashInfo).catch((error) => {
-                if (isForbidden(error) || isUnauthorized(error)) {
+                if (isUnauthorized(error)) {
                     logUserLoggedOut('Mellomlagring ved navigasjon');
                     relocateToLoginPage();
                 } else {

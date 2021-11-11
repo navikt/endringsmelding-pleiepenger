@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { failure, pending, success } from '@devexperts/remote-data-ts';
 import { ApplikasjonHendelse, useAmplitudeInstance } from '@navikt/sif-common-amplitude';
 import LoadWrapper from '@navikt/sif-common-core/lib/components/load-wrapper/LoadWrapper';
-import { isUserLoggedOut } from '@navikt/sif-common-core/lib/utils/apiUtils';
+import { isUnauthorized } from '@navikt/sif-common-core/lib/utils/apiUtils';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import ErrorPage from '@navikt/sif-common-soknad/lib/soknad-common-pages/ErrorPage';
 import { SoknadApplicationType, StepConfig } from '@navikt/sif-common-soknad/lib/soknad-step/soknadStepTypes';
@@ -144,7 +144,7 @@ const Soknad: React.FunctionComponent<Props> = ({
             setSoknadId(undefined);
             resetFormikForm();
         } catch (error) {
-            if (isUserLoggedOut(error)) {
+            if (isUnauthorized(error)) {
                 logUserLoggedOut('Ved innsending av søknad');
                 relocateToLoginPage();
             } else {
@@ -191,7 +191,7 @@ const Soknad: React.FunctionComponent<Props> = ({
                     });
                 }
             } catch (error) {
-                if (isUserLoggedOut(error)) {
+                if (isUnauthorized(error)) {
                     await logUserLoggedOut('ved mellomlagring');
                     relocateToLoginPage();
                 }

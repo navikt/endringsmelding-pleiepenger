@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { combine, initial, pending, RemoteData } from '@devexperts/remote-data-ts';
-import { isUserLoggedOut } from '@navikt/sif-common-core/lib/utils/apiUtils';
+import { isUnauthorized } from '@navikt/sif-common-core/lib/utils/apiUtils';
 import { AxiosError } from 'axios';
 import getArbeidsgivereRemoteData from '../api/getArbeidsgivere';
 import getSokerRemoteData from '../api/getSoker';
@@ -36,7 +36,7 @@ function useSoknadEssentials(): SoknadEssentialsRemoteData {
             );
             setData(combine(sokerResult, k9SakResult, arbeidsgivereResult, soknadTempStorageResult));
         } catch (remoteDataError) {
-            if (isUserLoggedOut(remoteDataError.error)) {
+            if (isUnauthorized(remoteDataError.error)) {
                 setData(pending);
                 relocateToLoginPage();
             } else {
