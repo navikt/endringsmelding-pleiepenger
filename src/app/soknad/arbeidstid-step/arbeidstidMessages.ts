@@ -10,12 +10,12 @@ const arbeidstidMessages = {
             'Antall timer og minutter {dag} er for lavt. Tiden må være minst ett minutt.',
         'arbeidstid.uke': 'Uke {uke}',
         'arbeidstid.ukeOgÅr': '{ukeOgÅr}',
-        'arbeidstid.form.tittel': 'Arbeidstid i {måned} - {arbeidsstedNavn}',
+        'arbeidstid.form.tittel': 'Arbeidstimer i {måned} - {arbeidsstedNavn}',
         'arbeidstid.ukeForm.tittel': 'Uke {uke}, {år}',
         'arbeidstid.form.intro.1':
-            'Fyll ut antall timer og minutter du skal jobbe. Du skal bare fylle ut den tiden du vet med sikkerhet. Du trenger ikke fylle ut noe de dagene du ikke skal jobbe. Husk å trykke lagre når du er ferdig med å fylle ut.',
+            'Endre antall timer og minutter du skal jobbe. Du skal bare fylle ut den tiden du vet med sikkerhet. Du trenger ikke fylle ut noe de dagene du ikke skal jobbe.',
         'arbeidstid.form.intro_fortid.1':
-            'Fyll ut antall timer og minutter de dagene du jobbet. Du trenger ikke fylle ut noe de dagene du ikke jobbet. Husk å trykke lagre når du er ferdig med å fylle ut.',
+            'Korriger antall timer og minutter de dagene du har en endring i antall timer du har jobbet/skal jobbe.',
 
         'arbeidstid.svar.ja': 'Ja',
         'arbeidstid.svar.nei': 'Nei',
@@ -24,10 +24,10 @@ const arbeidstidMessages = {
         'arbeidstid.timerPerDag.timer': '{hours}t',
         'arbeidstid.timerPerDag.minutter': '{minutes}m',
 
-        'arbeidstid.addLabel': 'Endre arbeidstid {periode} - {arbeidsstedNavn}',
+        'arbeidstid.addLabel': 'Endre arbeidstimer {periode} - {arbeidsstedNavn}',
         'arbeidstid.deleteLabel': 'Fjern alle timer',
-        'arbeidstid.editLabel': 'Endre arbeidstid {periode}',
-        'arbeidstid.modalTitle': 'Arbeidstid i {periode} - {arbeidsstedNavn}',
+        'arbeidstid.editLabel': 'Endre arbeidstimer {periode}',
+        'arbeidstid.modalTitle': 'Arbeidstimer i {periode} - {arbeidsstedNavn}',
         'arbeidstid.iPeriodePanel.info': '{dager, plural, one {# dag} other {# dager}} med jobb registrert.',
         'arbeidstid.iPeriodePanel.info.ingenDager': 'Ingen dager med jobb registrert.',
 

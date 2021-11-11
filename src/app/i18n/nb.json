@@ -42,7 +42,7 @@
 
     "tidKalenderForm.ok.label": "Lagre",
     "tidKalenderForm.avbryt.label": "Avbryt",
-    "tidKalenderForm.lukk.label": "Avbryt/lukk",
+    "tidKalenderForm.lukk.label": "Avbryt",
 
     "steg.footer.avbryt": "Avbryt",
     "steg.footer.fortsettSenere": "Fortsett senere",
@@ -107,8 +107,8 @@
     "step.arbeidssituasjon.stepTitle": "Arbeidssituasjon",
     "step.arbeidssituasjon.nextButtonLabel": "Fortsett",
 
-    "step.arbeidstid.pageTitle": "Arbeidstid",
-    "step.arbeidstid.stepTitle": "Arbeidstid",
+    "step.arbeidstid.pageTitle": "Endre arbeidstimer",
+    "step.arbeidstid.stepTitle": "Endre arbeidstimer",
     "step.arbeidstid.nextButtonLabel": "Fortsett",
 
     "oppsummering.søker.fødselsnummer": "Fødselsnummer:",

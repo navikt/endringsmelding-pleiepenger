@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
-import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
+// import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import Knapperad from '@navikt/sif-common-core/lib/components/knapperad/Knapperad';
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
@@ -60,7 +60,7 @@ const TidKalenderForm = ({
     tittel,
     intro,
     utilgjengeligeDatoer = [],
-    erEndret,
+    // erEndret,
     tidPerDagValidator,
     onSubmit,
     onCancel,
@@ -102,14 +102,14 @@ const TidKalenderForm = ({
                             <Systemtittel tag="h1">{tittel}</Systemtittel>
                             {intro ? <Box margin="l">{intro}</Box> : undefined}
 
-                            {utilgjengeligeDatoer.length > 0 && (
+                            {/* {utilgjengeligeDatoer.length > 0 && (
                                 <Box margin="m">
                                     <ExpandableInfo title={`Hvorfor vises ikke alle dagene nedenfor?`}>
                                         Det er bare dager du har søkt om som vises nedenfor, og som er tilgjengelige for
                                         å endre.
                                     </ExpandableInfo>
                                 </Box>
-                            )}
+                            )} */}
 
                             <TidUkerInput
                                 fieldName={FormField.tid}
@@ -120,7 +120,7 @@ const TidKalenderForm = ({
                                 tidPerDagValidator={tidPerDagValidator}
                             />
 
-                            {erEndret && (
+                            {/* {erEndret && (
                                 <FormBlock>
                                     <ExpandableInfo
                                         title="Ønsker du å tilbakestille endringene dine?"
@@ -135,7 +135,7 @@ const TidKalenderForm = ({
                                         </Knapp>
                                     </ExpandableInfo>
                                 </FormBlock>
-                            )}
+                            )} */}
                         </Form.Form>
                     );
                 }}

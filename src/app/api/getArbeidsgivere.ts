@@ -21,7 +21,11 @@ const getArbeidsgivereRemoteData = async (fom?: string, tom?: string): Promise<A
         // );
         const mockResult: Arbeidsgiver[] = [
             // { organisasjonsnummer: '907670202', navn: 'NYE KLONELABBEN', ansattFom: ISODateToDate('2021-10-01') },
-            { organisasjonsnummer: '967170232', navn: 'SNILL TORPEDO', ansattFom: ISODateToDate('2008-10-01') },
+            {
+                organisasjonsnummer: '967170232',
+                navn: 'Bakeriet smått og godt',
+                ansattFom: ISODateToDate('2008-10-01'),
+            },
         ];
         return Promise.resolve(success(mockResult));
     } catch (error) {

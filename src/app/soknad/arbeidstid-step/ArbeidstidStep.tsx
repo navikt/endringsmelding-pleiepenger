@@ -12,8 +12,8 @@ import SoknadFormStep from '../SoknadFormStep';
 import { StepID } from '../soknadStepsConfig';
 import ArbeidstidMånedListe from './ArbeidstidMånedListe';
 import SoknadFormComponents from '../SoknadFormComponents';
-import { validateAktivitetArbeidstid } from '../../validation/fieldValidations';
-import { useFormikContext } from 'formik';
+// import { validateAktivitetArbeidstid } from '../../validation/fieldValidations';
+// import { useFormikContext } from 'formik';
 import { erNyttArbeidsforhold, getArbeidstidForArbeidsgiver } from '../../utils/arbeidssituasjonUtils';
 import dateFormatter from '../../utils/dateFormatterUtils';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
@@ -39,39 +39,32 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
     onArbeidstidChanged,
 }) => {
     const stepId = StepID.ARBEIDSTID;
-    const { values } = useFormikContext<SoknadFormData>();
+    // const { values } = useFormikContext<SoknadFormData>();
     const { arbeidstakerMap } = arbeidstidSak;
     return (
         <SoknadFormStep id={stepId} onStepCleanup={cleanupStep}>
             <StepIntroduction>
-                <p>
-                    Her legger du inn endringer i arbeidstiden din som er oppstått i pleiepengeperioden din. Du skal
-                    melde fra om endringer når du skal
-                </p>
-                <ul>
-                    <li>begynne å jobbe</li>
-                    <li>slutte å jobbe</li>
-                    <li>endre hvor mye du jobber</li>
-                </ul>
+                <p>Her legger du inn endringer i hvor mange timer du jobber de dagene du har søkt om pleiepenger.</p>
             </StepIntroduction>
             {arbeidsgivere && (
-                <FormBlock margin="xxl">
+                <FormBlock margin="m">
                     <SoknadFormComponents.InputGroup
                         name={'alle_arbeidsgivere_liste' as any}
-                        legend={<Undertittel>Perioder du kan endre arbeidstid</Undertittel>}
-                        description={
-                            <>
-                                Under ser du perioder du har søkt om pleiepenger. Det er kun dager du har søkt om
-                                pleiepenger som er tilgjengelige for endring.{' '}
-                            </>
-                        }
-                        validate={() => {
-                            const result = validateAktivitetArbeidstid({
-                                arbeidstid: values.arbeidstid,
-                                arbeidstidSak,
-                            });
-                            return result;
-                        }}>
+                        // legend={<Undertittel>Perioder du kan endre arbeidstid</Undertittel>}
+                        // description={
+                        //     <>
+                        //         Under ser du perioder du har søkt om pleiepenger. Det er kun dager du har søkt om
+                        //         pleiepenger som er tilgjengelige for endring.{' '}
+                        //     </>
+                        // }
+                        // validate={() => {
+                        //     const result = validateAktivitetArbeidstid({
+                        //         arbeidstid: values.arbeidstid,
+                        //         arbeidstidSak,
+                        //     });
+                        //     return result;
+                        // }}
+                    >
                         <>
                             {arbeidsgivere.map((a) => {
                                 const arbeidstidSak = getArbeidstidForArbeidsgiver(
