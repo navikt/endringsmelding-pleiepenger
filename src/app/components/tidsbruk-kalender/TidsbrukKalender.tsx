@@ -3,7 +3,7 @@ import AriaAlternative from '@navikt/sif-common-core/lib/components/aria/AriaAlt
 import { DateRange } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { DagMedTid } from '../../types/SoknadFormData';
-import CalendarGrid, { CalendarGridPopoverContentRenderer } from '../calendar-grid/CalendarGrid';
+import CalendarGrid from '../calendar-grid/CalendarGrid';
 import TidsbrukKalenderDag from './TidsbrukKalenderDag';
 import { InputTime } from '../../types';
 import { dateToISODate } from '../../utils/dateUtils';
@@ -26,7 +26,7 @@ interface Props {
     utilgjengeligDagInfo?: string;
     skjulTommeDagerIListe?: boolean;
     visEndringsinformasjon?: boolean;
-    popoverContentRenderer?: CalendarGridPopoverContentRenderer;
+    onDateClick?: (date: Date) => void;
     tomUkeContentRenderer?: () => React.ReactNode;
     tidRenderer?: TidRenderer;
 }
@@ -39,7 +39,7 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
     utilgjengeligDagInfo,
     skjulTommeDagerIListe,
     visEndringsinformasjon,
-    popoverContentRenderer,
+    onDateClick,
     tidRenderer,
     tomUkeContentRenderer,
 }) => {
@@ -66,8 +66,8 @@ const TidsbrukKalender: React.FunctionComponent<Props> = ({
             disabledDateInfo={utilgjengeligDagInfo}
             hideEmptyContentInListMode={skjulTommeDagerIListe}
             hideWeeksWithOnlyDisabledContent={true}
+            onDateClick={onDateClick}
             allDaysInWeekDisabledContentRenderer={tomUkeContentRenderer}
-            popoverContentRenderer={popoverContentRenderer}
             dateRendererShort={(date: Date) => (
                 <AriaAlternative
                     visibleText={dayjs(date).format('D.')}

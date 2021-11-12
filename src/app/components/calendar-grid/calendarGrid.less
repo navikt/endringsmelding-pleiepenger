@@ -1,3 +1,6 @@
+@import (reference) '~nav-frontend-core/less/_variabler';
+@import (reference) '~nav-frontend-knapper-style/src/mixins.less';
+
 .calendarGridLayout() {
     display: grid;
     grid-template-columns: 2.5rem repeat(5, 1fr);
@@ -151,6 +154,15 @@
         }
         &--disabled {
             .disabledDay();
+        }
+        &--button {
+            .knappflat-mixin(@navBla, @white, @navDypBla);
+            background-color: white;
+            padding: 0;
+            color: inherit;
+            border: 1px solid #c6c2bf;
+            border-width: 1px !important;
+            cursor: pointer;
         }
     }
     &__date {

@@ -135,5 +135,8 @@
     "validation.arbeidsforhold.jobberNormaltTimer.numberIsTooSmall": "Antall timer du {jobber} {arbeidsform} per uke {hvor} kan ikke være mindre enn {min}.",
     "validation.arbeidsforhold.jobberNormaltTimer.numberIsTooLarge": "Antall timer du {jobber} {arbeidsform} per uke {hvor} kan ikke være mer enn {max}.",
 
+    "arbeidstidEnkeltdag.tid.tooManyHours": "Antall timer er for høyt. Maks antall timer er 24.",
+    "arbeidstidEnkeltdag.tid.tooManyMinutes": "Antall minutter {dag} er for høyt. Maks antall minutter er 59.",
+
     "oppsummering.advarsel.invalidApiValues": "Det oppstod en feil under behandlingen av informasjonen, og som gjør at du ikke kan sende inn meldingen om endring."
 }

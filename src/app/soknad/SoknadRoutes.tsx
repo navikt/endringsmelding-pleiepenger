@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { isFailure, isInitial, isPending, isSuccess } from '@devexperts/remote-data-ts';
 import LoadWrapper from '@navikt/sif-common-core/lib/components/load-wrapper/LoadWrapper';
 import ErrorPage from '@navikt/sif-common-soknad/lib/soknad-common-pages/ErrorPage';
@@ -44,11 +44,10 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({
     nyeArbeidsforhold,
 }) => {
     const intl = useIntl();
-    const history = useHistory();
     const { values } = useFormikContext<SoknadFormData>();
     const availableSteps = getAvailableSteps(values, søker, nyeArbeidsforhold);
     const { soknadStepsConfig, sendSoknadStatus } = useSoknadContext();
-    const { persist } = usePersistSoknad(history);
+    const { persist } = usePersistSoknad();
 
     const [persistRequest, setPersistRequest] = useState<{ stepID: StepID } | undefined>();
 

@@ -15,8 +15,8 @@ describe('mapArbeidsgiverArbeidstidToApiData', () => {
         const result = mapAktivitetArbeidstidToK9FormatInnsending(
             { '2021-02-01': { hours: '2', minutes: undefined } },
             {
-                faktisk: { '2021-02-01': { hours: '2', minutes: undefined } },
-                normalt: { '2021-02-01': { hours: '2', minutes: undefined } },
+                faktisk: { '2021-02-01': { hours: '2', minutes: '0' } },
+                normalt: { '2021-02-01': { hours: '2', minutes: '0' } },
             },
             søknadsperioder
         );
