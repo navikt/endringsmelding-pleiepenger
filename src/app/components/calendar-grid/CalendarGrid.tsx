@@ -5,7 +5,6 @@ import { DateRange } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { groupBy } from 'lodash';
-import { guid } from 'nav-frontend-js-utils';
 import dateFormatter from '../../utils/dateFormatterUtils';
 import { getDatesInDateRange, getDatesInMonth, isDateInDates } from '../../utils/dateUtils';
 import CalendarGridDate from './CalendarGridDate';
@@ -18,8 +17,6 @@ interface WeekToRender {
     dates: Date[];
 }
 
-export type CalendarGridPopoverContentRenderer = (date: Date) => React.ReactNode;
-
 interface Props {
     month: DateRange;
     renderAsList?: boolean;
@@ -27,7 +24,7 @@ interface Props {
     disabledDateInfo?: string;
     hideEmptyContentInListMode?: boolean;
     hideWeeksWithOnlyDisabledContent?: boolean;
-    popoverContentRenderer?: CalendarGridPopoverContentRenderer;
+    onDateClick?: (date: Date) => void;
     dateContentRenderer: (date: Date, isDisabled?: boolean) => React.ReactNode;
     dateRendererShort?: (date: Date) => React.ReactNode;
     dateRendererFull?: (date: Date) => React.ReactNode;
@@ -72,7 +69,7 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
     renderAsList,
     hideEmptyContentInListMode,
     hideWeeksWithOnlyDisabledContent,
-    popoverContentRenderer,
+    onDateClick,
     dateContentRenderer,
     dateRendererShort = dateFormatter.short,
     dateRendererFull = dateFormatter.dayDateAndMonth,
@@ -83,25 +80,39 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
     const renderDate = (date: Date) => {
         const dateKey = date.toDateString();
         const dateIsDisabled = isDateInDates(date, disabledDates);
+        const renderAsButton = onDateClick !== undefined && dateIsDisabled === false;
+
+        const ComponentToUse = renderAsButton ? 'button' : 'div';
+
         return dayjs(date).isSame(month.from, 'month') === false ? (
             <div key={dateKey} aria-hidden={true} className={bem.classNames(bem.element('day', 'outsideMonth'))} />
         ) : (
-            <div
+            <ComponentToUse
                 key={dateKey}
+                {...(renderAsButton
+                    ? {
+                          onClick: (evt) => {
+                              evt.stopPropagation();
+                              evt.preventDefault();
+                              onDateClick(date);
+                          },
+                          type: 'button',
+                      }
+                    : {})}
                 title={dateIsDisabled ? disabledDateInfo : undefined}
                 aria-hidden={dateIsDisabled}
                 className={bem.classNames(
                     bem.child('day').block,
-                    bem.child('day').modifierConditional('disabled', dateIsDisabled)
+                    bem.child('day').modifierConditional('disabled', dateIsDisabled),
+                    bem.child('day').modifierConditional('button', dateIsDisabled === false)
                 )}>
                 <CalendarGridDate
                     date={date}
                     dateRendererFull={dateRendererFull}
                     dateRendererShort={dateRendererShort}
-                    popoverContentRenderer={dateIsDisabled ? undefined : popoverContentRenderer}
                 />
                 <div className={bem.child('day').element('content')}>{dateContentRenderer(date, dateIsDisabled)}</div>
-            </div>
+            </ComponentToUse>
         );
     };
 
@@ -119,9 +130,9 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
         }
         return [
             <div
+                key={week.weekNumber}
                 aria-hidden={true}
-                className={bem.element('weekNum', areAllDaysInWeekDisabledOrOutsideMonth ? 'empty' : undefined)}
-                key={guid()}>
+                className={bem.element('weekNum', areAllDaysInWeekDisabledOrOutsideMonth ? 'empty' : undefined)}>
                 <span className={bem.element('weekNum_label')} role="presentation" aria-hidden={true}>
                     <FormattedMessage id="Uke" /> {` `}
                 </span>
@@ -129,7 +140,6 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
                     <span className="sr-only">Uke </span>
                     {weekNum}
                 </span>
-
                 {areAllDaysInWeekDisabledOrOutsideMonth && allDaysInWeekDisabledContentRenderer ? (
                     <div className={bem.element('allWeekDisabledContent')}>
                         {allDaysInWeekDisabledContentRenderer()}

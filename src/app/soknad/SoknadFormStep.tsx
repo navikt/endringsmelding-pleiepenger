@@ -12,6 +12,7 @@ import { SoknadFormData } from '../types/SoknadFormData';
 import { useSoknadContext } from './SoknadContext';
 import SoknadFormComponents from './SoknadFormComponents';
 import { StepID } from './soknadStepsConfig';
+// import usePersistSoknad from '../hooks/usePersistSoknad';
 
 interface OwnProps {
     id: StepID;
@@ -49,6 +50,7 @@ const SoknadFormStep: React.FunctionComponent<Props> = ({
     const applicationTitle = intlHelper(intl, 'application.title');
 
     useLogSidevisning(id);
+    // usePersistSoknad().persist(soknad);
 
     return (
         <Step

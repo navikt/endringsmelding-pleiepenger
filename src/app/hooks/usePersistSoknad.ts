@@ -1,14 +1,15 @@
 import { useAmplitudeInstance } from '@navikt/sif-common-amplitude/lib';
 import { isUnauthorized } from '@navikt/sif-common-core/lib/utils/apiUtils';
 import { useFormikContext } from 'formik';
-import { History } from 'history';
 import { StepID } from '../soknad/soknadStepsConfig';
 import soknadTempStorage, { UserHashInfo } from '../soknad/soknadTempStorage';
 import { SoknadFormData } from '../types/SoknadFormData';
 import { navigateToErrorPage, relocateToLoginPage } from '../utils/navigationUtils';
 import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
+import { useHistory } from 'react-router';
 
-function usePersistSoknad(history: History) {
+function usePersistSoknad() {
+    const history = useHistory();
     const { logUserLoggedOut } = useAmplitudeInstance();
     const { values } = useFormikContext<SoknadFormData>() || {};
 

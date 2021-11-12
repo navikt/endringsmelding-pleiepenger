@@ -7,10 +7,12 @@ import {
 } from '@navikt/sif-common-formik';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import { K9ArbeidstidInfo } from '../../../types/K9Sak';
-import { TidEnkeltdag } from '../../../types/SoknadFormData';
+import { DagMedTid, SoknadFormData, TidEnkeltdag } from '../../../types/SoknadFormData';
 import ArbeidstidMånedForm from './ArbeidstidMånedForm';
 import ArbeidstidMånedInfo from './ArbeidstidMånedInfo';
 import { datoErHistorisk } from '../../../utils/tidsbrukUtils';
+import { useFormikContext } from 'formik';
+import { dateToISODate } from '../../../utils/dateUtils';
 
 interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     formFieldName: FieldNames;
@@ -49,6 +51,7 @@ function ArbeidstidFormAndInfo<FieldNames>({
     onAfterChange,
 }: Props<FieldNames>) {
     const erHistorisk = datoErHistorisk(periodeIMåned.to, endringsdato);
+    const { setFieldValue } = useFormikContext<SoknadFormData>() || {};
 
     const renderForm: ModalFormRenderer<TidEnkeltdag> = ({ onSubmit, onCancel, data = {} }) => (
         <ArbeidstidMånedForm
@@ -64,14 +67,23 @@ function ArbeidstidFormAndInfo<FieldNames>({
     );
 
     const renderInfo: InfoRenderer<TidEnkeltdag> = ({ data, onEdit }) => {
+        const handleOnEnkeltdagChange = (dagMedTid: DagMedTid) => {
+            const newValues = { ...data };
+            newValues[dateToISODate(dagMedTid.dato)] = dagMedTid.tid;
+            setFieldValue(formFieldName as any, newValues);
+            onAfterChange ? onAfterChange(newValues) : undefined;
+        };
+
         return (
             <ArbeidstidMånedInfo
+                arbeidsstedNavn={arbeidsstedNavn}
                 periodeIMåned={periodeIMåned}
                 tidArbeidstid={data}
                 arbeidstidArbeidsgiverSak={arbeidstidArbeidsgiverSak}
                 utilgjengeligeDatoer={utilgjengeligeDatoerIMåned}
                 månedTittelHeadingLevel={månedTittelHeadingLevel}
-                onEdit={onEdit}
+                onRequestEdit={onEdit}
+                onEnkeltdagChange={handleOnEnkeltdagChange}
                 editLabel={labels.editLabel}
                 addLabel={labels.addLabel}
             />
