@@ -75,7 +75,7 @@ const ArbeidstidEnkeltdagForm: React.FunctionComponent<Props> = ({
                                     name={FormFields.tid}
                                     label={`Hvor mye ${
                                         erHistorisk ? 'jobbet du' : 'skal du jobbe'
-                                    } hos ${arbeidsstedNavn} ${dateFormatter.short(dato)} `}
+                                    } hos ${arbeidsstedNavn} ${dateFormatter.full(dato)}?`}
                                     validate={getTimeValidator({ max: { hours: 24, minutes: 60 } })}
                                     timeInputLayout={{ justifyContent: 'left', compact: false, direction: 'vertical' }}
                                 />
