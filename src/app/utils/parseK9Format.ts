@@ -117,7 +117,6 @@ export const parseK9Format = (data: K9Format): K9Sak => {
             },
         },
     };
-    console.log(sak);
 
     return sak;
 };
