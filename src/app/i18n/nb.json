@@ -136,7 +136,13 @@
     "validation.arbeidsforhold.jobberNormaltTimer.numberIsTooLarge": "Antall timer du {jobber} {arbeidsform} per uke {hvor} kan ikke være mer enn {max}.",
 
     "arbeidstidEnkeltdag.tid.tooManyHours": "Antall timer er for høyt. Maks antall timer er 24.",
-    "arbeidstidEnkeltdag.tid.tooManyMinutes": "Antall minutter {dag} er for høyt. Maks antall minutter er 59.",
+    "arbeidstidEnkeltdag.tid.tooManyMinutes": "Antall minutter er for høyt. Maks antall minutter er 59.",
+    "arbeidstidEnkeltdag.tid.hoursAreInvalid": "Antall timer er ikke et gyldig tall.",
+    "arbeidstidEnkeltdag.tid.minutesAreInvalid": "Antall minutter er ikke et gyldig tall.",
+    "arbeidstidEnkeltdag.tid.hoursAreNegative": "Antall timer kan ikke være et negativt tall.",
+    "arbeidstidEnkeltdag.tid.minutesAreNegative": "Antall minutter kan ikke være et negativt tall.",
+    "arbeidstidEnkeltdag.tid.durationIsTooLong": "Antall timer og minutter er for høyt. Tiden kan ikke være mer enn 24.",
+    "arbeidstidEnkeltdag.tid.durationIsTooShort": "Antall timer og minutter er for lavt. Tiden må være minst ett minutt.",
 
     "oppsummering.advarsel.invalidApiValues": "Det oppstod en feil under behandlingen av informasjonen, og som gjør at du ikke kan sende inn meldingen om endring."
 }

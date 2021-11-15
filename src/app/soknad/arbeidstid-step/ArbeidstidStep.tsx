@@ -74,9 +74,11 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
                                 const erNytt = erNyttArbeidsforhold(a.organisasjonsnummer, nyeArbeidsforhold);
                                 return (
                                     <div key={a.organisasjonsnummer} className="arbeidstid__aktivitet">
-                                        <Undertittel>
-                                            {a.navn} ({a.organisasjonsnummer})
-                                        </Undertittel>
+                                        <Box padBottom="l">
+                                            <Undertittel>
+                                                {a.navn} ({a.organisasjonsnummer})
+                                            </Undertittel>
+                                        </Box>
                                         {erNytt && (
                                             <Box margin="m">Startdato: {dateFormatter.extended(a.ansattFom)}</Box>
                                         )}
@@ -94,7 +96,9 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
                         </>
                         {arbeidstidSak.frilanser && (
                             <div className="arbeidstid__aktivitet">
-                                <Undertittel>Frilanser</Undertittel>
+                                <Box padBottom="l">
+                                    <Undertittel>Frilanser</Undertittel>
+                                </Box>
                                 <ArbeidstidMånedListe
                                     arbeidsstedNavn="Frilanser"
                                     formFieldName={getFrilanserArbeidstidFormFieldName()}
@@ -106,7 +110,9 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
                         )}
                         {arbeidstidSak.selvstendig && (
                             <div className="arbeidstid__aktivitet">
-                                <Undertittel>Selvstendig næringsdrivende</Undertittel>
+                                <Box padBottom="l">
+                                    <Undertittel>Selvstendig næringsdrivende</Undertittel>
+                                </Box>
                                 <ArbeidstidMånedListe
                                     arbeidsstedNavn="Selvstendig næringsdrivende"
                                     formFieldName={getSelvstendigArbeidstidFormFieldName()}
