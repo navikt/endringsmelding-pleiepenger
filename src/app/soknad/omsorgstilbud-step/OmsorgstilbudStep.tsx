@@ -34,8 +34,8 @@ const OmsorgstilbudStep: React.FunctionComponent<Props> = ({
         <SoknadFormStep id={stepId} onStepCleanup={cleanupOmsorgstilbudStep}>
             <StepIntroduction>
                 <p>
-                    Her legger du inn endringer i omsorgstilbud som er oppstått i pleiepengeperioden din. Du skal melde
-                    fra om endringer når{' '}
+                    Her legger du inn endringer i hvor mange timer barnet er fast og regelmessig i et omsorgstilbud de
+                    dagene du har søkt om pleiepenger. Du skal melde fra om endringer når{' '}
                 </p>
                 <ul>
                     <li>barnet skal starte eller slutte å være fast og regelmessig i et omsorgstilbud, eller når</li>
@@ -47,11 +47,15 @@ const OmsorgstilbudStep: React.FunctionComponent<Props> = ({
                 </p>
                 <Box margin="l">
                     <ExpandableInfo title="Eksempel på når du må melde fra om endring i bruk av omsorgstilbud">
-                        Tina er fast og regelmessig i barnehagen to timer hver dag, men av og til må hun hentes en
-                        halvtime tidligere. I dette tilfellet skal du ikke melde fra om endring, ettersom det ikke er en
-                        endring i tiden hun fast og regelmessig er i barnehagen. Men, hvis Tina skal endre fra å være to
-                        timer til tre timer fast i barnehagen hver dag, må du melde fra om endring ettersom den nye
-                        tiden er fast og regelmessig.
+                        <p>
+                            Tina er fast og regelmessig i barnehagen to timer hver dag, men av og til må hun hentes en
+                            halvtime tidligere. I dette tilfellet skal du ikke melde fra om endring, ettersom det ikke
+                            er en endring i tiden hun fast og regelmessig er i barnehagen.
+                        </p>
+                        <p>
+                            Hvis Tina skal endre fra å være to timer til tre timer fast i barnehagen hver dag, må du
+                            melde fra om endring ettersom den nye tiden er fast og regelmessig.
+                        </p>
                     </ExpandableInfo>
                 </Box>
             </StepIntroduction>

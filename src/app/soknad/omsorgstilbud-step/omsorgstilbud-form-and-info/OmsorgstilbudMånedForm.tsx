@@ -14,7 +14,6 @@ interface Props {
     tidOmsorgstilbud: TidEnkeltdag;
     tidIOmsorgstilbudSak: TidEnkeltdag;
     utilgjengeligeDatoer: Date[];
-    erHistorisk: boolean;
     onCancel: () => void;
     onSubmit: (tid: TidEnkeltdag) => void;
 }
@@ -43,7 +42,6 @@ const OmsorgstilbudMånedForm: React.FunctionComponent<Props> = ({
     tidOmsorgstilbud,
     tidIOmsorgstilbudSak,
     utilgjengeligeDatoer,
-    erHistorisk,
     onSubmit,
     onCancel,
 }) => {
@@ -69,9 +67,7 @@ const OmsorgstilbudMånedForm: React.FunctionComponent<Props> = ({
             intro={
                 <>
                     <p>
-                        <FormattedMessage
-                            id={erHistorisk ? 'omsorgstilbud.form.intro_fortid.1' : 'omsorgstilbud.form.intro.1'}
-                        />
+                        <FormattedMessage id="omsorgstilbud.form.intro.1" />
                     </p>
                 </>
             }

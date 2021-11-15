@@ -21,12 +21,9 @@ const VelkommenPage: React.FunctionComponent<Props> = ({ nyeArbeidsforhold }) =>
     const { startSoknad } = useSoknadContext();
     useLogSidevisning('velkommen');
     return (
-        <Page
-            title={intlHelper(intl, 'application.title')}
-            // topContentRenderer={() => <StepBanner tag="h1" text="Melding om endring - pleiepenger for sykt barn" />}
-        >
+        <Page title={intlHelper(intl, 'application.title')}>
             <Box margin="xl" textAlignCenter={true}>
-                <Sidetittel>Endre dine pleiepenger</Sidetittel>
+                <Sidetittel>Melde endring i pleiepengeperioden</Sidetittel>
             </Box>
             <section role="contentinfo" aria-label="Introduksjon">
                 <Box margin="xl" textAlignCenter={true}>

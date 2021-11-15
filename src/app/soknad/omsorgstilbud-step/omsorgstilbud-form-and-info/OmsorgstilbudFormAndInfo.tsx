@@ -9,7 +9,6 @@ import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types'
 import { TidEnkeltdag } from '../../../types/SoknadFormData';
 import OmsorgstilbudMånedInfo from './OmsorgstilbudMånedInfo';
 import OmsorgstilbudMånedForm from './OmsorgstilbudMånedForm';
-import { datoErHistorisk } from '../../../utils/tidsbrukUtils';
 
 interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     name: FieldNames;
@@ -26,15 +25,12 @@ function OmsorgstilbudFormAndInfo<FieldNames>({
     name,
     periodeIMåned,
     labels,
-    endringsdato,
     tidIOmsorgstilbudSak,
     utilgjengeligeDatoerIMåned = [],
     månedTittelHeadingLevel,
     validate,
     onAfterChange,
 }: Props<FieldNames>) {
-    const erHistorisk = datoErHistorisk(periodeIMåned.to, endringsdato);
-
     return (
         <FormikModalFormAndInfo<FieldNames, TidEnkeltdag, ValidationError>
             name={name}
@@ -54,7 +50,6 @@ function OmsorgstilbudFormAndInfo<FieldNames>({
                         tidOmsorgstilbud={data}
                         tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}
                         utilgjengeligeDatoer={utilgjengeligeDatoerIMåned}
-                        erHistorisk={erHistorisk}
                         onCancel={onCancel}
                         onSubmit={onSubmit}
                     />

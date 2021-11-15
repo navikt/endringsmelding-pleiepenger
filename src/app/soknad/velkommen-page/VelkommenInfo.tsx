@@ -17,8 +17,8 @@ const VelkommenInfo: React.FunctionComponent = () => {
             </p>
             <p>
                 Du kan melde fra om endringer i pleiepengeperioden din i opptil 3 måneder tilbake i tid, og 6 måneder
-                frem i tid. Hvis du har behov for å melde fra om endringer utenfor denne tidsrammen, eller andre
-                endringer, må du sende en melding via{' '}
+                frem i tid. Hvis du har behov for å melde fra om endringer utenfor denne tidsrammen, eller du har behov
+                for å melde fra om andre endringer, må du sende en melding via{' '}
                 <Lenke href="https://www.nav.no/person/kontakt-oss/nb/skriv-til-oss">Skriv til oss</Lenke>.
             </p>
         </>

@@ -15,7 +15,7 @@ const arbeidstidMessages = {
         'arbeidstid.form.intro.1':
             'Endre antall timer og minutter du skal jobbe. Du skal bare fylle ut den tiden du vet med sikkerhet. Du trenger ikke fylle ut noe de dagene du ikke skal jobbe.',
         'arbeidstid.form.intro_fortid.1':
-            'Korriger antall timer og minutter de dagene du har en endring i antall timer du har jobbet/skal jobbe.',
+            'Legg inn endringene du ønsker å gjøre i arbeidstimene dine. Det er bare dager du har søkt om som er tilgjengelige for endring.',
 
         'arbeidstid.svar.ja': 'Ja',
         'arbeidstid.svar.nei': 'Nei',

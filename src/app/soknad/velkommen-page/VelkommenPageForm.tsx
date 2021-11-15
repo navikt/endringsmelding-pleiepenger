@@ -54,7 +54,7 @@ const VelkommenPageForm: React.FunctionComponent<Props> = ({ nyeArbeidsforhold, 
                                 id: 'arbeidstid',
                                 label: (
                                     <>
-                                        <Element>Endre arbeidstid</Element>Legge til, fjerne eller endre arbeidstid
+                                        <Element>Endre arbeidstimer</Element>Legge til, fjerne eller endre arbeidstimer
                                     </>
                                 ),
                                 value: HvaSkalEndres.arbeidstid,
@@ -63,8 +63,8 @@ const VelkommenPageForm: React.FunctionComponent<Props> = ({ nyeArbeidsforhold, 
                                 id: 'omsorgstilbud',
                                 label: (
                                     <>
-                                        <Element>Endre tid i et omsorgstilbud</Element>Legge til, fjerne eller endre tid
-                                        i omsorgstilbud
+                                        <Element>Endre tid i omsorgstilbud</Element>Legge til, fjerne eller endre tid i
+                                        omsorgstilbud
                                     </>
                                 ),
                                 value: HvaSkalEndres.omsorgstilbud,
