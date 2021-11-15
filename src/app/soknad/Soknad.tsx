@@ -246,7 +246,7 @@ const Soknad: React.FunctionComponent<Props> = ({
                         />
                     );
                 }
-                const initialData = getInitialFormData(k9sak, søker, arbeidsgivere, nyeArbeidsforhold, tempStorage);
+                const initialData = getInitialFormData(k9sak, søker, arbeidsgivere, tempStorage);
                 return (
                     <SoknadFormComponents.FormikWrapper
                         initialValues={initialData}
