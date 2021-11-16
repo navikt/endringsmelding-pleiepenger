@@ -74,7 +74,7 @@ const Soknad: React.FunctionComponent<Props> = ({
 
     const { logSoknadStartet, logSoknadFailed, logHendelse, logUserLoggedOut } = useAmplitudeInstance();
 
-    const resetSoknad = async (redirectToFrontpage = true): Promise<void> => {
+    const resetSoknad = async (redirectToFrontpage = false): Promise<void> => {
         if (isFeatureEnabled(Feature.PERSISTENCE)) {
             await soknadTempStorage.purge();
         }
@@ -103,9 +103,7 @@ const Soknad: React.FunctionComponent<Props> = ({
         await resetSoknad();
         const sId = ulid();
         setSoknadId(sId);
-
         const firstStep = getAvailableSteps(values, søker, nyeArbeidsforhold)[0];
-
         if (isFeatureEnabled(Feature.PERSISTENCE)) {
             await soknadTempStorage.create();
             await soknadTempStorage.update(sId, { ...values }, firstStep, {

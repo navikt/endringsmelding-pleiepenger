@@ -13,20 +13,10 @@ import { SoknadTempStorageData } from '../types/SoknadTempStorageData';
 import { getEndringsdato, getEndringsperiode } from '../utils/endringsperiode';
 import { relocateToLoginPage } from '../utils/navigationUtils';
 import { dateToISODate } from '../utils/dateUtils';
-import { K9FormatArbeidsgiver } from '../types/k9Format';
 
 export type SoknadEssentials = [Person, K9Sak, Arbeidsgiver[], SoknadTempStorageData];
 
 export type SoknadEssentialsRemoteData = RemoteData<AxiosError, SoknadEssentials>;
-
-const getArbeidsgivereIkkeRegistrertiAaReg = (
-    k9arbeidstakere: K9FormatArbeidsgiver[],
-    arbeidsgivereAaReg: Arbeidsgiver[]
-): K9FormatArbeidsgiver[] => {
-    return k9arbeidstakere.filter(
-        (k9a) => arbeidsgivereAaReg.find((a) => a.organisasjonsnummer === k9a.organisasjonsnummer) === undefined
-    );
-};
 
 function useSoknadEssentials(): SoknadEssentialsRemoteData {
     const [data, setData] = useState<SoknadEssentialsRemoteData>(initial);
@@ -43,17 +33,9 @@ function useSoknadEssentials(): SoknadEssentialsRemoteData {
             const endringsperiode = getEndringsperiode(getEndringsdato(), k9sak.ytelse.søknadsperioder);
             const arbeidsgivereResult = await getArbeidsgivereRemoteData(
                 dateToISODate(endringsperiode.from),
-                dateToISODate(endringsperiode.to)
+                dateToISODate(endringsperiode.to),
+                k9sak.ytelse.opptjeningAktivitet.arbeidstaker
             );
-            const aaArbeidsgivere: Arbeidsgiver[] = (arbeidsgivereResult as any).value;
-            const arbeidstakereIkkeIAaReg = getArbeidsgivereIkkeRegistrertiAaReg(
-                k9sak.ytelse.opptjeningAktivitet.arbeidstaker,
-                aaArbeidsgivere
-            );
-
-            if (arbeidstakereIkkeIAaReg.length > 0) {
-            }
-
             setData(combine(sokerResult, k9SakResult, arbeidsgivereResult, soknadTempStorageResult));
         } catch (remoteDataError) {
             if (isUnauthorized(remoteDataError.error)) {
