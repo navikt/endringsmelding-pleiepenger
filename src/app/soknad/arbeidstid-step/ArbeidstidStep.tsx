@@ -39,7 +39,6 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
     onArbeidstidChanged,
 }) => {
     const stepId = StepID.ARBEIDSTID;
-    // const { values } = useFormikContext<SoknadFormData>();
     const { arbeidstakerMap } = arbeidstidSak;
     return (
         <SoknadFormStep id={stepId} onStepCleanup={cleanupStep}>
@@ -48,23 +47,7 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
             </StepIntroduction>
             {arbeidsgivere && (
                 <FormBlock margin="m">
-                    <SoknadFormComponents.InputGroup
-                        name={'alle_arbeidsgivere_liste' as any}
-                        // legend={<Undertittel>Perioder du kan endre arbeidstid</Undertittel>}
-                        // description={
-                        //     <>
-                        //         Under ser du perioder du har søkt om pleiepenger. Det er kun dager du har søkt om
-                        //         pleiepenger som er tilgjengelige for endring.{' '}
-                        //     </>
-                        // }
-                        // validate={() => {
-                        //     const result = validateAktivitetArbeidstid({
-                        //         arbeidstid: values.arbeidstid,
-                        //         arbeidstidSak,
-                        //     });
-                        //     return result;
-                        // }}
-                    >
+                    <SoknadFormComponents.InputGroup name={'alle_arbeidsgivere_liste' as any}>
                         <>
                             {arbeidsgivere.map((a) => {
                                 const arbeidstidSak = getArbeidstidForArbeidsgiver(
@@ -79,7 +62,7 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
                                                 {a.navn} ({a.organisasjonsnummer})
                                             </Undertittel>
                                         </Box>
-                                        {erNytt && (
+                                        {erNytt && a.ansattFom && (
                                             <Box margin="m">Startdato: {dateFormatter.extended(a.ansattFom)}</Box>
                                         )}
                                         <ArbeidstidMånedListe

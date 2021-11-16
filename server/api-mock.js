@@ -61,31 +61,12 @@ const søkerMock = {
     kontonummer: '17246746060',
 };
 
-// const barnMock = {
-//     barn: [
-//         { fødselsdato: '1990-01-02', fornavn: 'Barn', mellomnavn: 'Barne', etternavn: 'Barnesen', aktørId: '1' },
-//         { fødselsdato: '1990-01-02', fornavn: 'Mock', etternavn: 'Mocknes', aktørId: '2' },
-//     ],
-// };
-
-// const barnMock2 = {
-//     barn: [
-//         {
-//             fødselsdato: '2008-03-01',
-//             fornavn: 'GØYAL',
-//             mellomnavn: null,
-//             etternavn: 'LAPP',
-//             aktørId: '1097566908089',
-//         },
-//     ],
-// };
-
 const arbeidsgivereMock = {
-    organisasjoner: [
-        { navn: 'Johs broderi', organisasjonsnummer: '123451234' },
-        // { navn: 'Noras sveiseri', organisasjonsnummer: '112233445' },
-        // { navn: 'Schübertsen', organisasjonsnummer: '412233445' },
-    ],
+    organisasjoner: [{ navn: 'Bakeriet smått og godt', organisasjonsnummer: '967170232', ansattFom: '2008-10-01' }],
+};
+
+const organisasjonMock = {
+    [123456789]: 'Snipperiet',
 };
 
 const K9SakMock = `./server/k9sak.json`;
@@ -122,6 +103,10 @@ const startExpressServer = () => {
 
     server.get('/arbeidsgiver', (req, res) => {
         res.send(arbeidsgivereMock);
+    });
+
+    server.get('/organisasjoner', (req, res) => {
+        res.send(organisasjonMock);
     });
 
     server.get('/soker-not-logged-in', (req, res) => {

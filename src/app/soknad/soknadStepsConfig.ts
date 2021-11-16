@@ -24,6 +24,7 @@ export const skalEndreArbeidssituasjon = (nyeArbeidsforhold: Arbeidsgiver[]): bo
 
 const getSoknadSteps = (values: SoknadFormData, nyeArbeidsforhold: Arbeidsgiver[]): StepID[] => {
     const steps: StepID[] = [];
+
     if (skalEndreArbeidssituasjon(nyeArbeidsforhold)) {
         steps.push(StepID.ARBEIDSSITUASJON);
     }
