@@ -28,7 +28,7 @@
         "@navikt/fnrvalidator": "^1.1.4",
         "@navikt/sif-common-amplitude": "2.1.0",
         "@navikt/sif-common-core": "^9.6.0",
-        "@navikt/sif-common-formik": "^20.5.6",
+        "@navikt/sif-common-formik": "^20.6.0",
         "@navikt/sif-common-question-config": "0.0.7",
         "@navikt/sif-common-sentry": "0.2.0",
         "@navikt/sif-common-soknad": "^4.2.1",

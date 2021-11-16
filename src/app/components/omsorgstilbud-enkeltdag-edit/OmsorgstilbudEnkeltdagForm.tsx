@@ -1,3 +1,5 @@
+import React from 'react';
+import { useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
 import { dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
@@ -7,8 +9,6 @@ import getIntlFormErrorHandler from '@navikt/sif-common-formik/lib/validation/in
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import dayjs from 'dayjs';
 import { Undertittel } from 'nav-frontend-typografi';
-import React from 'react';
-import { useIntl } from 'react-intl';
 import { InputTime } from '../../types';
 import { DagMedTid } from '../../types/SoknadFormData';
 import dateFormatter from '../../utils/dateFormatterUtils';
@@ -51,6 +51,7 @@ const OmsorgstilbudEnkeltdagForm: React.FunctionComponent<Props> = ({
 
     const erHistorisk = dayjs(dato).isBefore(dateToday);
     const erEndret = timeHasSameDuration(tid, tidOpprinnelig) === false;
+
     return (
         <div>
             <Undertittel tag="h1" className={bem.element('tittel')}>
