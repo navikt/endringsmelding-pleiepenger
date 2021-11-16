@@ -36,7 +36,7 @@ const ArbeidstidSummary: React.FunctionComponent<Props> = ({ arbeidstid, arbeids
             }
         });
         return (
-            <Box padBottom="s" margin="none">
+            <Box padBottom="s" margin="none" key={tittel}>
                 <FormBlock>
                     <Element tag="h3">{tittel}</Element>
                     <TidEnkeltdager dager={dagerMedTid} dagerOpprinnelig={arbeidstidOpprinnelig} />
