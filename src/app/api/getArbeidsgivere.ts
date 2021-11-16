@@ -5,6 +5,7 @@ import { ApiEndpointPsb } from '../types/ApiEndpoint';
 import { Arbeidsgiver } from '../types/Arbeidsgiver';
 import { K9FormatArbeidsgiver } from '../types/k9Format';
 import { ISODateToDate } from '../utils/dateUtils';
+import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 import api from './api';
 
 type AAregArbeidsgiver = {
@@ -43,10 +44,9 @@ const getOrganisasjonerSomArbeidsgivere = async (
         (a) => a.organisasjonsnummer
     );
 
-    const { data } = await api.psb.get<OrganisasjonResponseType>(
-        ApiEndpointPsb.organisasjoner,
-        `?${arbeidstakereIkkeIAaReg.join('&orgnr=')}`
-    );
+    const organisasjonerParams = `orgnr=${arbeidstakereIkkeIAaReg.join('&orgnr=')}`;
+
+    const { data } = await api.psb.get<OrganisasjonResponseType>(ApiEndpointPsb.organisasjoner, organisasjonerParams);
     return Object.keys(data).map(
         (organisasjonsnummer): Arbeidsgiver => ({
             organisasjonsnummer,
@@ -61,6 +61,16 @@ const getArbeidsgivereRemoteData = async (
     tom: string,
     k9arbeidsgivere: K9FormatArbeidsgiver[]
 ): Promise<ArbeidsgiverRemoteData> => {
+    if (isFeatureEnabled(Feature.FAKE_API_KALL)) {
+        const mockResult: Arbeidsgiver[] = [
+            {
+                organisasjonsnummer: '967170232',
+                navn: 'Bakeriet smått og godt',
+                ansattFom: ISODateToDate('2008-10-01'),
+            },
+        ];
+        return Promise.resolve(success(mockResult));
+    }
     try {
         const { data } = await api.psb.get<AAregArbeidsgiver>(
             ApiEndpointPsb.arbeidsgiver,
@@ -78,16 +88,6 @@ const getArbeidsgivereRemoteData = async (
         const kunK9rbeidsgivere = await getOrganisasjonerSomArbeidsgivere(k9arbeidsgivere, aaArbeidsgivere);
 
         return Promise.resolve(success([...aaArbeidsgivere, ...kunK9rbeidsgivere]));
-
-        // const mockResult: Arbeidsgiver[] = [
-        //     // { organisasjonsnummer: '907670202', navn: 'NYE KLONELABBEN', ansattFom: ISODateToDate('2021-10-01') },
-        //     {
-        //         organisasjonsnummer: '967170232',
-        //         navn: 'Bakeriet smått og godt',
-        //         ansattFom: ISODateToDate('2008-10-01'),
-        //     },
-        // ];
-        // return Promise.resolve(success(mockResult));
     } catch (error) {
         return Promise.reject(failure(error));
     }
