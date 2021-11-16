@@ -18,7 +18,6 @@ import FormattedTimeText from '../formatted-time-text/FormattedTimeText';
 interface Props {
     dagMedTid: DagMedTid;
     tidOpprinnelig: Time;
-    arbeidsstedNavn: string;
     onSubmit: (tid: DagMedTid) => void;
     onCancel: () => void;
 }
@@ -33,12 +32,11 @@ interface FormValues {
 
 const FormComponents = getTypedFormComponents<FormFields, FormValues, ValidationError>();
 
-const bem = bemUtils('arbeidstidEnkeltdagEdit');
+const bem = bemUtils('omsorgstilbudEnkeltdagEdit');
 
-const ArbeidstidEnkeltdagForm: React.FunctionComponent<Props> = ({
+const OmsorgstilbudEnkeltdagForm: React.FunctionComponent<Props> = ({
     dagMedTid: { dato, tid },
     tidOpprinnelig,
-    arbeidsstedNavn,
     onSubmit,
     onCancel,
 }) => {
@@ -56,7 +54,7 @@ const ArbeidstidEnkeltdagForm: React.FunctionComponent<Props> = ({
     return (
         <div>
             <Undertittel tag="h1" className={bem.element('tittel')}>
-                Arbeidstid {dateFormatter.full(dato)}
+                Tid i omsorgstilbud {dateFormatter.full(dato)}
             </Undertittel>
             <FormBlock margin="l">
                 <FormComponents.FormikWrapper
@@ -68,7 +66,7 @@ const ArbeidstidEnkeltdagForm: React.FunctionComponent<Props> = ({
                         return (
                             <FormComponents.Form
                                 onCancel={onCancel}
-                                formErrorHandler={getIntlFormErrorHandler(intl, 'arbeidstidEnkeltdag')}
+                                formErrorHandler={getIntlFormErrorHandler(intl, 'omsorgstilbudEnkeltdag')}
                                 includeValidationSummary={false}
                                 includeButtons={true}
                                 submitButtonLabel="Lagre"
@@ -76,9 +74,9 @@ const ArbeidstidEnkeltdagForm: React.FunctionComponent<Props> = ({
                                 <FormComponents.TimeInput
                                     name={FormFields.tid}
                                     label={`Hvor mye ${
-                                        erHistorisk ? 'jobbet du' : 'skal du jobbe'
-                                    } hos ${arbeidsstedNavn} ${dateFormatter.full(dato)}?`}
-                                    validate={getTimeValidator({ max: { hours: 24, minutes: 60 } })}
+                                        erHistorisk ? 'var barnet' : 'skal barnet være'
+                                    } i omsorgstilbud ${dateFormatter.extended(dato)}?`}
+                                    validate={getTimeValidator({ max: { hours: 7, minutes: 30 } })}
                                     timeInputLayout={{ justifyContent: 'left', compact: false, direction: 'vertical' }}
                                 />
                                 {erEndret && (
@@ -95,4 +93,4 @@ const ArbeidstidEnkeltdagForm: React.FunctionComponent<Props> = ({
     );
 };
 
-export default ArbeidstidEnkeltdagForm;
+export default OmsorgstilbudEnkeltdagForm;

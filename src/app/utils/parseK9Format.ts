@@ -5,8 +5,7 @@ import {
     K9Format,
     K9FormatTilsynsordningPerioder,
 } from '../types/k9Format';
-import { K9ArbeidstidInfo, K9ArbeidstakerMap, K9Sak } from '../types/K9Sak';
-import { TidEnkeltdag } from '../types/SoknadFormData';
+import { K9ArbeidstidInfo, K9ArbeidstakerMap, K9Sak, K9TidEnkeltdag } from '../types/K9Sak';
 import {
     dateIsWithinDateRange,
     getISODatesInISODateRangeWeekendExcluded,
@@ -16,16 +15,18 @@ import {
 } from './dateUtils';
 import { getEndringsdato, getSøknadsperioderInnenforTillattEndringsperiode } from './endringsperiode';
 
-export const getTilsynsdagerFromK9Format = (data: K9FormatTilsynsordningPerioder): TidEnkeltdag => {
-    const enkeltdager: TidEnkeltdag = {};
+export const getTilsynsdagerFromK9Format = (data: K9FormatTilsynsordningPerioder): K9TidEnkeltdag => {
+    const enkeltdager: K9TidEnkeltdag = {};
 
     Object.keys(data).forEach((isoDateRange) => {
         const duration = data[isoDateRange].etablertTilsynTimerPerDag;
         const time = ISODurationToTime(duration);
-        const isoDates = getISODatesInISODateRangeWeekendExcluded(isoDateRange);
-        isoDates.forEach((isoDate) => {
-            enkeltdager[isoDate] = { hours: time?.hours, minutes: time?.minutes };
-        });
+        if (time) {
+            const isoDates = getISODatesInISODateRangeWeekendExcluded(isoDateRange);
+            isoDates.forEach((isoDate) => {
+                enkeltdager[isoDate] = { hours: time.hours, minutes: time.minutes };
+            });
+        }
     });
     return enkeltdager;
 };

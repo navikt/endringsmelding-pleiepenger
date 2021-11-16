@@ -10,7 +10,7 @@ const søknadsperioder: DateRange[] = [
     },
 ];
 
-describe('mapArbeidsgiverArbeidstidToApiData', () => {
+describe('mapAktivitetArbeidstidToK9FormatInnsending', () => {
     it('returnerer tomt når ingen av dagene har endring ', () => {
         const result = mapAktivitetArbeidstidToK9FormatInnsending(
             { '2021-02-01': { hours: '2', minutes: undefined } },

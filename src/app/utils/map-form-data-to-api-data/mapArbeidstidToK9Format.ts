@@ -58,7 +58,7 @@ export const mapArbeidstidToK9FormatInnsending = ({
     k9sak: K9Sak;
     søknadsperioder: DateRange[];
     arbeidssituasjon: ArbeidssituasjonFormValue | undefined;
-}): ArbeidstidK9FormatInnsending => {
+}): ArbeidstidK9FormatInnsending | undefined => {
     const { arbeidsgiver } = arbeidstid;
 
     const apiData: ArbeidstidK9FormatInnsending = {
@@ -66,7 +66,6 @@ export const mapArbeidstidToK9FormatInnsending = ({
     };
 
     const { arbeidstakerMap } = k9sak.ytelse.arbeidstid;
-    // if (arbeidstakerMap) {
     Object.keys(arbeidsgiver).forEach((organisasjonsnummer) => {
         const arbeidsgiverSakInfo = arbeidstakerMap ? arbeidstakerMap[organisasjonsnummer] : undefined;
         const arbeidssituasjonInfo = getArbeidssituasjonForArbeidsgiver(organisasjonsnummer, arbeidssituasjon);
@@ -89,7 +88,6 @@ export const mapArbeidstidToK9FormatInnsending = ({
             });
         }
     });
-    // }
 
     if (arbeidstid.frilanser && k9sak.ytelse.arbeidstid.frilanser) {
         const perioder = mapAktivitetArbeidstidToK9FormatInnsending(
@@ -116,5 +114,13 @@ export const mapArbeidstidToK9FormatInnsending = ({
             };
         }
     }
-    return apiData;
+
+    if (
+        apiData.arbeidstakerList.length > 0 ||
+        apiData.selvstendigNæringsdrivendeArbeidstidInfo?.perioder ||
+        apiData.frilanserArbeidstidInfo?.perioder
+    ) {
+        return apiData;
+    }
+    return undefined;
 };

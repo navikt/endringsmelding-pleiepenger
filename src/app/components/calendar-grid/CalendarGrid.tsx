@@ -104,7 +104,7 @@ const CalendarGrid: React.FunctionComponent<Props> = ({
                 className={bem.classNames(
                     bem.child('day').block,
                     bem.child('day').modifierConditional('disabled', dateIsDisabled),
-                    bem.child('day').modifierConditional('button', dateIsDisabled === false)
+                    bem.child('day').modifierConditional('button', renderAsButton)
                 )}>
                 <CalendarGridDate
                     date={date}

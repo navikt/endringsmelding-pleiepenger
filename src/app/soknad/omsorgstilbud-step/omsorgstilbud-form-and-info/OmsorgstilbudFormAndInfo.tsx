@@ -6,9 +6,12 @@ import {
     TypedFormInputValidationProps,
 } from '@navikt/sif-common-formik';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
-import { TidEnkeltdag } from '../../../types/SoknadFormData';
+import { DagMedTid, SoknadFormData, SoknadFormField, TidEnkeltdag } from '../../../types/SoknadFormData';
 import OmsorgstilbudMånedInfo from './OmsorgstilbudMånedInfo';
 import OmsorgstilbudMånedForm from './OmsorgstilbudMånedForm';
+import { dateToISODate } from '../../../utils/dateUtils';
+import { useFormikContext } from 'formik';
+import { K9TidEnkeltdag } from '../../../types/K9Sak';
 
 interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     name: FieldNames;
@@ -16,7 +19,7 @@ interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, Va
     periodeIMåned: DateRange;
     utilgjengeligeDatoerIMåned?: Date[];
     endringsdato: Date;
-    tidIOmsorgstilbudSak: TidEnkeltdag;
+    tidIOmsorgstilbudSak: K9TidEnkeltdag;
     månedTittelHeadingLevel?: number;
     onAfterChange?: (omsorgsdager: TidEnkeltdag) => void;
 }
@@ -31,6 +34,8 @@ function OmsorgstilbudFormAndInfo<FieldNames>({
     validate,
     onAfterChange,
 }: Props<FieldNames>) {
+    const { setFieldValue } = useFormikContext<SoknadFormData>() || {};
+
     return (
         <FormikModalFormAndInfo<FieldNames, TidEnkeltdag, ValidationError>
             name={name}
@@ -56,6 +61,13 @@ function OmsorgstilbudFormAndInfo<FieldNames>({
                 );
             }}
             infoRenderer={({ data, onEdit }) => {
+                const handleOnEnkeltdagChange = (dagMedTid: DagMedTid) => {
+                    const newValues = { ...data };
+                    newValues[dateToISODate(dagMedTid.dato)] = dagMedTid.tid;
+                    setFieldValue(SoknadFormField.omsorgstilbud_enkeltdager, newValues);
+                    onAfterChange ? onAfterChange(newValues) : undefined;
+                };
+
                 return (
                     <OmsorgstilbudMånedInfo
                         periodeIMåned={periodeIMåned}
@@ -63,6 +75,7 @@ function OmsorgstilbudFormAndInfo<FieldNames>({
                         tidOmsorgstilbudSak={tidIOmsorgstilbudSak}
                         utilgjengeligeDatoer={utilgjengeligeDatoerIMåned}
                         månedTittelHeadingLevel={månedTittelHeadingLevel}
+                        onEnkeltdagChange={handleOnEnkeltdagChange}
                         onEdit={onEdit}
                         editLabel={labels.editLabel}
                         addLabel={labels.addLabel}

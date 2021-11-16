@@ -4,13 +4,13 @@ import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import dayjs from 'dayjs';
 import { useFormikContext } from 'formik';
 import SøknadsperioderMånedListe from '../../components/søknadsperioder-måned-liste/SøknadsperioderMånedListe';
-import { K9SakMeta } from '../../types/K9Sak';
+import { K9SakMeta, K9TidEnkeltdag } from '../../types/K9Sak';
 import { SoknadFormData, SoknadFormField, TidEnkeltdag } from '../../types/SoknadFormData';
 import { getYearMonthKey } from '../../utils/k9SakUtils';
 import OmsorgstilbudFormAndInfo from './omsorgstilbud-form-and-info/OmsorgstilbudFormAndInfo';
 
 interface Props {
-    tidIOmsorgstilbudSak: TidEnkeltdag;
+    tidIOmsorgstilbudSak: K9TidEnkeltdag;
     k9sakMeta: K9SakMeta;
     onOmsorgstilbudChanged?: (omsorgsdager: TidEnkeltdag) => void;
 }

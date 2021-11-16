@@ -7,7 +7,6 @@ import dayjs from 'dayjs';
 import { Undertittel } from 'nav-frontend-typografi';
 import SoknadFormComponents from '../../soknad/SoknadFormComponents';
 import { K9SakMeta } from '../../types/K9Sak';
-import { TidEnkeltdag } from '../../types/SoknadFormData';
 import { getYearMonthKey } from '../../utils/k9SakUtils';
 
 interface Props {
@@ -22,7 +21,6 @@ interface Props {
     minDato?: Date;
     årstallHeaderRenderer?: (årstall: number) => React.ReactNode;
     månedContentRenderer: (måned: DateRange, søknadsperioderIMåned: DateRange[], index: number) => React.ReactNode;
-    onTidChanged?: (tid: TidEnkeltdag) => void;
 }
 
 const SøknadsperioderMånedListe: React.FunctionComponent<Props> = ({

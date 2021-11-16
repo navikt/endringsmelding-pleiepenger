@@ -12,23 +12,25 @@ import { AlertStripeFeil } from 'nav-frontend-alertstriper';
 import { Arbeidsgiver } from '../../types/Arbeidsgiver';
 import { K9Sak } from '../../types/K9Sak';
 import { SoknadApiData } from '../../types/SoknadApiData';
-import { SoknadFormField } from '../../types/SoknadFormData';
+import { HvaSkalEndres, SoknadFormField } from '../../types/SoknadFormData';
 import appSentryLogger from '../../utils/appSentryLogger';
 import { verifySoknadApiData } from '../../validation/verifySoknadApiData';
 import { useSoknadContext } from '../SoknadContext';
 import SoknadFormComponents from '../SoknadFormComponents';
 import SoknadFormStep from '../SoknadFormStep';
-import { StepID } from '../soknadStepsConfig';
+import { skalEndreArbeidstid, skalEndreOmsorgstilbud, StepID } from '../soknadStepsConfig';
 import ArbeidstidSummary from './arbeidstid-summary/ArbeidstidSummary';
 import OmsorgstilbudSummary from './omsorgstilbud-summary/OmsorgstilbudSummary';
+import SummarySection from '@navikt/sif-common-soknad/lib/soknad-summary/summary-section/SummarySection';
 
 type Props = {
     apiValues?: SoknadApiData;
     arbeidsgivere: Arbeidsgiver[];
     k9sak: K9Sak;
+    hvaSkalEndres: HvaSkalEndres[];
 };
 
-const OppsummeringStep: React.FunctionComponent<Props> = ({ apiValues, arbeidsgivere, k9sak }) => {
+const OppsummeringStep: React.FunctionComponent<Props> = ({ apiValues, arbeidsgivere, k9sak, hvaSkalEndres }) => {
     const intl = useIntl();
     const { sendSoknadStatus, sendSoknad } = useSoknadContext();
     const apiDataValidationResult = verifySoknadApiData(apiValues, k9sak);
@@ -73,19 +75,34 @@ const OppsummeringStep: React.FunctionComponent<Props> = ({ apiValues, arbeidsgi
                     <>
                         <Box margin="xxl">
                             <ResponsivePanel border={true}>
-                                {apiValues.ytelse.tilsynsordning && (
-                                    <OmsorgstilbudSummary
-                                        tilsynsordning={apiValues.ytelse.tilsynsordning}
-                                        tidIOmsorgstilbudSak={k9sak.ytelse.tilsynsordning.enkeltdager}
-                                    />
-                                )}
-                                {apiValues.ytelse.arbeidstid && (
+                                {apiValues.ytelse.arbeidstid !== undefined && (
                                     <ArbeidstidSummary
                                         arbeidstid={apiValues.ytelse.arbeidstid}
                                         arbeidstidK9={k9sak.ytelse.arbeidstid}
                                         arbeidsgivere={arbeidsgivere}
                                     />
                                 )}
+                                {apiValues.ytelse.arbeidstid == undefined && skalEndreArbeidstid({ hvaSkalEndres }) && (
+                                    <SummarySection header="Endret arbeidstid">
+                                        <Box>
+                                            <p>Ingen endringer i arbeidstid.</p>
+                                        </Box>
+                                    </SummarySection>
+                                )}
+                                {apiValues.ytelse.tilsynsordning && (
+                                    <OmsorgstilbudSummary
+                                        tilsynsordning={apiValues.ytelse.tilsynsordning}
+                                        tidIOmsorgstilbudSak={k9sak.ytelse.tilsynsordning.enkeltdager}
+                                    />
+                                )}
+                                {apiValues.ytelse.tilsynsordning == undefined &&
+                                    skalEndreOmsorgstilbud({ hvaSkalEndres }) && (
+                                        <SummarySection header="Endret tid i omsorgstilbud">
+                                            <Box>
+                                                <p>Ingen endringer registrert</p>
+                                            </Box>
+                                        </SummarySection>
+                                    )}
                             </ResponsivePanel>
                         </Box>
 

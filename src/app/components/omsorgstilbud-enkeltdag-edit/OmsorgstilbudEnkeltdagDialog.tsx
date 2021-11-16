@@ -1,23 +1,21 @@
 import React from 'react';
+import { Time } from '@navikt/sif-common-formik/lib';
 import Modal from 'nav-frontend-modal';
 import { DagMedTid } from '../../types/SoknadFormData';
-import ArbeidstidEnkeltdagForm from './ArbeidstidEnkeltdagForm';
-import './arbeidstidEnkeltdagEdit.less';
-import { Time } from '@navikt/sif-common-formik/lib';
 import dateFormatter from '../../utils/dateFormatterUtils';
+import OmsorgstilbudEnkeltdagForm from './OmsorgstilbudEnkeltdagForm';
+import './omsorgstilbudEnkeltdagEdit.less';
 
 interface Props {
     dagMedTid?: DagMedTid;
     tidOpprinnelig: Time;
-    arbeidsstedNavn: string;
     onSubmit: (dagMedTid: DagMedTid) => void;
     onCancel: () => void;
 }
 
-const ArbeidstidEnkeltdagEdit: React.FunctionComponent<Props> = ({
+const OmsorgstilbudEnkeltdagEdit: React.FunctionComponent<Props> = ({
     dagMedTid,
     tidOpprinnelig,
-    arbeidsstedNavn,
     onSubmit,
     onCancel,
 }) => {
@@ -26,14 +24,13 @@ const ArbeidstidEnkeltdagEdit: React.FunctionComponent<Props> = ({
         <>
             <Modal
                 isOpen={isOpen}
-                contentLabel={`Arbeidstid ${dateFormatter.full(dagMedTid.dato)}`}
+                contentLabel={`Omsorgstilbud ${dateFormatter.full(dagMedTid.dato)}`}
                 onRequestClose={onCancel}
                 shouldCloseOnOverlayClick={false}
-                className="arbeidstidEnkeltdagDialog">
-                <ArbeidstidEnkeltdagForm
+                className="omsorgstilbudEnkeltdagDialog">
+                <OmsorgstilbudEnkeltdagForm
                     dagMedTid={dagMedTid}
                     tidOpprinnelig={tidOpprinnelig}
-                    arbeidsstedNavn={arbeidsstedNavn}
                     onCancel={onCancel}
                     onSubmit={onSubmit}
                 />
@@ -42,4 +39,4 @@ const ArbeidstidEnkeltdagEdit: React.FunctionComponent<Props> = ({
     ) : null;
 };
 
-export default ArbeidstidEnkeltdagEdit;
+export default OmsorgstilbudEnkeltdagEdit;

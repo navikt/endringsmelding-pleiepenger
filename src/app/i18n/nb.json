@@ -144,5 +144,14 @@
     "arbeidstidEnkeltdag.tid.durationIsTooLong": "Antall timer og minutter er for høyt. Tiden kan ikke være mer enn 24.",
     "arbeidstidEnkeltdag.tid.durationIsTooShort": "Antall timer og minutter er for lavt. Tiden må være minst ett minutt.",
 
+    "omsorgstilbudEnkeltdag.tid.tooManyHours": "Antall timer er for høyt. Maks antall timer er 7.",
+    "omsorgstilbudEnkeltdag.tid.tooManyMinutes": "Antall minutter er for høyt. Maks antall minutter er 30.",
+    "omsorgstilbudEnkeltdag.tid.hoursAreInvalid": "Antall timer er ikke et gyldig tall.",
+    "omsorgstilbudEnkeltdag.tid.minutesAreInvalid": "Antall minutter er ikke et gyldig tall.",
+    "omsorgstilbudEnkeltdag.tid.hoursAreNegative": "Antall timer kan ikke være et negativt tall.",
+    "omsorgstilbudEnkeltdag.tid.minutesAreNegative": "Antall minutter kan ikke være et negativt tall.",
+    "omsorgstilbudEnkeltdag.tid.durationIsTooLong": "Antall timer og minutter er for høyt. Tiden kan ikke være mer enn 7 timer og 30 minutter.",
+    "omsorgstilbudEnkeltdag.tid.durationIsTooShort": "Antall timer og minutter er for lavt. Tiden må være minst ett minutt.",
+
     "oppsummering.advarsel.invalidApiValues": "Det oppstod en feil under behandlingen av informasjonen, og som gjør at du ikke kan sende inn meldingen om endring."
 }
