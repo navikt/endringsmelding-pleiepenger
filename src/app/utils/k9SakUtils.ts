@@ -184,9 +184,7 @@ export const erArbeidsgivereIBådeSakOgAAreg = (
     arbeidsgivereMap?: K9ArbeidstakerMap
 ): boolean =>
     arbeidsgivereMap !== undefined
-        ? Object.keys(arbeidsgivereMap).some(
-              (orgnr) => arbeidsgivere.some((a) => a.organisasjonsnummer === orgnr) === false
-          ) === false
+        ? Object.keys(arbeidsgivereMap).some((orgnr) => arbeidsgivere.some((a) => a.id === orgnr) === false) === false
         : false;
 
 export const harK9SakArbeidstidInfo = (arbeidsgivere: Arbeidsgiver[], arbeidstidSak: K9Arbeidstid): boolean => {
@@ -203,7 +201,6 @@ export const getNyeArbeidsforholdIkkeRegistrertIK9Sak = (
     k9sakArbeidsgivere: K9FormatArbeidsgiver[]
 ): Arbeidsgiver[] => {
     return arbeidsgivere.filter(
-        ({ organisasjonsnummer }) =>
-            k9sakArbeidsgivere.some((k9a) => k9a.organisasjonsnummer === organisasjonsnummer) === false
+        ({ id: ident }) => k9sakArbeidsgivere.some((k9a) => k9a.organisasjonsnummer === ident) === false
     );
 };

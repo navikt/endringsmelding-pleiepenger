@@ -32,10 +32,18 @@ export interface K9FormatArbeidstid {
     };
 }
 
-export interface K9FormatArbeidsgiver {
+// interface K9FormatArbeidsgiverOrganisasjon {
+//     organisasjonsnummer?: string;
+// }
+// interface K9FormatArbeidsgiverPrivat {
+//     norskIdentitetsnummer?: string;
+// }
+
+export type K9FormatArbeidsgiver = {
     norskIdentitetsnummer?: string;
-    organisasjonsnummer: string;
-}
+    organisasjonsnummer?: string;
+};
+
 export interface K9OpptjeningAktivitetFrilanser {
     startdato: ISODateString;
     sluttdato?: ISODateString;

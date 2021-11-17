@@ -47,15 +47,13 @@ const ArbeidstidSummary: React.FunctionComponent<Props> = ({ arbeidstid, arbeids
 
     return (
         <SummarySection header="Endret arbeidstid">
-            {arbeidsgivere.map(({ navn, organisasjonsnummer }) => {
-                const arbeidsgiverArbeidstid = arbeidstid.arbeidstakerList.find(
-                    (a) => a.organisasjonsnummer === organisasjonsnummer
-                );
+            {arbeidsgivere.map(({ navn, id: ident }) => {
+                const arbeidsgiverArbeidstid = arbeidstid.arbeidstakerList.find((a) => a.organisasjonsnummer === ident);
                 if (arbeidsgiverArbeidstid && arbeidstidK9.arbeidstakerMap) {
                     return renderAktivitetArbeidstid(
                         arbeidsgiverArbeidstid.arbeidstidInfo.perioder,
-                        arbeidstidK9.arbeidstakerMap[organisasjonsnummer].faktisk,
-                        `${navn} - ${organisasjonsnummer}`
+                        arbeidstidK9.arbeidstakerMap[ident].faktisk,
+                        `${navn} - ${ident}`
                     );
                 }
                 return null;

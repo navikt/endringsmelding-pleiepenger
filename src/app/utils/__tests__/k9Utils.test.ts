@@ -1,6 +1,7 @@
 import { DateRange, Time } from '@navikt/sif-common-formik/lib';
 import { K9ArbeidstidInfo } from '../../types/K9Sak';
 import { TidEnkeltdag } from '../../types/SoknadFormData';
+import { ArbeidsgiverType } from '../../types/Arbeidsgiver';
 import { ISODateToDate } from '../dateUtils';
 import {
     erArbeidsgivereIBådeSakOgAAreg,
@@ -69,7 +70,14 @@ describe('trimArbeidstidTilTillatPeriode', () => {
 describe('erArbeidsgivereErBådeISakOgAAreg', () => {
     it('returnerer true når alle k9 arbeidsgivere (1) finnes i AA-reg', () => {
         const result = erArbeidsgivereIBådeSakOgAAreg(
-            [{ navn: 'a', organisasjonsnummer: '1', ansattFom: ISODateToDate('2021-10-01') }],
+            [
+                {
+                    type: ArbeidsgiverType.ORGANISASJON,
+                    navn: 'a',
+                    id: '1',
+                    ansattFom: ISODateToDate('2021-10-01'),
+                },
+            ],
             {
                 '1': { faktisk: {}, normalt: {} },
             }
@@ -78,14 +86,28 @@ describe('erArbeidsgivereErBådeISakOgAAreg', () => {
     });
     it('returnerer true når ingen arbeidsgivere finnes i k9sak', () => {
         const result = erArbeidsgivereIBådeSakOgAAreg(
-            [{ navn: 'a', organisasjonsnummer: '1', ansattFom: ISODateToDate('2021-10-01') }],
+            [
+                {
+                    type: ArbeidsgiverType.ORGANISASJON,
+                    navn: 'a',
+                    id: '1',
+                    ansattFom: ISODateToDate('2021-10-01'),
+                },
+            ],
             {}
         );
         expect(result).toBeTruthy();
     });
     it('returnerer false når en k9 arbeidsgiver ikke finnes i AA-reg', () => {
         const result = erArbeidsgivereIBådeSakOgAAreg(
-            [{ navn: 'a', organisasjonsnummer: '1', ansattFom: ISODateToDate('2021-10-01') }],
+            [
+                {
+                    type: ArbeidsgiverType.ORGANISASJON,
+                    navn: 'a',
+                    id: '1',
+                    ansattFom: ISODateToDate('2021-10-01'),
+                },
+            ],
             {
                 '2': { faktisk: {}, normalt: {} },
             }
@@ -107,7 +129,14 @@ describe('harK9SakArbeidstidInfo', () => {
     });
     it('returnerer true dersom det er info om arbeidstid for arbeidsgivere', () => {
         const result = harK9SakArbeidstidInfo(
-            [{ navn: 'a', organisasjonsnummer: '1', ansattFom: ISODateToDate('2021-10-01') }],
+            [
+                {
+                    type: ArbeidsgiverType.ORGANISASJON,
+                    navn: 'a',
+                    id: '1',
+                    ansattFom: ISODateToDate('2021-10-01'),
+                },
+            ],
             {
                 arbeidstakerMap: { '1': { faktisk: {}, normalt: {} } },
             }

@@ -39,12 +39,9 @@ const ArbeidssituasjonStep: React.FunctionComponent<Props> = ({ nyeArbeidsforhol
                 registert være listet opp og bruker må svare på alle sammen.
             </StepIntroduction>
             {nyeArbeidsforhold.map((arbeidsgiver) => {
-                const { navn, organisasjonsnummer } = arbeidsgiver;
+                const { navn, id: ident } = arbeidsgiver;
 
-                const arbeidssituasjon = getArbeidssituasjonForArbeidsgiver(
-                    organisasjonsnummer,
-                    values.arbeidssituasjon
-                );
+                const arbeidssituasjon = getArbeidssituasjonForArbeidsgiver(ident, values.arbeidssituasjon);
 
                 const intlValues = {
                     hvor: intlHelper(intl, 'arbeidsforhold.part.som.ANSATT', { navn: navn }),
@@ -53,13 +50,13 @@ const ArbeidssituasjonStep: React.FunctionComponent<Props> = ({ nyeArbeidsforhol
 
                 const fieldName = `${
                     SoknadFormField.arbeidssituasjon
-                }.arbeidsgiver.${getArbeidssituasjonFieldKeyForArbeidsgiver(organisasjonsnummer)}`;
+                }.arbeidsgiver.${getArbeidssituasjonFieldKeyForArbeidsgiver(ident)}`;
 
                 return (
-                    <FormBlock key={organisasjonsnummer} margin="xl">
+                    <FormBlock key={ident} margin="xl">
                         <Box padBottom="m">
                             <Undertittel tag="h2">
-                                {navn} - {organisasjonsnummer}
+                                {navn} - {ident}
                             </Undertittel>
                         </Box>
                         <ArbeidsformOgTimerFormPart

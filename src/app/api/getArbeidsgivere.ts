@@ -2,15 +2,21 @@ import { failure, RemoteData, success } from '@devexperts/remote-data-ts';
 import { AxiosError } from 'axios';
 import { ISODate } from '../types';
 import { ApiEndpointPsb } from '../types/ApiEndpoint';
-import { Arbeidsgiver } from '../types/Arbeidsgiver';
+import { Arbeidsgiver, ArbeidsgiverType } from '../types/Arbeidsgiver';
 import { K9FormatArbeidsgiver } from '../types/k9Format';
 import { ISODateToDate } from '../utils/dateUtils';
 import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 import api from './api';
 
 type AAregArbeidsgiver = {
-    organisasjoner: {
+    organisasjoner?: {
         organisasjonsnummer: string;
+        navn: string;
+        ansattFom?: ISODate;
+        ansattTom?: ISODate;
+    }[];
+    privatarbeidsgiver?: {
+        offentligIdent: string;
         navn: string;
         ansattFom?: ISODate;
         ansattTom?: ISODate;
@@ -28,7 +34,7 @@ const getArbeidsgivereIkkeRegistrertiAaReg = (
     arbeidsgivereAaReg: Arbeidsgiver[]
 ): K9FormatArbeidsgiver[] => {
     return k9arbeidstakere.filter(
-        (k9a) => arbeidsgivereAaReg.find((a) => a.organisasjonsnummer === k9a.organisasjonsnummer) === undefined
+        (k9a) => arbeidsgivereAaReg.find((a) => a.id === k9a.organisasjonsnummer) === undefined
     );
 };
 
@@ -49,7 +55,8 @@ const getOrganisasjonerSomArbeidsgivere = async (
     const { data } = await api.psb.get<OrganisasjonResponseType>(ApiEndpointPsb.organisasjoner, organisasjonerParams);
     return Object.keys(data).map(
         (organisasjonsnummer): Arbeidsgiver => ({
-            organisasjonsnummer,
+            type: ArbeidsgiverType.ORGANISASJON,
+            id: organisasjonsnummer,
             navn: data[organisasjonsnummer],
             erUkjentIAareg: true,
         })
@@ -64,9 +71,16 @@ const getArbeidsgivereRemoteData = async (
     if (isFeatureEnabled(Feature.FAKE_API_KALL)) {
         const mockResult: Arbeidsgiver[] = [
             {
-                organisasjonsnummer: '967170232',
+                type: ArbeidsgiverType.ORGANISASJON,
+                id: '967170232',
                 navn: 'Bakeriet smått og godt',
                 ansattFom: ISODateToDate('2008-10-01'),
+            },
+            {
+                type: ArbeidsgiverType.PRIVATPERSON,
+                id: '12312312312',
+                navn: 'Privat Personesen',
+                ansattFom: ISODateToDate('2018-01-01'),
             },
         ];
         return Promise.resolve(success(mockResult));
@@ -77,13 +91,25 @@ const getArbeidsgivereRemoteData = async (
             `fra_og_med=${fom}&til_og_med=${tom}`
         );
 
-        const aaArbeidsgivere: Arbeidsgiver[] = data.organisasjoner.map(
-            (a): Arbeidsgiver => ({
-                ...a,
+        const aaArbeidsgivere: Arbeidsgiver[] = [];
+        (data.organisasjoner || []).map((a): Arbeidsgiver => {
+            return {
+                id: a.organisasjonsnummer,
+                type: ArbeidsgiverType.ORGANISASJON,
+                navn: a.navn,
                 ansattFom: a.ansattFom ? ISODateToDate(a.ansattFom) : undefined,
                 ansattTom: a.ansattTom ? ISODateToDate(a.ansattTom) : undefined,
-            })
-        );
+            };
+        });
+        (data.privatarbeidsgiver || []).map((a): Arbeidsgiver => {
+            return {
+                id: a.offentligIdent,
+                type: ArbeidsgiverType.ORGANISASJON,
+                navn: a.navn,
+                ansattFom: a.ansattFom ? ISODateToDate(a.ansattFom) : undefined,
+                ansattTom: a.ansattTom ? ISODateToDate(a.ansattTom) : undefined,
+            };
+        });
 
         const kunK9rbeidsgivere = await getOrganisasjonerSomArbeidsgivere(k9arbeidsgivere, aaArbeidsgivere);
 

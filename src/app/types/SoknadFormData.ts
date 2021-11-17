@@ -101,7 +101,7 @@ export interface SoknadFormData {
 }
 
 export const getArbeidsgiverArbeidstidFormFieldName = (a: Arbeidsgiver): SoknadFormField =>
-    `${SoknadFormField.arbeidstid_arbeidsgiver}.${a.organisasjonsnummer}.faktisk` as any;
+    `${SoknadFormField.arbeidstid_arbeidsgiver}.${a.id}.faktisk` as any;
 
 export const getFrilanserArbeidstidFormFieldName = (): SoknadFormField =>
     `${SoknadFormField.arbeidstid_frilanser}.faktisk` as any;

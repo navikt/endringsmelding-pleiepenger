@@ -50,16 +50,13 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
                     <SoknadFormComponents.InputGroup name={'alle_arbeidsgivere_liste' as any}>
                         <>
                             {arbeidsgivere.map((a) => {
-                                const arbeidstidSak = getArbeidstidForArbeidsgiver(
-                                    a.organisasjonsnummer,
-                                    arbeidstakerMap
-                                );
-                                const erNytt = erNyttArbeidsforhold(a.organisasjonsnummer, nyeArbeidsforhold);
+                                const arbeidstidSak = getArbeidstidForArbeidsgiver(a.id, arbeidstakerMap);
+                                const erNytt = erNyttArbeidsforhold(a.id, nyeArbeidsforhold);
                                 return (
-                                    <div key={a.organisasjonsnummer} className="arbeidstid__aktivitet">
+                                    <div key={a.id} className="arbeidstid__aktivitet">
                                         <Box padBottom="l">
                                             <Undertittel>
-                                                {a.navn} ({a.organisasjonsnummer})
+                                                {a.navn} ({a.id})
                                             </Undertittel>
                                         </Box>
                                         {erNytt && a.ansattFom && (

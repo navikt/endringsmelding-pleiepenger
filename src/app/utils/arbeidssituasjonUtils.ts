@@ -23,7 +23,7 @@ export const getArbeidstidForArbeidsgiver = (orgnr: string, arbeidstakerMap?: K9
 };
 
 export const erNyttArbeidsforhold = (orgnr: string, nyeArbeidsforhold: Arbeidsgiver[]): boolean => {
-    return nyeArbeidsforhold.some((a) => a.organisasjonsnummer === orgnr);
+    return nyeArbeidsforhold.some((a) => a.id === orgnr);
 };
 
 export const getTimerTekst = (intl: IntlShape, value: string | undefined): string => {
