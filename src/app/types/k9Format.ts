@@ -32,16 +32,32 @@ export interface K9FormatArbeidstid {
     };
 }
 
-// interface K9FormatArbeidsgiverOrganisasjon {
-//     organisasjonsnummer?: string;
-// }
-// interface K9FormatArbeidsgiverPrivat {
-//     norskIdentitetsnummer?: string;
-// }
+export interface K9FormatArbeidsgiverPrivat {
+    norskIdentitetsnummer: string;
+}
 
-export type K9FormatArbeidsgiver = {
-    norskIdentitetsnummer?: string;
-    organisasjonsnummer?: string;
+export interface K9FormatArbeidsgiverOrganisasjon {
+    organisasjonsnummer: string;
+}
+
+export const isK9FormatArbeidsgiverOrganisasjon = (
+    arbeidsgiver: any
+): arbeidsgiver is K9FormatArbeidsgiverOrganisasjon =>
+    (arbeidsgiver as K9FormatArbeidsgiverOrganisasjon).organisasjonsnummer !== undefined;
+
+export const isK9FormatArbeidsgiverPrivat = (arbeidsgiver: any): arbeidsgiver is K9FormatArbeidsgiverPrivat =>
+    (arbeidsgiver as K9FormatArbeidsgiverPrivat).norskIdentitetsnummer !== undefined;
+
+export type K9FormatArbeidsgiver = K9FormatArbeidsgiverPrivat | K9FormatArbeidsgiverOrganisasjon;
+
+export const getK9FormatArbeidsgiverIdent = (arbeidsgiver: K9FormatArbeidsgiver): string => {
+    if (isK9FormatArbeidsgiverPrivat(arbeidsgiver)) {
+        return arbeidsgiver.norskIdentitetsnummer;
+    }
+    if (isK9FormatArbeidsgiverOrganisasjon(arbeidsgiver)) {
+        return arbeidsgiver.organisasjonsnummer;
+    }
+    throw new Error('Ukjent ident for arbeidsgiver');
 };
 
 export interface K9OpptjeningAktivitetFrilanser {

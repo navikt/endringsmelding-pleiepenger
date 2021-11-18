@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
-    skalEndreArbeidssituasjon,
+    // skalEndreArbeidssituasjon,
     skalEndreArbeidstid,
     skalEndreOmsorgstilbud,
     StepID,
@@ -15,9 +16,9 @@ export const getAvailableSteps = (
     nyeArbeidsforhold: Arbeidsgiver[]
 ): StepID[] => {
     const steps: StepID[] = [];
-    if (skalEndreArbeidssituasjon(nyeArbeidsforhold)) {
-        steps.push(StepID.ARBEIDSSITUASJON);
-    }
+    // if (skalEndreArbeidssituasjon(nyeArbeidsforhold)) {
+    //     steps.push(StepID.ARBEIDSSITUASJON);
+    // }
     if (skalEndreArbeidstid(values)) {
         steps.push(StepID.ARBEIDSTID);
     }

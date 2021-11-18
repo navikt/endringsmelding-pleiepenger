@@ -19,7 +19,7 @@ export const k9SakMock: K9Format = {
                     organisasjonsnummer: '967170232',
                 },
                 {
-                    organisasjonsnummer: '123456789',
+                    norskIdentitetsnummer: '12312312312',
                 },
             ],
         },

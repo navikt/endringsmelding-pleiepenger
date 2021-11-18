@@ -20,14 +20,16 @@ export const skalEndreArbeidstid = ({ hvaSkalEndres }: Partial<SoknadFormData>):
     return (hvaSkalEndres || []).some((a) => a === HvaSkalEndres.arbeidstid);
 };
 
-export const skalEndreArbeidssituasjon = (nyeArbeidsforhold: Arbeidsgiver[]): boolean => nyeArbeidsforhold.length > 0;
+// export const skalEndreArbeidssituasjon = (nyeArbeidsforhold: Arbeidsgiver[]): boolean => nyeArbeidsforhold.length > 0;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getSoknadSteps = (values: SoknadFormData, nyeArbeidsforhold: Arbeidsgiver[]): StepID[] => {
     const steps: StepID[] = [];
 
-    if (skalEndreArbeidssituasjon(nyeArbeidsforhold)) {
-        steps.push(StepID.ARBEIDSSITUASJON);
-    }
+    // if (skalEndreArbeidssituasjon(nyeArbeidsforhold)) {
+
+    //     steps.push(StepID.ARBEIDSSITUASJON);
+    // }
     if (skalEndreArbeidstid(values)) {
         steps.push(StepID.ARBEIDSTID);
     }

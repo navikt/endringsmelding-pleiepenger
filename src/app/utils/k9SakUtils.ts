@@ -4,7 +4,7 @@ import { flatten } from 'lodash';
 import moize from 'moize';
 import { DagerIkkeSøktForMap, DagerSøktForMap } from '../types';
 import { Arbeidsgiver } from '../types/Arbeidsgiver';
-import { K9FormatArbeidsgiver } from '../types/k9Format';
+import { getK9FormatArbeidsgiverIdent, K9FormatArbeidsgiver } from '../types/k9Format';
 import {
     K9ArbeidstidInfo,
     K9ArbeidstakerMap,
@@ -201,6 +201,10 @@ export const getNyeArbeidsforholdIkkeRegistrertIK9Sak = (
     k9sakArbeidsgivere: K9FormatArbeidsgiver[]
 ): Arbeidsgiver[] => {
     return arbeidsgivere.filter(
-        ({ id: ident }) => k9sakArbeidsgivere.some((k9a) => k9a.organisasjonsnummer === ident) === false
+        ({ id }) =>
+            k9sakArbeidsgivere.some((k9a) => {
+                const ident = getK9FormatArbeidsgiverIdent(k9a);
+                return ident ? ident === id : true;
+            }) === false
     );
 };

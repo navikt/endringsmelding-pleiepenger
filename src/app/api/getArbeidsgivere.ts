@@ -3,7 +3,11 @@ import { AxiosError } from 'axios';
 import { ISODate } from '../types';
 import { ApiEndpointPsb } from '../types/ApiEndpoint';
 import { Arbeidsgiver, ArbeidsgiverType } from '../types/Arbeidsgiver';
-import { K9FormatArbeidsgiver } from '../types/k9Format';
+import {
+    isK9FormatArbeidsgiverOrganisasjon,
+    K9FormatArbeidsgiver,
+    K9FormatArbeidsgiverOrganisasjon,
+} from '../types/k9Format';
 import { ISODateToDate } from '../utils/dateUtils';
 import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 import api from './api';
@@ -29,8 +33,8 @@ interface OrganisasjonResponseType {
 
 export type ArbeidsgiverRemoteData = RemoteData<AxiosError, Arbeidsgiver[]>;
 
-const getArbeidsgivereIkkeRegistrertiAaReg = (
-    k9arbeidstakere: K9FormatArbeidsgiver[],
+const getOrganisasjonerIkkeRegistrertiAaReg = (
+    k9arbeidstakere: K9FormatArbeidsgiverOrganisasjon[],
     arbeidsgivereAaReg: Arbeidsgiver[]
 ): K9FormatArbeidsgiver[] => {
     return k9arbeidstakere.filter(
@@ -46,11 +50,16 @@ const getOrganisasjonerSomArbeidsgivere = async (
     k9arbeidsgivere: K9FormatArbeidsgiver[],
     aaArbeidsgivere: Arbeidsgiver[]
 ) => {
-    const arbeidstakereIkkeIAaReg = getArbeidsgivereIkkeRegistrertiAaReg(k9arbeidsgivere, aaArbeidsgivere).map(
-        (a) => a.organisasjonsnummer
-    );
+    const k9ArbeidsgivereOrganisasjon: K9FormatArbeidsgiverOrganisasjon[] = k9arbeidsgivere.filter((a) =>
+        isK9FormatArbeidsgiverOrganisasjon(a)
+    ) as any;
 
-    const organisasjonerParams = `orgnr=${arbeidstakereIkkeIAaReg.join('&orgnr=')}`;
+    const organisasjonerIkkeIAaReg = getOrganisasjonerIkkeRegistrertiAaReg(
+        k9ArbeidsgivereOrganisasjon,
+        aaArbeidsgivere
+    ).map((a: K9FormatArbeidsgiverOrganisasjon) => a.organisasjonsnummer);
+
+    const organisasjonerParams = `orgnr=${organisasjonerIkkeIAaReg.join('&orgnr=')}`;
 
     const { data } = await api.psb.get<OrganisasjonResponseType>(ApiEndpointPsb.organisasjoner, organisasjonerParams);
     return Object.keys(data).map(
