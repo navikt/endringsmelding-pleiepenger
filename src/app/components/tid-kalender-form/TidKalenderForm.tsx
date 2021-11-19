@@ -1,17 +1,14 @@
 import React from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
-// import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
-import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
-import Knapperad from '@navikt/sif-common-core/lib/components/knapperad/Knapperad';
 import { DateRange } from '@navikt/sif-common-core/lib/utils/dateUtils';
+import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { getTypedFormComponents } from '@navikt/sif-common-formik/lib';
 import getFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
-import Knapp from 'nav-frontend-knapper';
 import { Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import { TidEnkeltdag } from '../../types/SoknadFormData';
 import { getValidEnkeltdager, getValidTidEnkeltdag } from '../../utils/tidsbrukUtils';
@@ -85,20 +82,23 @@ const TidKalenderForm = ({
                             onCancel={onCancel}
                             formErrorHandler={getFormErrorHandler(intl, 'tidsperiodeForm')}
                             includeValidationSummary={true}
-                            includeButtons={false}
+                            includeButtons={true}
                             cleanup={cleanupTid}
-                            formFooter={
-                                <FormBlock margin="l">
-                                    <Knapperad align="left">
-                                        <Knapp htmlType="submit" type="hoved">
-                                            <FormattedMessage id="tidKalenderForm.ok.label" />
-                                        </Knapp>
-                                        <Knapp htmlType="button" type="standard" onClick={onCancel}>
-                                            <FormattedMessage id="tidKalenderForm.lukk.label" />
-                                        </Knapp>
-                                    </Knapperad>
-                                </FormBlock>
-                            }>
+                            submitButtonLabel={intlHelper(intl, 'tidKalenderForm.ok.label')}
+                            cancelButtonLabel={intlHelper(intl, 'tidKalenderForm.lukk.label')}
+                            // formFooter={
+                            //     <FormBlock margin="l">
+                            //         <Knapperad align="left">
+                            //             <Knapp htmlType="submit" type="hoved">
+                            //                 <FormattedMessage id="tidKalenderForm.ok.label" />
+                            //             </Knapp>
+                            //             <Knapp htmlType="button" type="standard" onClick={onCancel}>
+                            //                 <FormattedMessage id="tidKalenderForm.lukk.label" />
+                            //             </Knapp>
+                            //         </Knapperad>
+                            //     </FormBlock>
+                            //}
+                        >
                             <Systemtittel tag="h1">{tittel}</Systemtittel>
                             {intro ? <Box margin="l">{intro}</Box> : undefined}
 
