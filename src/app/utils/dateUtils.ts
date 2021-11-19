@@ -25,7 +25,7 @@ export const _getMonthsInDateRange = (range: DateRange): DateRange[] => {
             to: dayjs(monthRange.to).isAfter(range.to, 'day') ? range.to : monthRange.to,
         });
         current = current.add(1, 'month').startOf('month');
-    } while (current.isBefore(range.to, 'day'));
+    } while (current.isSameOrBefore(range.to, 'day'));
     return months;
 };
 export const getMonthsInDateRange = moize(_getMonthsInDateRange);

@@ -85,12 +85,12 @@ const getArbeidsgivereRemoteData = async (
                 navn: 'Bakeriet smått og godt',
                 ansattFom: ISODateToDate('2008-10-01'),
             },
-            {
-                type: ArbeidsgiverType.PRIVATPERSON,
-                id: '12312312312',
-                navn: 'Privat Personesen',
-                ansattFom: ISODateToDate('2018-01-01'),
-            },
+            // {
+            //     type: ArbeidsgiverType.PRIVATPERSON,
+            //     id: '12312312312',
+            //     navn: 'Privat Personesen',
+            //     ansattFom: ISODateToDate('2018-01-01'),
+            // },
         ];
         return Promise.resolve(success(mockResult));
     }
