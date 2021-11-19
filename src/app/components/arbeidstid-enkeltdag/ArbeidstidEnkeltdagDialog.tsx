@@ -1,10 +1,10 @@
 import React from 'react';
+import { Time } from '@navikt/sif-common-formik/lib';
 import Modal from 'nav-frontend-modal';
 import { DagMedTid } from '../../types/SoknadFormData';
-import ArbeidstidEnkeltdagForm from './ArbeidstidEnkeltdagForm';
-import './arbeidstidEnkeltdagEdit.less';
-import { Time } from '@navikt/sif-common-formik/lib';
 import dateFormatter from '../../utils/dateFormatterUtils';
+import ArbeidstidEnkeltdagForm from './ArbeidstidEnkeltdagForm';
+import './arbeidstidEnkeltdag.less';
 
 interface Props {
     dagMedTid?: DagMedTid;

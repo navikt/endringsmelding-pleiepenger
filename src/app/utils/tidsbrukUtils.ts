@@ -5,7 +5,7 @@ import { hasValue } from '@navikt/sif-common-formik/lib/validation/validationUti
 import dayjs from 'dayjs';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import minMax from 'dayjs/plugin/minMax';
-import { DagMedTid, TidEnkeltdag } from '../types/SoknadFormData';
+import { DagMedTid, TidEnkeltdag, TidFasteDager } from '../types/SoknadFormData';
 import { dateIsWithinDateRange, ISODateToDate, timeHasSameDuration } from './dateUtils';
 import { InputTime } from '../types';
 import { timeToISODuration } from './timeUtils';
@@ -49,6 +49,12 @@ export const sumTimerEnkeltdager = (dager: TidEnkeltdag): number => {
                 minutes: dager[key].minutes || '0',
             })
         );
+    }, 0);
+};
+
+export const sumTimerFasteDager = (uke: TidFasteDager): number => {
+    return Object.keys(uke).reduce((timer: number, key: string) => {
+        return timer + timeToDecimalTime(uke[key]);
     }, 0);
 };
 

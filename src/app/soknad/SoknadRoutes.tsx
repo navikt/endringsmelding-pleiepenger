@@ -72,6 +72,7 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({
                 return (
                     <ArbeidstidStep
                         arbeidsgivere={arbeidsgivere}
+                        arbeidstidSøknad={values.arbeidstid}
                         arbeidstidSak={k9sak.ytelse.arbeidstid}
                         k9sakMeta={k9sakMeta}
                         nyeArbeidsforhold={nyeArbeidsforhold}

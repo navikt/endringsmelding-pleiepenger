@@ -55,7 +55,7 @@ const OmsorgstilbudMånedInfo: React.FunctionComponent<Props> = ({
     return (
         <Ekspanderbartpanel
             renderContentWhenClosed={false}
-            apen={true}
+            apen={false}
             tittel={
                 <>
                     <Element tag={`h${månedTittelHeadingLevel}`}>

@@ -13,7 +13,7 @@ import { K9ArbeidstidInfo } from '../../../types/K9Sak';
 import { DagMedTid, TidEnkeltdag } from '../../../types/SoknadFormData';
 import { dateToISODate, timeHasSameDuration } from '../../../utils/dateUtils';
 import { getDagerMedTidITidsrom, tidErIngenTid } from '../../../utils/tidsbrukUtils';
-import ArbeidstidEnkeltdagEdit from '../../../components/arbeidstid-enkeltdag-edit/ArbeidstidEnkeltdagDialog';
+import ArbeidstidEnkeltdagDialog from '../../../components/arbeidstid-enkeltdag/ArbeidstidEnkeltdagDialog';
 import { InputTime } from '../../../types';
 
 interface Props {
@@ -58,13 +58,14 @@ const ArbeidstidMånedInfo: React.FunctionComponent<Props> = ({
     return (
         <Ekspanderbartpanel
             renderContentWhenClosed={false}
-            apen={true}
+            apen={false}
             tittel={
                 <>
                     <Element tag={`h${månedTittelHeadingLevel}`}>
-                        <span className="--capitalize">
+                        {/* <span className="--capitalize"> */}
+                        <span>
                             {intlHelper(intl, 'arbeidstid.ukeOgÅr', {
-                                ukeOgÅr: dayjs(periodeIMåned.from).format('MMMM YYYY'),
+                                ukeOgÅr: dayjs(periodeIMåned.from).format('YYYY - MMMM'),
                             })}
                         </span>
                         {harEndringer && ' (endret)'}
@@ -105,7 +106,7 @@ const ArbeidstidMånedInfo: React.FunctionComponent<Props> = ({
                 </Knapp>
             </FormBlock>
             {editDate && onEnkeltdagChange && (
-                <ArbeidstidEnkeltdagEdit
+                <ArbeidstidEnkeltdagDialog
                     dagMedTid={editDate}
                     tidOpprinnelig={faktisk[dateToISODate(editDate.dato)]}
                     onSubmit={(dagMedTid) => {

@@ -40,7 +40,7 @@ export const TidUkerInput: React.FunctionComponent<Props> = ({
         from: dayjs(periode.from).startOf('month').toDate(),
         to: dayjs(periode.to).endOf('month').toDate(),
     };
-    const alleDagerIMåned = getDagerIPeriode(månedDateRange.from, månedDateRange.to);
+    const alleDagerIMåned = getDagerIPeriode(månedDateRange);
 
     const uker = getUkerFraDager(alleDagerIMåned).filter(
         (uke) => uke.dager.filter((dag) => isDateInDates(dag.dato, utilgjengeligeDatoer)).length !== uke.dager.length

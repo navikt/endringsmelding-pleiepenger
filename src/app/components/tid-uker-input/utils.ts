@@ -1,3 +1,4 @@
+import { DateRange } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { groupBy } from 'lodash';
 import moize from 'moize';
@@ -27,7 +28,7 @@ export const _getDagInfo = (date: Date): Daginfo => {
 };
 export const getDagInfo = moize(_getDagInfo);
 
-export const _getDagerIPeriode = (from: Date, to: Date): Daginfo[] => {
+export const _getDagerIPeriode = ({ from, to }: DateRange): Daginfo[] => {
     const dager: Daginfo[] = [];
     let dayjsDato = dayjs(from);
     while (dayjsDato.isSameOrBefore(to, 'day')) {

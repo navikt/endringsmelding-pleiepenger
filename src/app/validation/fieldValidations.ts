@@ -1,10 +1,12 @@
 import { Time } from '@navikt/sif-common-formik/lib';
 import { getNumberValidator } from '@navikt/sif-common-formik/lib/validation';
-import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
+import getTimeValidator from '@navikt/sif-common-formik/lib/validation/getTimeValidator';
+import { ValidationError, ValidationResult } from '@navikt/sif-common-formik/lib/validation/types';
 import { K9Arbeidstid } from '../types/K9Sak';
-import { ArbeidstidFormValue, TidEnkeltdag } from '../types/SoknadFormData';
+import { ArbeidstidFormValue, TidEnkeltdag, TidFasteDager } from '../types/SoknadFormData';
 import { getArbeidstidForArbeidsgiver } from '../utils/arbeidssituasjonUtils';
 import { timeHasSameDuration } from '../utils/dateUtils';
+import { sumTimerFasteDager } from '../utils/tidsbrukUtils';
 
 export type TidPerDagValidator = (dag: string) => (tid: Time) => ValidationError | undefined;
 
@@ -80,6 +82,41 @@ export const validateAktivitetArbeidstid = ({
     }
     return endret ? undefined : 'ingenEndringer';
 };
+
+export const validateFasteArbeidstimerIUke = (
+    fasteDager: TidFasteDager | undefined
+): ValidationResult<ValidationError> => {
+    let error;
+    const timer = fasteDager ? sumTimerFasteDager(fasteDager) : 0;
+    if (timer === 0) {
+        error = 'ingenTidRegistrert';
+    }
+    if (timer > 37.5) {
+        error = 'forMangeTimerRegistrert';
+    }
+    return error
+        ? {
+              key: `validation.${error}`,
+              keepKeyUnaltered: true,
+          }
+        : undefined;
+};
+
+export const getArbeidstimerFastDagValidator =
+    (dag: string) =>
+    (time: Time): ValidationResult<ValidationError> => {
+        const error = time
+            ? getTimeValidator({ max: { hours: 24, minutes: 0 }, min: { hours: 0, minutes: 0 } })(time)
+            : undefined;
+        if (error) {
+            return {
+                key: `validation.arbeidstimer.fastdag.tid.${error}`,
+                values: { dag },
+                keepKeyUnaltered: true,
+            };
+        }
+        return undefined;
+    };
 
 export const MIN_TIMER_NORMAL_ARBEIDSFORHOLD = 0.01;
 export const MAX_TIMER_NORMAL_ARBEIDSFORHOLD = 100;

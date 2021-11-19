@@ -79,7 +79,7 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
         <SøknadsperioderMånedListe
             k9sakMeta={k9sakMeta}
             årstallHeadingLevel={3}
-            årstallHeaderRenderer={(årstall) => `${årstall}`}
+            // årstallHeaderRenderer={(årstall) => `${årstall}`}
             minDato={startetDato}
             månedContentRenderer={månedContentRenderer}
         />

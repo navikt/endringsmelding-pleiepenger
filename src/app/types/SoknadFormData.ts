@@ -96,7 +96,7 @@ export interface SoknadFormData {
     [SoknadFormField.harBekreftetOpplysninger]: boolean;
     [SoknadFormField.hvaSkalEndres]: HvaSkalEndres[];
     [SoknadFormField.omsorgstilbud]?: Omsorgstilbud;
-    [SoknadFormField.arbeidstid]?: ArbeidstidFormValue;
+    [SoknadFormField.arbeidstid]: ArbeidstidFormValue;
     [SoknadFormField.arbeidssituasjon]?: ArbeidssituasjonFormValue;
 }
 
