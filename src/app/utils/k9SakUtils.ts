@@ -106,7 +106,7 @@ export const getMånederMedSøknadsperioder = (søknadsperioder: DateRange[]): M
 const getK9SakMeta = (endringsdato: Date, søknadsperioder: DateRange[]): K9SakMeta => {
     const endringsperiode = getEndringsperiode(endringsdato, søknadsperioder);
     const dagerIkkeSøktForMap = getDagerIkkeSøktFor(søknadsperioder);
-    const dagerSøktForMap = getDagerIkkeSøktFor(søknadsperioder);
+    const dagerSøktForMap = getDagerSøktFor(søknadsperioder);
     const alleMånederISøknadsperiode = getMonthsInDateRange(getDateRangeFromDateRanges(søknadsperioder));
     const månederMedSøknadsperiodeMap = getMånederMedSøknadsperioder(søknadsperioder);
     const antallMånederUtenSøknadsperiode =

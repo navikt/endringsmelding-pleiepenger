@@ -30,6 +30,8 @@ interface Props {
 export type ArbeidstidPeriodeData = {
     fom: Date;
     tom: Date;
+    skalJobbe: boolean;
+    tidFasteDager?: TidFasteDager;
 };
 
 enum FormFields {
@@ -115,10 +117,18 @@ const ArbeidstidPeriodeForm: React.FunctionComponent<Props> = ({
     const intl = useIntl();
 
     const onValidSubmit = (values: FormValues) => {
-        console.log(values);
+        const fom = datepickerUtils.getDateFromDateString(values.fom);
+        const tom = datepickerUtils.getDateFromDateString(values.tom);
+
+        if (!fom || !tom) {
+            throw new Error('ArbeidstidPeriodeForm. Ugyldig fom/tom ');
+        }
+
         onSubmit({
-            fom: new Date(),
-            tom: new Date(),
+            fom,
+            tom,
+            skalJobbe: values.skalJobbe === YesOrNo.YES,
+            tidFasteDager: values.tidFasteDager,
         });
     };
 

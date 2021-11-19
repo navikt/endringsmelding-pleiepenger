@@ -10,14 +10,17 @@ export const getUtilgjengeligeDatoerIMåned = (
 ): Date[] => {
     const yearMonthKey = getYearMonthKey(måned.from);
     const dagerFørFørsteDag = dayjs(måned.from).isSame(endringsperiode.from, 'month')
-        ? getDagerIPeriode(
-              dayjs.min(dayjs(endringsperiode.from), dayjs(måned.from)).toDate(),
-              dayjs(endringsperiode.from).subtract(1, 'day').toDate()
-          ).map((d) => d.dato)
+        ? getDagerIPeriode({
+              from: dayjs.min(dayjs(endringsperiode.from), dayjs(måned.from)).toDate(),
+              to: dayjs(endringsperiode.from).subtract(1, 'day').toDate(),
+          }).map((d) => d.dato)
         : [];
 
     const dagerEtterSisteDag = dayjs(måned.from).isSame(endringsperiode.to, 'month')
-        ? getDagerIPeriode(dayjs(endringsperiode.to).add(1, 'day').toDate(), måned.to).map((d) => d.dato)
+        ? getDagerIPeriode({
+              from: dayjs(endringsperiode.to).add(1, 'day').toDate(),
+              to: måned.to,
+          }).map((d) => d.dato)
         : [];
 
     return [

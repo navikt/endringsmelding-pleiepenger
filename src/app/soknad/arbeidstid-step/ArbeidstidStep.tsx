@@ -6,6 +6,7 @@ import StepIntroduction from '../../components/step-introduction/StepIntroductio
 import { Arbeidsgiver, ArbeidsgiverType } from '../../types/Arbeidsgiver';
 import { K9Arbeidstid, K9SakMeta } from '../../types/K9Sak';
 import {
+    ArbeidstidFormValue,
     getArbeidsgiverArbeidstidFormFieldName,
     getFrilanserArbeidstidFormFieldName,
     getSelvstendigArbeidstidFormFieldName,
@@ -25,6 +26,7 @@ const cleanupStep = (formData: SoknadFormData): SoknadFormData => {
 interface Props {
     arbeidsgivere?: Arbeidsgiver[];
     k9sakMeta: K9SakMeta;
+    arbeidstidSøknad: ArbeidstidFormValue;
     arbeidstidSak: K9Arbeidstid;
     nyeArbeidsforhold: Arbeidsgiver[];
     onArbeidstidChanged: () => void;
@@ -34,6 +36,7 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
     arbeidstidSak,
     k9sakMeta,
     nyeArbeidsforhold,
+    arbeidstidSøknad,
     onArbeidstidChanged,
 }) => {
     const stepId = StepID.ARBEIDSTID;
@@ -60,6 +63,9 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
                                         </Box>
                                         <Box padBottom="l">
                                             <EndreArbeidstid
+                                                k9SakMeta={k9sakMeta}
+                                                arbeidstidSøknad={arbeidstidSøknad?.arbeidsgiver[a.id]?.faktisk}
+                                                formFieldName={getArbeidsgiverArbeidstidFormFieldName(a)}
                                                 arbeidsstedNavn={a.navn}
                                                 endringsperiode={k9sakMeta.endringsperiode}
                                             />
@@ -76,13 +82,16 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
                                 );
                             })}
                         </>
-                        {arbeidstidSak.frilanser && (
+                        {arbeidstidSak.frilanser && arbeidstidSøknad.frilanser && (
                             <div className="arbeidstid__aktivitet">
                                 <Box padBottom="l">
                                     <Undertittel>Frilanser</Undertittel>
                                 </Box>
                                 <Box padBottom="l">
                                     <EndreArbeidstid
+                                        k9SakMeta={k9sakMeta}
+                                        arbeidstidSøknad={arbeidstidSøknad.frilanser?.faktisk}
+                                        formFieldName={getFrilanserArbeidstidFormFieldName()}
                                         arbeidsstedNavn={'Frilanser'}
                                         endringsperiode={k9sakMeta.endringsperiode}
                                     />
@@ -96,13 +105,16 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
                                 />
                             </div>
                         )}
-                        {arbeidstidSak.selvstendig && (
+                        {arbeidstidSak.selvstendig && arbeidstidSøknad.selvstendig && (
                             <div className="arbeidstid__aktivitet">
                                 <Box padBottom="l">
                                     <Undertittel>Selvstendig næringsdrivende</Undertittel>
                                 </Box>
                                 <Box padBottom="l">
                                     <EndreArbeidstid
+                                        k9SakMeta={k9sakMeta}
+                                        arbeidstidSøknad={arbeidstidSøknad.selvstendig.faktisk}
+                                        formFieldName={getSelvstendigArbeidstidFormFieldName()}
                                         arbeidsstedNavn={'Selvstendig næringsdrivende'}
                                         endringsperiode={k9sakMeta.endringsperiode}
                                     />
