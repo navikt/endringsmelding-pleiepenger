@@ -183,6 +183,9 @@ const ArbeidstidEnkeltdagForm: React.FunctionComponent<Props> = ({
                                                     label="Dato for stopp"
                                                     minDate={dato}
                                                     maxDate={endringsperiode.to}
+                                                    disableWeekend={true}
+                                                    fullScreenOnMobile={true}
+                                                    useFastField={true}
                                                     dayPickerProps={{
                                                         initialMonth: dato,
                                                     }}
