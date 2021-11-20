@@ -15,6 +15,7 @@ import { dateToISODate, timeHasSameDuration } from '../../../utils/dateUtils';
 import { getDagerMedTidITidsrom, tidErIngenTid } from '../../../utils/tidsbrukUtils';
 import ArbeidstidEnkeltdagDialog from '../../../components/arbeidstid-enkeltdag/ArbeidstidEnkeltdagDialog';
 import { InputTime } from '../../../types';
+import { ArbeidstidEnkeltdagEndring } from '../../../components/arbeidstid-enkeltdag/ArbeidstidEnkeltdagForm';
 
 interface Props {
     arbeidsstedNavn: string;
@@ -25,7 +26,8 @@ interface Props {
     addLabel: string;
     utilgjengeligeDatoer?: Date[];
     månedTittelHeadingLevel?: number;
-    onEnkeltdagChange?: (tid: DagMedTid) => void;
+    endringsperiode: DateRange;
+    onEnkeltdagChange?: (evt: ArbeidstidEnkeltdagEndring) => void;
     onRequestEdit: (tid: TidEnkeltdag) => void;
 }
 
@@ -38,6 +40,7 @@ const ArbeidstidMånedInfo: React.FunctionComponent<Props> = ({
     addLabel,
     utilgjengeligeDatoer,
     månedTittelHeadingLevel = 2,
+    endringsperiode,
     onEnkeltdagChange,
     onRequestEdit,
 }) => {
@@ -109,8 +112,9 @@ const ArbeidstidMånedInfo: React.FunctionComponent<Props> = ({
                 <ArbeidstidEnkeltdagDialog
                     dagMedTid={editDate}
                     tidOpprinnelig={faktisk[dateToISODate(editDate.dato)]}
-                    onSubmit={(dagMedTid) => {
-                        onEnkeltdagChange(dagMedTid);
+                    endringsperiode={endringsperiode}
+                    onSubmit={(evt) => {
+                        onEnkeltdagChange(evt);
                         setEditDate(undefined);
                     }}
                     onCancel={() => setEditDate(undefined)}

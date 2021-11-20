@@ -1,16 +1,17 @@
 import React from 'react';
-import { Time } from '@navikt/sif-common-formik/lib';
+import { DateRange, Time } from '@navikt/sif-common-formik/lib';
 import Modal from 'nav-frontend-modal';
 import { DagMedTid } from '../../types/SoknadFormData';
 import dateFormatter from '../../utils/dateFormatterUtils';
-import ArbeidstidEnkeltdagForm from './ArbeidstidEnkeltdagForm';
+import ArbeidstidEnkeltdagForm, { ArbeidstidEnkeltdagEndring } from './ArbeidstidEnkeltdagForm';
 import './arbeidstidEnkeltdag.less';
 
 interface Props {
     dagMedTid?: DagMedTid;
     tidOpprinnelig: Time;
     arbeidsstedNavn: string;
-    onSubmit: (dagMedTid: DagMedTid) => void;
+    endringsperiode: DateRange;
+    onSubmit: (evt: ArbeidstidEnkeltdagEndring) => void;
     onCancel: () => void;
 }
 
@@ -18,6 +19,7 @@ const ArbeidstidEnkeltdagEdit: React.FunctionComponent<Props> = ({
     dagMedTid,
     tidOpprinnelig,
     arbeidsstedNavn,
+    endringsperiode,
     onSubmit,
     onCancel,
 }) => {
@@ -31,6 +33,7 @@ const ArbeidstidEnkeltdagEdit: React.FunctionComponent<Props> = ({
                 shouldCloseOnOverlayClick={false}
                 className="arbeidstidEnkeltdagDialog">
                 <ArbeidstidEnkeltdagForm
+                    endringsperiode={endringsperiode}
                     dagMedTid={dagMedTid}
                     tidOpprinnelig={tidOpprinnelig}
                     arbeidsstedNavn={arbeidsstedNavn}

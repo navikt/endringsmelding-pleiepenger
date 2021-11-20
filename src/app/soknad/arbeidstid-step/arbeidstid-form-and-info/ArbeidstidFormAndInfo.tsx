@@ -6,13 +6,15 @@ import {
     TypedFormInputValidationProps,
 } from '@navikt/sif-common-formik';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
+import { useFormikContext } from 'formik';
+import { ArbeidstidEnkeltdagEndring } from '../../../components/arbeidstid-enkeltdag/ArbeidstidEnkeltdagForm';
+import { DagerSøktForMap } from '../../../types';
 import { K9ArbeidstidInfo } from '../../../types/K9Sak';
-import { DagMedTid, SoknadFormData, TidEnkeltdag } from '../../../types/SoknadFormData';
+import { SoknadFormData, TidEnkeltdag } from '../../../types/SoknadFormData';
+import { datoErHistorisk } from '../../../utils/tidsbrukUtils';
 import ArbeidstidMånedForm from './ArbeidstidMånedForm';
 import ArbeidstidMånedInfo from './ArbeidstidMånedInfo';
-import { datoErHistorisk } from '../../../utils/tidsbrukUtils';
-import { useFormikContext } from 'formik';
-import { dateToISODate } from '../../../utils/dateUtils';
+import { getDagerSomSkalEndresFraEnkeltdagEndring } from './arbeidstidUtils';
 
 interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, ValidationError> {
     formFieldName: FieldNames;
@@ -23,6 +25,8 @@ interface Props<FieldNames> extends TypedFormInputValidationProps<FieldNames, Va
     endringsdato: Date;
     arbeidstidArbeidsgiverSak: K9ArbeidstidInfo;
     månedTittelHeadingLevel?: number;
+    endringsperiode: DateRange;
+    dagerSøktForMap: DagerSøktForMap;
     onAfterChange?: (tid: TidEnkeltdag) => void;
 }
 
@@ -47,6 +51,8 @@ function ArbeidstidFormAndInfo<FieldNames>({
     arbeidstidArbeidsgiverSak,
     utilgjengeligeDatoerIMåned = [],
     månedTittelHeadingLevel,
+    endringsperiode,
+    dagerSøktForMap,
     validate,
     onAfterChange,
 }: Props<FieldNames>) {
@@ -67,9 +73,12 @@ function ArbeidstidFormAndInfo<FieldNames>({
     );
 
     const renderInfo: InfoRenderer<TidEnkeltdag> = ({ data, onEdit }) => {
-        const handleOnEnkeltdagChange = (dagMedTid: DagMedTid) => {
+        const handleOnEnkeltdagChange = (evt: ArbeidstidEnkeltdagEndring) => {
             const newValues = { ...data };
-            newValues[dateToISODate(dagMedTid.dato)] = dagMedTid.tid;
+            const dagerSomSkalEndres = getDagerSomSkalEndresFraEnkeltdagEndring(evt, endringsperiode, dagerSøktForMap);
+            dagerSomSkalEndres.forEach((isoDate) => {
+                newValues[isoDate] = evt.dagMedTid.tid;
+            });
             setFieldValue(formFieldName as any, newValues);
             onAfterChange ? onAfterChange(newValues) : undefined;
         };
@@ -79,6 +88,7 @@ function ArbeidstidFormAndInfo<FieldNames>({
                 arbeidsstedNavn={arbeidsstedNavn}
                 periodeIMåned={periodeIMåned}
                 tidArbeidstid={data}
+                endringsperiode={endringsperiode}
                 arbeidstidArbeidsgiverSak={arbeidstidArbeidsgiverSak}
                 utilgjengeligeDatoer={utilgjengeligeDatoerIMåned}
                 månedTittelHeadingLevel={månedTittelHeadingLevel}

@@ -19,7 +19,8 @@ interface Props {
     k9SakMeta: K9SakMeta;
 }
 
-const getDagerDetErSøktForIPeriode = (periode: DateRange, dagerSøktForMap: DagerSøktForMap): ISODate[] => {
+/** Returns ISODate array */
+export const getDagerDetErSøktForIPeriode = (periode: DateRange, dagerSøktForMap: DagerSøktForMap): ISODate[] => {
     const dagerIPeriode = getDagerIPeriode(periode);
     const dagerIPeriodeDetErSøktFor: ISODate[] = [];
     dagerIPeriode.forEach((dag) => {

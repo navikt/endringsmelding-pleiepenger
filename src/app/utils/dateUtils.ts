@@ -15,6 +15,11 @@ dayjs.extend(isBetween);
 dayjs.extend(minMax);
 dayjs.extend(isSameOrBefore);
 
+const _getISOWeekdayFromISODate = (isoDate: ISODate): number => {
+    return dayjs(ISODateToDate(isoDate)).isoWeekday();
+};
+export const getISOWeekdayFromISODate = moize(_getISOWeekdayFromISODate);
+
 export const _getMonthsInDateRange = (range: DateRange): DateRange[] => {
     const months: DateRange[] = [];
     let current = dayjs(range.from);

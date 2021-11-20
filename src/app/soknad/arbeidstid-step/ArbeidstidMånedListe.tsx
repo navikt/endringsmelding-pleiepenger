@@ -41,6 +41,8 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
                 periodeIMåned={måned}
                 utilgjengeligeDatoerIMåned={utilgjengeligeDatoerIMåned}
                 endringsdato={k9sakMeta.endringsdato}
+                dagerSøktForMap={k9sakMeta.dagerSøktForMap}
+                endringsperiode={k9sakMeta.endringsperiode}
                 arbeidstidArbeidsgiverSak={arbeidstidSak}
                 månedTittelHeadingLevel={k9sakMeta.søknadsperioderGårOverFlereÅr ? 4 : 3}
                 onAfterChange={(tid) => {
