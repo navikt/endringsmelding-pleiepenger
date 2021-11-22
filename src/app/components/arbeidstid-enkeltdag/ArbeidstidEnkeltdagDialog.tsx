@@ -7,6 +7,7 @@ import ArbeidstidEnkeltdagForm, { ArbeidstidEnkeltdagEndring } from './Arbeidsti
 import './arbeidstidEnkeltdag.less';
 
 interface Props {
+    isOpen?: boolean;
     dagMedTid?: DagMedTid;
     tidOpprinnelig: Time;
     arbeidsstedNavn: string;
@@ -15,7 +16,8 @@ interface Props {
     onCancel: () => void;
 }
 
-const ArbeidstidEnkeltdagEdit: React.FunctionComponent<Props> = ({
+const ArbeidstidEnkeltdagDialog: React.FunctionComponent<Props> = ({
+    isOpen = false,
     dagMedTid,
     tidOpprinnelig,
     arbeidsstedNavn,
@@ -23,12 +25,16 @@ const ArbeidstidEnkeltdagEdit: React.FunctionComponent<Props> = ({
     onSubmit,
     onCancel,
 }) => {
-    const isOpen = dagMedTid !== undefined;
-    return dagMedTid ? (
+    if (!isOpen) {
+        return null;
+    }
+    const contentLabel = dagMedTid ? `Arbeidstid ${dateFormatter.full(dagMedTid.dato)}` : `Arbeidstid`;
+
+    return isOpen && dagMedTid ? (
         <>
             <Modal
                 isOpen={isOpen}
-                contentLabel={`Arbeidstid ${dateFormatter.full(dagMedTid.dato)}`}
+                contentLabel={contentLabel}
                 onRequestClose={onCancel}
                 shouldCloseOnOverlayClick={false}
                 className="arbeidstidEnkeltdagDialog">
@@ -45,4 +51,4 @@ const ArbeidstidEnkeltdagEdit: React.FunctionComponent<Props> = ({
     ) : null;
 };
 
-export default ArbeidstidEnkeltdagEdit;
+export default ArbeidstidEnkeltdagDialog;

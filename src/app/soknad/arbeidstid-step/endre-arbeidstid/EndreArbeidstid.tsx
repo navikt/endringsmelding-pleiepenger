@@ -10,6 +10,9 @@ import { SoknadFormData, SoknadFormField, TidEnkeltdag, TidFasteDager } from '..
 import { getDagerIPeriode } from '../../../components/tid-uker-input/utils';
 import { ISODateToDate } from '../../../utils/dateUtils';
 import dayjs from 'dayjs';
+import Knapperad from '@navikt/sif-common-core/lib/components/knapperad/Knapperad';
+import Box from '@navikt/sif-common-core/lib/components/box/Box';
+// import ArbeidstidEnkeltdagDialog from '../../../components/arbeidstid-enkeltdag/ArbeidstidEnkeltdagDialog';
 
 interface Props {
     formFieldName: SoknadFormField;
@@ -55,6 +58,7 @@ const EndreArbeidstid: React.FunctionComponent<Props> = ({
     endringsperiode,
 }) => {
     const [visPeriode, setVisPeriode] = useState(false);
+    // const [visDag, setVisDag] = useState(false);
     const { setFieldValue } = useFormikContext<SoknadFormData>();
 
     const handleChangePeriode = ({ fom, tom, skalJobbe, tidFasteDager }: ArbeidstidPeriodeData) => {
@@ -81,9 +85,16 @@ const EndreArbeidstid: React.FunctionComponent<Props> = ({
                 gjelder flere dager ved å velge &quot;Endre periode&quot;-knappen.
             </p>
 
-            <Knapp htmlType="button" onClick={() => setVisPeriode(true)} mini={true}>
-                Endre periode
-            </Knapp>
+            <Knapperad align="left">
+                <Box margin="none" padBottom="l">
+                    <Knapp htmlType="button" onClick={() => setVisPeriode(true)} mini={true}>
+                        Endre periode
+                    </Knapp>
+                </Box>
+                {/* <Knapp htmlType="button" onClick={() => setVisDag(true)} mini={true}>
+                    Endre dag
+                </Knapp> */}
+            </Knapperad>
 
             <ArbeidstidPeriodeDialog
                 endringsperiode={endringsperiode}
@@ -92,6 +103,8 @@ const EndreArbeidstid: React.FunctionComponent<Props> = ({
                 onCancel={() => setVisPeriode(false)}
                 onSubmit={handleChangePeriode}
             />
+
+            {/* <ArbeidstidEnkeltdagDialog endringsperiode={endringsperiode} arbeidsstedNavn={arbeidsstedNavn} dagMedTid /> */}
         </>
     );
 };

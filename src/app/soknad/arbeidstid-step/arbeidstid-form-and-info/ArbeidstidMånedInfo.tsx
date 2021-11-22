@@ -110,6 +110,7 @@ const ArbeidstidMånedInfo: React.FunctionComponent<Props> = ({
             </FormBlock>
             {editDate && onEnkeltdagChange && (
                 <ArbeidstidEnkeltdagDialog
+                    isOpen={editDate !== undefined}
                     dagMedTid={editDate}
                     tidOpprinnelig={faktisk[dateToISODate(editDate.dato)]}
                     endringsperiode={endringsperiode}
