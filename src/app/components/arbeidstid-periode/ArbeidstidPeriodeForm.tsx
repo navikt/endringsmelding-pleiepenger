@@ -9,7 +9,7 @@ import { Undertittel } from 'nav-frontend-typografi';
 import { InputDateString } from 'nav-datovelger/lib/types';
 import {
     getDateRangeValidator,
-    getRequiredFieldValidator,
+    // getRequiredFieldValidator,
     getYesOrNoValidator,
 } from '@navikt/sif-common-formik/lib/validation';
 import TidFasteDagerInput from '../tid-faste-dager-input/TidFasteDagerInput';
@@ -65,16 +65,13 @@ const SkalJobbeSpørsmål = () => (
 const PeriodeSpørsmål = ({ periode, endringsperiode }: { periode?: DateRange; endringsperiode: DateRange }) => (
     <FormComponents.DateIntervalPicker
         legend="Hvilken periode ønsker du å endre?"
-        validate={() => {
-            return getRequiredFieldValidator()(periode);
-        }}
         fromDatepickerProps={{
             label: 'Fra og med',
             name: FormFields.fom,
             disableWeekend: true,
             fullScreenOnMobile: true,
             minDate: endringsperiode.from,
-            maxDate: endringsperiode.to,
+            maxDate: periode?.to || endringsperiode.to,
             validate: getDateRangeValidator({ required: true, onlyWeekdays: true }).validateFromDate,
         }}
         toDatepickerProps={{
@@ -82,7 +79,7 @@ const PeriodeSpørsmål = ({ periode, endringsperiode }: { periode?: DateRange; 
             name: FormFields.tom,
             disableWeekend: true,
             fullScreenOnMobile: true,
-            minDate: endringsperiode.from,
+            minDate: periode?.from || endringsperiode.from,
             maxDate: endringsperiode.to,
             validate: getDateRangeValidator({ required: true }).validateToDate,
         }}

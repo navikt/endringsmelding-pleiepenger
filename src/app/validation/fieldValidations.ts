@@ -96,7 +96,7 @@ export const validateFasteArbeidstimerIUke = (
     }
     return error
         ? {
-              key: `validation.${error}`,
+              key: `arbeidstidPeriode.fasteDager.${error}`,
               keepKeyUnaltered: true,
           }
         : undefined;
@@ -110,7 +110,7 @@ export const getArbeidstimerFastDagValidator =
             : undefined;
         if (error) {
             return {
-                key: `validation.arbeidstimer.fastdag.tid.${error}`,
+                key: `arbeidstidPeriode.fasteDager.dag.${error}`,
                 values: { dag },
                 keepKeyUnaltered: true,
             };

@@ -10,13 +10,17 @@
         }
     }
 }
-
-.calendarDialog {
+.dateIntervalPicker {
+    max-width: 20rem;
+}
+.modal.calendarDialog {
     width: 100%;
-    max-width: 45rem;
-    padding: 2rem;
     .dialogFormWrapper {
         width: 100%;
+    }
+    @media (min-width: 576px) {
+        max-width: 40rem;
+        padding: 2rem;
     }
 }
 
