@@ -9,7 +9,8 @@ import { Undertittel } from 'nav-frontend-typografi';
 import { InputDateString } from 'nav-datovelger/lib/types';
 import {
     getDateRangeValidator,
-    // getRequiredFieldValidator,
+    getNumberValidator,
+    getRequiredFieldValidator,
     getYesOrNoValidator,
 } from '@navikt/sif-common-formik/lib/validation';
 import TidFasteDagerInput from '../tid-faste-dager-input/TidFasteDagerInput';
@@ -19,12 +20,21 @@ import { getArbeidstimerFastDagValidator, validateFasteArbeidstimerIUke } from '
 import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
 import { TidFasteDager } from '../../types/SoknadFormData';
 import datepickerUtils from '@navikt/sif-common-formik/lib/components/formik-datepicker/datepickerUtils';
+import { InputTime } from '../../types';
+import getTimeValidator from '@navikt/sif-common-formik/lib/validation/getTimeValidator';
 
 interface Props {
     arbeidsstedNavn: string;
     endringsperiode: DateRange;
     onSubmit: (data: ArbeidstidPeriodeData) => void;
     onCancel: () => void;
+}
+
+enum HvordanOppgiArbeidstidType {
+    prosent = 'prosent',
+    timer = 'timer',
+    prosentPerUkedag = 'prosentPerUkedag',
+    timerPerUkedag = 'timerPerUkedag',
 }
 
 export type ArbeidstidPeriodeData = {
@@ -38,13 +48,21 @@ enum FormFields {
     'fom' = 'fom',
     'tom' = 'tom',
     'skalJobbe' = 'skalJobbe',
+    'skalJobbeSomVanlig' = 'skalJobbeSomVanlig',
     'tidFasteDager' = 'tidFasteDager',
+    'prosent' = 'prosent',
+    'timerPerDag' = 'timerPerDag',
+    'hvordanOppgiArbeidstid' = 'hvordanOppgiArbeidstid',
 }
 
 interface FormValues {
     [FormFields.fom]: InputDateString;
     [FormFields.tom]: InputDateString;
     [FormFields.skalJobbe]: YesOrNo;
+    [FormFields.skalJobbeSomVanlig]: YesOrNo;
+    [FormFields.hvordanOppgiArbeidstid]: HvordanOppgiArbeidstidType;
+    [FormFields.prosent]: string;
+    [FormFields.timerPerDag]: InputTime;
     [FormFields.tidFasteDager]?: TidFasteDager;
 }
 
@@ -59,6 +77,15 @@ const SkalJobbeSpørsmål = () => (
         name={FormFields.skalJobbe}
         legend="Skal du jobbe i denne perioden?"
         validate={getYesOrNoValidator()}
+    />
+);
+
+const SkalJobbeSomVanligSpørsmål = () => (
+    <FormComponents.YesOrNoQuestion
+        name={FormFields.skalJobbeSomVanlig}
+        legend="Hvordan skal du jobbe denne perioden?"
+        labels={{ no: 'Mindre enn vanlig', yes: 'Som vanlig' }}
+        validate={getRequiredFieldValidator()}
     />
 );
 
@@ -105,6 +132,63 @@ const TidPerDagSpørsmål = ({ tidFasteDager }: { tidFasteDager?: TidFasteDager 
         <TidFasteDagerInput name={FormFields.tidFasteDager} validator={getArbeidstimerFastDagValidator} />
     </SoknadFormComponents.InputGroup>
 );
+
+const HvordanOppgiArbeidstidSpørsmål = () => (
+    <FormComponents.RadioPanelGroup
+        name={FormFields.hvordanOppgiArbeidstid}
+        legend="Hvordan ønsker du å oppgi hvor mye du skal jobbe disse dagene?"
+        radios={[
+            {
+                label: 'I prosent for hele perioden',
+                value: HvordanOppgiArbeidstidType.prosent,
+            },
+            {
+                label: 'I prosent per ukedag',
+                value: HvordanOppgiArbeidstidType.prosentPerUkedag,
+            },
+            {
+                label: 'Timer og minutter likt for alle dager i perioden',
+                value: HvordanOppgiArbeidstidType.timer,
+            },
+            {
+                label: 'Timer og minutter per ukedag',
+                value: HvordanOppgiArbeidstidType.timerPerUkedag,
+            },
+        ]}
+        validate={getRequiredFieldValidator()}
+    />
+);
+
+const ProsentSpørsmål = () => (
+    <FormComponents.NumberInput
+        name={FormFields.prosent}
+        bredde="XS"
+        maxLength={3}
+        label="Hvor mange prosent skal du jobbe i denne perioden?"
+        validate={getNumberValidator({ min: 0, max: 99 })}
+        description={
+            <ExpandableInfo title="Viktig når du oppgir arbeidstid i prosent">
+                Når du oppgir i prosent, betyr dette at.
+            </ExpandableInfo>
+        }
+    />
+);
+
+const TimerSpørsmål = () => (
+    <>
+        <FormComponents.TimeInput
+            name={FormFields.timerPerDag}
+            label="Hvor mange timer skal du jobbe hver dag i denne perioden?"
+            validate={getTimeValidator({ max: { hours: 24, minutes: 59 } })}
+            description={
+                <ExpandableInfo title="Viktig når du oppgir arbeidstid i likt antall timer per dag">
+                    Når du oppgir i prosent, betyr dette at.
+                </ExpandableInfo>
+            }
+        />
+    </>
+);
+
 const ArbeidstidPeriodeForm: React.FunctionComponent<Props> = ({
     arbeidsstedNavn,
     endringsperiode,
@@ -138,7 +222,9 @@ const ArbeidstidPeriodeForm: React.FunctionComponent<Props> = ({
                 <FormComponents.FormikWrapper
                     initialValues={initialFormValues}
                     onSubmit={onValidSubmit}
-                    renderForm={({ values: { skalJobbe, fom, tom, tidFasteDager } }) => {
+                    renderForm={({
+                        values: { skalJobbe, fom, tom, hvordanOppgiArbeidstid, skalJobbeSomVanlig, tidFasteDager },
+                    }) => {
                         const from = datepickerUtils.getDateFromDateString(fom);
                         const to = datepickerUtils.getDateFromDateString(tom);
                         const periode = from && to ? { from, to } : undefined;
@@ -158,8 +244,30 @@ const ArbeidstidPeriodeForm: React.FunctionComponent<Props> = ({
                                 </FormBlock>
                                 {skalJobbe === YesOrNo.YES && (
                                     <FormBlock>
-                                        <TidPerDagSpørsmål tidFasteDager={tidFasteDager} />
+                                        <SkalJobbeSomVanligSpørsmål />
                                     </FormBlock>
+                                )}
+                                {skalJobbeSomVanlig === YesOrNo.NO && (
+                                    <>
+                                        <FormBlock>
+                                            <HvordanOppgiArbeidstidSpørsmål />
+                                        </FormBlock>
+                                        {hvordanOppgiArbeidstid === HvordanOppgiArbeidstidType.prosent && (
+                                            <FormBlock>
+                                                <ProsentSpørsmål />
+                                            </FormBlock>
+                                        )}
+                                        {hvordanOppgiArbeidstid === HvordanOppgiArbeidstidType.timer && (
+                                            <FormBlock>
+                                                <TimerSpørsmål />
+                                            </FormBlock>
+                                        )}
+                                        {hvordanOppgiArbeidstid === HvordanOppgiArbeidstidType.timerPerUkedag && (
+                                            <FormBlock>
+                                                <TidPerDagSpørsmål tidFasteDager={tidFasteDager} />
+                                            </FormBlock>
+                                        )}
+                                    </>
                                 )}
                             </FormComponents.Form>
                         );

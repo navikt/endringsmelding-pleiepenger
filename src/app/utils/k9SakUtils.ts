@@ -4,7 +4,11 @@ import { flatten } from 'lodash';
 import moize from 'moize';
 import { DagerIkkeSøktForMap, DagerSøktForMap } from '../types';
 import { Arbeidsgiver } from '../types/Arbeidsgiver';
-import { getK9FormatArbeidsgiverIdent, K9FormatArbeidsgiver } from '../types/k9Format';
+import {
+    isK9FormatArbeidsgiverOrganisasjon,
+    isK9FormatArbeidsgiverPrivat,
+    K9FormatArbeidsgiver,
+} from '../types/k9Format';
 import {
     K9ArbeidstidInfo,
     K9ArbeidstakerMap,
@@ -12,6 +16,7 @@ import {
     K9Sak,
     K9SakMeta,
     MånedMedSøknadsperioderMap as MånedMedSøknadsperioderMap,
+    K9SakMedMeta,
 } from '../types/K9Sak';
 import {
     dateIsWithinDateRange,
@@ -139,7 +144,7 @@ const getK9SakMeta = (endringsdato: Date, søknadsperioder: DateRange[]): K9SakM
     };
 };
 
-export const trimK9SakForSøknad = (k9sak: K9Sak): { sak: K9Sak; meta: K9SakMeta } => {
+export const trimK9SakForSøknad = (k9sak: K9Sak): K9SakMedMeta => {
     const sak: K9Sak = { ...k9sak };
     const endringsdato = getEndringsdato();
     const maksEndringsperiode = getMaksEndringsperiode(endringsdato);
@@ -207,4 +212,14 @@ export const getNyeArbeidsforholdIkkeRegistrertIK9Sak = (
                 return ident ? ident === id : true;
             }) === false
     );
+};
+
+export const getK9FormatArbeidsgiverIdent = (arbeidsgiver: K9FormatArbeidsgiver): string => {
+    if (isK9FormatArbeidsgiverPrivat(arbeidsgiver)) {
+        return arbeidsgiver.norskIdentitetsnummer;
+    }
+    if (isK9FormatArbeidsgiverOrganisasjon(arbeidsgiver)) {
+        return arbeidsgiver.organisasjonsnummer;
+    }
+    throw new Error('Ukjent ident for arbeidsgiver');
 };

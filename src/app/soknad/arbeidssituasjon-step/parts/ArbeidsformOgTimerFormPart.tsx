@@ -4,7 +4,7 @@ import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlo
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { ValidationError, ValidationFunction } from '@navikt/sif-common-formik/lib/validation/types';
 import { ArbeidsforholdType } from '../../../components/tid-uker-input/types';
-import { ArbeidsforholdField, Arbeidssituasjon, SoknadFormField } from '../../../types/SoknadFormData';
+import { ArbeidsforholdField, Arbeidssituasjon } from '../../../types/SoknadFormData';
 import SoknadFormComponents from '../../SoknadFormComponents';
 
 interface Props {
@@ -26,7 +26,7 @@ const ArbeidsformOgTimerFormPart: React.FunctionComponent<Props> = ({
     spørsmål,
 }) => {
     const intl = useIntl();
-    const getFieldName = (field: ArbeidsforholdField) => `${parentFieldName}.${field}` as SoknadFormField;
+    const getFieldName = (field: ArbeidsforholdField) => `${parentFieldName}.${field}` as any;
 
     return (
         <>

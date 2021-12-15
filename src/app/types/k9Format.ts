@@ -50,16 +50,6 @@ export const isK9FormatArbeidsgiverPrivat = (arbeidsgiver: any): arbeidsgiver is
 
 export type K9FormatArbeidsgiver = K9FormatArbeidsgiverPrivat | K9FormatArbeidsgiverOrganisasjon;
 
-export const getK9FormatArbeidsgiverIdent = (arbeidsgiver: K9FormatArbeidsgiver): string => {
-    if (isK9FormatArbeidsgiverPrivat(arbeidsgiver)) {
-        return arbeidsgiver.norskIdentitetsnummer;
-    }
-    if (isK9FormatArbeidsgiverOrganisasjon(arbeidsgiver)) {
-        return arbeidsgiver.organisasjonsnummer;
-    }
-    throw new Error('Ukjent ident for arbeidsgiver');
-};
-
 export interface K9OpptjeningAktivitetFrilanser {
     startdato: ISODateString;
     sluttdato?: ISODateString;

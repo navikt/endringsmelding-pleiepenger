@@ -8,7 +8,7 @@ import {
     ArbeidsforholdField,
     Arbeidssituasjon,
     JobberIPeriodeSvar,
-    SoknadFormField,
+    // SoknadFormField,
 } from '../../../types/SoknadFormData';
 import { getTimerTekst } from '../../../utils/arbeidssituasjonUtils';
 import SoknadFormComponents from '../../SoknadFormComponents';
@@ -37,7 +37,7 @@ const ArbeidIPeriodenSpørsmål: React.FunctionComponent<Props> = ({
         hvor: intlHelper(intl, 'arbeidsforhold.part.som.ANSATT', { navn: arbeidsgiver.navn }),
         timer: getTimerTekst(intl, arbeidssituasjon.jobberNormaltTimer),
     };
-    const getFieldName = (field: ArbeidsforholdField) => `${parentFieldName}.${field}` as SoknadFormField;
+    const getFieldName = (field: ArbeidsforholdField) => `${parentFieldName}.${field}` as any;
 
     const getSpørsmål = (spørsmål: ArbeidsforholdField) =>
         intlHelper(intl, `arbeidIPeriode.${spørsmål}.spm`, intlValues as any);

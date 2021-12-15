@@ -16,6 +16,12 @@ export const getMaksEndringsperiode = (endringsdato: Date): DateRange => ({
     to: dayjs(endringsdato).add(6, 'months').endOf('day').toDate(),
 });
 
+/**
+ * Finner periode som kan endres basert på endringsdato og søknadsperioder i sak
+ * @param endringsdato dato endring ble påbegynt
+ * @param søknadsperioder liste av søknadsprioder fra en sak
+ * @returns DateRange for perioden som kan endres
+ */
 export const getEndringsperiode = (endringsdato: Date, søknadsperioder: DateRange[]): DateRange => {
     const maksEndringsperiode = getMaksEndringsperiode(endringsdato);
     const søknadsperioderDateRange = getDateRangeFromDateRanges(søknadsperioder);

@@ -6,11 +6,10 @@ const server = express();
 server.use(express.json());
 server.use((req, res, next) => {
     const allowedOrigins = [
-        'http://host.docker.internal:8080',
+        'http://host.docker.internal:8090',
         'http://localhost:8090',
-        'http://localhost:8080',
-        'http://web:8080',
-        'http://192.168.0.121:8080',
+        'http://web:8090',
+        'http://192.168.0.121:8090',
         '*',
     ];
     const requestOrigin = req.headers.origin;
@@ -72,7 +71,7 @@ const organisasjonMock = {
 const K9SakMock = `./server/k9sak.json`;
 
 const startExpressServer = () => {
-    const port = process.env.PORT || 8089;
+    const port = process.env.PORT || 8099;
 
     server.get('/health/isAlive', (req, res) => res.sendStatus(200));
 

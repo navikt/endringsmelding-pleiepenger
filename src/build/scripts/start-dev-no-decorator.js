@@ -11,6 +11,7 @@ const compiler = webpack({
     watch: false,
     watchOptions: { ignored: path.resolve(`${__dirname}../../../node_modules`), poll: 1000 },
 });
-const server = new WebpackDevServer(configureDevServer({}), compiler);
+const port = 8090;
+const server = new WebpackDevServer(configureDevServer({}, port), compiler);
 
-server.start(8090, '127.0.0.1', () => console.log('Started server on http://localhost:8090'));
+server.start();

@@ -17,6 +17,6 @@
         "APPSTATUS_PROJECT_ID": "ryujtq87",
         "APPSTATUS_DATASET": "staging",
         "USE_AMPLITUDE": "true",
-        "FAKE_API_KALL": "true"
+        "FAKE_API_KALL": "false"
     }
 }

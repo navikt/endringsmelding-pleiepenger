@@ -19,6 +19,11 @@ export interface K9Arbeidstid {
     selvstendig?: K9ArbeidstidInfo;
 }
 
+export interface K9SakMedMeta {
+    sak: K9Sak;
+    meta: K9SakMeta;
+}
+
 /** Eget versjon av K9Format som forenkler uthenting av informasjon i endringsdialogen */
 export interface K9Sak {
     søknadId: string;
