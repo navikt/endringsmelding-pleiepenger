@@ -14,6 +14,7 @@ export const axiosConfigPsb: AxiosRequestConfig = {
 };
 
 export const axiosConfigInnsyn = {
+    ...axiosConfigCommon,
     baseURL: getEnvironmentVariable('API_URL_INNSYN'),
 };
 
