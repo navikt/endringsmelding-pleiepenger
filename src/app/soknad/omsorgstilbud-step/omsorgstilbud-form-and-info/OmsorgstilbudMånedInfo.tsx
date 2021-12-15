@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import { DateRange } from '@navikt/sif-common-formik/lib';
+import { DateRange, InputTime } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Knapp from 'nav-frontend-knapper';
@@ -12,7 +12,6 @@ import TidsbrukKalender, { TidRenderer } from '../../../components/tidsbruk-kale
 import { DagMedTid, TidEnkeltdag } from '../../../types/SoknadFormData';
 import { getDagerMedTidITidsrom } from '../../../utils/tidsbrukUtils';
 import { dateToISODate, timeHasSameDuration } from '../../../utils/dateUtils';
-import { InputTime } from '../../../types';
 import OmsorgstilbudEnkeltdagEdit from '../../../components/omsorgstilbud-enkeltdag-edit/OmsorgstilbudEnkeltdagDialog';
 import { K9TidEnkeltdag } from '../../../types/K9Sak';
 

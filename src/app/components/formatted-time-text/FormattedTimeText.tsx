@@ -2,11 +2,10 @@ import React from 'react';
 import { FormattedNumber, useIntl } from 'react-intl';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { timeToDecimalTime } from '@navikt/sif-common-core/lib/utils/timeUtils';
-import { Time } from '@navikt/sif-common-formik';
-import { InputTime } from '../../types';
+import { InputTime } from '@navikt/sif-common-formik';
 import AriaAlternative from '@navikt/sif-common-core/lib/components/aria/AriaAlternative';
 
-const ensureTime = (time: InputTime): Time => {
+const ensureTime = (time: InputTime): InputTime => {
     return {
         hours: time.hours || '0',
         minutes: time.minutes || '0',

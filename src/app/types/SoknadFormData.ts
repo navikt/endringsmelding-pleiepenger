@@ -1,6 +1,5 @@
 import { YesOrNo } from '@navikt/sif-common-core/lib/types/YesOrNo';
-import { Time } from '@navikt/sif-common-formik/lib';
-import { InputTime } from './';
+import { InputTime } from '@navikt/sif-common-formik/lib';
 import { Arbeidsgiver } from './Arbeidsgiver';
 
 export type TidEnkeltdag = { [isoDateString: string]: InputTime };
@@ -70,11 +69,11 @@ export interface ArbeidstidFormValue {
 }
 
 export interface TidFasteDager {
-    mandag?: Time;
-    tirsdag?: Time;
-    onsdag?: Time;
-    torsdag?: Time;
-    fredag?: Time;
+    mandag?: InputTime;
+    tirsdag?: InputTime;
+    onsdag?: InputTime;
+    torsdag?: InputTime;
+    fredag?: InputTime;
 }
 
 export interface Arbeidssituasjon {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Time } from '@navikt/sif-common-formik/lib';
+import { InputTime } from '@navikt/sif-common-formik/lib';
 import Modal from 'nav-frontend-modal';
 import { DagMedTid } from '../../types/SoknadFormData';
 import dateFormatter from '../../utils/dateFormatterUtils';
@@ -8,7 +8,7 @@ import './omsorgstilbudEnkeltdagEdit.less';
 
 interface Props {
     dagMedTid?: DagMedTid;
-    tidOpprinnelig: Time;
+    tidOpprinnelig: InputTime;
     onSubmit: (dagMedTid: DagMedTid) => void;
     onCancel: () => void;
 }

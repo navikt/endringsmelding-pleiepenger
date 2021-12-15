@@ -1,6 +1,6 @@
 import React from 'react';
+import { InputTime } from '@navikt/sif-common-formik/lib';
 import { Undertekst } from 'nav-frontend-typografi';
-import { InputTime } from '../../types';
 import { timeHasSameDuration } from '../../utils/dateUtils';
 import FormattedTimeText from '../formatted-time-text/FormattedTimeText';
 

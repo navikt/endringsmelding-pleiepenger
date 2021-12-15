@@ -5,13 +5,14 @@ import dayjs from 'dayjs';
 import groupBy from 'lodash.groupby';
 import EkspanderbartPanel from 'nav-frontend-ekspanderbartpanel';
 import { Element } from 'nav-frontend-typografi';
-import { InputTime, ISODuration } from '../../types';
+import { ISODuration } from '../../types';
 import { TidEnkeltdagApiData } from '../../types/SoknadApiData';
 import { TidEnkeltdag } from '../../types/SoknadFormData';
 import { ISODateToDate, ISODurationToTime, timeHasSameDuration } from '../../utils/dateUtils';
 import { datoSorter } from '../../utils/datoSorter';
 import DagerMedTidListe from './dager-med-tid-liste/DagerMedTidListe';
 import { timeToISODuration } from '../../utils/timeUtils';
+import { InputTime } from '@navikt/sif-common-formik/lib';
 
 interface Props {
     dager?: TidEnkeltdagApiData[];

@@ -2,7 +2,7 @@ import React from 'react';
 import { useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
-import { DateRange, getTypedFormComponents } from '@navikt/sif-common-formik/lib';
+import { DateRange, getTypedFormComponents, InputTime } from '@navikt/sif-common-formik/lib';
 import getIntlFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import { Undertittel } from 'nav-frontend-typografi';
@@ -20,7 +20,6 @@ import { getArbeidstimerFastDagValidator, validateFasteArbeidstimerIUke } from '
 import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
 import { TidFasteDager } from '../../types/SoknadFormData';
 import datepickerUtils from '@navikt/sif-common-formik/lib/components/formik-datepicker/datepickerUtils';
-import { InputTime } from '../../types';
 import getTimeValidator from '@navikt/sif-common-formik/lib/validation/getTimeValidator';
 
 interface Props {

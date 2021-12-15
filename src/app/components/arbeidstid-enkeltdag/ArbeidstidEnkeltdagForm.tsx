@@ -1,7 +1,9 @@
+import React from 'react';
+import { useIntl } from 'react-intl';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
 import { dateToday } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { DateRange, getTypedFormComponents, Time } from '@navikt/sif-common-formik/lib';
+import { DateRange, getTypedFormComponents, InputTime } from '@navikt/sif-common-formik/lib';
 import datepickerUtils from '@navikt/sif-common-formik/lib/components/formik-datepicker/datepickerUtils';
 import getTimeValidator from '@navikt/sif-common-formik/lib/validation/getTimeValidator';
 import getIntlFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
@@ -9,9 +11,6 @@ import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types'
 import dayjs from 'dayjs';
 import { InputDateString } from 'nav-datovelger/lib/types';
 import { Undertittel } from 'nav-frontend-typografi';
-import React from 'react';
-import { useIntl } from 'react-intl';
-import { InputTime } from '../../types';
 import { DagMedTid } from '../../types/SoknadFormData';
 import dateFormatter from '../../utils/dateFormatterUtils';
 import { timeHasSameDuration } from '../../utils/dateUtils';
@@ -19,7 +18,7 @@ import FormattedTimeText from '../formatted-time-text/FormattedTimeText';
 
 interface Props {
     dagMedTid: DagMedTid;
-    tidOpprinnelig: Time;
+    tidOpprinnelig: InputTime;
     arbeidsstedNavn: string;
     endringsperiode: DateRange;
     onSubmit: (data: ArbeidstidEnkeltdagEndring) => void;

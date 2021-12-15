@@ -2,13 +2,13 @@ import React from 'react';
 import dayjs from 'dayjs';
 import { Element } from 'nav-frontend-typografi';
 import FormattedTimeText from '../../../components/formatted-time-text/FormattedTimeText';
-import { InputTime } from '../../../types';
 import { K9ArbeidstidInfo } from '../../../types/K9Sak';
 import { DagMedTid } from '../../../types/SoknadFormData';
 import dateFormatter from '../../../utils/dateFormatterUtils';
 import { dateToISODate, timeHasSameDuration } from '../../../utils/dateUtils';
 import { getEndringsdato } from '../../../utils/endringsperiode';
 import { datoErHistorisk } from '../../../utils/tidsbrukUtils';
+import { InputTime } from '@navikt/sif-common-formik/lib';
 
 interface Props {
     dato: Date;

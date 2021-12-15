@@ -1,4 +1,4 @@
-import { DateRange, Time } from '@navikt/sif-common-formik/lib';
+import { DateRange, InputTime } from '@navikt/sif-common-formik/lib';
 import { K9ArbeidstidInfo } from '../../types/K9Sak';
 import { TidEnkeltdag } from '../../types/SoknadFormData';
 import { ArbeidsgiverType } from '../../types/Arbeidsgiver';
@@ -17,7 +17,7 @@ describe('trimArbeidstidTilTillatPeriode', () => {
             to: ISODateToDate('2021-02-03'),
         };
 
-        const tid: Time = {
+        const tid: InputTime = {
             hours: '0',
             minutes: '30',
         };
@@ -47,7 +47,7 @@ describe('trimArbeidstidTilTillatPeriode', () => {
             from: ISODateToDate('2021-02-02'),
             to: ISODateToDate('2021-02-03'),
         };
-        const tid: Time = {
+        const tid: InputTime = {
             hours: '0',
             minutes: '30',
         };

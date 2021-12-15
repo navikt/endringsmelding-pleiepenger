@@ -3,7 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import { DateRange } from '@navikt/sif-common-formik/lib';
+import { DateRange, InputTime } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import Knapp from 'nav-frontend-knapper';
@@ -14,7 +14,6 @@ import { DagMedTid, TidEnkeltdag } from '../../../types/SoknadFormData';
 import { dateToISODate, timeHasSameDuration } from '../../../utils/dateUtils';
 import { getDagerMedTidITidsrom, tidErIngenTid } from '../../../utils/tidsbrukUtils';
 import ArbeidstidEnkeltdagDialog from '../../../components/arbeidstid-enkeltdag/ArbeidstidEnkeltdagDialog';
-import { InputTime } from '../../../types';
 import { ArbeidstidEnkeltdagEndring } from '../../../components/arbeidstid-enkeltdag/ArbeidstidEnkeltdagForm';
 
 interface Props {

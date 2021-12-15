@@ -1,8 +1,8 @@
-import { Time } from '@navikt/sif-common-formik/lib';
+import { InputTime } from '@navikt/sif-common-formik/lib';
 import getTimeValidator from '@navikt/sif-common-formik/lib/validation/getTimeValidator';
 import { TidPerDagValidator } from './fieldValidations';
 
-export const getTidIOmsorgValidator: TidPerDagValidator = (dag: string) => (tid: Time) => {
+export const getTidIOmsorgValidator: TidPerDagValidator = (dag: string) => (tid: InputTime) => {
     const error = getTimeValidator({
         required: false,
         max: { hours: 7, minutes: 30 },

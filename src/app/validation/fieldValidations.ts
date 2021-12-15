@@ -1,4 +1,4 @@
-import { Time } from '@navikt/sif-common-formik/lib';
+import { InputTime } from '@navikt/sif-common-formik/lib';
 import { getNumberValidator } from '@navikt/sif-common-formik/lib/validation';
 import getTimeValidator from '@navikt/sif-common-formik/lib/validation/getTimeValidator';
 import { ValidationError, ValidationResult } from '@navikt/sif-common-formik/lib/validation/types';
@@ -8,7 +8,7 @@ import { getArbeidstidForArbeidsgiver } from '../utils/arbeidssituasjonUtils';
 import { timeHasSameDuration } from '../utils/dateUtils';
 import { sumTimerFasteDager } from '../utils/tidsbrukUtils';
 
-export type TidPerDagValidator = (dag: string) => (tid: Time) => ValidationError | undefined;
+export type TidPerDagValidator = (dag: string) => (tid: InputTime) => ValidationError | undefined;
 
 const erTidEndret = (enkeltdager: TidEnkeltdag, tidOpprinnelig: TidEnkeltdag): boolean => {
     const harEndringer = Object.keys(enkeltdager).some((key) => {
@@ -104,7 +104,7 @@ export const validateFasteArbeidstimerIUke = (
 
 export const getArbeidstimerFastDagValidator =
     (dag: string) =>
-    (time: Time): ValidationResult<ValidationError> => {
+    (time: InputTime): ValidationResult<ValidationError> => {
         const error = time
             ? getTimeValidator({ max: { hours: 24, minutes: 0 }, min: { hours: 0, minutes: 0 } })(time)
             : undefined;

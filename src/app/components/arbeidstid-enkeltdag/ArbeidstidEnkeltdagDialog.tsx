@@ -1,5 +1,5 @@
 import React from 'react';
-import { DateRange, Time } from '@navikt/sif-common-formik/lib';
+import { DateRange, InputTime } from '@navikt/sif-common-formik/lib';
 import Modal from 'nav-frontend-modal';
 import { DagMedTid } from '../../types/SoknadFormData';
 import dateFormatter from '../../utils/dateFormatterUtils';
@@ -9,7 +9,7 @@ import './arbeidstidEnkeltdag.less';
 interface Props {
     isOpen?: boolean;
     dagMedTid?: DagMedTid;
-    tidOpprinnelig: Time;
+    tidOpprinnelig: InputTime;
     arbeidsstedNavn: string;
     endringsperiode: DateRange;
     onSubmit: (evt: ArbeidstidEnkeltdagEndring) => void;

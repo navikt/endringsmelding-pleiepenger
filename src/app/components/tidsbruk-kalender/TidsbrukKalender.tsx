@@ -1,11 +1,10 @@
 import React from 'react';
 import AriaAlternative from '@navikt/sif-common-core/lib/components/aria/AriaAlternative';
-import { DateRange } from '@navikt/sif-common-formik/lib';
+import { DateRange, InputTime } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import { DagMedTid } from '../../types/SoknadFormData';
 import CalendarGrid from '../calendar-grid/CalendarGrid';
 import TidsbrukKalenderDag from './TidsbrukKalenderDag';
-import { InputTime } from '../../types';
 import { dateToISODate } from '../../utils/dateUtils';
 
 export type TidRenderer = (tid: InputTime, dato: Date) => React.ReactNode;

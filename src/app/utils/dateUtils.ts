@@ -1,12 +1,12 @@
 import { apiStringDateToDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
-import { DateRange, Time } from '@navikt/sif-common-formik/lib';
+import { DateRange, InputTime } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import minMax from 'dayjs/plugin/minMax';
 import { uniq } from 'lodash';
-import { InputTime, ISODate, ISODateRange, ISODuration } from '../types';
+import { ISODate, ISODateRange, ISODuration } from '../types';
 import { isoDurationToTime, timeToISODuration } from './timeUtils';
 import moize from 'moize';
 
@@ -120,7 +120,7 @@ export const dateToISODate = moize(_dateToISODate, {
     serializer: (args) => [args[0].toDateString()],
 });
 
-export const ISODurationToTime = (duration: ISODuration): Time | undefined => {
+export const ISODurationToTime = (duration: ISODuration): InputTime | undefined => {
     const time = isoDurationToTime(duration);
     return {
         hours: time?.hours ? `${time?.hours}` : '0',
@@ -150,7 +150,7 @@ export const getDateRangeFromDateRanges = (ranges: DateRange[]): DateRange => {
     };
 };
 
-export const _timeHasSameDuration = (time1?: InputTime, time2?: InputTime): boolean => {
+export const _timeHasSameDuration = (time1?: Partial<InputTime>, time2?: Partial<InputTime>): boolean => {
     if (time1 === undefined && time2 === undefined) {
         return true;
     }

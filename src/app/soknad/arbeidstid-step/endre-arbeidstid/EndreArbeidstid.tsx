@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DateRange, Time } from '@navikt/sif-common-formik/lib';
+import { DateRange, InputTime } from '@navikt/sif-common-formik/lib';
 import { useFormikContext } from 'formik';
 import { Knapp } from 'nav-frontend-knapper';
 import ArbeidstidPeriodeDialog from '../../../components/arbeidstid-periode/ArbeidstidPeriodeDialog';
@@ -34,7 +34,7 @@ export const getDagerDetErSøktForIPeriode = (periode: DateRange, dagerSøktForM
     return dagerIPeriodeDetErSøktFor;
 };
 
-const getTidForUkedag = (tid: TidFasteDager, ukedag: number): Time | undefined => {
+const getTidForUkedag = (tid: TidFasteDager, ukedag: number): InputTime | undefined => {
     switch (ukedag) {
         case 1:
             return tid.mandag;

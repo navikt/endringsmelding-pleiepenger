@@ -7,9 +7,9 @@ import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import minMax from 'dayjs/plugin/minMax';
 import { DagMedTid, TidEnkeltdag, TidFasteDager } from '../types/SoknadFormData';
 import { dateIsWithinDateRange, ISODateToDate, timeHasSameDuration } from './dateUtils';
-import { InputTime } from '../types';
 import { timeToISODuration } from './timeUtils';
 import moize from 'moize';
+import { InputTime } from '@navikt/sif-common-formik/lib';
 
 dayjs.extend(minMax);
 dayjs.extend(isSameOrAfter);
