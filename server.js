@@ -53,7 +53,7 @@ const startServer = (html) => {
         res.send(html);
     });
 
-    const port = process.env.PORT || 8090;
+    const port = process.env.PORT || 8080;
     server.listen(port, () => {
         console.log(`App listening on port: ${port}`);
     });
