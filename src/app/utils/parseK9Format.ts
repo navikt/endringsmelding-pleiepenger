@@ -79,24 +79,25 @@ const getArbeidstidArbeidsgivere = (
 };
 
 export const parseK9Format = (data: K9Format): K9Sak => {
-    const { ytelse, søker, søknadId } = data;
+    const { ytelse, søker, søknadId } = data.søknad;
     const endringsdato = getEndringsdato();
     const søknadsperioder = getSøknadsperioderInnenforTillattEndringsperiode(
         endringsdato,
         ytelse.søknadsperiode.map((periode) => ISODateRangeToDateRange(periode))
     );
+
     const sak: K9Sak = {
         søker: søker,
         søknadId: søknadId,
         ytelse: {
             type: 'PLEIEPENGER_SYKT_BARN',
             barn: {
-                fødselsdato: ISODateToDate(ytelse.barn.fødselsdato),
+                fødselsdato: ytelse.barn.fødselsdato ? ISODateToDate(ytelse.barn.fødselsdato) : undefined,
                 norskIdentitetsnummer: ytelse.barn.norskIdentitetsnummer,
             },
             søknadsperioder,
             opptjeningAktivitet: {
-                ...data.ytelse.opptjeningAktivitet,
+                ...ytelse.opptjeningAktivitet,
             },
             tilsynsordning: {
                 enkeltdager: getTilsynsdagerFromK9Format(ytelse.tilsynsordning.perioder),

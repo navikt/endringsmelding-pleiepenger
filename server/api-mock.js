@@ -61,7 +61,8 @@ const søkerMock = {
 };
 
 const arbeidsgivereMock = {
-    organisasjoner: [{ navn: 'Bakeriet smått og godt', organisasjonsnummer: '967170232', ansattFom: '2008-10-01' }],
+    organisasjoner: [{ navn: 'Bakeriet smått og godt', organisasjonsnummer: '805824352', ansattFom: '2008-10-01' }],
+    organisasjoner: [{ navn: 'Dykkert svømmeutstyr', organisasjonsnummer: '839942907', ansattFom: '2008-10-01' }],
 };
 
 const organisasjonMock = {

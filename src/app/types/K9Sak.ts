@@ -1,6 +1,6 @@
 import { DateRange, InputTime } from '@navikt/sif-common-formik/lib';
 import { DagerIkkeSøktForMap, DagerSøktForMap } from '.';
-import { K9FormatArbeidsgiver, K9OpptjeningAktivitetFrilanser } from './k9Format';
+import { K9OpptjeningAktivitetFrilanser } from './k9Format';
 
 export type K9TidEnkeltdag = { [isoDateString: string]: InputTime };
 
@@ -33,12 +33,11 @@ export interface K9Sak {
     ytelse: {
         type: 'PLEIEPENGER_SYKT_BARN';
         barn: {
-            norskIdentitetsnummer: string;
-            fødselsdato: Date;
+            norskIdentitetsnummer?: string;
+            fødselsdato?: Date;
         };
         søknadsperioder: DateRange[];
         opptjeningAktivitet: {
-            arbeidstaker: K9FormatArbeidsgiver[];
             frilanser?: K9OpptjeningAktivitetFrilanser;
         };
         tilsynsordning: {

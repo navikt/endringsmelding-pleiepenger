@@ -46,7 +46,7 @@ const getOrganisasjonerIkkeRegistrertiAaReg = (
  * registrert i aa-reg, hentes navn på organisasjon fra
  * enhetsregisteret */
 
-const getOrganisasjonerSomArbeidsgivere = async (
+export const getOrganisasjonerSomArbeidsgivere = async (
     k9arbeidsgivere: K9FormatArbeidsgiver[],
     aaArbeidsgivere: Arbeidsgiver[]
 ) => {
@@ -59,23 +59,28 @@ const getOrganisasjonerSomArbeidsgivere = async (
         aaArbeidsgivere
     ).map((a: K9FormatArbeidsgiverOrganisasjon) => a.organisasjonsnummer);
 
-    const organisasjonerParams = `orgnr=${organisasjonerIkkeIAaReg.join('&orgnr=')}`;
-
-    const { data } = await api.psb.get<OrganisasjonResponseType>(ApiEndpointPsb.organisasjoner, organisasjonerParams);
-    return Object.keys(data).map(
-        (organisasjonsnummer): Arbeidsgiver => ({
-            type: ArbeidsgiverType.ORGANISASJON,
-            id: organisasjonsnummer,
-            navn: data[organisasjonsnummer],
-            erUkjentIAareg: true,
-        })
-    );
+    if (organisasjonerIkkeIAaReg.length > 0) {
+        const organisasjonerParams = `orgnr=${organisasjonerIkkeIAaReg.join('&orgnr=')}`;
+        const { data } = await api.psb.get<OrganisasjonResponseType>(
+            ApiEndpointPsb.organisasjoner,
+            organisasjonerParams
+        );
+        return Object.keys(data).map(
+            (organisasjonsnummer): Arbeidsgiver => ({
+                type: ArbeidsgiverType.ORGANISASJON,
+                id: organisasjonsnummer,
+                navn: data[organisasjonsnummer],
+                erUkjentIAareg: true,
+            })
+        );
+    }
+    return [];
 };
 
 const getArbeidsgivereRemoteData = async (
     fom: string,
-    tom: string,
-    k9arbeidsgivere: K9FormatArbeidsgiver[]
+    tom: string
+    // k9arbeidsgivere: K9FormatArbeidsgiver[]
 ): Promise<ArbeidsgiverRemoteData> => {
     if (isFeatureEnabled(Feature.FAKE_API_KALL)) {
         const mockResult: Arbeidsgiver[] = [
@@ -120,9 +125,9 @@ const getArbeidsgivereRemoteData = async (
             };
         });
 
-        const kunK9rbeidsgivere = await getOrganisasjonerSomArbeidsgivere(k9arbeidsgivere, aaArbeidsgivere);
+        // const kunK9rbeidsgivere = await getOrganisasjonerSomArbeidsgivere(k9arbeidsgivere, aaArbeidsgivere);
 
-        return Promise.resolve(success([...aaArbeidsgivere, ...kunK9rbeidsgivere]));
+        return Promise.resolve(success([...aaArbeidsgivere /*, ...kunK9rbeidsgivere*/]));
     } catch (error) {
         return Promise.reject(failure(error));
     }

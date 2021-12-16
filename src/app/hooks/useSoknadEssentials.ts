@@ -13,6 +13,7 @@ import { SoknadTempStorageData } from '../types/SoknadTempStorageData';
 import { getEndringsdato, getEndringsperiode } from '../utils/endringsperiode';
 import { relocateToLoginPage } from '../utils/navigationUtils';
 import { dateToISODate } from '../utils/dateUtils';
+import { getDateRangeForK9Saker } from '../utils/k9SakUtils';
 
 export type SoknadEssentials = [Person, K9Sak[], Arbeidsgiver[], SoknadTempStorageData];
 
@@ -31,11 +32,12 @@ function useSoknadEssentials(): SoknadEssentialsRemoteData {
 
             /** Hent arbeidsgivere fra aa-reg */
             const k9saker: K9Sak[] = k9SakerResult._tag === 'RemoteSuccess' ? k9SakerResult.value : [];
-            const endringsperiode = getEndringsperiode(getEndringsdato(), k9saker[0].ytelse.søknadsperioder);
+            const endringsperiode = getEndringsperiode(getEndringsdato(), [getDateRangeForK9Saker(k9saker)]);
+            // const arbeidstakereISak = getArbeidsgivereIK9Saker(k9saker);
             const arbeidsgivereResult = await getArbeidsgivereRemoteData(
                 dateToISODate(endringsperiode.from),
-                dateToISODate(endringsperiode.to),
-                k9saker[0].ytelse.opptjeningAktivitet.arbeidstaker
+                dateToISODate(endringsperiode.to)
+                // k9saker[0].ytelse.opptjeningAktivitet.arbeidstaker
             );
             setData(combine(sokerResult, k9SakerResult, arbeidsgivereResult, soknadTempStorageResult));
         } catch (remoteDataError) {

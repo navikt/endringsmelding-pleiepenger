@@ -223,3 +223,21 @@ export const getK9FormatArbeidsgiverIdent = (arbeidsgiver: K9FormatArbeidsgiver)
     }
     throw new Error('Ukjent ident for arbeidsgiver');
 };
+
+export const getDateRangeForK9Saker = (k9sak: K9Sak[]): DateRange => {
+    return getDateRangeFromDateRanges(
+        k9sak.map((sak) => {
+            return getDateRangeFromDateRanges(sak.ytelse.søknadsperioder);
+        })
+    );
+};
+
+// export const getArbeidsgivereIK9Saker = (k9sak: K9Sak[]): Arbeidsgiver[] => {
+//     const arbeidsgivere: Arbeidsgiver[] = [];
+//     k9sak.forEach(sak => {
+//         Object.keys(sak.ytelse.arbeidstid.arbeidstakerMap)
+//     })
+
+//     return arbeidsgivere;
+
+// }

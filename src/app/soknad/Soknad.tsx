@@ -66,10 +66,7 @@ const Soknad: React.FunctionComponent<Props> = ({
     const [nyeArbeidsforhold, setNyeArbeidsforhold] = useState<Arbeidsgiver[]>([]);
 
     const {
-        ytelse: {
-            søknadsperioder: k9søknadsperioder,
-            opptjeningAktivitet: { arbeidstaker: k9arbeidstaker },
-        },
+        ytelse: { søknadsperioder: k9søknadsperioder },
     } = k9sak;
 
     const { logSoknadStartet, logSoknadFailed, logHendelse, logUserLoggedOut } = useAmplitudeInstance();
@@ -202,11 +199,11 @@ const Soknad: React.FunctionComponent<Props> = ({
     };
 
     useEffect(() => {
-        const arbeidsforholdIkkeIK9sak = getNyeArbeidsforholdIkkeRegistrertIK9Sak(arbeidsgivere, k9arbeidstaker);
+        const arbeidsforholdIkkeIK9sak = getNyeArbeidsforholdIkkeRegistrertIK9Sak(arbeidsgivere, []);
         if (arbeidsforholdIkkeIK9sak.length > 0) {
             setNyeArbeidsforhold(arbeidsforholdIkkeIK9sak);
         }
-    }, [arbeidsgivere, k9arbeidstaker]);
+    }, [arbeidsgivere]);
 
     useEffect(() => {
         if (isStorageDataValid(tempStorage, { søker, arbeidsgivere, k9søknadsperioder })) {
@@ -240,7 +237,7 @@ const Soknad: React.FunctionComponent<Props> = ({
                     return (
                         <ErrorPage
                             bannerTitle={intlHelper(intl, 'application.title')}
-                            contentRenderer={() => <>Informasjon om arbeidstid mangler</>}
+                            contentRenderer={() => <>Informasjon om arbeidstid mangler - usynk mellom aareg og sak</>}
                         />
                     );
                 }

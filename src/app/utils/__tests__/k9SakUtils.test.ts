@@ -1,10 +1,11 @@
 import { DateRange, InputTime } from '@navikt/sif-common-formik/lib';
-import { K9ArbeidstidInfo } from '../../types/K9Sak';
+import { K9ArbeidstidInfo, K9Sak } from '../../types/K9Sak';
 import { TidEnkeltdag } from '../../types/SoknadFormData';
 import { ArbeidsgiverType } from '../../types/Arbeidsgiver';
-import { ISODateToDate } from '../dateUtils';
+import { dateToISODate, ISODateToDate } from '../dateUtils';
 import {
     erArbeidsgivereIBådeSakOgAAreg,
+    getDateRangeForK9Saker,
     getISODateObjectsWithinDateRange,
     harK9SakArbeidstidInfo,
     trimArbeidstidTilTillatPeriode,
@@ -154,5 +155,42 @@ describe('harK9SakArbeidstidInfo', () => {
             selvstendig: { faktisk: {}, normalt: {} },
         });
         expect(result).toBeTruthy();
+    });
+});
+
+describe('getDateRangeForK9Saker', () => {
+    it('returnerer riktig når det er én sak', () => {
+        const sak: K9Sak = {
+            ytelse: { søknadsperioder: [{ from: ISODateToDate('2021-01-01'), to: ISODateToDate('2021-01-02') }] },
+        } as any;
+        const range = getDateRangeForK9Saker([sak]);
+        expect(dateToISODate(range.from)).toEqual('2021-01-01');
+        expect(dateToISODate(range.to)).toEqual('2021-01-02');
+    });
+    it('returnerer riktig når det er to saker som ikke overlapper', () => {
+        const sak: K9Sak = {
+            ytelse: {
+                søknadsperioder: [
+                    { from: ISODateToDate('2021-01-01'), to: ISODateToDate('2021-01-02') },
+                    { from: ISODateToDate('2021-01-03'), to: ISODateToDate('2021-01-04') },
+                ],
+            },
+        } as any;
+        const range = getDateRangeForK9Saker([sak]);
+        expect(dateToISODate(range.from)).toEqual('2021-01-01');
+        expect(dateToISODate(range.to)).toEqual('2021-01-04');
+    });
+    it('returnerer riktig når det er to saker som overlapper', () => {
+        const sak: K9Sak = {
+            ytelse: {
+                søknadsperioder: [
+                    { from: ISODateToDate('2021-01-01'), to: ISODateToDate('2021-01-02') },
+                    { from: ISODateToDate('2021-01-02'), to: ISODateToDate('2021-01-03') },
+                ],
+            },
+        } as any;
+        const range = getDateRangeForK9Saker([sak]);
+        expect(dateToISODate(range.from)).toEqual('2021-01-01');
+        expect(dateToISODate(range.to)).toEqual('2021-01-03');
     });
 });

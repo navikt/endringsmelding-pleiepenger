@@ -18,18 +18,18 @@ export interface K9FormatArbeidstidInfo {
     perioder: K9FormatArbeidstidPeriode;
 }
 export interface K9FormatArbeidstaker {
-    norskIdentitetsnummer?: string;
+    norskIdentitetsnummer: string | null;
     organisasjonsnummer: string;
     arbeidstidInfo: K9FormatArbeidstidInfo;
 }
 export interface K9FormatArbeidstid {
     arbeidstakerList: K9FormatArbeidstaker[];
-    frilanserArbeidstidInfo?: {
+    frilanserArbeidstidInfo: {
         perioder: K9FormatArbeidstidPeriode;
-    };
-    selvstendigNæringsdrivendeArbeidstidInfo?: {
+    } | null;
+    selvstendigNæringsdrivendeArbeidstidInfo: {
         perioder: K9FormatArbeidstidPeriode;
-    };
+    } | null;
 }
 
 export interface K9FormatArbeidsgiverPrivat {
@@ -59,11 +59,10 @@ export interface K9FormatYtelse {
     type: 'PLEIEPENGER_SYKT_BARN';
     barn: {
         norskIdentitetsnummer: string;
-        fødselsdato: ISODate;
+        fødselsdato: ISODate | null;
     };
     søknadsperiode: ISODateRange[];
     opptjeningAktivitet: {
-        arbeidstaker: K9FormatArbeidsgiver[];
         frilanser?: K9OpptjeningAktivitetFrilanser;
     };
     tilsynsordning: {
@@ -73,11 +72,21 @@ export interface K9FormatYtelse {
 }
 
 export interface K9Format {
-    søknadId: string;
-    versjon: string;
-    mottattDato: string;
-    søker: {
-        norskIdentitetsnummer: string;
+    barn: {
+        fødselsdato: ISODate;
+        fornavn: string;
+        mellomnavn: string | null;
+        etternavn: string;
+        aktør_id: string;
+        identitetsnummer: string;
     };
-    ytelse: K9FormatYtelse;
+    søknad: {
+        søknadId: string;
+        versjon: string;
+        mottattDato: string;
+        søker: {
+            norskIdentitetsnummer: string;
+        };
+        ytelse: K9FormatYtelse;
+    };
 }
