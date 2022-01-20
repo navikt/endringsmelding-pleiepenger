@@ -1,7 +1,7 @@
 import { DateRange } from '@navikt/sif-common-formik/lib';
 import { ISODateRange } from '../../types';
 import { K9FormatArbeidstidPeriode, K9FormatTilsynsordningPerioder } from '../../types/k9Format';
-import { ISODateToDate } from '../dateUtils';
+import { ISODateToDate } from '@navikt/sif-common-utils';
 import { getAktivitetArbeidstidFromK9Format, getTilsynsdagerFromK9Format } from '../parseK9Format';
 
 const range1: ISODateRange = '2021-02-01/2021-02-04';

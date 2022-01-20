@@ -7,7 +7,7 @@
     "maxReplicas": "1",
     "ingresses": ["https://endringsmelding-pleiepenger.dev.nav.no"],
     "env": {
-        "DEKORATOR_URL": "https://www.nav.no/dekoratoren/?simple=true&chatbot=false",
+        "DEKORATOR_URL": "https://dekoratoren.dev.nav.no/?simple=true&chatbot=false&urlLookupTable=false",
         "API_URL": "https://pleiepengesoknad-api.dev.nav.no",
         "API_URL_INNSYN": "https://sif-innsyn-api.dev.nav.no",
         "PUBLIC_PATH": "/familie/sykdom-i-familien/soknad/endringsmelding-pleiepenger",

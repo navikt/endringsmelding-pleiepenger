@@ -1,10 +1,9 @@
 import React from 'react';
-import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
-import { Undertittel } from 'nav-frontend-typografi';
+import { ArbeidsforholdType } from '@navikt/sif-common-pleiepenger/lib';
 import StepIntroduction from '../../components/step-introduction/StepIntroduction';
 import { Arbeidsgiver, ArbeidsgiverType } from '../../types/Arbeidsgiver';
-import { K9Arbeidstid, K9SakMeta } from '../../types/K9Sak';
+import { SakMetadata, YtelseArbeidstid } from '../../types/Sak';
 import {
     ArbeidstidFormValue,
     getArbeidsgiverArbeidstidFormFieldName,
@@ -12,12 +11,10 @@ import {
     getSelvstendigArbeidstidFormFieldName,
     SoknadFormData,
 } from '../../types/SoknadFormData';
-import { erNyttArbeidsforhold, getArbeidstidForArbeidsgiver } from '../../utils/arbeidssituasjonUtils';
-import SoknadFormComponents from '../SoknadFormComponents';
+import { getArbeidstidForArbeidsgiver } from '../../utils/arbeidUtils';
 import SoknadFormStep from '../SoknadFormStep';
 import { StepID } from '../soknadStepsConfig';
-import ArbeidstidMånedListe from './ArbeidstidMånedListe';
-import EndreArbeidstid from './endre-arbeidstid/EndreArbeidstid';
+import ArbeidstidAktivitet from './arbeidstid-aktivitet/ArbeidstidAktivitet';
 
 const cleanupStep = (formData: SoknadFormData): SoknadFormData => {
     return formData;
@@ -25,17 +22,15 @@ const cleanupStep = (formData: SoknadFormData): SoknadFormData => {
 
 interface Props {
     arbeidsgivere?: Arbeidsgiver[];
-    k9sakMeta: K9SakMeta;
+    sakMetadata: SakMetadata;
     arbeidstidSøknad: ArbeidstidFormValue;
-    arbeidstidSak: K9Arbeidstid;
-    nyeArbeidsforhold: Arbeidsgiver[];
+    arbeidstidSak: YtelseArbeidstid;
     onArbeidstidChanged: () => void;
 }
 const ArbeidstidStep: React.FunctionComponent<Props> = ({
     arbeidsgivere,
     arbeidstidSak,
-    k9sakMeta,
-    nyeArbeidsforhold,
+    sakMetadata,
     arbeidstidSøknad,
     onArbeidstidChanged,
 }) => {
@@ -44,91 +39,58 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
     return (
         <SoknadFormStep id={stepId} onStepCleanup={cleanupStep}>
             <StepIntroduction>
-                <p>Her legger du inn endringer i hvor mange timer du jobber de dagene du har søkt om pleiepenger.</p>
+                Her legger du inn endringer i hvor mange timer du jobber de dagene du har søkt om pleiepenger.
             </StepIntroduction>
-            {arbeidsgivere && (
-                <FormBlock margin="m">
-                    <SoknadFormComponents.InputGroup name={'alle_arbeidsgivere_liste' as any}>
-                        <>
-                            {arbeidsgivere.map((a) => {
-                                const arbeidstidSak = getArbeidstidForArbeidsgiver(a.id, arbeidstakerMap);
-                                const erNytt = erNyttArbeidsforhold(a.id, nyeArbeidsforhold);
-                                return (
-                                    <div key={a.id} className="arbeidstid__aktivitet">
-                                        <Box padBottom="l">
-                                            <Undertittel>
-                                                {a.navn}
-                                                {a.type === ArbeidsgiverType.ORGANISASJON && <>(orgnr. {a.id})</>}
-                                            </Undertittel>
-                                        </Box>
-                                        <Box padBottom="l">
-                                            <EndreArbeidstid
-                                                k9SakMeta={k9sakMeta}
-                                                arbeidstidSøknad={arbeidstidSøknad?.arbeidsgiver[a.id]?.faktisk}
-                                                formFieldName={getArbeidsgiverArbeidstidFormFieldName(a)}
-                                                arbeidsstedNavn={a.navn}
-                                                endringsperiode={k9sakMeta.endringsperiode}
-                                            />
-                                        </Box>
-                                        <ArbeidstidMånedListe
-                                            arbeidsstedNavn={a.navn}
-                                            formFieldName={getArbeidsgiverArbeidstidFormFieldName(a)}
-                                            arbeidstidSak={arbeidstidSak}
-                                            k9sakMeta={k9sakMeta}
-                                            startetDato={erNytt ? a.ansattFom : undefined}
-                                            onArbeidstidChanged={onArbeidstidChanged}
-                                        />
-                                    </div>
-                                );
-                            })}
-                        </>
-                        {arbeidstidSak.frilanser && arbeidstidSøknad.frilanser && (
-                            <div className="arbeidstid__aktivitet">
-                                <Box padBottom="l">
-                                    <Undertittel>Frilanser</Undertittel>
-                                </Box>
-                                <Box padBottom="l">
-                                    <EndreArbeidstid
-                                        k9SakMeta={k9sakMeta}
-                                        arbeidstidSøknad={arbeidstidSøknad.frilanser?.faktisk}
-                                        formFieldName={getFrilanserArbeidstidFormFieldName()}
-                                        arbeidsstedNavn={'Frilanser'}
-                                        endringsperiode={k9sakMeta.endringsperiode}
-                                    />
-                                </Box>
-                                <ArbeidstidMånedListe
-                                    arbeidsstedNavn="Frilanser"
-                                    formFieldName={getFrilanserArbeidstidFormFieldName()}
-                                    arbeidstidSak={arbeidstidSak.frilanser}
-                                    k9sakMeta={k9sakMeta}
-                                    onArbeidstidChanged={onArbeidstidChanged}
-                                />
-                            </div>
-                        )}
-                        {arbeidstidSak.selvstendig && arbeidstidSøknad.selvstendig && (
-                            <div className="arbeidstid__aktivitet">
-                                <Box padBottom="l">
-                                    <Undertittel>Selvstendig næringsdrivende</Undertittel>
-                                </Box>
-                                <Box padBottom="l">
-                                    <EndreArbeidstid
-                                        k9SakMeta={k9sakMeta}
-                                        arbeidstidSøknad={arbeidstidSøknad.selvstendig.faktisk}
-                                        formFieldName={getSelvstendigArbeidstidFormFieldName()}
-                                        arbeidsstedNavn={'Selvstendig næringsdrivende'}
-                                        endringsperiode={k9sakMeta.endringsperiode}
-                                    />
-                                </Box>
-                                <ArbeidstidMånedListe
-                                    arbeidsstedNavn="Selvstendig næringsdrivende"
-                                    formFieldName={getSelvstendigArbeidstidFormFieldName()}
-                                    arbeidstidSak={arbeidstidSak.selvstendig}
-                                    k9sakMeta={k9sakMeta}
-                                    onArbeidstidChanged={onArbeidstidChanged}
-                                />
-                            </div>
-                        )}
-                    </SoknadFormComponents.InputGroup>
+            {(arbeidsgivere || []).map((a) => {
+                const arbeidsgiverArbeidstid = arbeidstidSøknad.arbeidsgiver[a.id];
+
+                return arbeidsgiverArbeidstid ? (
+                    <FormBlock margin="xxl" key={a.id}>
+                        <ArbeidstidAktivitet
+                            tittel={
+                                <>
+                                    {a.navn}
+                                    {a.type === ArbeidsgiverType.ORGANISASJON && <>(orgnr. {a.id})</>}
+                                </>
+                            }
+                            arbeidsstedNavn={a.navn}
+                            formFieldName={getArbeidsgiverArbeidstidFormFieldName(a)}
+                            arbeidsforholdType={ArbeidsforholdType.ANSATT}
+                            arbeidstidEnkeltdagSøknad={arbeidsgiverArbeidstid}
+                            arbeidstidSak={getArbeidstidForArbeidsgiver(a.id, arbeidstakerMap)}
+                            sakMetadata={sakMetadata}
+                            onArbeidstidChanged={onArbeidstidChanged}
+                        />
+                    </FormBlock>
+                ) : null;
+            })}
+
+            {arbeidstidSak.frilanser && arbeidstidSøknad.frilanser && (
+                <FormBlock margin="xxl">
+                    <ArbeidstidAktivitet
+                        tittel="Frilanser"
+                        arbeidsstedNavn="Frilanser"
+                        formFieldName={getFrilanserArbeidstidFormFieldName()}
+                        arbeidsforholdType={ArbeidsforholdType.FRILANSER}
+                        arbeidstidSak={arbeidstidSak.frilanser}
+                        arbeidstidEnkeltdagSøknad={arbeidstidSøknad.frilanser}
+                        sakMetadata={sakMetadata}
+                        onArbeidstidChanged={onArbeidstidChanged}
+                    />
+                </FormBlock>
+            )}
+            {arbeidstidSak.selvstendig && arbeidstidSøknad.selvstendig && (
+                <FormBlock margin="xxl">
+                    <ArbeidstidAktivitet
+                        tittel="Selvstendig næringsdrivende"
+                        arbeidsstedNavn="Selvstendig næringsdrivende"
+                        formFieldName={getSelvstendigArbeidstidFormFieldName()}
+                        arbeidsforholdType={ArbeidsforholdType.SELVSTENDIG}
+                        arbeidstidSak={arbeidstidSak.selvstendig}
+                        arbeidstidEnkeltdagSøknad={arbeidstidSøknad.selvstendig}
+                        sakMetadata={sakMetadata}
+                        onArbeidstidChanged={onArbeidstidChanged}
+                    />
                 </FormBlock>
             )}
         </SoknadFormStep>

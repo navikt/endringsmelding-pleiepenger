@@ -1,11 +1,11 @@
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
+import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
+import Lenke from 'nav-frontend-lenker';
 import { Element } from 'nav-frontend-typografi';
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import Lenke from 'nav-frontend-lenker';
 import getLenker from '../../lenker';
-import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
-import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 
 const VelkommenInfo: React.FunctionComponent = () => {
     const intl = useIntl();

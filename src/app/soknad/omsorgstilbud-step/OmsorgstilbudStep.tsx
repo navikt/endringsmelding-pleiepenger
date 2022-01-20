@@ -1,34 +1,42 @@
 import React from 'react';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
-// import { useFormikContext } from 'formik';
+import { DateDurationMap } from '@navikt/sif-common-utils/lib';
+import { useFormikContext } from 'formik';
 import StepIntroduction from '../../components/step-introduction/StepIntroduction';
-import { K9SakMeta, K9TidEnkeltdag } from '../../types/K9Sak';
-import { SoknadFormData } from '../../types/SoknadFormData';
-// import { validateOmsorgstilbud } from '../../validation/fieldValidations';
-import SoknadFormComponents from '../SoknadFormComponents';
+import { SakMetadata, TidEnkeltdag } from '../../types/Sak';
+import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
 import SoknadFormStep from '../SoknadFormStep';
 import { StepID } from '../soknadStepsConfig';
+import EndreOmsorgstilbudPeriode from './endre-omsorgstilbud-periode/EndreOmsorgstilbudPeriode';
 import OmsorgstilbudMånedListe from './OmsorgstilbudMånedListe';
-// import { Undertittel } from 'nav-frontend-typografi';
 
 const cleanupOmsorgstilbudStep = (formData: SoknadFormData): SoknadFormData => {
     return formData;
 };
 
 interface Props {
-    tidIOmsorgstilbudSak?: K9TidEnkeltdag;
-    k9sakMeta: K9SakMeta;
+    tidIOmsorgstilbudSak?: TidEnkeltdag;
+    sakMetadata: SakMetadata;
     onOmsorgstilbudChanged?: () => void;
 }
 
 const OmsorgstilbudStep: React.FunctionComponent<Props> = ({
     onOmsorgstilbudChanged,
-    k9sakMeta,
+    sakMetadata,
     tidIOmsorgstilbudSak = {},
 }) => {
     const stepId = StepID.OMSORGSTILBUD;
-    // const { values } = useFormikContext<SoknadFormData>();
+    const { setFieldValue, values } = useFormikContext<SoknadFormData>();
+    const tidOmsorgstilbud = values.omsorgstilbud?.enkeltdager || {};
+
+    const handleOnPeriodeChange = (data: DateDurationMap) => {
+        const dagerMedOmsorgstilbud = { ...tidOmsorgstilbud, ...data };
+        setFieldValue(SoknadFormField.omsorgstilbud_enkeltdager, dagerMedOmsorgstilbud);
+        if (onOmsorgstilbudChanged) {
+            onOmsorgstilbudChanged();
+        }
+    };
 
     return (
         <SoknadFormStep id={stepId} onStepCleanup={cleanupOmsorgstilbudStep}>
@@ -61,13 +69,19 @@ const OmsorgstilbudStep: React.FunctionComponent<Props> = ({
             </StepIntroduction>
 
             <Box margin="xl">
-                <SoknadFormComponents.InputGroup name={'omsorgstilbud_liste' as any}>
-                    <OmsorgstilbudMånedListe
-                        tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}
-                        k9sakMeta={k9sakMeta}
-                        onOmsorgstilbudChanged={onOmsorgstilbudChanged}
+                <Box padBottom="l">
+                    <EndreOmsorgstilbudPeriode
+                        gjelderFortid={true}
+                        periode={sakMetadata.endringsperiode}
+                        onPeriodeChange={handleOnPeriodeChange}
                     />
-                </SoknadFormComponents.InputGroup>
+                </Box>
+                <OmsorgstilbudMånedListe
+                    tidOmsorgstilbud={tidOmsorgstilbud}
+                    tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}
+                    sakMetadata={sakMetadata}
+                    onOmsorgstilbudChanged={onOmsorgstilbudChanged}
+                />
             </Box>
         </SoknadFormStep>
     );

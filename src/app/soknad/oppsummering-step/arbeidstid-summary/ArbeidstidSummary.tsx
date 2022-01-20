@@ -1,28 +1,27 @@
-import React from 'react';
-import SummarySection from '@navikt/sif-common-soknad/lib/soknad-summary/summary-section/SummarySection';
-import TidEnkeltdager from '../../../components/dager-med-tid/TidEnkeltdager';
-import { Arbeidsgiver } from '../../../types/Arbeidsgiver';
-import { ArbeidstidDagK9FormatInnsending, ArbeidstidK9FormatInnsending } from '../../../types/k9FormatInnsending';
-import { K9Arbeidstid } from '../../../types/K9Sak';
-import { TidEnkeltdagApiData } from '../../../types/SoknadApiData';
-import { TidEnkeltdag } from '../../../types/SoknadFormData';
-import { ISODateRangeToISODates } from '../../../utils/dateUtils';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
+import SummarySection from '@navikt/sif-common-soknad/lib/soknad-summary/summary-section/SummarySection';
+import { DateDurationMap, ISODateRangeToISODates } from '@navikt/sif-common-utils';
 import { Element } from 'nav-frontend-typografi';
+import React from 'react';
+import SummaryDagerMedTid from '../../../components/summary-dager-med-tid/SummaryDagerMedTid';
+import { Arbeidsgiver } from '../../../types/Arbeidsgiver';
+import { ArbeidstidDagKApiData, ArbeidstidApiData } from '../../../types/YtelseApiData';
+import { YtelseArbeidstid } from '../../../types/Sak';
+import { TidEnkeltdagApiData } from '../../../types/SoknadApiData';
 
 // TODO - legge på tekst dersom bruker har sagt en vil endre arbeidstid men ikke har gjort det.
 
 interface Props {
     arbeidsgivere: Arbeidsgiver[];
-    arbeidstid: ArbeidstidK9FormatInnsending;
-    arbeidstidK9: K9Arbeidstid;
+    arbeidstid: ArbeidstidApiData;
+    arbeidstidK9: YtelseArbeidstid;
 }
 
 const ArbeidstidSummary: React.FunctionComponent<Props> = ({ arbeidstid, arbeidsgivere, arbeidstidK9 }) => {
     const renderAktivitetArbeidstid = (
-        arbeidstid: ArbeidstidDagK9FormatInnsending,
-        arbeidstidOpprinnelig: TidEnkeltdag,
+        arbeidstid: ArbeidstidDagKApiData,
+        arbeidstidOpprinnelig: DateDurationMap,
         tittel: string
     ): JSX.Element => {
         const dagerMedTid: TidEnkeltdagApiData[] = [];
@@ -39,7 +38,7 @@ const ArbeidstidSummary: React.FunctionComponent<Props> = ({ arbeidstid, arbeids
             <Box padBottom="s" margin="none" key={tittel}>
                 <FormBlock>
                     <Element tag="h3">{tittel}</Element>
-                    <TidEnkeltdager dager={dagerMedTid} dagerOpprinnelig={arbeidstidOpprinnelig} />
+                    <SummaryDagerMedTid dager={dagerMedTid} dagerOpprinnelig={arbeidstidOpprinnelig} />
                 </FormBlock>
             </Box>
         );

@@ -1,5 +1,3 @@
-import React, { useEffect } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
 import { isFailure, isPending } from '@devexperts/remote-data-ts';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
@@ -8,9 +6,12 @@ import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-p
 import VeilederSVG from '@navikt/sif-common-core/lib/components/veileder-svg/VeilederSVG';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { getCheckedValidator } from '@navikt/sif-common-formik/lib/validation';
+import SummarySection from '@navikt/sif-common-soknad/lib/soknad-summary/summary-section/SummarySection';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import React, { useEffect } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsgiver } from '../../types/Arbeidsgiver';
-import { K9Sak } from '../../types/K9Sak';
+import { Sak } from '../../types/Sak';
 import { SoknadApiData } from '../../types/SoknadApiData';
 import { HvaSkalEndres, SoknadFormField } from '../../types/SoknadFormData';
 import appSentryLogger from '../../utils/appSentryLogger';
@@ -21,19 +22,18 @@ import SoknadFormStep from '../SoknadFormStep';
 import { skalEndreArbeidstid, skalEndreOmsorgstilbud, StepID } from '../soknadStepsConfig';
 import ArbeidstidSummary from './arbeidstid-summary/ArbeidstidSummary';
 import OmsorgstilbudSummary from './omsorgstilbud-summary/OmsorgstilbudSummary';
-import SummarySection from '@navikt/sif-common-soknad/lib/soknad-summary/summary-section/SummarySection';
 
 type Props = {
-    apiValues?: SoknadApiData;
+    apiValues: SoknadApiData;
     arbeidsgivere: Arbeidsgiver[];
-    k9sak: K9Sak;
+    sak: Sak;
     hvaSkalEndres: HvaSkalEndres[];
 };
 
-const OppsummeringStep: React.FunctionComponent<Props> = ({ apiValues, arbeidsgivere, k9sak, hvaSkalEndres }) => {
+const OppsummeringStep: React.FunctionComponent<Props> = ({ apiValues, arbeidsgivere, sak, hvaSkalEndres }) => {
     const intl = useIntl();
     const { sendSoknadStatus, sendSoknad } = useSoknadContext();
-    const apiDataValidationResult = verifySoknadApiData(apiValues, k9sak);
+    const apiDataValidationResult = verifySoknadApiData(apiValues, sak);
 
     useEffect(() => {
         if (apiDataValidationResult.isValid === false) {
@@ -46,39 +46,28 @@ const OppsummeringStep: React.FunctionComponent<Props> = ({ apiValues, arbeidsgi
             id={StepID.OPPSUMMERING}
             showButtonSpinner={isPending(sendSoknadStatus.status)}
             buttonDisabled={isPending(sendSoknadStatus.status) || apiDataValidationResult.isValid === false}
-            onSendSoknad={
-                apiValues
-                    ? () => {
-                          sendSoknad(apiValues);
-                      }
-                    : undefined
-            }>
+            onSendSoknad={() => {
+                sendSoknad(apiValues);
+            }}>
             <Box margin="xxxl">
                 <Guide kompakt={true} type="normal" svg={<VeilederSVG />}>
                     <FormattedMessage id="step.oppsummering.info" />
                 </Guide>
-                {apiValues === undefined && (
-                    <Box margin="xl">
-                        <AlertStripeFeil>
-                            <FormattedMessage id="oppsummering.advarsel.ingenApiValues" />
-                        </AlertStripeFeil>
-                    </Box>
-                )}
-                {apiValues !== undefined && apiDataValidationResult.isValid === false && (
+                {apiDataValidationResult.isValid === false && (
                     <FormBlock>
                         <AlertStripeFeil>
                             <FormattedMessage id="oppsummering.advarsel.invalidApiValues" />
                         </AlertStripeFeil>
                     </FormBlock>
                 )}
-                {apiValues !== undefined && (
+                {apiDataValidationResult.isValid === true && (
                     <>
                         <Box margin="xxl">
                             <ResponsivePanel border={true}>
                                 {apiValues.ytelse.arbeidstid !== undefined && (
                                     <ArbeidstidSummary
                                         arbeidstid={apiValues.ytelse.arbeidstid}
-                                        arbeidstidK9={k9sak.ytelse.arbeidstid}
+                                        arbeidstidK9={sak.ytelse.arbeidstid}
                                         arbeidsgivere={arbeidsgivere}
                                     />
                                 )}
@@ -92,7 +81,7 @@ const OppsummeringStep: React.FunctionComponent<Props> = ({ apiValues, arbeidsgi
                                 {apiValues.ytelse.tilsynsordning && (
                                     <OmsorgstilbudSummary
                                         tilsynsordning={apiValues.ytelse.tilsynsordning}
-                                        tidIOmsorgstilbudSak={k9sak.ytelse.tilsynsordning.enkeltdager}
+                                        tidIOmsorgstilbudSak={sak.ytelse.tilsynsordning.enkeltdager}
                                     />
                                 )}
                                 {apiValues.ytelse.tilsynsordning == undefined &&

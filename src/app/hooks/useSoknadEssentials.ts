@@ -1,21 +1,22 @@
 import { useEffect, useState } from 'react';
 import { combine, initial, pending, RemoteData } from '@devexperts/remote-data-ts';
 import { isUnauthorized } from '@navikt/sif-common-core/lib/utils/apiUtils';
+import { dateToISODate } from '@navikt/sif-common-utils';
 import { AxiosError } from 'axios';
-import getArbeidsgivereRemoteData from '../api/getArbeidsgivere';
-import getSokerRemoteData from '../api/getSoker';
+import getArbeidsgivereRemoteData from '../api/getArbeidsgivereRemoteData';
+import getSakerRemoteData from '../api/getSakerRemoteData';
 import getSoknadTempStorage from '../api/getSoknadTempStorage';
-import getK9SakRemoteData from '../api/getK9Sak';
+import getSøkerRemoteData from '../api/getSøkerRemoteData';
 import { Arbeidsgiver } from '../types/Arbeidsgiver';
-import { K9Sak } from '../types/K9Sak';
-import { Person } from '../types/Person';
+import { Sak } from '../types/Sak';
 import { SoknadTempStorageData } from '../types/SoknadTempStorageData';
+import { Søker } from '../types/Søker';
+import appSentryLogger from '../utils/appSentryLogger';
 import { getEndringsdato, getEndringsperiode } from '../utils/endringsperiode';
 import { relocateToLoginPage } from '../utils/navigationUtils';
-import { dateToISODate } from '../utils/dateUtils';
-import { getDateRangeForK9Saker } from '../utils/k9SakUtils';
+import { getDateRangeForSaker } from '../utils/sakUtils';
 
-export type SoknadEssentials = [Person, K9Sak[], Arbeidsgiver[], SoknadTempStorageData];
+export type SoknadEssentials = [Søker, Sak[], Arbeidsgiver[], SoknadTempStorageData];
 
 export type SoknadEssentialsRemoteData = RemoteData<AxiosError, SoknadEssentials>;
 
@@ -24,28 +25,26 @@ function useSoknadEssentials(): SoknadEssentialsRemoteData {
 
     const fetch = async () => {
         try {
-            const [sokerResult, k9SakerResult, soknadTempStorageResult] = await Promise.all([
-                getSokerRemoteData(),
-                getK9SakRemoteData(),
+            const [søkerResult, sakerResult, soknadTempStorageResult] = await Promise.all([
+                getSøkerRemoteData(),
+                getSakerRemoteData(),
                 getSoknadTempStorage(),
             ]);
 
             /** Hent arbeidsgivere fra aa-reg */
-            const k9saker: K9Sak[] = k9SakerResult._tag === 'RemoteSuccess' ? k9SakerResult.value : [];
-            const endringsperiode = getEndringsperiode(getEndringsdato(), [getDateRangeForK9Saker(k9saker)]);
-            // const arbeidstakereISak = getArbeidsgivereIK9Saker(k9saker);
+            const saker: Sak[] = sakerResult._tag === 'RemoteSuccess' ? sakerResult.value : [];
+            const endringsperiode = getEndringsperiode(getEndringsdato(), [getDateRangeForSaker(saker)]);
             const arbeidsgivereResult = await getArbeidsgivereRemoteData(
                 dateToISODate(endringsperiode.from),
                 dateToISODate(endringsperiode.to)
-                // k9saker[0].ytelse.opptjeningAktivitet.arbeidstaker
             );
-            setData(combine(sokerResult, k9SakerResult, arbeidsgivereResult, soknadTempStorageResult));
+            setData(combine(søkerResult, sakerResult, arbeidsgivereResult, soknadTempStorageResult));
         } catch (remoteDataError) {
             if (isUnauthorized(remoteDataError.error)) {
                 setData(pending);
                 relocateToLoginPage();
             } else {
-                console.error(remoteDataError);
+                appSentryLogger.logError('useSoknadEssentials', remoteDataError.error);
                 setData(remoteDataError);
             }
         }

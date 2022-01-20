@@ -52,24 +52,22 @@ const readFileSync = (path) => {
 
 const existsSync = (path) => fs.existsSync(path);
 
-const søkerMock = {
-    fødselsnummer: '30086421581',
-    fornavn: 'GODSLIG',
-    mellomnavn: null,
-    etternavn: 'KRONJUVEL',
-    kontonummer: '17246746060',
-};
+// const enSakMockFilePath = `./server/mock-data/en-sak-mock.json`;
+// const sakMock = `./server/mock-data/en-sak-mock2.json`;
+// const flereSakerMockFilePath = `./server/mock-data/flere-saker-mock.json`;
+const sakMock = `./server/mock-data/en-sak-ugyldig-arbeidstid.json`;
+const søkerMockFilePath = `./server/mock-data/søker-mock.json`;
+const arbeidsgivereMockFilePath = `./server/mock-data/arbeidsgiver-mock.json`;
+const organisasjonMockFilePath = `./server/mock-data/organisasjon-mock.json`;
 
-const arbeidsgivereMock = {
-    organisasjoner: [{ navn: 'Bakeriet smått og godt', organisasjonsnummer: '805824352', ansattFom: '2008-10-01' }],
-    organisasjoner: [{ navn: 'Dykkert svømmeutstyr', organisasjonsnummer: '839942907', ansattFom: '2008-10-01' }],
+const readMockFile = (filePath, responseObject) => {
+    if (existsSync(filePath)) {
+        const body = readFileSync(filePath);
+        responseObject.send(JSON.parse(body));
+    } else {
+        responseObject.send({});
+    }
 };
-
-const organisasjonMock = {
-    [123456789]: 'Snipperiet',
-};
-
-const K9SakMock = `./server/k9sak.json`;
 
 const startExpressServer = () => {
     const port = process.env.PORT || 8099;
@@ -86,27 +84,22 @@ const startExpressServer = () => {
 
     server.get('/soker', (req, res) => {
         setTimeout(() => {
-            res.send(søkerMock);
+            readMockFile(søkerMockFilePath, res);
         }, 200);
     });
 
     server.get('/innsyn/sak', (req, res) => {
         setTimeout(() => {
-            if (existsSync(K9SakMock)) {
-                const body = readFileSync(K9SakMock);
-                res.send(JSON.parse(body));
-            } else {
-                res.send({});
-            }
+            readMockFile(sakMock, res);
         }, 200);
     });
 
     server.get('/arbeidsgiver', (req, res) => {
-        res.send(arbeidsgivereMock);
+        readMockFile(arbeidsgivereMockFilePath, res);
     });
 
     server.get('/organisasjoner', (req, res) => {
-        res.send(organisasjonMock);
+        readMockFile(organisasjonMockFilePath, res);
     });
 
     server.get('/soker-not-logged-in', (req, res) => {

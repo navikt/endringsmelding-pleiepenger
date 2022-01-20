@@ -1,17 +1,15 @@
-import React, { useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import InfoDialog from '@navikt/sif-common-core/lib/components/dialogs/info-dialog/InfoDialog';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { getCheckedValidator, getRequiredFieldValidator } from '@navikt/sif-common-formik/lib/validation';
 import getIntlFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
-import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import Lenke from 'nav-frontend-lenker';
 import { Element } from 'nav-frontend-typografi';
+import React, { useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import SoknadFormComponents from '../../soknad/SoknadFormComponents';
-import { Arbeidsgiver } from '../../types/Arbeidsgiver';
 import { HvaSkalEndres, SoknadFormField } from '../../types/SoknadFormData';
 import DinePlikterContent from './dine-plikter/DinePlikter';
 import BehandlingAvPersonopplysningerContent from './personopplysninger/Personopplysninger';
@@ -22,11 +20,10 @@ interface DialogState {
 }
 
 interface Props {
-    nyeArbeidsforhold: Arbeidsgiver[];
     onStart: () => void;
 }
 
-const VelkommenPageForm: React.FunctionComponent<Props> = ({ nyeArbeidsforhold, onStart }) => {
+const VelkommenPageForm: React.FunctionComponent<Props> = ({ onStart }) => {
     const [dialogState, setDialogState] = useState<DialogState>({});
     const { dinePlikterModalOpen, behandlingAvPersonopplysningerModalOpen } = dialogState;
     const intl = useIntl();
@@ -36,12 +33,17 @@ const VelkommenPageForm: React.FunctionComponent<Props> = ({ nyeArbeidsforhold, 
             onValidSubmit={onStart}
             includeButtons={false}
             formErrorHandler={getIntlFormErrorHandler(intl, 'validation')}>
-            {nyeArbeidsforhold.length > 0 && (
+            {/* {nyeArbeidsforhold.length > 0 && (
                 <AlertStripeInfo>
                     Vi ser at du har fått nye arbeidsforhold siden sist. For å kunne sende inn en melding om endring, må
                     du da også fylle ut informasjon om hvordan du jobber hos denne/disse.
+                    <ul>
+                        {nyeArbeidsforhold.map((a) => (
+                            <li key={a.id}>{a.navn}</li>
+                        ))}
+                    </ul>
                 </AlertStripeInfo>
-            )}
+            )} */}
             <section aria-label="Skjema" role="form">
                 <FormBlock>
                     <SoknadFormComponents.CheckboxPanelGroup

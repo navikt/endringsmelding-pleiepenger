@@ -1,6 +1,7 @@
 import { getEnvironmentVariable } from '@navikt/sif-common-core/lib/utils/envUtils';
 import { DateRange } from '@navikt/sif-common-formik/lib';
-import { K9Sak } from '../../types/K9Sak';
+import { dateToISODate } from '@navikt/sif-common-utils/lib';
+import { Sak } from '../../types/Sak';
 import { SoknadApiData } from '../../types/SoknadApiData';
 import { SoknadFormData } from '../../types/SoknadFormData';
 import appSentryLogger from '../appSentryLogger';
@@ -20,7 +21,7 @@ const logErrorToSentry = (details: string): void => {
 export const mapFormDataToK9Format = (
     values: MapFormDataToApiDataValues,
     søknadsperioder: DateRange[],
-    k9sak: K9Sak
+    sak: Sak
 ): SoknadApiData | undefined => {
     const { arbeidssituasjon, arbeidstid, omsorgstilbud } = values.formData;
     const apiValues: SoknadApiData = {
@@ -29,19 +30,23 @@ export const mapFormDataToK9Format = (
         id: '123',
         språk: 'nb',
         ytelse: {
-            type: k9sak.ytelse.type,
+            type: sak.ytelse.type,
+            barn: {
+                fødselsdato: sak.ytelse.barn.fødselsdato ? dateToISODate(sak.ytelse.barn.fødselsdato) : undefined,
+                norskIdentitetsnummer: sak.ytelse.barn.norskIdentitetsnummer,
+            },
             arbeidstid: arbeidstid
                 ? mapArbeidstidToK9FormatInnsending({
                       arbeidstid,
                       arbeidssituasjon,
-                      k9sak,
+                      sak: sak,
                       søknadsperioder,
                   })
                 : undefined,
             tilsynsordning: omsorgstilbud
                 ? mapOmsorgstilbudToK9FormatInnsending(
                       omsorgstilbud,
-                      k9sak.ytelse.tilsynsordning.enkeltdager,
+                      sak.ytelse.tilsynsordning.enkeltdager,
                       søknadsperioder
                   )
                 : undefined,

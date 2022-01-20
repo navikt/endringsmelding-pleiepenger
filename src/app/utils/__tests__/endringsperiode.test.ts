@@ -1,6 +1,6 @@
 import { DateRange } from '@navikt/sif-common-formik/lib';
 import dayjs from 'dayjs';
-import { dateToISODate, ISODateRangeToDateRange, ISODateToDate } from '../dateUtils';
+import { dateToISODate, ISODateRangeToDateRange, ISODateToDate } from '@navikt/sif-common-utils';
 import {
     getEndringsperiode,
     getMaksEndringsperiode,

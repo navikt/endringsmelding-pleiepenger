@@ -1,89 +1,91 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
-import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import { DateRange } from '@navikt/sif-common-formik/lib';
-import dayjs from 'dayjs';
+import { ArbeidsforholdType, SøknadsperioderMånedListe } from '@navikt/sif-common-pleiepenger/lib';
+import { TidEnkeltdagEndring } from '@navikt/sif-common-pleiepenger/lib/tid-enkeltdag-dialog/TidEnkeltdagForm';
+import {
+    DateDurationMap,
+    DateRange,
+    getDatesInDateRange,
+    getDurationsInDateRange,
+    getYearMonthKey,
+    isDateInDates,
+    ISODateToDate,
+} from '@navikt/sif-common-utils';
 import { useFormikContext } from 'formik';
-import SøknadsperioderMånedListe from '../../components/søknadsperioder-måned-liste/SøknadsperioderMånedListe';
-import { K9ArbeidstidInfo, K9SakMeta } from '../../types/K9Sak';
-import { SoknadFormData, SoknadFormField, TidEnkeltdag } from '../../types/SoknadFormData';
-import { getYearMonthKey } from '../../utils/k9SakUtils';
-import ArbeidstidFormAndInfo from './arbeidstid-form-and-info/ArbeidstidFormAndInfo';
+import { ArbeidstidEnkeltdagSak, SakMetadata } from '../../types/Sak';
+import { ArbeidstidEnkeltdagSøknad, SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
+import ArbeidstidMåned from './ArbeidstidMåned';
+import { getDatesNotInDates } from '../../utils/arbeidUtils';
 
 interface Props {
     arbeidsstedNavn: string;
+    arbeidsforholdType: ArbeidsforholdType;
     formFieldName: SoknadFormField;
-    arbeidstidSak: K9ArbeidstidInfo;
-    k9sakMeta: K9SakMeta;
-    startetDato?: Date;
-    onArbeidstidChanged?: (arbeidstid: TidEnkeltdag) => void;
+    arbeidstidEnkeltdagSøknad: ArbeidstidEnkeltdagSøknad;
+    arbeidstidEnkeltdagSak: ArbeidstidEnkeltdagSak;
+    sakMetadata: SakMetadata;
+    onArbeidstidChanged?: (arbeidstid: DateDurationMap) => void;
 }
+
+const getDatoerSomIkkeErTilgjengeligIMåned = (
+    måned: DateRange,
+    sakMetadata: SakMetadata,
+    dagerSak: DateDurationMap
+): Date[] => {
+    const dagerIkkeSøktForIMåned = sakMetadata.datoerIkkeSøktForIMåned[getYearMonthKey(måned.from)];
+    const datoerIMåned = getDatesInDateRange(måned);
+    const datoerISak = Object.keys(dagerSak).map((d) => ISODateToDate(d));
+    return [...dagerIkkeSøktForIMåned, ...getDatesNotInDates(datoerIMåned, datoerISak)];
+};
 
 const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
     arbeidsstedNavn,
+    arbeidsforholdType,
     formFieldName,
-    arbeidstidSak,
-    k9sakMeta,
-    startetDato,
+    arbeidstidEnkeltdagSak: arbeidstidSak,
+    arbeidstidEnkeltdagSøknad,
+    sakMetadata,
     onArbeidstidChanged,
 }) => {
-    const intl = useIntl();
-    const { validateForm } = useFormikContext<SoknadFormData>();
+    const { setFieldValue } = useFormikContext<SoknadFormData>();
 
     const månedContentRenderer = (måned: DateRange) => {
-        const mndOgÅrLabelPart = dayjs(måned.from).format('MMMM YYYY');
-        const utilgjengeligeDatoerIMåned = k9sakMeta.utilgjengeligeDatoerIMånedMap[getYearMonthKey(måned.from)];
+        const dagerSøknad = getDurationsInDateRange(arbeidstidEnkeltdagSøknad.faktisk, måned);
+        const dagerSak = getDurationsInDateRange(arbeidstidSak.faktisk, måned);
+        const datoerSomIkkeErTilgjengelig = getDatoerSomIkkeErTilgjengeligIMåned(måned, sakMetadata, dagerSak);
+
+        const handleOnEnkeltdagChange = ({ dagerMedTid }: TidEnkeltdagEndring) => {
+            const newValues: DateDurationMap = { ...arbeidstidEnkeltdagSøknad.faktisk };
+            Object.keys(dagerMedTid).forEach((key) => {
+                const dagErTilgjengelig = isDateInDates(ISODateToDate(key), datoerSomIkkeErTilgjengelig) === false;
+                if (dagErTilgjengelig) {
+                    newValues[key] = dagerMedTid[key];
+                }
+            });
+            setFieldValue(formFieldName as any, newValues);
+            onArbeidstidChanged ? onArbeidstidChanged(newValues) : undefined;
+        };
 
         return (
-            <ArbeidstidFormAndInfo
+            <ArbeidstidMåned
                 arbeidsstedNavn={arbeidsstedNavn}
-                formFieldName={formFieldName}
-                periodeIMåned={måned}
-                utilgjengeligeDatoerIMåned={utilgjengeligeDatoerIMåned}
-                endringsdato={k9sakMeta.endringsdato}
-                dagerSøktForMap={k9sakMeta.dagerSøktForMap}
-                endringsperiode={k9sakMeta.endringsperiode}
-                arbeidstidArbeidsgiverSak={arbeidstidSak}
-                månedTittelHeadingLevel={k9sakMeta.søknadsperioderGårOverFlereÅr ? 4 : 3}
-                onAfterChange={(tid) => {
-                    validateForm();
-                    onArbeidstidChanged ? onArbeidstidChanged(tid) : undefined;
-                }}
-                labels={{
-                    addLabel: intlHelper(intl, 'arbeidstid.addLabel', {
-                        periode: mndOgÅrLabelPart,
-                        arbeidsstedNavn,
-                    }),
-                    deleteLabel: intlHelper(intl, 'arbeidstid.deleteLabel', {
-                        periode: mndOgÅrLabelPart,
-                    }),
-                    editLabel: intlHelper(intl, 'arbeidstid.editLabel', {
-                        periode: mndOgÅrLabelPart,
-                    }),
-                    modalTitle: intlHelper(intl, 'arbeidstid.modalTitle', {
-                        periode: mndOgÅrLabelPart,
-                        arbeidsstedNavn,
-                    }),
-                    infoTitle: (
-                        <span>
-                            {intlHelper(intl, 'arbeidstid.modalTitle', {
-                                periode: mndOgÅrLabelPart,
-                                arbeidsstedNavn,
-                            })}
-                        </span>
-                    ),
-                }}
+                måned={måned}
+                dagerSak={dagerSak}
+                dagerSøknad={dagerSøknad}
+                endringsperiode={sakMetadata.endringsperiode}
+                utilgjengeligeDatoer={datoerSomIkkeErTilgjengelig}
+                månedTittelHeadingLevel={sakMetadata.søknadsperioderGårOverFlereÅr ? 4 : 3}
+                arbeidsforholdType={arbeidsforholdType}
+                onEnkeltdagChange={handleOnEnkeltdagChange}
             />
         );
     };
 
     return (
         <SøknadsperioderMånedListe
-            k9sakMeta={k9sakMeta}
+            månedContentRenderer={månedContentRenderer}
+            periode={sakMetadata.endringsperiode}
             årstallHeadingLevel={3}
             årstallHeaderRenderer={(årstall) => `${årstall}`}
-            minDato={startetDato}
-            månedContentRenderer={månedContentRenderer}
         />
     );
 };

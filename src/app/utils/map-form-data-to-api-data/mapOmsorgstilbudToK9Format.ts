@@ -1,19 +1,18 @@
 import { DateRange } from '@navikt/sif-common-formik/lib';
-import { TilsynsordningK9FormatInnsending } from '../../types/k9FormatInnsending';
+import { DateDurationMap, getDurationsDiff, ISODateToISODateRange } from '@navikt/sif-common-utils';
+import { TilsynsordningApiData } from '../../types/YtelseApiData';
 import { TidEnkeltdagApiData } from '../../types/SoknadApiData';
-import { Omsorgstilbud, TidEnkeltdag } from '../../types/SoknadFormData';
-import { ISODateToISODateRange } from '../dateUtils';
+import { Omsorgstilbud } from '../../types/SoknadFormData';
 import { getTidEnkeltdagApiDataIPeriodeApiData } from '../tidsbrukApiUtils';
-import { fjernDagerMedUendretTid } from '../tidsbrukUtils';
 
 export const mapOmsorgstilbudToK9FormatInnsending = (
     omsorgstilbud: Omsorgstilbud,
-    dagerOpprinnelig: TidEnkeltdag = {},
+    dagerOpprinnelig: DateDurationMap = {},
     søknadsperioder: DateRange[]
-): TilsynsordningK9FormatInnsending | undefined => {
+): TilsynsordningApiData | undefined => {
     const { enkeltdager } = omsorgstilbud;
-    const dagerMedEndring: TidEnkeltdag = dagerOpprinnelig
-        ? fjernDagerMedUendretTid(enkeltdager, dagerOpprinnelig)
+    const dagerMedEndring: DateDurationMap = dagerOpprinnelig
+        ? getDurationsDiff(enkeltdager, dagerOpprinnelig)
         : enkeltdager;
 
     const dager: TidEnkeltdagApiData[] = [];
@@ -25,7 +24,7 @@ export const mapOmsorgstilbudToK9FormatInnsending = (
         return undefined;
     }
 
-    const tilsynsordning: TilsynsordningK9FormatInnsending = {
+    const tilsynsordning: TilsynsordningApiData = {
         perioder: {},
     };
 

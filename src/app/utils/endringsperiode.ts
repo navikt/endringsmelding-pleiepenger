@@ -1,9 +1,9 @@
 import { DateRange } from '@navikt/sif-common-formik/lib';
+import { getDateRangeFromDateRanges } from '@navikt/sif-common-utils';
 import dayjs from 'dayjs';
-import minMax from 'dayjs/plugin/minMax';
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import { getDateRangeFromDateRanges } from './dateUtils';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import minMax from 'dayjs/plugin/minMax';
 
 dayjs.extend(minMax);
 dayjs.extend(isSameOrAfter);

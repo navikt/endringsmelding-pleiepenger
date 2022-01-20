@@ -1,15 +1,14 @@
 import { DateRange, InputTime } from '@navikt/sif-common-formik/lib';
-import { K9ArbeidstidInfo, K9Sak } from '../../types/K9Sak';
-import { TidEnkeltdag } from '../../types/SoknadFormData';
+import { DateDurationMap, dateToISODate, ISODateToDate } from '@navikt/sif-common-utils';
 import { ArbeidsgiverType } from '../../types/Arbeidsgiver';
-import { dateToISODate, ISODateToDate } from '../dateUtils';
+import { ArbeidstidEnkeltdagSak, Sak } from '../../types/Sak';
 import {
     erArbeidsgivereIBådeSakOgAAreg,
-    getDateRangeForK9Saker,
+    getDateRangeForSaker,
     getISODateObjectsWithinDateRange,
-    harK9SakArbeidstidInfo,
+    harSakArbeidstidInfo,
     trimArbeidstidTilTillatPeriode,
-} from '../k9SakUtils';
+} from '../sakUtils';
 
 describe('trimArbeidstidTilTillatPeriode', () => {
     it('fjerner arbeidstid utenfor endringsperiode', () => {
@@ -23,7 +22,7 @@ describe('trimArbeidstidTilTillatPeriode', () => {
             minutes: '30',
         };
 
-        const arbeidstid: K9ArbeidstidInfo = {
+        const arbeidstid: ArbeidstidEnkeltdagSak = {
             faktisk: {
                 '2021-02-01': tid,
                 '2021-02-02': tid,
@@ -52,7 +51,7 @@ describe('trimArbeidstidTilTillatPeriode', () => {
             hours: '0',
             minutes: '30',
         };
-        const tilsyn: TidEnkeltdag = {
+        const tilsyn: DateDurationMap = {
             '2021-02-01': tid,
             '2021-02-02': tid,
             '2021-02-03': tid,
@@ -69,7 +68,7 @@ describe('trimArbeidstidTilTillatPeriode', () => {
 });
 
 describe('erArbeidsgivereErBådeISakOgAAreg', () => {
-    it('returnerer true når alle k9 arbeidsgivere (1) finnes i AA-reg', () => {
+    it('returnerer true når alle arbeidsgivere (1) finnes i AA-reg', () => {
         const result = erArbeidsgivereIBådeSakOgAAreg(
             [
                 {
@@ -85,7 +84,7 @@ describe('erArbeidsgivereErBådeISakOgAAreg', () => {
         );
         expect(result).toBeTruthy();
     });
-    it('returnerer true når ingen arbeidsgivere finnes i k9sak', () => {
+    it('returnerer true når ingen arbeidsgivere finnes i sak', () => {
         const result = erArbeidsgivereIBådeSakOgAAreg(
             [
                 {
@@ -123,13 +122,13 @@ describe('erArbeidsgivereErBådeISakOgAAreg', () => {
     });
 });
 
-describe('harK9SakArbeidstidInfo', () => {
+describe('harSakArbeidstidInfo', () => {
     it('returnerer false dersom det er ikke er info om arbeidstid for arbeidsgivere, frilanser eller sn', () => {
-        const result = harK9SakArbeidstidInfo([], {});
+        const result = harSakArbeidstidInfo([], {});
         expect(result).toBeFalsy();
     });
     it('returnerer true dersom det er info om arbeidstid for arbeidsgivere', () => {
-        const result = harK9SakArbeidstidInfo(
+        const result = harSakArbeidstidInfo(
             [
                 {
                     type: ArbeidsgiverType.ORGANISASJON,
@@ -145,30 +144,30 @@ describe('harK9SakArbeidstidInfo', () => {
         expect(result).toBeTruthy();
     });
     it('returnerer true dersom det er info om arbeidstid som frilanser', () => {
-        const result = harK9SakArbeidstidInfo([], {
+        const result = harSakArbeidstidInfo([], {
             frilanser: { faktisk: {}, normalt: {} },
         });
         expect(result).toBeTruthy();
     });
     it('returnerer true dersom det er info om arbeidstid from selvdstendig', () => {
-        const result = harK9SakArbeidstidInfo([], {
+        const result = harSakArbeidstidInfo([], {
             selvstendig: { faktisk: {}, normalt: {} },
         });
         expect(result).toBeTruthy();
     });
 });
 
-describe('getDateRangeForK9Saker', () => {
+describe('getDateRangeForSaker', () => {
     it('returnerer riktig når det er én sak', () => {
-        const sak: K9Sak = {
+        const sak: Sak = {
             ytelse: { søknadsperioder: [{ from: ISODateToDate('2021-01-01'), to: ISODateToDate('2021-01-02') }] },
         } as any;
-        const range = getDateRangeForK9Saker([sak]);
+        const range = getDateRangeForSaker([sak]);
         expect(dateToISODate(range.from)).toEqual('2021-01-01');
         expect(dateToISODate(range.to)).toEqual('2021-01-02');
     });
     it('returnerer riktig når det er to saker som ikke overlapper', () => {
-        const sak: K9Sak = {
+        const sak: Sak = {
             ytelse: {
                 søknadsperioder: [
                     { from: ISODateToDate('2021-01-01'), to: ISODateToDate('2021-01-02') },
@@ -176,12 +175,12 @@ describe('getDateRangeForK9Saker', () => {
                 ],
             },
         } as any;
-        const range = getDateRangeForK9Saker([sak]);
+        const range = getDateRangeForSaker([sak]);
         expect(dateToISODate(range.from)).toEqual('2021-01-01');
         expect(dateToISODate(range.to)).toEqual('2021-01-04');
     });
     it('returnerer riktig når det er to saker som overlapper', () => {
-        const sak: K9Sak = {
+        const sak: Sak = {
             ytelse: {
                 søknadsperioder: [
                     { from: ISODateToDate('2021-01-01'), to: ISODateToDate('2021-01-02') },
@@ -189,7 +188,7 @@ describe('getDateRangeForK9Saker', () => {
                 ],
             },
         } as any;
-        const range = getDateRangeForK9Saker([sak]);
+        const range = getDateRangeForSaker([sak]);
         expect(dateToISODate(range.from)).toEqual('2021-01-01');
         expect(dateToISODate(range.to)).toEqual('2021-01-03');
     });

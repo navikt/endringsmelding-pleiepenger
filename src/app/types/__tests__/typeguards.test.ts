@@ -1,4 +1,4 @@
-import { isISODate, isISODuration, isISODateRange } from '../typeguards';
+import { isISODate, isISODateRange, isISODuration } from '../typeguards/typeguards';
 
 describe('Test of isISODate typeguard', () => {
     it('test1 - is of type ISODate string', () => {

@@ -1,28 +1,26 @@
 import { DateRange } from '@navikt/sif-common-formik/lib';
-import { ArbeidstidDagK9FormatInnsending, ArbeidstidK9FormatInnsending } from '../../types/k9FormatInnsending';
-import { K9ArbeidstidInfo, K9Sak } from '../../types/K9Sak';
-import { TidEnkeltdagApiData } from '../../types/SoknadApiData';
 import {
-    ArbeidssituasjonFormValue,
-    Arbeidssituasjon,
-    ArbeidstidFormValue,
-    TidEnkeltdag,
-} from '../../types/SoknadFormData';
-import { getArbeidssituasjonForArbeidsgiver } from '../arbeidssituasjonUtils';
-import { beregNormalarbeidstid } from '../beregnNormalarbeidstidUtils';
-import { ISODateToISODateRange } from '../dateUtils';
+    DateDurationMap,
+    durationToISODuration,
+    getDateDurationDiff,
+    ISODateToISODateRange,
+} from '@navikt/sif-common-utils';
+import { ArbeidstidDagKApiData, ArbeidstidApiData } from '../../types/YtelseApiData';
+import { ArbeidstidEnkeltdagSak, Sak } from '../../types/Sak';
+import { TidEnkeltdagApiData } from '../../types/SoknadApiData';
+import { ArbeidssituasjonFormValue, ArbeidstidFormValue } from '../../types/SoknadFormData';
+// import { getArbeidssituasjonForArbeidsgiver } from '../arbeidUtils';
+// import { beregNormalarbeidstid } from '../beregnNormalarbeidstidUtils';
 import { getTidEnkeltdagApiDataIPeriodeApiData } from '../tidsbrukApiUtils';
-import { fjernDagerMedUendretTid } from '../tidsbrukUtils';
-import { timeToISODuration } from '../timeUtils';
 
 export const mapAktivitetArbeidstidToK9FormatInnsending = (
-    faktiskArbeidstid: TidEnkeltdag,
-    arbeidstidSak: K9ArbeidstidInfo | undefined,
-    søknadsperioder: DateRange[],
-    arbeidssituasjon?: Arbeidssituasjon
-): ArbeidstidDagK9FormatInnsending => {
-    const dagerMedEndring: TidEnkeltdag = arbeidstidSak?.faktisk
-        ? fjernDagerMedUendretTid(faktiskArbeidstid, arbeidstidSak.faktisk)
+    faktiskArbeidstid: DateDurationMap,
+    arbeidstidSak: ArbeidstidEnkeltdagSak | undefined,
+    søknadsperioder: DateRange[]
+    // arbeidssituasjon?: Arbeidssituasjon
+): ArbeidstidDagKApiData => {
+    const dagerMedEndring: DateDurationMap = arbeidstidSak?.faktisk
+        ? getDateDurationDiff(faktiskArbeidstid, arbeidstidSak.faktisk)
         : faktiskArbeidstid;
 
     const faktiskArbeid: TidEnkeltdagApiData[] = [];
@@ -30,45 +28,46 @@ export const mapAktivitetArbeidstidToK9FormatInnsending = (
         faktiskArbeid.push(...getTidEnkeltdagApiDataIPeriodeApiData(dagerMedEndring, periode))
     );
 
-    const arbeidstidK9Format: ArbeidstidDagK9FormatInnsending = {};
-    const nyNormalarbeidstid = arbeidssituasjon
-        ? beregNormalarbeidstid(arbeidssituasjon.jobberNormaltTimer)
-        : undefined;
+    const arbeidstidK9Format: ArbeidstidDagKApiData = {};
+    // const nyNormalarbeidstid = arbeidssituasjon
+    //     ? beregNormalarbeidstid(arbeidssituasjon.jobberNormaltTimer)
+    //     : undefined;
 
     faktiskArbeid.forEach((dag) => {
-        const jobberNormalt = arbeidstidSak?.normalt[dag.dato] || nyNormalarbeidstid;
-        if (!jobberNormalt) {
-            throw new Error('mapAktivitetArbeidstidToK9FormatInnsending - jobberNormalt is undefined ');
+        const jobberNormalt = arbeidstidSak?.normalt[dag.dato]; // || nyNormalarbeidstid;
+        if (jobberNormalt) {
+            // throw new Error(`mapAktivitetArbeidstidToK9FormatInnsending - jobberNormalt is undefined ${dag.dato}`);
+            // } else {
+            arbeidstidK9Format[ISODateToISODateRange(dag.dato)] = {
+                faktiskArbeidTimerPerDag: dag.tid,
+                jobberNormaltTimerPerDag: durationToISODuration(jobberNormalt),
+            };
         }
-        arbeidstidK9Format[ISODateToISODateRange(dag.dato)] = {
-            faktiskArbeidTimerPerDag: dag.tid,
-            jobberNormaltTimerPerDag: timeToISODuration(jobberNormalt),
-        };
     });
     return arbeidstidK9Format;
 };
 
 export const mapArbeidstidToK9FormatInnsending = ({
     arbeidstid,
-    k9sak,
+    sak,
     søknadsperioder,
     arbeidssituasjon,
 }: {
     arbeidstid: ArbeidstidFormValue;
-    k9sak: K9Sak;
+    sak: Sak;
     søknadsperioder: DateRange[];
     arbeidssituasjon: ArbeidssituasjonFormValue | undefined;
-}): ArbeidstidK9FormatInnsending | undefined => {
+}): ArbeidstidApiData | undefined => {
     const { arbeidsgiver } = arbeidstid;
 
-    const apiData: ArbeidstidK9FormatInnsending = {
+    const apiData: ArbeidstidApiData = {
         arbeidstakerList: [],
     };
 
-    const { arbeidstakerMap } = k9sak.ytelse.arbeidstid;
+    const { arbeidstakerMap } = sak.ytelse.arbeidstid;
     Object.keys(arbeidsgiver).forEach((organisasjonsnummer) => {
         const arbeidsgiverSakInfo = arbeidstakerMap ? arbeidstakerMap[organisasjonsnummer] : undefined;
-        const arbeidssituasjonInfo = getArbeidssituasjonForArbeidsgiver(organisasjonsnummer, arbeidssituasjon);
+        // const arbeidssituasjonInfo = getArbeidssituasjonForArbeidsgiver(organisasjonsnummer, arbeidssituasjon);
         if (!arbeidssituasjon && !arbeidsgiverSakInfo) {
             throw new Error('Mangler informasjon om arbeidssituasjon');
         }
@@ -76,8 +75,8 @@ export const mapArbeidstidToK9FormatInnsending = ({
         const perioder = mapAktivitetArbeidstidToK9FormatInnsending(
             faktiskArbeidstidFormValues,
             arbeidsgiverSakInfo,
-            søknadsperioder,
-            arbeidssituasjonInfo
+            søknadsperioder
+            // arbeidssituasjonInfo
         );
         if (Object.keys(perioder).length > 0) {
             apiData.arbeidstakerList.push({
@@ -89,10 +88,10 @@ export const mapArbeidstidToK9FormatInnsending = ({
         }
     });
 
-    if (arbeidstid.frilanser && k9sak.ytelse.arbeidstid.frilanser) {
+    if (arbeidstid.frilanser && sak.ytelse.arbeidstid.frilanser) {
         const perioder = mapAktivitetArbeidstidToK9FormatInnsending(
             arbeidstid.frilanser.faktisk,
-            k9sak.ytelse.arbeidstid.frilanser,
+            sak.ytelse.arbeidstid.frilanser,
             søknadsperioder
         );
         if (Object.keys(perioder).length > 0) {
@@ -102,10 +101,10 @@ export const mapArbeidstidToK9FormatInnsending = ({
         }
     }
 
-    if (arbeidstid.selvstendig && k9sak.ytelse.arbeidstid.selvstendig) {
+    if (arbeidstid.selvstendig && sak.ytelse.arbeidstid.selvstendig) {
         const perioder = mapAktivitetArbeidstidToK9FormatInnsending(
             arbeidstid.selvstendig.faktisk,
-            k9sak.ytelse.arbeidstid.selvstendig,
+            sak.ytelse.arbeidstid.selvstendig,
             søknadsperioder
         );
         if (Object.keys(perioder).length > 0) {

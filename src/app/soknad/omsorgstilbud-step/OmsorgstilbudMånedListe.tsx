@@ -1,61 +1,54 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
-import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import dayjs from 'dayjs';
+import { SøknadsperioderMånedListe } from '@navikt/sif-common-pleiepenger/lib';
+import { TidEnkeltdagEndring } from '@navikt/sif-common-pleiepenger/lib/tid-enkeltdag-dialog/TidEnkeltdagForm';
+import { DateDurationMap } from '@navikt/sif-common-utils';
 import { useFormikContext } from 'formik';
-import SøknadsperioderMånedListe from '../../components/søknadsperioder-måned-liste/SøknadsperioderMånedListe';
-import { K9SakMeta, K9TidEnkeltdag } from '../../types/K9Sak';
-import { SoknadFormData, SoknadFormField, TidEnkeltdag } from '../../types/SoknadFormData';
-import { getYearMonthKey } from '../../utils/k9SakUtils';
-import OmsorgstilbudFormAndInfo from './omsorgstilbud-form-and-info/OmsorgstilbudFormAndInfo';
+import { SakMetadata, TidEnkeltdag } from '../../types/Sak';
+import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
+import { getYearMonthKey } from '../../utils/sakUtils';
+import OmsorgstilbudMånedInfo from './omsorgstilbud-måned/OmsorgstilbudMåned';
 
 interface Props {
-    tidIOmsorgstilbudSak: K9TidEnkeltdag;
-    k9sakMeta: K9SakMeta;
-    onOmsorgstilbudChanged?: (omsorgsdager: TidEnkeltdag) => void;
+    tidOmsorgstilbud: DateDurationMap;
+    tidIOmsorgstilbudSak: TidEnkeltdag;
+    sakMetadata: SakMetadata;
+    onOmsorgstilbudChanged?: (omsorgsdager: DateDurationMap) => void;
 }
 
 const OmsorgstilbudMånedListe: React.FunctionComponent<Props> = ({
+    tidOmsorgstilbud,
     tidIOmsorgstilbudSak,
-    k9sakMeta,
+    sakMetadata,
     onOmsorgstilbudChanged,
 }) => {
-    const intl = useIntl();
-    const { validateForm } = useFormikContext<SoknadFormData>();
+    const { setFieldValue } = useFormikContext<SoknadFormData>();
+
     return (
         <SøknadsperioderMånedListe
-            k9sakMeta={k9sakMeta}
+            periode={sakMetadata.endringsperiode}
             årstallHeaderRenderer={(årstall) => `${årstall}`}
             månedContentRenderer={(måned) => {
-                const mndOgÅrLabelPart = dayjs(måned.from).format('MMMM YYYY');
-                return (
-                    <OmsorgstilbudFormAndInfo
-                        name={SoknadFormField.omsorgstilbud_enkeltdager}
-                        periodeIMåned={måned}
-                        utilgjengeligeDatoerIMåned={
-                            k9sakMeta.utilgjengeligeDatoerIMånedMap[getYearMonthKey(måned.from)]
+                const handleOnEnkeltdagChange = ({ dagerMedTid }: TidEnkeltdagEndring) => {
+                    const newValues: DateDurationMap = { ...tidOmsorgstilbud };
+                    Object.keys(dagerMedTid).forEach((key) => {
+                        const erSøktFor = sakMetadata.dagerSøktForMap[key] === true;
+                        if (erSøktFor) {
+                            newValues[key] = dagerMedTid[key];
                         }
-                        endringsdato={k9sakMeta.endringsdato}
-                        tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}
-                        månedTittelHeadingLevel={k9sakMeta.søknadsperioderGårOverFlereÅr ? 3 : 2}
-                        onAfterChange={(omsorgsdager) => {
-                            validateForm();
-                            onOmsorgstilbudChanged ? onOmsorgstilbudChanged(omsorgsdager) : undefined;
-                        }}
-                        labels={{
-                            addLabel: intlHelper(intl, 'omsorgstilbud.addLabel', {
-                                periode: mndOgÅrLabelPart,
-                            }),
-                            deleteLabel: intlHelper(intl, 'omsorgstilbud.deleteLabel', {
-                                periode: mndOgÅrLabelPart,
-                            }),
-                            editLabel: intlHelper(intl, 'omsorgstilbud.editLabel', {
-                                periode: mndOgÅrLabelPart,
-                            }),
-                            modalTitle: intlHelper(intl, 'omsorgstilbud.modalTitle', {
-                                periode: mndOgÅrLabelPart,
-                            }),
-                        }}
+                    });
+                    setFieldValue(SoknadFormField.omsorgstilbud_enkeltdager, newValues);
+                    onOmsorgstilbudChanged ? onOmsorgstilbudChanged(newValues) : undefined;
+                };
+
+                return (
+                    <OmsorgstilbudMånedInfo
+                        periode={måned}
+                        endringsperiode={sakMetadata.endringsperiode}
+                        tidOmsorgstilbud={tidOmsorgstilbud}
+                        tidOmsorgstilbudSak={tidIOmsorgstilbudSak}
+                        utilgjengeligeDatoer={sakMetadata.datoerIkkeSøktForIMåned[getYearMonthKey(måned.from)]}
+                        månedTittelHeadingLevel={sakMetadata.søknadsperioderGårOverFlereÅr ? 3 : 2}
+                        onEnkeltdagChange={handleOnEnkeltdagChange}
                     />
                 );
             }}
