@@ -1,7 +1,7 @@
 import { isForbidden, isUnauthorized } from '@navikt/sif-common-core/lib/utils/apiUtils';
 import { getEnvironmentVariable } from '@navikt/sif-common-core/lib/utils/envUtils';
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
-import { ApiEndpointInnsyn, ApiEndpointPsb } from '../types/ApiEndpoint';
+import { ApiEndpointInnsyn, ApiEndpointPsb } from './endpoints';
 
 const axiosConfigCommon: AxiosRequestConfig = {
     withCredentials: true,

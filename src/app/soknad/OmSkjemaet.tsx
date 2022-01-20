@@ -1,8 +1,8 @@
-import React from 'react';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
 import Alertstripe from 'nav-frontend-alertstriper';
 import { Element } from 'nav-frontend-typografi';
+import React from 'react';
 
 interface Props {
     showAlertstripe?: boolean;

@@ -1,12 +1,12 @@
 import { YesOrNo } from '@navikt/sif-common-core/lib/types/YesOrNo';
 import { InputTime } from '@navikt/sif-common-formik/lib';
+import { DateDurationMap, DurationWeekdays } from '@navikt/sif-common-utils';
 import { Arbeidsgiver } from './Arbeidsgiver';
-
-export type TidEnkeltdag = { [isoDateString: string]: InputTime };
 
 export enum SoknadFormField {
     harForståttRettigheterOgPlikter = 'harForståttRettigheterOgPlikter',
     harBekreftetOpplysninger = 'harBekreftetOpplysninger',
+    sakBarnAktørid = 'sakBarnAktørid',
     hvaSkalEndres = 'hvaSkalEndres',
     omsorgstilbud = 'omsorgstilbud',
     omsorgstilbud_dager_gruppe = 'omsorgstilbud_dager_gruppe',
@@ -50,38 +50,29 @@ export interface DagMedTidEllerEndretTid {
 }
 
 export interface Omsorgstilbud {
-    enkeltdager: TidEnkeltdag;
+    enkeltdager: DateDurationMap;
 }
 
-export type ArbeidstidAktivitetEnkeltdag = {
-    faktisk: TidEnkeltdag;
-    normalt: TidEnkeltdag;
+export type ArbeidstidEnkeltdagSøknad = {
+    faktisk: DateDurationMap;
+    normalt: DateDurationMap;
 };
 
 export type ArbeidstidArbeidsgiverMap = {
-    [orgnr: string]: ArbeidstidAktivitetEnkeltdag;
+    [orgnr: string]: ArbeidstidEnkeltdagSøknad;
 };
 
 export interface ArbeidstidFormValue {
     arbeidsgiver: ArbeidstidArbeidsgiverMap;
-    frilanser?: ArbeidstidAktivitetEnkeltdag;
-    selvstendig?: ArbeidstidAktivitetEnkeltdag;
+    frilanser?: ArbeidstidEnkeltdagSøknad;
+    selvstendig?: ArbeidstidEnkeltdagSøknad;
 }
-
-export interface TidFasteDager {
-    mandag?: InputTime;
-    tirsdag?: InputTime;
-    onsdag?: InputTime;
-    torsdag?: InputTime;
-    fredag?: InputTime;
-}
-
 export interface Arbeidssituasjon {
     [ArbeidsforholdField.jobberNormaltTimer]: string;
     [ArbeidsforholdField.jobberIPerioden]: JobberIPeriodeSvar;
     [ArbeidsforholdField.jobberSomVanlig]?: YesOrNo;
     [ArbeidsforholdField.erLiktHverUke]?: YesOrNo;
-    [ArbeidsforholdField.fasteDager]?: TidFasteDager;
+    [ArbeidsforholdField.fasteDager]?: DurationWeekdays;
 }
 
 export interface ArbeidssituasjonFormValue {
@@ -93,6 +84,7 @@ export interface ArbeidssituasjonFormValue {
 export interface SoknadFormData {
     [SoknadFormField.harForståttRettigheterOgPlikter]: boolean;
     [SoknadFormField.harBekreftetOpplysninger]: boolean;
+    [SoknadFormField.sakBarnAktørid]: string;
     [SoknadFormField.hvaSkalEndres]: HvaSkalEndres[];
     [SoknadFormField.omsorgstilbud]?: Omsorgstilbud;
     [SoknadFormField.arbeidstid]: ArbeidstidFormValue;

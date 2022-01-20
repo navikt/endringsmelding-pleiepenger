@@ -1,15 +1,14 @@
-import React from 'react';
 import SummaryBlock from '@navikt/sif-common-soknad/lib/soknad-summary/summary-block/SummaryBlock';
 import SummarySection from '@navikt/sif-common-soknad/lib/soknad-summary/summary-section/SummarySection';
-import TidEnkeltdager from '../../../components/dager-med-tid/TidEnkeltdager';
-import { TilsynsordningK9FormatInnsending } from '../../../types/k9FormatInnsending';
+import { DateDurationMap, ISODateRangeToISODates } from '@navikt/sif-common-utils';
+import React from 'react';
+import SummaryDagerMedTid from '../../../components/summary-dager-med-tid/SummaryDagerMedTid';
+import { TilsynsordningApiData } from '../../../types/YtelseApiData';
 import { TidEnkeltdagApiData } from '../../../types/SoknadApiData';
-import { TidEnkeltdag } from '../../../types/SoknadFormData';
-import { ISODateRangeToISODates } from '../../../utils/dateUtils';
 
 interface Props {
-    tilsynsordning: TilsynsordningK9FormatInnsending;
-    tidIOmsorgstilbudSak?: TidEnkeltdag;
+    tilsynsordning: TilsynsordningApiData;
+    tidIOmsorgstilbudSak?: DateDurationMap;
 }
 
 const OmsorgstilbudSummary: React.FunctionComponent<Props> = ({ tilsynsordning, tidIOmsorgstilbudSak }) => {
@@ -28,7 +27,7 @@ const OmsorgstilbudSummary: React.FunctionComponent<Props> = ({ tilsynsordning, 
     return (
         <SummarySection header="Omsorgstilbud">
             <SummaryBlock header="Endret omsorgstilbud">
-                <TidEnkeltdager
+                <SummaryDagerMedTid
                     dager={dagerMedTid}
                     dagerOpprinnelig={tidIOmsorgstilbudSak}
                     ingenEndringerMelding={'Ingen endringer registrert på omsorgstilbud'}

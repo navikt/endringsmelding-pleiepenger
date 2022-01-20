@@ -1,14 +1,14 @@
-import React from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { formatName } from '@navikt/sif-common-core/lib/utils/personUtils';
 import FødselsnummerSvar from '@navikt/sif-common-soknad/lib/soknad-summary/FødselsnummerSvar';
 import SummaryBlock from '@navikt/sif-common-soknad/lib/soknad-summary/summary-block/SummaryBlock';
 import SummarySection from '@navikt/sif-common-soknad/lib/soknad-summary/summary-section/SummarySection';
-import { Person } from '../../types/Person';
+import React from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { Søker } from '../../types/Søker';
 
 interface Props {
-    søker: Person;
+    søker: Søker;
 }
 
 const SøkerSummary: React.FunctionComponent<Props> = ({ søker }) => {

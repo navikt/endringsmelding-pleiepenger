@@ -1,26 +1,26 @@
-import React from 'react';
-import { useIntl } from 'react-intl';
+import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
+import { YesOrNo } from '@navikt/sif-common-core/lib/types/YesOrNo';
 import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
 import { DateRange, getTypedFormComponents, InputTime } from '@navikt/sif-common-formik/lib';
-import getIntlFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
-import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
-import { Undertittel } from 'nav-frontend-typografi';
-import { InputDateString } from 'nav-datovelger/lib/types';
+import datepickerUtils from '@navikt/sif-common-formik/lib/components/formik-datepicker/datepickerUtils';
 import {
     getDateRangeValidator,
     getNumberValidator,
     getRequiredFieldValidator,
     getYesOrNoValidator,
 } from '@navikt/sif-common-formik/lib/validation';
-import TidFasteDagerInput from '../tid-faste-dager-input/TidFasteDagerInput';
-import { YesOrNo } from '@navikt/sif-common-core/lib/types/YesOrNo';
+import getTimeValidator from '@navikt/sif-common-formik/lib/validation/getTimeValidator';
+import getIntlFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
+import { TidFasteUkedagerInput } from '@navikt/sif-common-pleiepenger';
+import { DurationWeekdays } from '@navikt/sif-common-utils';
+import { InputDateString } from 'nav-datovelger/lib/types';
+import { Undertittel } from 'nav-frontend-typografi';
+import React from 'react';
+import { useIntl } from 'react-intl';
 import SoknadFormComponents from '../../soknad/SoknadFormComponents';
 import { getArbeidstimerFastDagValidator, validateFasteArbeidstimerIUke } from '../../validation/fieldValidations';
-import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
-import { TidFasteDager } from '../../types/SoknadFormData';
-import datepickerUtils from '@navikt/sif-common-formik/lib/components/formik-datepicker/datepickerUtils';
-import getTimeValidator from '@navikt/sif-common-formik/lib/validation/getTimeValidator';
 
 interface Props {
     arbeidsstedNavn: string;
@@ -40,7 +40,7 @@ export type ArbeidstidPeriodeData = {
     fom: Date;
     tom: Date;
     skalJobbe: boolean;
-    tidFasteDager?: TidFasteDager;
+    tidFasteDager?: DurationWeekdays;
 };
 
 enum FormFields {
@@ -62,7 +62,7 @@ interface FormValues {
     [FormFields.hvordanOppgiArbeidstid]: HvordanOppgiArbeidstidType;
     [FormFields.prosent]: string;
     [FormFields.timerPerDag]: InputTime;
-    [FormFields.tidFasteDager]?: TidFasteDager;
+    [FormFields.tidFasteDager]?: DurationWeekdays;
 }
 
 const initialFormValues: Partial<FormValues> = {};
@@ -96,6 +96,7 @@ const PeriodeSpørsmål = ({ periode, endringsperiode }: { periode?: DateRange; 
             name: FormFields.fom,
             disableWeekend: true,
             fullScreenOnMobile: true,
+            dayPickerProps: { initialMonth: endringsperiode.from },
             minDate: endringsperiode.from,
             maxDate: periode?.to || endringsperiode.to,
             validate: getDateRangeValidator({ required: true, onlyWeekdays: true }).validateFromDate,
@@ -105,6 +106,7 @@ const PeriodeSpørsmål = ({ periode, endringsperiode }: { periode?: DateRange; 
             name: FormFields.tom,
             disableWeekend: true,
             fullScreenOnMobile: true,
+            dayPickerProps: { initialMonth: endringsperiode.from },
             minDate: periode?.from || endringsperiode.from,
             maxDate: endringsperiode.to,
             validate: getDateRangeValidator({ required: true }).validateToDate,
@@ -112,7 +114,7 @@ const PeriodeSpørsmål = ({ periode, endringsperiode }: { periode?: DateRange; 
     />
 );
 
-const TidPerDagSpørsmål = ({ tidFasteDager }: { tidFasteDager?: TidFasteDager }) => (
+const TidPerDagSpørsmål = ({ tidFasteDager }: { tidFasteDager?: DurationWeekdays }) => (
     <SoknadFormComponents.InputGroup
         legend={
             'Oppgi hvor mye du jobber disse ukedagene. Det er viktig at du fyller ut timer og minutter på riktig dag, altså den dagen du faktisk er på jobb.'
@@ -128,7 +130,19 @@ const TidPerDagSpørsmål = ({ tidFasteDager }: { tidFasteDager?: TidFasteDager 
                 </p>
             </ExpandableInfo>
         }>
-        <TidFasteDagerInput name={FormFields.tidFasteDager} validator={getArbeidstimerFastDagValidator} />
+        <TidFasteUkedagerInput
+            name={FormFields.tidFasteDager}
+            validateDag={(dag, value) => {
+                const error = getArbeidstimerFastDagValidator(value);
+                return error
+                    ? {
+                          key: `arbeidstidPeriode.fasteDager.dag.${error}`,
+                          values: { dag },
+                          keepKeyUnaltered: true,
+                      }
+                    : undefined;
+            }}
+        />
     </SoknadFormComponents.InputGroup>
 );
 

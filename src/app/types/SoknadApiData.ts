@@ -1,6 +1,6 @@
 import { Locale } from '@navikt/sif-common-core/lib/types/Locale';
 import { ISODate, ISODuration } from './';
-import { K9FormatYtelseInnsending } from './k9FormatInnsending';
+import { YtelseApiData } from './YtelseApiData';
 
 export enum SoknadApiDataField {
     'id' = 'id',
@@ -10,6 +10,7 @@ export enum SoknadApiDataField {
     'omsorgstilbud' = 'omsorgstilbud',
     'arbeidstid' = 'arbeidstid',
     'ytelse' = 'ytelse',
+    'barn' = 'barn',
 }
 
 export interface TidEnkeltdagApiData {
@@ -22,5 +23,5 @@ export interface SoknadApiData {
     [SoknadApiDataField.språk]: Locale;
     [SoknadApiDataField.harForståttRettigheterOgPlikter]: boolean;
     [SoknadApiDataField.harBekreftetOpplysninger]: boolean;
-    [SoknadApiDataField.ytelse]: K9FormatYtelseInnsending;
+    [SoknadApiDataField.ytelse]: YtelseApiData;
 }

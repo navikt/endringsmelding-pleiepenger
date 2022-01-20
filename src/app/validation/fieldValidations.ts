@@ -2,17 +2,21 @@ import { InputTime } from '@navikt/sif-common-formik/lib';
 import { getNumberValidator } from '@navikt/sif-common-formik/lib/validation';
 import getTimeValidator from '@navikt/sif-common-formik/lib/validation/getTimeValidator';
 import { ValidationError, ValidationResult } from '@navikt/sif-common-formik/lib/validation/types';
-import { K9Arbeidstid } from '../types/K9Sak';
-import { ArbeidstidFormValue, TidEnkeltdag, TidFasteDager } from '../types/SoknadFormData';
-import { getArbeidstidForArbeidsgiver } from '../utils/arbeidssituasjonUtils';
-import { timeHasSameDuration } from '../utils/dateUtils';
-import { sumTimerFasteDager } from '../utils/tidsbrukUtils';
+import {
+    DateDurationMap,
+    durationsAreEqual,
+    DurationWeekdays,
+    summarizeDurationInDurationWeekdays,
+} from '@navikt/sif-common-utils';
+import { YtelseArbeidstid } from '../types/Sak';
+import { ArbeidstidFormValue } from '../types/SoknadFormData';
+import { getArbeidstidForArbeidsgiver } from '../utils/arbeidUtils';
 
 export type TidPerDagValidator = (dag: string) => (tid: InputTime) => ValidationError | undefined;
 
-const erTidEndret = (enkeltdager: TidEnkeltdag, tidOpprinnelig: TidEnkeltdag): boolean => {
+const erTidEndret = (enkeltdager: DateDurationMap, tidOpprinnelig: DateDurationMap): boolean => {
     const harEndringer = Object.keys(enkeltdager).some((key) => {
-        return timeHasSameDuration(enkeltdager[key], tidOpprinnelig[key]) === false;
+        return durationsAreEqual(enkeltdager[key], tidOpprinnelig[key]) === false;
     });
     return harEndringer;
 };
@@ -21,8 +25,8 @@ export const validateOmsorgstilbud = ({
     tid,
     tidOpprinnelig,
 }: {
-    tid?: TidEnkeltdag;
-    tidOpprinnelig: TidEnkeltdag;
+    tid?: DateDurationMap;
+    tidOpprinnelig: DateDurationMap;
 }): ValidationError | undefined => {
     if (!tid || erTidEndret(tid, tidOpprinnelig) === false) {
         return 'ingenEndringer';
@@ -34,8 +38,8 @@ export const validateArbeidstid = ({
     tid,
     tidOpprinnelig,
 }: {
-    tid?: TidEnkeltdag;
-    tidOpprinnelig: TidEnkeltdag;
+    tid?: DateDurationMap;
+    tidOpprinnelig: DateDurationMap;
 }): ValidationError | undefined => {
     if (!tid || erTidEndret(tid, tidOpprinnelig) === false) {
         return 'ingenEndringer';
@@ -48,7 +52,7 @@ export const validateAktivitetArbeidstid = ({
     arbeidstidSak,
 }: {
     arbeidstid?: ArbeidstidFormValue;
-    arbeidstidSak: K9Arbeidstid;
+    arbeidstidSak: YtelseArbeidstid;
 }): ValidationError | undefined => {
     if (arbeidstid === undefined) {
         return 'ingenEndringer';
@@ -84,10 +88,10 @@ export const validateAktivitetArbeidstid = ({
 };
 
 export const validateFasteArbeidstimerIUke = (
-    fasteDager: TidFasteDager | undefined
+    fasteDager: DurationWeekdays | undefined
 ): ValidationResult<ValidationError> => {
     let error;
-    const timer = fasteDager ? sumTimerFasteDager(fasteDager) : 0;
+    const timer = fasteDager ? summarizeDurationInDurationWeekdays(fasteDager) : 0;
     if (timer === 0) {
         error = 'ingenTidRegistrert';
     }
@@ -102,21 +106,10 @@ export const validateFasteArbeidstimerIUke = (
         : undefined;
 };
 
-export const getArbeidstimerFastDagValidator =
-    (dag: string) =>
-    (time: InputTime): ValidationResult<ValidationError> => {
-        const error = time
-            ? getTimeValidator({ max: { hours: 24, minutes: 0 }, min: { hours: 0, minutes: 0 } })(time)
-            : undefined;
-        if (error) {
-            return {
-                key: `arbeidstidPeriode.fasteDager.dag.${error}`,
-                values: { dag },
-                keepKeyUnaltered: true,
-            };
-        }
-        return undefined;
-    };
+export const getArbeidstimerFastDagValidator = getTimeValidator({
+    max: { hours: 24, minutes: 0 },
+    min: { hours: 0, minutes: 0 },
+});
 
 export const MIN_TIMER_NORMAL_ARBEIDSFORHOLD = 0.01;
 export const MAX_TIMER_NORMAL_ARBEIDSFORHOLD = 100;

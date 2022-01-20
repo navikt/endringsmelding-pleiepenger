@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 import { failure, pending, success } from '@devexperts/remote-data-ts';
@@ -14,16 +14,16 @@ import { sendEndringsmelding } from '../api/sendSoknad';
 import { SKJEMANAVN } from '../App';
 import AppRoutes, { getRouteUrl } from '../config/routeConfig';
 import { Arbeidsgiver } from '../types/Arbeidsgiver';
-import { K9Sak, K9SakMeta } from '../types/K9Sak';
-import { Person } from '../types/Person';
+import { SakMedMeta } from '../types/Sak';
 import { SoknadApiData } from '../types/SoknadApiData';
 import { SoknadFormData } from '../types/SoknadFormData';
 import { SoknadTempStorageData } from '../types/SoknadTempStorageData';
+import { Søker } from '../types/Søker';
 import appSentryLogger from '../utils/appSentryLogger';
 import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 import { getAvailableSteps } from '../utils/getAvailableSteps';
 import { getInitialFormData } from '../utils/initialFormDataUtils';
-import { getNyeArbeidsforholdIkkeRegistrertIK9Sak, harK9SakArbeidstidInfo } from '../utils/k9SakUtils';
+import { harSakArbeidstidInfo } from '../utils/sakUtils';
 import {
     navigateTo,
     navigateToErrorPage,
@@ -38,39 +38,27 @@ import SoknadFormComponents from './SoknadFormComponents';
 import SoknadRoutes from './SoknadRoutes';
 import { getSoknadStepsConfig, StepID } from './soknadStepsConfig';
 import soknadTempStorage, { isStorageDataValid } from './soknadTempStorage';
+import { useEffectOnce } from '../hooks/useEffectOnce';
 
 interface Props {
-    søker: Person;
+    søker: Søker;
     arbeidsgivere: Arbeidsgiver[];
-    k9sak: K9Sak;
-    k9sakMeta: K9SakMeta;
-    soknadTempStorage: SoknadTempStorageData;
+    sakMedMeta: SakMedMeta;
+    tempStorage: SoknadTempStorageData;
     route?: string;
 }
 
 type resetFormFunc = () => void;
 
-const Soknad: React.FunctionComponent<Props> = ({
-    søker,
-    soknadTempStorage: tempStorage,
-    arbeidsgivere,
-    k9sak,
-    k9sakMeta,
-}) => {
+const Soknad: React.FunctionComponent<Props> = ({ søker, tempStorage, arbeidsgivere, sakMedMeta }) => {
     const history = useHistory();
     const [initializing, setInitializing] = useState(true);
     const intl = useIntl();
 
     const [sendSoknadStatus, setSendSoknadStatus] = useState<SendSoknadStatus>(initialSendSoknadState);
     const [soknadId, setSoknadId] = useState<string | undefined>();
-    const [nyeArbeidsforhold, setNyeArbeidsforhold] = useState<Arbeidsgiver[]>([]);
 
-    const {
-        ytelse: {
-            søknadsperioder: k9søknadsperioder,
-            opptjeningAktivitet: { arbeidstaker: k9arbeidstaker },
-        },
-    } = k9sak;
+    const { sak } = sakMedMeta;
 
     const { logSoknadStartet, logSoknadFailed, logHendelse, logUserLoggedOut } = useAmplitudeInstance();
 
@@ -103,13 +91,12 @@ const Soknad: React.FunctionComponent<Props> = ({
         await resetSoknad();
         const sId = ulid();
         setSoknadId(sId);
-        const firstStep = getAvailableSteps(values, søker, nyeArbeidsforhold)[0];
+        const firstStep = getAvailableSteps(values)[0];
         if (isFeatureEnabled(Feature.PERSISTENCE)) {
             await soknadTempStorage.create();
             await soknadTempStorage.update(sId, { ...values }, firstStep, {
                 søker,
-                arbeidsgivere,
-                k9søknadsperioder: k9søknadsperioder,
+                sak,
             });
         }
         await logSoknadStartet(SKJEMANAVN);
@@ -122,8 +109,7 @@ const Soknad: React.FunctionComponent<Props> = ({
         if (isFeatureEnabled(Feature.PERSISTENCE)) {
             await soknadTempStorage.update(sId, values, stepID, {
                 søker,
-                arbeidsgivere,
-                k9søknadsperioder: k9søknadsperioder,
+                sak,
             });
         }
         await logHendelse(ApplikasjonHendelse.fortsettSenere);
@@ -159,7 +145,7 @@ const Soknad: React.FunctionComponent<Props> = ({
     };
 
     const triggerSend = async (apiValues: SoknadApiData, resetForm: resetFormFunc): Promise<void> => {
-        const apiDataIsValid = verifySoknadApiData(apiValues, k9sak);
+        const apiDataIsValid = verifySoknadApiData(apiValues, sakMedMeta.sak);
         if (apiDataIsValid) {
             setTimeout(() => {
                 setSendSoknadStatus({ ...sendSoknadStatus, status: pending });
@@ -183,8 +169,7 @@ const Soknad: React.FunctionComponent<Props> = ({
                 if (isFeatureEnabled(Feature.PERSISTENCE)) {
                     await soknadTempStorage.update(soknadId, values, nextStep, {
                         søker,
-                        arbeidsgivere,
-                        k9søknadsperioder: k9søknadsperioder,
+                        sak,
                     });
                 }
             } catch (error) {
@@ -201,15 +186,15 @@ const Soknad: React.FunctionComponent<Props> = ({
         });
     };
 
-    useEffect(() => {
-        const arbeidsforholdIkkeIK9sak = getNyeArbeidsforholdIkkeRegistrertIK9Sak(arbeidsgivere, k9arbeidstaker);
-        if (arbeidsforholdIkkeIK9sak.length > 0) {
-            setNyeArbeidsforhold(arbeidsforholdIkkeIK9sak);
-        }
-    }, [arbeidsgivere, k9arbeidstaker]);
+    // useEffect(() => {
+    //     const arbeidsforholdIkkeISsak = getNyeArbeidsforholdIkkeRegistrertISak(arbeidsgivere, []);
+    //     if (arbeidsforholdIkkeISsak.length > 0) {
+    //         setNyeArbeidsforhold(arbeidsforholdIkkeISsak);
+    //     }
+    // }, [arbeidsgivere]);
 
-    useEffect(() => {
-        if (isStorageDataValid(tempStorage, { søker, arbeidsgivere, k9søknadsperioder })) {
+    useEffectOnce(() => {
+        if (isStorageDataValid(tempStorage, { søker, sak })) {
             setSoknadId(tempStorage.metadata.soknadId);
             const currentRoute = history.location.pathname;
             const lastStepRoute = soknadStepUtils.getStepRoute(
@@ -230,27 +215,30 @@ const Soknad: React.FunctionComponent<Props> = ({
         } else {
             resetSoknad(history.location.pathname !== AppRoutes.SOKNAD);
         }
-    }, [history, tempStorage, søker, arbeidsgivere, k9søknadsperioder]);
+    });
 
     return (
         <LoadWrapper
             isLoading={initializing}
             contentRenderer={(): React.ReactNode => {
-                if (harK9SakArbeidstidInfo(arbeidsgivere, k9sak.ytelse.arbeidstid) === false) {
+                if (harSakArbeidstidInfo(arbeidsgivere, sakMedMeta.sak.ytelse.arbeidstid) === false) {
+                    appSentryLogger.logError(
+                        'harSakArbeidstidInfo - info om arbeidstid mangler eller usynk mellom aareg og sak'
+                    );
                     return (
                         <ErrorPage
                             bannerTitle={intlHelper(intl, 'application.title')}
-                            contentRenderer={() => <>Informasjon om arbeidstid mangler</>}
+                            contentRenderer={() => <>Informasjon om arbeidstid mangler - usynk mellom aareg og sak</>}
                         />
                     );
                 }
-                const initialData = getInitialFormData(k9sak, søker, arbeidsgivere, tempStorage);
+                const initialData = getInitialFormData(sakMedMeta.sak, søker, tempStorage);
                 return (
                     <SoknadFormComponents.FormikWrapper
                         initialValues={initialData}
                         onSubmit={() => null}
                         renderForm={({ values, resetForm }) => {
-                            const soknadStepsConfig = getSoknadStepsConfig(values, nyeArbeidsforhold);
+                            const soknadStepsConfig = getSoknadStepsConfig(values);
                             return (
                                 <SoknadContextProvider
                                     value={{
@@ -275,9 +263,7 @@ const Soknad: React.FunctionComponent<Props> = ({
                                         soknadId={soknadId}
                                         søker={søker}
                                         arbeidsgivere={arbeidsgivere}
-                                        k9sak={k9sak}
-                                        k9sakMeta={k9sakMeta}
-                                        nyeArbeidsforhold={nyeArbeidsforhold}
+                                        sakMedMeta={sakMedMeta}
                                     />
                                 </SoknadContextProvider>
                             );

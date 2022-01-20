@@ -18,9 +18,15 @@
         "suppressImplicitAnyIndexErrors": true,
         "noUnusedLocals": true,
         "esModuleInterop": true,
-        "baseUrl": "./src",
-
-        "typeRoots": ["./node_modules/@types", "./src/@types"]
+        "baseUrl": "src/app",
+        "typeRoots": ["./node_modules/@types", "./src/@types"],
+        "paths": {
+            "utils": ["src/app/utils"],
+            "types": ["src/app/types"],
+            "components": ["src/app/components"],
+            "soknad": ["src/app/soknad"]
+        }
     },
+    "include": ["src/app"],
     "exclude": ["node_modules", "src/build", "**.js", "dist"]
 }

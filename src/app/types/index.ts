@@ -1,6 +1,6 @@
-export type ISODateRange = string;
-export type ISODuration = string;
-export type ISODate = string;
+import { ISODate } from '@navikt/sif-common-utils';
+
+export { ISODate, ISODateRange, ISODuration } from '@navikt/sif-common-utils';
 
 export type DagerIkkeSøktForMap = { [key: ISODate]: true };
 

@@ -1,6 +1,5 @@
 export enum Feature {
     'PERSISTENCE' = 'PERSISTENCE',
-    'FAKE_API_KALL' = 'FAKE_API_KALL',
 }
 
 export const isFeatureEnabled = (feature: Feature) => {

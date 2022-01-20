@@ -1,21 +1,19 @@
 import persistence, { PersistenceInterface } from '@navikt/sif-common-core/lib/utils/persistence/persistence';
-import { DateRange } from '@navikt/sif-common-formik/lib';
 import { AxiosResponse } from 'axios';
 import hash from 'object-hash';
 import { axiosConfigPsb } from '../api/api';
-import { ApiEndpointPsb } from '../types/ApiEndpoint';
-import { Arbeidsgiver } from '../types/Arbeidsgiver';
-import { Person } from '../types/Person';
+import { ApiEndpointPsb } from '../api/endpoints';
+import { Sak } from '../types/Sak';
 import { SoknadFormData } from '../types/SoknadFormData';
 import { SoknadTempStorageData } from '../types/SoknadTempStorageData';
+import { Søker } from '../types/Søker';
 import { StepID } from './soknadStepsConfig';
 
 export const STORAGE_VERSION = '2.1';
 
 export interface UserHashInfo {
-    søker: Person;
-    arbeidsgivere: Arbeidsgiver[] | undefined;
-    k9søknadsperioder: DateRange[];
+    søker: Søker;
+    sak: Sak;
 }
 
 interface SoknadTemporaryStorage extends Omit<PersistenceInterface<SoknadTempStorageData>, 'update'> {
@@ -32,21 +30,22 @@ const persistSetup = persistence<SoknadTempStorageData>({
     requestConfig: { ...axiosConfigPsb },
 });
 
-export const isStorageDataValid = (
-    data: SoknadTempStorageData,
-    userHashInfo: UserHashInfo
-): SoknadTempStorageData | undefined => {
+export const isStorageDataValid = (data: SoknadTempStorageData, userHashInfo: UserHashInfo): boolean => {
     if (
         data?.metadata?.version === STORAGE_VERSION &&
         data?.metadata.lastStepID !== undefined &&
         data.formData !== undefined &&
-        data.metadata.soknadId !== undefined &&
-        JSON.stringify(data.formData) !== JSON.stringify({}) &&
-        hash(userHashInfo) === data.metadata.userHash
+        data.metadata.soknadId !== undefined
     ) {
-        return data;
+        if (JSON.stringify(data.formData) === JSON.stringify({})) {
+            return false;
+        }
+        if (hash(userHashInfo) !== data.metadata.userHash) {
+            return false;
+        }
+        return true;
     }
-    return undefined;
+    return false;
 };
 
 const soknadTempStorage: SoknadTemporaryStorage = {

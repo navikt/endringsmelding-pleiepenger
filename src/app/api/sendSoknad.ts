@@ -1,4 +1,4 @@
-import { ApiEndpointPsb } from '../types/ApiEndpoint';
+import { ApiEndpointPsb } from './endpoints';
 import { SoknadApiData } from '../types/SoknadApiData';
 import api from './api';
 

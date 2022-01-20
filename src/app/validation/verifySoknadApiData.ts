@@ -1,13 +1,7 @@
-import {
-    ArbeidstakerK9FormatInnsending,
-    ArbeidstidDagK9FormatInnsending,
-    ArbeidstidK9FormatInnsending,
-} from '../types/k9FormatInnsending';
-import { K9ArbeidstakerMap, K9Arbeidstid, K9Sak } from '../types/K9Sak';
+import { DateDurationMap, durationToISODuration, ISODateRangeToISODates } from '@navikt/sif-common-utils';
+import { ArbeidstakerApiData, ArbeidstidDagKApiData, ArbeidstidApiData } from '../types/YtelseApiData';
+import { ArbeidstakerMap, YtelseArbeidstid, Sak } from '../types/Sak';
 import { SoknadApiData, SoknadApiDataField } from '../types/SoknadApiData';
-import { TidEnkeltdag } from '../types/SoknadFormData';
-import { ISODateRangeToISODates } from '../utils/dateUtils';
-import { timeToISODuration } from '../utils/timeUtils';
 
 type ApiDataVerification<ApiData> = (values: ApiData) => boolean;
 
@@ -33,21 +27,21 @@ const runVerification = (keys: string[], values: SoknadApiData): SoknadApiDataFi
 };
 
 export const erNormalarbeidstidEndretForPerioder = (
-    apiPerioder: ArbeidstidDagK9FormatInnsending,
-    k9normaltid: TidEnkeltdag
+    apiPerioder: ArbeidstidDagKApiData,
+    k9normaltid: DateDurationMap
 ): boolean => {
     const harDagerSomHarUlikeNormalarbeidstid = Object.keys(apiPerioder).some((isoPeriode) => {
         const { from } = ISODateRangeToISODates(isoPeriode);
         const apiNormaltid = apiPerioder[isoPeriode];
-        const k9IsoNormaltid = timeToISODuration(k9normaltid[from]);
+        const k9IsoNormaltid = durationToISODuration(k9normaltid[from]);
         return apiNormaltid === undefined || apiNormaltid.jobberNormaltTimerPerDag !== k9IsoNormaltid;
     });
     return harDagerSomHarUlikeNormalarbeidstid;
 };
 
 export const erNormalarbeidstidEndretForArbeidstaker = (
-    arbeidstakerList: ArbeidstakerK9FormatInnsending[],
-    arbeidstakerMap?: K9ArbeidstakerMap
+    arbeidstakerList: ArbeidstakerApiData[],
+    arbeidstakerMap?: ArbeidstakerMap
 ): boolean => {
     if (arbeidstakerMap === undefined) {
         return true;
@@ -61,8 +55,8 @@ export const erNormalarbeidstidEndretForArbeidstaker = (
 };
 
 export const erNormalarbeidstidEndret = (
-    arbeidstidApiValues: ArbeidstidK9FormatInnsending,
-    { arbeidstakerMap, frilanser, selvstendig }: K9Arbeidstid
+    arbeidstidApiValues: ArbeidstidApiData,
+    { arbeidstakerMap, frilanser, selvstendig }: YtelseArbeidstid
 ): boolean => {
     const { arbeidstakerList, frilanserArbeidstidInfo, selvstendigNæringsdrivendeArbeidstidInfo } = arbeidstidApiValues;
 
@@ -89,7 +83,7 @@ export const erNormalarbeidstidEndret = (
 
 export const verifySoknadApiData = (
     apiData: SoknadApiData | undefined,
-    k9sak: K9Sak
+    sak: Sak
 ): { isValid: boolean; errors: string[] } => {
     if (apiData === undefined) {
         return {
@@ -99,7 +93,7 @@ export const verifySoknadApiData = (
     }
     const errors = runVerification(Object.keys(SoknadApiDataField), apiData);
     if (apiData.ytelse.arbeidstid) {
-        if (erNormalarbeidstidEndret(apiData.ytelse.arbeidstid, k9sak.ytelse.arbeidstid)) {
+        if (erNormalarbeidstidEndret(apiData.ytelse.arbeidstid, sak.ytelse.arbeidstid)) {
             errors.push(SoknadApiDataField.arbeidstid);
         }
     }

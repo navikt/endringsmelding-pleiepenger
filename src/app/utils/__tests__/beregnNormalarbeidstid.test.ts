@@ -1,4 +1,4 @@
-import { beregNormalarbeidstid as beregnNormalarbeidstid } from '../beregnNormalarbeidstidUtils';
+import { beregNormalarbeidstidUtFraUkesnitt as beregnNormalarbeidstid } from '../beregnNormalarbeidstidUtils';
 
 describe('beregNormalarbeidstid', () => {
     it('håndterer tid med punktum', () => {

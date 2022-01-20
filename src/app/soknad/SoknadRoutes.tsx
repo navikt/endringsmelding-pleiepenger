@@ -13,8 +13,10 @@ import AppRoutes from '../config/routeConfig';
 import usePersistSoknad from '../hooks/usePersistSoknad';
 import KvitteringPage from '../pages/kvittering-page/KvitteringPage';
 import { Arbeidsgiver } from '../types/Arbeidsgiver';
-import { Person } from '../types/Person';
+import { SakMedMeta } from '../types/Sak';
 import { SoknadFormData } from '../types/SoknadFormData';
+import { Søker } from '../types/Søker';
+import appSentryLogger from '../utils/appSentryLogger';
 import { getAvailableSteps } from '../utils/getAvailableSteps';
 import { mapFormDataToK9Format } from '../utils/map-form-data-to-api-data/mapFormDataToK9Format';
 import ArbeidstidStep from './arbeidstid-step/ArbeidstidStep';
@@ -23,31 +25,22 @@ import OppsummeringStep from './oppsummering-step/OppsummeringStep';
 import { useSoknadContext } from './SoknadContext';
 import { StepID } from './soknadStepsConfig';
 import VelkommenPage from './velkommen-page/VelkommenPage';
-import { K9Sak, K9SakMeta } from '../types/K9Sak';
-import ArbeidssituasjonStep from './arbeidssituasjon-step/ArbeidssituasjonStep';
 
 interface Props {
     soknadId?: string;
-    søker: Person;
+    søker: Søker;
     arbeidsgivere?: Arbeidsgiver[];
-    k9sak: K9Sak;
-    k9sakMeta: K9SakMeta;
-    nyeArbeidsforhold: Arbeidsgiver[];
+    sakMedMeta: SakMedMeta;
 }
 
-const SoknadRoutes: React.FunctionComponent<Props> = ({
-    soknadId,
-    søker,
-    arbeidsgivere,
-    k9sak,
-    k9sakMeta,
-    nyeArbeidsforhold,
-}) => {
+const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, arbeidsgivere, sakMedMeta }) => {
     const intl = useIntl();
     const { values } = useFormikContext<SoknadFormData>();
-    const availableSteps = getAvailableSteps(values, søker, nyeArbeidsforhold);
+    const availableSteps = getAvailableSteps(values);
     const { soknadStepsConfig, sendSoknadStatus } = useSoknadContext();
     const { persist } = usePersistSoknad();
+
+    const { sak, meta: sakMeta } = sakMedMeta;
 
     const [persistRequest, setPersistRequest] = useState<{ stepID: StepID } | undefined>();
 
@@ -57,25 +50,21 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({
                 setPersistRequest(undefined);
                 persist(soknadId, persistRequest.stepID, {
                     søker,
-                    arbeidsgivere,
-                    k9søknadsperioder: k9sak.ytelse.søknadsperioder,
+                    sak,
                 });
             }
         }
-    }, [soknadId, persistRequest, persist, søker, arbeidsgivere, k9sak]);
+    }, [soknadId, persistRequest, persist, søker, sak, arbeidsgivere]);
 
-    const renderSoknadStep = (soknadId: string, søker: Person, stepID: StepID): React.ReactNode => {
+    const renderSoknadStep = (soknadId: string, søker: Søker, stepID: StepID): React.ReactNode => {
         switch (stepID) {
-            case StepID.ARBEIDSSITUASJON:
-                return <ArbeidssituasjonStep nyeArbeidsforhold={nyeArbeidsforhold} />;
             case StepID.ARBEIDSTID:
                 return (
                     <ArbeidstidStep
                         arbeidsgivere={arbeidsgivere}
                         arbeidstidSøknad={values.arbeidstid}
-                        arbeidstidSak={k9sak.ytelse.arbeidstid}
-                        k9sakMeta={k9sakMeta}
-                        nyeArbeidsforhold={nyeArbeidsforhold}
+                        arbeidstidSak={sak.ytelse.arbeidstid}
+                        sakMetadata={sakMeta}
                         onArbeidstidChanged={() => {
                             setPersistRequest({ stepID: StepID.ARBEIDSTID });
                         }}
@@ -84,30 +73,37 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({
             case StepID.OMSORGSTILBUD:
                 return (
                     <OmsorgstilbudStep
-                        k9sakMeta={k9sakMeta}
-                        tidIOmsorgstilbudSak={k9sak.ytelse.tilsynsordning.enkeltdager}
+                        sakMetadata={sakMeta}
+                        tidIOmsorgstilbudSak={sak.ytelse.tilsynsordning.enkeltdager}
                         onOmsorgstilbudChanged={() => {
                             setPersistRequest({ stepID: StepID.OMSORGSTILBUD });
                         }}
                     />
                 );
             case StepID.OPPSUMMERING:
-                const apiValues = mapFormDataToK9Format(
-                    {
-                        soknadId: soknadId,
-                        locale: intl.locale,
-                        formData: values,
-                    },
-                    k9sak.ytelse.søknadsperioder,
-                    k9sak
-                );
-                return (
+                let apiValues = undefined;
+                try {
+                    apiValues = mapFormDataToK9Format(
+                        {
+                            soknadId: soknadId,
+                            locale: intl.locale,
+                            formData: values,
+                        },
+                        sak.ytelse.søknadsperioder,
+                        sak
+                    );
+                } catch (error) {
+                    appSentryLogger.logError('mapFormDataToK9Format', error);
+                }
+                return apiValues ? (
                     <OppsummeringStep
                         arbeidsgivere={arbeidsgivere || []}
                         apiValues={apiValues}
-                        k9sak={k9sak}
+                        sak={sak}
                         hvaSkalEndres={values.hvaSkalEndres}
                     />
+                ) : (
+                    <ErrorPage />
                 );
         }
     };
@@ -137,7 +133,7 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({
                 />
             </Route>
             <Route path={AppRoutes.SOKNAD} exact={true}>
-                <VelkommenPage nyeArbeidsforhold={nyeArbeidsforhold} />
+                <VelkommenPage />
             </Route>
             {soknadId === undefined && <Redirect key="redirectToWelcome" to={AppRoutes.SOKNAD} />}
             {soknadId &&
