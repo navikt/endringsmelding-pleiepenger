@@ -7,8 +7,8 @@ import {
     getDatesInDateRange,
     getDurationsInDateRange,
     getYearMonthKey,
-    isDateInDates,
     ISODateToDate,
+    isValidDuration,
 } from '@navikt/sif-common-utils';
 import { useFormikContext } from 'formik';
 import { ArbeidstidEnkeltdagSak, SakMetadata } from '../../types/Sak';
@@ -49,22 +49,21 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
     const { setFieldValue } = useFormikContext<SoknadFormData>();
 
     const månedContentRenderer = (måned: DateRange) => {
-        const dagerSøknad = getDurationsInDateRange(arbeidstidEnkeltdagSøknad.faktisk, måned);
         const dagerSak = getDurationsInDateRange(arbeidstidSak.faktisk, måned);
-        const datoerSomIkkeErTilgjengelig = getDatoerSomIkkeErTilgjengeligIMåned(måned, sakMetadata, dagerSak);
+        const dagerSøknad = getDurationsInDateRange(arbeidstidEnkeltdagSøknad.faktisk, måned);
+        const datoerSomIkkeErTilgjengeligIMåned = getDatoerSomIkkeErTilgjengeligIMåned(måned, sakMetadata, dagerSak);
 
         const handleOnEnkeltdagChange = ({ dagerMedTid }: TidEnkeltdagEndring) => {
             const newValues: DateDurationMap = { ...arbeidstidEnkeltdagSøknad.faktisk };
             Object.keys(dagerMedTid).forEach((key) => {
-                const dagErTilgjengelig = isDateInDates(ISODateToDate(key), datoerSomIkkeErTilgjengelig) === false;
-                if (dagErTilgjengelig) {
+                const dagHarTidISak = isValidDuration(dagerSak[key]);
+                if (dagHarTidISak) {
                     newValues[key] = dagerMedTid[key];
                 }
             });
             setFieldValue(formFieldName as any, newValues);
             onArbeidstidChanged ? onArbeidstidChanged(newValues) : undefined;
         };
-
         return (
             <ArbeidstidMåned
                 arbeidsstedNavn={arbeidsstedNavn}
@@ -72,7 +71,7 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
                 dagerSak={dagerSak}
                 dagerSøknad={dagerSøknad}
                 endringsperiode={sakMetadata.endringsperiode}
-                utilgjengeligeDatoer={datoerSomIkkeErTilgjengelig}
+                utilgjengeligeDatoer={datoerSomIkkeErTilgjengeligIMåned}
                 månedTittelHeadingLevel={sakMetadata.søknadsperioderGårOverFlereÅr ? 4 : 3}
                 arbeidsforholdType={arbeidsforholdType}
                 onEnkeltdagChange={handleOnEnkeltdagChange}

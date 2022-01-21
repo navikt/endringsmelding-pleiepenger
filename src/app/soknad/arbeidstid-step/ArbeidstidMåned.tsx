@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
+import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { ArbeidsforholdType, ArbeidstidEnkeltdagDialog, TidsbrukKalender } from '@navikt/sif-common-pleiepenger';
 import { TidEnkeltdagEndring } from '@navikt/sif-common-pleiepenger/lib/tid-enkeltdag-dialog/TidEnkeltdagForm';
 import { DateDurationMap, DateRange, dateToISODate, Duration, durationsAreEqual } from '@navikt/sif-common-utils';
 import dayjs from 'dayjs';
+import Alertstripe from 'nav-frontend-alertstriper';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import { Element } from 'nav-frontend-typografi';
 
@@ -38,6 +40,7 @@ const ArbeidstidMåned: React.FunctionComponent<Props> = ({
         return durationsAreEqual(dagerSak[key], dagerSøknad[key]) === false;
     });
 
+    const harArbeidstidISak = Object.keys(dagerSak).length > 0;
     return (
         <Ekspanderbartpanel
             renderContentWhenClosed={false}
@@ -52,18 +55,27 @@ const ArbeidstidMåned: React.FunctionComponent<Props> = ({
                     {harEndringer && ' (endret)'}
                 </Element>
             }>
-            <TidsbrukKalender
-                periode={måned}
-                dager={dagerSøknad}
-                dagerOpprinnelig={dagerSak}
-                utilgjengeligeDatoer={utilgjengeligeDatoer}
-                skjulTommeDagerIListe={true}
-                visEndringsinformasjon={true}
-                onDateClick={(dato) => {
-                    const tid = dagerSøknad[dateToISODate(dato)];
-                    setEditDate({ dato, tid });
-                }}
-            />
+            {harArbeidstidISak ? (
+                <TidsbrukKalender
+                    periode={måned}
+                    dager={dagerSøknad}
+                    dagerOpprinnelig={dagerSak}
+                    utilgjengeligeDatoer={utilgjengeligeDatoer}
+                    skjulTommeDagerIListe={true}
+                    visEndringsinformasjon={true}
+                    onDateClick={(dato) => {
+                        const tid = dagerSøknad[dateToISODate(dato)];
+                        setEditDate({ dato, tid });
+                    }}
+                />
+            ) : (
+                <Box margin="l" padBottom="s">
+                    <Alertstripe type="info" form="inline">
+                        Saken inneholder ikke informasjon om hvor mye du jobber normalt i denne perioden. Du kan da ikke
+                        endre arbeidstid for denne perioden.
+                    </Alertstripe>
+                </Box>
+            )}
             {editDate && onEnkeltdagChange && (
                 <ArbeidstidEnkeltdagDialog
                     isOpen={editDate !== undefined}
