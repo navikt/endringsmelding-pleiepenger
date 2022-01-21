@@ -40,6 +40,7 @@ const ArbeidstidAktivitet: React.FunctionComponent<Props> = ({
                     formFieldName={formFieldName}
                     arbeidsstedNavn={arbeidsstedNavn}
                     endringsperiode={sakMetadata.endringsperiode}
+                    onArbeidstidChanged={onArbeidstidChanged}
                 />
             </Box>
             <ArbeidstidMånedListe
