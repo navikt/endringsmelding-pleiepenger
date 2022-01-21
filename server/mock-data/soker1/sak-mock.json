@@ -1,0 +1,348 @@
+[
+    {
+        "barn": {
+            "fødselsdato": "2005-02-12",
+            "fornavn": "TVILSOM",
+            "mellomnavn": null,
+            "etternavn": "KNOTT",
+            "aktørId": "2829719526754",
+            "identitetsnummer": "12020567099"
+        },
+        "søknad": {
+            "søknadId": "generert",
+            "versjon": "1.0.0.",
+            "mottattDato": "2022-01-21T10:00:12.471Z",
+            "søker": { "norskIdentitetsnummer": "00000000000" },
+            "ytelse": {
+                "type": "PLEIEPENGER_SYKT_BARN",
+                "barn": { "norskIdentitetsnummer": "00000000000", "fødselsdato": null },
+                "søknadsperiode": ["2021-11-01/2021-12-31"],
+                "endringsperiode": [],
+                "trekkKravPerioder": [],
+                "opptjeningAktivitet": {},
+                "dataBruktTilUtledning": null,
+                "infoFraPunsj": null,
+                "bosteder": { "perioder": {}, "perioderSomSkalSlettes": {} },
+                "utenlandsopphold": { "perioder": {}, "perioderSomSkalSlettes": {} },
+                "beredskap": { "perioder": {}, "perioderSomSkalSlettes": {} },
+                "nattevåk": { "perioder": {}, "perioderSomSkalSlettes": {} },
+                "tilsynsordning": {
+                    "perioder": {
+                        "2021-11-01/2021-11-01": { "etablertTilsynTimerPerDag": "PT4H" },
+                        "2021-11-09/2021-11-09": { "etablertTilsynTimerPerDag": "PT4H" },
+                        "2021-11-17/2021-11-17": { "etablertTilsynTimerPerDag": "PT4H30M" },
+                        "2021-11-30/2021-11-30": { "etablertTilsynTimerPerDag": "PT7H30M" },
+                        "2021-12-01/2021-12-16": { "etablertTilsynTimerPerDag": "PT0S" },
+                        "2021-12-17/2021-12-17": { "etablertTilsynTimerPerDag": "PT2H" },
+                        "2021-12-20/2021-12-23": { "etablertTilsynTimerPerDag": "PT7H" },
+                        "2021-12-24/2021-12-24": { "etablertTilsynTimerPerDag": "PT2H" },
+                        "2021-12-27/2021-12-30": { "etablertTilsynTimerPerDag": "PT7H" },
+                        "2021-12-31/2021-12-31": { "etablertTilsynTimerPerDag": "PT2H" }
+                    }
+                },
+                "lovbestemtFerie": { "perioder": {} },
+                "arbeidstid": {
+                    "arbeidstakerList": [
+                        {
+                            "norskIdentitetsnummer": null,
+                            "organisasjonsnummer": "805824352",
+                            "arbeidstidInfo": {
+                                "perioder": {
+                                    "2021-11-01/2021-11-01": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    },
+                                    "2021-11-02/2021-11-02": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT2H"
+                                    },
+                                    "2021-11-03/2021-11-03": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    },
+                                    "2021-11-04/2021-11-04": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT7H30M"
+                                    },
+                                    "2021-11-05/2021-11-05": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    },
+                                    "2021-11-08/2021-11-08": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    },
+                                    "2021-11-09/2021-11-09": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT2H"
+                                    },
+                                    "2021-11-10/2021-11-10": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    },
+                                    "2021-11-11/2021-11-11": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT7H30M"
+                                    },
+                                    "2021-11-12/2021-11-12": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    },
+                                    "2021-11-15/2021-11-15": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    },
+                                    "2021-11-16/2021-11-16": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT2H"
+                                    },
+                                    "2021-11-17/2021-11-17": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    },
+                                    "2021-11-18/2021-11-18": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT7H30M"
+                                    },
+                                    "2021-11-19/2021-11-19": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    },
+                                    "2021-11-22/2021-11-22": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    },
+                                    "2021-11-23/2021-11-23": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT2H"
+                                    },
+                                    "2021-11-24/2021-11-24": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    },
+                                    "2021-11-25/2021-11-25": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT7H30M"
+                                    },
+                                    "2021-11-26/2021-11-26": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    },
+                                    "2021-11-29/2021-11-29": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    },
+                                    "2021-11-30/2021-11-30": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT2H"
+                                    },
+                                    "2021-12-01/2021-12-01": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    },
+                                    "2021-12-02/2021-12-02": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT7H30M"
+                                    },
+                                    "2021-12-03/2021-12-03": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    },
+                                    "2021-12-06/2021-12-06": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    },
+                                    "2021-12-07/2021-12-07": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT2H"
+                                    },
+                                    "2021-12-08/2021-12-08": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    },
+                                    "2021-12-09/2021-12-09": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT7H30M"
+                                    },
+                                    "2021-12-10/2021-12-10": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    },
+                                    "2021-12-13/2021-12-13": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    },
+                                    "2021-12-14/2021-12-14": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT2H"
+                                    },
+                                    "2021-12-15/2021-12-15": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    },
+                                    "2021-12-16/2021-12-16": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT7H30M"
+                                    },
+                                    "2021-12-17/2021-12-20": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    },
+                                    "2021-12-21/2021-12-21": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT2H"
+                                    },
+                                    "2021-12-22/2021-12-22": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    },
+                                    "2021-12-23/2021-12-23": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT7H30M"
+                                    },
+                                    "2021-12-24/2021-12-27": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    },
+                                    "2021-12-28/2021-12-28": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT2H"
+                                    },
+                                    "2021-12-29/2021-12-29": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    },
+                                    "2021-12-30/2021-12-30": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT7H30M"
+                                    },
+                                    "2021-12-31/2021-12-31": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "norskIdentitetsnummer": null,
+                            "organisasjonsnummer": "839942907",
+                            "arbeidstidInfo": {
+                                "perioder": {
+                                    "2021-11-01/2021-11-30": {
+                                        "jobberNormaltTimerPerDag": "PT0S",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    },
+                                    "2021-12-01/2021-12-16": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    },
+                                    "2021-12-17/2021-12-31": {
+                                        "jobberNormaltTimerPerDag": "PT0S",
+                                        "faktiskArbeidTimerPerDag": "PT0S"
+                                    }
+                                }
+                            }
+                        }
+                    ],
+                    "frilanserArbeidstidInfo": {
+                        "perioder": {
+                            "2021-11-01/2021-11-05": {
+                                "jobberNormaltTimerPerDag": "PT8H",
+                                "faktiskArbeidTimerPerDag": "PT0S"
+                            },
+                            "2021-11-08/2021-11-12": {
+                                "jobberNormaltTimerPerDag": "PT8H",
+                                "faktiskArbeidTimerPerDag": "PT0S"
+                            },
+                            "2021-11-15/2021-11-19": {
+                                "jobberNormaltTimerPerDag": "PT8H",
+                                "faktiskArbeidTimerPerDag": "PT0S"
+                            },
+                            "2021-11-22/2021-11-26": {
+                                "jobberNormaltTimerPerDag": "PT8H",
+                                "faktiskArbeidTimerPerDag": "PT0S"
+                            },
+                            "2021-11-29/2021-11-30": {
+                                "jobberNormaltTimerPerDag": "PT8H",
+                                "faktiskArbeidTimerPerDag": "PT0S"
+                            },
+                            "2021-12-01/2021-12-03": {
+                                "jobberNormaltTimerPerDag": "PT8H",
+                                "faktiskArbeidTimerPerDag": "PT7H"
+                            },
+                            "2021-12-06/2021-12-10": {
+                                "jobberNormaltTimerPerDag": "PT8H",
+                                "faktiskArbeidTimerPerDag": "PT7H"
+                            },
+                            "2021-12-13/2021-12-16": {
+                                "jobberNormaltTimerPerDag": "PT8H",
+                                "faktiskArbeidTimerPerDag": "PT7H"
+                            },
+                            "2021-12-17/2021-12-31": {
+                                "jobberNormaltTimerPerDag": "PT8H",
+                                "faktiskArbeidTimerPerDag": "PT0S"
+                            }
+                        }
+                    },
+                    "selvstendigNæringsdrivendeArbeidstidInfo": {
+                        "perioder": {
+                            "2021-11-01/2021-11-05": {
+                                "jobberNormaltTimerPerDag": "PT8H",
+                                "faktiskArbeidTimerPerDag": "PT0S"
+                            },
+                            "2021-11-08/2021-11-12": {
+                                "jobberNormaltTimerPerDag": "PT8H",
+                                "faktiskArbeidTimerPerDag": "PT0S"
+                            },
+                            "2021-11-15/2021-11-15": {
+                                "jobberNormaltTimerPerDag": "PT8H",
+                                "faktiskArbeidTimerPerDag": "PT0S"
+                            },
+                            "2021-11-16/2021-11-16": {
+                                "jobberNormaltTimerPerDag": "PT8H",
+                                "faktiskArbeidTimerPerDag": "PT4H"
+                            },
+                            "2021-11-17/2021-11-19": {
+                                "jobberNormaltTimerPerDag": "PT8H",
+                                "faktiskArbeidTimerPerDag": "PT0S"
+                            },
+                            "2021-11-22/2021-11-22": {
+                                "jobberNormaltTimerPerDag": "PT8H",
+                                "faktiskArbeidTimerPerDag": "PT0S"
+                            },
+                            "2021-11-23/2021-11-23": {
+                                "jobberNormaltTimerPerDag": "PT8H",
+                                "faktiskArbeidTimerPerDag": "PT4H"
+                            },
+                            "2021-11-24/2021-11-26": {
+                                "jobberNormaltTimerPerDag": "PT8H",
+                                "faktiskArbeidTimerPerDag": "PT0S"
+                            },
+                            "2021-11-29/2021-11-29": {
+                                "jobberNormaltTimerPerDag": "PT8H",
+                                "faktiskArbeidTimerPerDag": "PT0S"
+                            },
+                            "2021-11-30/2021-11-30": {
+                                "jobberNormaltTimerPerDag": "PT8H",
+                                "faktiskArbeidTimerPerDag": "PT4H"
+                            },
+                            "2021-12-01/2021-12-16": {
+                                "jobberNormaltTimerPerDag": "PT4H24M",
+                                "faktiskArbeidTimerPerDag": "PT0S"
+                            },
+                            "2021-12-17/2021-12-31": {
+                                "jobberNormaltTimerPerDag": "PT8H",
+                                "faktiskArbeidTimerPerDag": "PT0S"
+                            }
+                        }
+                    }
+                },
+                "uttak": { "perioder": {} },
+                "omsorg": { "relasjonTilBarnet": null, "beskrivelseAvOmsorgsrollen": null }
+            },
+            "språk": "nb",
+            "journalposter": [],
+            "begrunnelseForInnsending": { "tekst": null }
+        }
+    }
+]

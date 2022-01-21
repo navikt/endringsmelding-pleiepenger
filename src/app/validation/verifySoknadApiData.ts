@@ -66,12 +66,12 @@ export const erNormalarbeidstidEndret = (
     const harEndretNormalarbeidstidFrilanser =
         frilanserArbeidstidInfo !== undefined &&
         frilanser !== undefined &&
-        erNormalarbeidstidEndretForPerioder(frilanserArbeidstidInfo.perioder, frilanser.faktisk) === true;
+        erNormalarbeidstidEndretForPerioder(frilanserArbeidstidInfo.perioder, frilanser.normalt) === true;
 
     const harEndretNormalarbeidstidSelvstendig =
         selvstendigNæringsdrivendeArbeidstidInfo !== undefined &&
         selvstendig !== undefined &&
-        erNormalarbeidstidEndretForPerioder(selvstendigNæringsdrivendeArbeidstidInfo.perioder, selvstendig.faktisk) ===
+        erNormalarbeidstidEndretForPerioder(selvstendigNæringsdrivendeArbeidstidInfo.perioder, selvstendig.normalt) ===
             true;
 
     return (

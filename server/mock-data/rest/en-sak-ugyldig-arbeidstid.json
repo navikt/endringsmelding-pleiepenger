@@ -16,7 +16,7 @@
             "ytelse": {
                 "type": "PLEIEPENGER_SYKT_BARN",
                 "barn": { "norskIdentitetsnummer": "12020567099", "fødselsdato": null },
-                "søknadsperiode": ["2021-12-01/2021-12-18"],
+                "søknadsperiode": ["2021-12-01/2022-02-07", "2021-12-15/2022-02-18"],
                 "opptjeningAktivitet": {
                     "arbeidstaker": []
                 },
@@ -32,20 +32,8 @@
                                         "jobberNormaltTimerPerDag": "PT6H36M",
                                         "faktiskArbeidTimerPerDag": "PT0S"
                                     },
-                                    "2021-12-14/2021-12-18": {
+                                    "2021-12-17/2021-12-18": {
                                         "jobberNormaltTimerPerDag": "PT6H36M",
-                                        "faktiskArbeidTimerPerDag": "PT0S"
-                                    }
-                                }
-                            }
-                        },
-                        {
-                            "norskIdentitetsnummer": null,
-                            "organisasjonsnummer": "839942907",
-                            "arbeidstidInfo": {
-                                "perioder": {
-                                    "2021-12-01/2021-12-18": {
-                                        "jobberNormaltTimerPerDag": "PT0S",
                                         "faktiskArbeidTimerPerDag": "PT0S"
                                     }
                                 }

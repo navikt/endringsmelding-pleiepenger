@@ -52,15 +52,16 @@ const readFileSync = (path) => {
 
 const existsSync = (path) => fs.existsSync(path);
 
-// const enSakMockFilePath = `./server/mock-data/en-sak-mock.json`;
-// const sakMock = `./server/mock-data/en-sak-mock2.json`;
-// const flereSakerMockFilePath = `./server/mock-data/flere-saker-mock.json`;
-const sakMock = `./server/mock-data/en-sak-ugyldig-arbeidstid.json`;
-const søkerMockFilePath = `./server/mock-data/søker-mock.json`;
-const arbeidsgivereMockFilePath = `./server/mock-data/arbeidsgiver-mock.json`;
-const organisasjonMockFilePath = `./server/mock-data/organisasjon-mock.json`;
+const mockPath = `./server/mock-data/`;
+const soker = 'soker1';
 
-const readMockFile = (filePath, responseObject) => {
+const sakFileName = `sak-mock.json`;
+const søkerFileName = `søker-mock.json`;
+const arbeidsgiverFileName = `arbeidsgiver-mock.json`;
+const organisasjonFileName = `organisasjon-mock.json`;
+
+const readMockFile = (file, responseObject) => {
+    const filePath = `${mockPath}/${soker}/${file}`;
     if (existsSync(filePath)) {
         const body = readFileSync(filePath);
         responseObject.send(JSON.parse(body));
@@ -84,22 +85,22 @@ const startExpressServer = () => {
 
     server.get('/soker', (req, res) => {
         setTimeout(() => {
-            readMockFile(søkerMockFilePath, res);
+            readMockFile(søkerFileName, res);
         }, 200);
     });
 
     server.get('/innsyn/sak', (req, res) => {
         setTimeout(() => {
-            readMockFile(sakMock, res);
+            readMockFile(sakFileName, res);
         }, 200);
     });
 
     server.get('/arbeidsgiver', (req, res) => {
-        readMockFile(arbeidsgivereMockFilePath, res);
+        readMockFile(arbeidsgiverFileName, res);
     });
 
     server.get('/organisasjoner', (req, res) => {
-        readMockFile(organisasjonMockFilePath, res);
+        readMockFile(organisasjonFileName, res);
     });
 
     server.get('/soker-not-logged-in', (req, res) => {
