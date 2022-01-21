@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import { DateRange, InputTime } from '@navikt/sif-common-formik/lib';
 import { DurationText, OmsorgstilbudEnkeltdagDialog, TidsbrukKalender } from '@navikt/sif-common-pleiepenger';
 import { TidEnkeltdagEndring } from '@navikt/sif-common-pleiepenger/lib/tid-enkeltdag-dialog/TidEnkeltdagForm';
-import { DateDurationMap, dateToISODate, durationsAreEqual, getDurationsInDateRange } from '@navikt/sif-common-utils';
+import {
+    DateDurationMap,
+    DateRange,
+    dateToISODate,
+    Duration,
+    durationsAreEqual,
+    getDurationsInDateRange,
+} from '@navikt/sif-common-utils';
 import dayjs from 'dayjs';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import { Element } from 'nav-frontend-typografi';
@@ -30,7 +36,7 @@ const OmsorgstilbudMånedInfo: React.FunctionComponent<Props> = ({
     onEnkeltdagChange,
 }) => {
     const intl = useIntl();
-    const [editDate, setEditDate] = useState<{ dato: Date; tid: InputTime } | undefined>();
+    const [editDate, setEditDate] = useState<{ dato: Date; tid: Duration } | undefined>();
 
     const omsorgsdager = getDurationsInDateRange(tidOmsorgstilbud, periode);
     const omsorgsdagerSak = getDurationsInDateRange(tidOmsorgstilbudSak, periode);

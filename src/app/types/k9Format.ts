@@ -1,8 +1,8 @@
+import { ISODate, ISODateRange, ISODuration } from '@navikt/sif-common-utils/lib';
 import { isObject, isString } from 'formik';
 import { isArray } from 'lodash';
 import { isISODateString } from 'nav-datovelger';
 import { ISODateString } from 'nav-datovelger/lib/types';
-import { ISODate, ISODateRange, ISODuration } from '.';
 import { isStringOrNull } from '../utils/typeGuardUtilities';
 import { isISODateOrNull, isISODateRange, isISODuration } from './typeguards/typeguards';
 

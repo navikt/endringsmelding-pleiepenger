@@ -1,8 +1,10 @@
+import React from 'react';
+import { useIntl } from 'react-intl';
 import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import { YesOrNo } from '@navikt/sif-common-core/lib/types/YesOrNo';
 import bemUtils from '@navikt/sif-common-core/lib/utils/bemUtils';
-import { DateRange, getTypedFormComponents, InputTime } from '@navikt/sif-common-formik/lib';
+import { getTypedFormComponents, InputTime } from '@navikt/sif-common-formik/lib';
 import datepickerUtils from '@navikt/sif-common-formik/lib/components/formik-datepicker/datepickerUtils';
 import {
     getDateRangeValidator,
@@ -14,11 +16,9 @@ import getTimeValidator from '@navikt/sif-common-formik/lib/validation/getTimeVa
 import getIntlFormErrorHandler from '@navikt/sif-common-formik/lib/validation/intlFormErrorHandler';
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import { TidFasteUkedagerInput } from '@navikt/sif-common-pleiepenger';
-import { DurationWeekdays } from '@navikt/sif-common-utils';
+import { DateRange, DurationWeekdays } from '@navikt/sif-common-utils';
 import { InputDateString } from 'nav-datovelger/lib/types';
 import { Undertittel } from 'nav-frontend-typografi';
-import React from 'react';
-import { useIntl } from 'react-intl';
 import SoknadFormComponents from '../../soknad/SoknadFormComponents';
 import { getArbeidstimerFastDagValidator, validateFasteArbeidstimerIUke } from '../../validation/fieldValidations';
 

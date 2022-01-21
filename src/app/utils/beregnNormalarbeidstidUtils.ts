@@ -1,7 +1,8 @@
 import { decimalTimeToTime } from '@navikt/sif-common-core/lib/utils/timeUtils';
-import { getNumberFromNumberInputValue, InputTime } from '@navikt/sif-common-formik/lib';
+import { getNumberFromNumberInputValue } from '@navikt/sif-common-formik/lib';
+import { Duration } from '@navikt/sif-common-utils/lib';
 
-export const beregNormalarbeidstidUtFraUkesnitt = (ukesnitt: string): InputTime => {
+export const beregNormalarbeidstidUtFraUkesnitt = (ukesnitt: string): Duration => {
     const tid = getNumberFromNumberInputValue(ukesnitt);
     if (!tid) {
         throw new Error('beregNormalarbeidstid - invalid tid');

@@ -1,4 +1,4 @@
-import { DateDurationMap, isDateInDates, isValidDuration } from '@navikt/sif-common-utils/lib';
+import { DateDurationMap, isDateInDates, isValidDuration } from '@navikt/sif-common-utils';
 import { ArbeidstakerMap, ArbeidstidEnkeltdagSak } from '../types/Sak';
 import { ArbeidssituasjonFormValue, Arbeidssituasjon } from '../types/SoknadFormData';
 

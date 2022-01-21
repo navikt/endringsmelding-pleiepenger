@@ -1,4 +1,4 @@
-import { ISODuration } from '../';
+import { ISODuration } from '@navikt/sif-common-utils/lib';
 import {
     itemsAreValidISODateRanges,
     K9FormatArbeidstid,

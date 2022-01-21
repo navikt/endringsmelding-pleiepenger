@@ -1,7 +1,7 @@
 import React from 'react';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
-import { DateDurationMap } from '@navikt/sif-common-utils/lib';
+import { DateDurationMap } from '@navikt/sif-common-utils';
 import { useFormikContext } from 'formik';
 import StepIntroduction from '../../components/step-introduction/StepIntroduction';
 import { SakMetadata, TidEnkeltdag } from '../../types/Sak';

@@ -1,4 +1,4 @@
-import { DateRange } from '@navikt/sif-common-formik/lib';
+import { DateRange } from '@navikt/sif-common-utils';
 import { DateDurationMap, getDurationsDiff, ISODateToISODateRange } from '@navikt/sif-common-utils';
 import { TilsynsordningApiData } from '../../types/YtelseApiData';
 import { TidEnkeltdagApiData } from '../../types/SoknadApiData';

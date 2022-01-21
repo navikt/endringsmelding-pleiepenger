@@ -1,6 +1,6 @@
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import Knapperad from '@navikt/sif-common-core/lib/components/knapperad/Knapperad';
-import { DateRange } from '@navikt/sif-common-formik/lib';
+import { DateRange, ISODate } from '@navikt/sif-common-utils';
 import {
     ArbeidsforholdType,
     ArbeidstidPeriodeDialog,
@@ -19,7 +19,7 @@ import { Knapp } from 'nav-frontend-knapper';
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import { ArbeidstidPeriodeData } from '../../../components/arbeidstid-periode/ArbeidstidPeriodeForm';
-import { DagerSøktForMap, ISODate } from '../../../types';
+import { DagerSøktForMap } from '../../../types';
 import { ArbeidstidEnkeltdagSøknad, SoknadFormData, SoknadFormField } from '../../../types/SoknadFormData';
 
 interface Props {

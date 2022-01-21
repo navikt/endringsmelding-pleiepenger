@@ -1,10 +1,11 @@
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
-import { InputTime } from '@navikt/sif-common-formik/lib';
 import {
     DateDurationMap,
+    Duration,
     durationsAreEqual,
     durationToISODuration,
     ISODateToDate,
+    ISODuration,
     ISODurationToDuration,
 } from '@navikt/sif-common-utils';
 import dayjs from 'dayjs';
@@ -13,7 +14,6 @@ import EkspanderbartPanel from 'nav-frontend-ekspanderbartpanel';
 import { Element } from 'nav-frontend-typografi';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { ISODuration } from '../../types';
 import { TidEnkeltdagApiData } from '../../types/SoknadApiData';
 import { datoSorter } from '../../utils/datoSorter';
 import DagerMedTidListe from './dager-med-tid-liste/DagerMedTidListe';
@@ -27,8 +27,8 @@ interface Props {
 
 export type DagMedEndretTid = {
     dato: Date;
-    tid?: InputTime;
-    tidOpprinnelig?: InputTime;
+    tid?: Duration;
+    tidOpprinnelig?: Duration;
     erEndret: boolean;
 };
 

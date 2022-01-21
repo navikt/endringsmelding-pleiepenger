@@ -1,9 +1,9 @@
-import { DateRange } from '@navikt/sif-common-formik/lib';
+import React from 'react';
+import { DateRange } from '@navikt/sif-common-utils';
 import Modal from 'nav-frontend-modal';
 import { Normaltekst } from 'nav-frontend-typografi';
-import React from 'react';
-import './arbeidstidPeriode.less';
 import ArbeidstidPeriodeForm, { ArbeidstidPeriodeData } from './ArbeidstidPeriodeForm';
+import './arbeidstidPeriode.less';
 
 interface Props {
     isOpen: boolean;

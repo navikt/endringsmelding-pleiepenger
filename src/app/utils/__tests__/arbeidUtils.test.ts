@@ -1,4 +1,4 @@
-import { DateDurationMap } from '@navikt/sif-common-utils/lib';
+import { DateDurationMap } from '@navikt/sif-common-utils';
 import { getDagerMedGyldigArbeidstidISak, getDagerMedIkkeGyldigArbeidstidISak } from '../arbeidUtils';
 
 describe('arbeidUtils', () => {

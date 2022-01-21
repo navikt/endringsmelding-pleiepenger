@@ -1,5 +1,5 @@
-import { DateRange } from '@navikt/sif-common-formik/lib';
-import { getDatesInMonthOutsideDateRange } from '@navikt/sif-common-utils/lib';
+import { DateRange } from '@navikt/sif-common-utils';
+import { getDatesInMonthOutsideDateRange } from '@navikt/sif-common-utils';
 import { getYearMonthKey } from './sakUtils';
 
 export const getUtilgjengeligeDatoerIMåned = (
