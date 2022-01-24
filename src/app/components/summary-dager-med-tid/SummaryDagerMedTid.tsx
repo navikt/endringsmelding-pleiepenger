@@ -16,7 +16,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { TidEnkeltdagApiData } from '../../types/SoknadApiData';
 import { datoSorter } from '../../utils/datoSorter';
-import DagerMedTidListe from './dager-med-tid-liste/DagerMedTidListe';
+import SummaryDagerMedTidListe from './summary-dager-med-tid-liste/SummaryDagerMedTidListe';
 
 interface Props {
     dager?: TidEnkeltdagApiData[];
@@ -111,7 +111,7 @@ const SummaryDagerMedTid: React.FunctionComponent<Props> = ({
                                     )}
                                 </Element>
                             }>
-                            <DagerMedTidListe dagerMedTid={dagerMedTid} viseUke={true} />
+                            <SummaryDagerMedTidListe dagerMedTid={dagerMedTid} viseUke={true} />
                         </EkspanderbartPanel>
                     </Box>
                 );
