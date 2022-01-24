@@ -60,33 +60,25 @@
     "avbrytSøknadDialog.spørsmål": "Ønsker du å slette endringen?",
     "avbrytSøknadDialog.tittel": "Avbryt og slett endring",
 
-    "arbeidstid.ukeOgÅr": "{ukeOgÅr}",
-
     "stepIntroduction.ariaTitle": "Introduksjon",
 
     "page.error.pageTitle": "Noe gikk galt ...",
     "page.form.ubesvarteSpørsmålInfo": "For å komme videre, må du svare på alle spørsmålene ovenfor",
     "page.ikkeTilgang.tekst": "Du har ikke tilgang til denne siden.",
 
-    "step.omsorgstilbud.pageTitle": "Endre tid i omsorgstilbud",
-    "step.omsorgstilbud.stepTitle": "Endre tid i omsorgstilbud",
-    "step.omsorgstilbud.nextButtonLabel": "Fortsett",
-
-    "step.arbeidssituasjon.pageTitle": "Arbeidssituasjon",
-    "step.arbeidssituasjon.stepTitle": "Arbeidssituasjon",
-    "step.arbeidssituasjon.nextButtonLabel": "Fortsett",
-
     "step.arbeidstid.pageTitle": "Endre arbeidstimer",
     "step.arbeidstid.stepTitle": "Endre arbeidstimer",
     "step.arbeidstid.nextButtonLabel": "Fortsett",
 
-    "oppsummering.søker.fødselsnummer": "Fødselsnummer:",
+    "step.omsorgstilbud.pageTitle": "Endre tid i omsorgstilbud",
+    "step.omsorgstilbud.stepTitle": "Endre tid i omsorgstilbud",
+    "step.omsorgstilbud.nextButtonLabel": "Fortsett",
 
     "step.oppsummering.pageTitle": "Oppsummering",
     "step.oppsummering.stepTitle": "Oppsummering",
     "step.oppsummering.info": "Les gjennom oppsummeringen og sjekk at alt er riktig før du sender inn meldingen om å endre pleiepenger. Hvis du vil gjøre endringer, kan du gå tilbake.",
     "step.oppsummering.søker.header": "Om deg",
-    "step.oppsummering.nextButtonLabel": "Send inn endringsmelding",
+    "step.oppsummering.søker.fødselsnummer": "Fødselsnummer:",
     "step.oppsummering.bekrefterOpplysninger": "Jeg bekrefter at opplysningene jeg har gitt er riktige, og at jeg ikke har holdt tilbake opplysninger som har betydning for min rett til pleiepenger.",
 
     "step.oppsummering.sendMelding.feilmelding.førsteGang": "Det oppstod en feil under innsending. Vennligst prøv på nytt.",

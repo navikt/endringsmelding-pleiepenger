@@ -3,6 +3,7 @@ import { allCommonMessages } from '@navikt/sif-common-core/lib/i18n/allCommonMes
 import { sifCommonPleiepengerMessages } from '@navikt/sif-common-pleiepenger/lib/i18n/index';
 import soknadErrorIntlMessages from '@navikt/sif-common-soknad/lib/soknad-error-messages/soknadErrorIntlMessages';
 import soknadIntlMessages from '@navikt/sif-common-soknad/lib/soknad-intl-messages/soknadIntlMessages';
+import { arbeidstidMånedMessages } from '../soknad/arbeidstid-step/arbeidstid-måned/arbeidstidMånedMessages';
 import omsorgstilbudMessages from '../soknad/omsorgstilbud-step/omsorgstilbudMessages';
 import { velkommenPageFormMessages } from '../soknad/velkommen-page/velkommen-page-form/velkommenPageFormMessages';
 
@@ -20,6 +21,7 @@ const bokmålstekster = {
     ...omsorgstilbudMessages.nb,
     ...sifCommonPleiepengerMessages.nb,
     ...velkommenPageFormMessages.nb,
+    ...arbeidstidMånedMessages.nb,
 };
 
 export const applicationIntlMessages: MessageFileFormat = {

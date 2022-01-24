@@ -9,7 +9,7 @@ import VeilederSVG from '@navikt/sif-common-core/lib/components/veileder-svg/Vei
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { getCheckedValidator } from '@navikt/sif-common-formik/lib/validation';
 import SummarySection from '@navikt/sif-common-soknad/lib/soknad-summary/summary-section/SummarySection';
-import { AlertStripeFeil } from 'nav-frontend-alertstriper';
+import { AlertStripeFeil, AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { Arbeidsgiver } from '../../types/Arbeidsgiver';
 import { Sak } from '../../types/Sak';
 import { SoknadApiData } from '../../types/SoknadApiData';
@@ -41,11 +41,18 @@ const OppsummeringStep: React.FunctionComponent<Props> = ({ apiValues, arbeidsgi
         }
     }, [apiDataValidationResult]);
 
+    const harEndringerSomKanSendesInn =
+        apiValues.ytelse.arbeidstid == undefined &&
+        skalEndreArbeidstid({ hvaSkalEndres }) &&
+        apiValues.ytelse.tilsynsordning == undefined &&
+        skalEndreOmsorgstilbud({ hvaSkalEndres }) === false;
+
     return (
         <SoknadFormStep
             id={StepID.OPPSUMMERING}
             showButtonSpinner={isPending(sendSoknadStatus.status)}
             buttonDisabled={isPending(sendSoknadStatus.status) || apiDataValidationResult.isValid === false}
+            showSubmitButton={harEndringerSomKanSendesInn}
             onSendSoknad={() => {
                 sendSoknad(apiValues);
             }}>
@@ -74,7 +81,7 @@ const OppsummeringStep: React.FunctionComponent<Props> = ({ apiValues, arbeidsgi
                                 {apiValues.ytelse.arbeidstid == undefined && skalEndreArbeidstid({ hvaSkalEndres }) && (
                                     <SummarySection header="Endret arbeidstid">
                                         <Box>
-                                            <p>Ingen endringer i arbeidstid.</p>
+                                            <p>Ingen endringer registrert i arbeidstid.</p>
                                         </Box>
                                     </SummarySection>
                                 )}
@@ -88,7 +95,7 @@ const OppsummeringStep: React.FunctionComponent<Props> = ({ apiValues, arbeidsgi
                                     skalEndreOmsorgstilbud({ hvaSkalEndres }) && (
                                         <SummarySection header="Endret tid i omsorgstilbud">
                                             <Box>
-                                                <p>Ingen endringer registrert</p>
+                                                <p>Ingen endringer registrert i omsorgstilbud.</p>
                                             </Box>
                                         </SummarySection>
                                     )}
@@ -96,11 +103,19 @@ const OppsummeringStep: React.FunctionComponent<Props> = ({ apiValues, arbeidsgi
                         </Box>
 
                         <Box margin="l">
-                            <SoknadFormComponents.ConfirmationCheckbox
-                                label={intlHelper(intl, 'step.oppsummering.bekrefterOpplysninger')}
-                                name={SoknadFormField.harBekreftetOpplysninger}
-                                validate={getCheckedValidator()}
-                            />
+                            {harEndringerSomKanSendesInn ? (
+                                <SoknadFormComponents.ConfirmationCheckbox
+                                    label={intlHelper(intl, 'step.oppsummering.bekrefterOpplysninger')}
+                                    name={SoknadFormField.harBekreftetOpplysninger}
+                                    validate={getCheckedValidator()}
+                                />
+                            ) : (
+                                <AlertStripeInfo>
+                                    Det er ikke gjort noen endringer i forhold til hva som er registrert på saken.
+                                    Dersom du ønsker å sende inn endringer, kan du gjøre dette ved å gå tilbake til
+                                    tidligere steg.
+                                </AlertStripeInfo>
+                            )}
                         </Box>
                     </>
                 )}
