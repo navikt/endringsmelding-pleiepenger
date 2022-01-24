@@ -80,6 +80,7 @@
     "step.oppsummering.søker.header": "Om deg",
     "step.oppsummering.søker.fødselsnummer": "Fødselsnummer:",
     "step.oppsummering.bekrefterOpplysninger": "Jeg bekrefter at opplysningene jeg har gitt er riktige, og at jeg ikke har holdt tilbake opplysninger som har betydning for min rett til pleiepenger.",
+    "step.oppsummering.nextButtonLabel": "Send inn endringsmelding",
 
     "step.oppsummering.sendMelding.feilmelding.førsteGang": "Det oppstod en feil under innsending. Vennligst prøv på nytt.",
     "step.oppsummering.sendMelding.feilmelding.andreGang": "Det oppstod fortsatt en feil under innsending. Vennligst vent litt og prøv på nytt.",
