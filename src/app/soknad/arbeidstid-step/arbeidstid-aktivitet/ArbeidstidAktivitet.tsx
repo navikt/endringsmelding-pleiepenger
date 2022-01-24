@@ -6,6 +6,7 @@ import { ArbeidstidEnkeltdagSak, SakMetadata } from '../../../types/Sak';
 import { ArbeidstidEnkeltdagSøknad, SoknadFormField } from '../../../types/SoknadFormData';
 import ArbeidstidMånedListe from '../ArbeidstidMånedListe';
 import EndreArbeidstidPeriode from '../endre-arbeidstid-periode/EndreArbeidstidPeriode';
+import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 
 interface Props {
     tittel: string | JSX.Element;
@@ -33,25 +34,27 @@ const ArbeidstidAktivitet: React.FunctionComponent<Props> = ({
             <Box padBottom="l">
                 <Undertittel>{tittel}</Undertittel>
             </Box>
-            <Box padBottom="l">
-                <EndreArbeidstidPeriode
-                    dagerSøktForMap={sakMetadata.dagerSøktForMap}
-                    arbeidstidEnkeltdagSøknad={arbeidstidEnkeltdagSøknad}
-                    formFieldName={formFieldName}
+            <ResponsivePanel border={false}>
+                <Box padBottom="l">
+                    <EndreArbeidstidPeriode
+                        dagerSøktForMap={sakMetadata.dagerSøktForMap}
+                        arbeidstidEnkeltdagSøknad={arbeidstidEnkeltdagSøknad}
+                        formFieldName={formFieldName}
+                        arbeidsstedNavn={arbeidsstedNavn}
+                        endringsperiode={sakMetadata.endringsperiode}
+                        onArbeidstidChanged={onArbeidstidChanged}
+                    />
+                </Box>
+                <ArbeidstidMånedListe
                     arbeidsstedNavn={arbeidsstedNavn}
-                    endringsperiode={sakMetadata.endringsperiode}
+                    arbeidsforholdType={arbeidsforholdType}
+                    formFieldName={formFieldName}
+                    arbeidstidEnkeltdagSak={arbeidstidSak}
+                    arbeidstidEnkeltdagSøknad={arbeidstidEnkeltdagSøknad}
+                    sakMetadata={sakMetadata}
                     onArbeidstidChanged={onArbeidstidChanged}
                 />
-            </Box>
-            <ArbeidstidMånedListe
-                arbeidsstedNavn={arbeidsstedNavn}
-                arbeidsforholdType={arbeidsforholdType}
-                formFieldName={formFieldName}
-                arbeidstidEnkeltdagSak={arbeidstidSak}
-                arbeidstidEnkeltdagSøknad={arbeidstidEnkeltdagSøknad}
-                sakMetadata={sakMetadata}
-                onArbeidstidChanged={onArbeidstidChanged}
-            />
+            </ResponsivePanel>
         </>
     );
 };
