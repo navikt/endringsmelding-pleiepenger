@@ -10,6 +10,7 @@ import SoknadFormStep from '../SoknadFormStep';
 import { StepID } from '../soknadStepsConfig';
 import EndreOmsorgstilbudPeriode from './endre-omsorgstilbud-periode/EndreOmsorgstilbudPeriode';
 import OmsorgstilbudMånedListe from './OmsorgstilbudMånedListe';
+import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 
 const cleanupOmsorgstilbudStep = (formData: SoknadFormData): SoknadFormData => {
     return formData;
@@ -69,19 +70,21 @@ const OmsorgstilbudStep: React.FunctionComponent<Props> = ({
             </StepIntroduction>
 
             <Box margin="xl">
-                <Box padBottom="l">
-                    <EndreOmsorgstilbudPeriode
-                        gjelderFortid={true}
-                        periode={sakMetadata.endringsperiode}
-                        onPeriodeChange={handleOnPeriodeChange}
+                <ResponsivePanel>
+                    <Box padBottom="l">
+                        <EndreOmsorgstilbudPeriode
+                            gjelderFortid={true}
+                            periode={sakMetadata.endringsperiode}
+                            onPeriodeChange={handleOnPeriodeChange}
+                        />
+                    </Box>
+                    <OmsorgstilbudMånedListe
+                        tidOmsorgstilbud={tidOmsorgstilbud}
+                        tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}
+                        sakMetadata={sakMetadata}
+                        onOmsorgstilbudChanged={onOmsorgstilbudChanged}
                     />
-                </Box>
-                <OmsorgstilbudMånedListe
-                    tidOmsorgstilbud={tidOmsorgstilbud}
-                    tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}
-                    sakMetadata={sakMetadata}
-                    onOmsorgstilbudChanged={onOmsorgstilbudChanged}
-                />
+                </ResponsivePanel>
             </Box>
         </SoknadFormStep>
     );

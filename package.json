@@ -29,7 +29,7 @@
         "@navikt/sif-common-amplitude": "2.2.3",
         "@navikt/sif-common-core": "^10.1.0",
         "@navikt/sif-common-formik": "^21.1.5",
-        "@navikt/sif-common-pleiepenger": "^1.0.3",
+        "@navikt/sif-common-pleiepenger": "^2.0.0",
         "@navikt/sif-common-question-config": "0.0.7",
         "@navikt/sif-common-sentry": "0.3.0",
         "@navikt/sif-common-soknad": "^4.4.0",

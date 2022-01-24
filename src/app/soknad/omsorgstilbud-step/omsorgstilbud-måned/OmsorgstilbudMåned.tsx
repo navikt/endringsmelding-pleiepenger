@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import { DurationText, OmsorgstilbudEnkeltdagDialog, TidsbrukKalender } from '@navikt/sif-common-pleiepenger';
+import { OmsorgstilbudEnkeltdagDialog, TidsbrukKalender } from '@navikt/sif-common-pleiepenger';
 import { TidEnkeltdagEndring } from '@navikt/sif-common-pleiepenger/lib/tid-enkeltdag-dialog/TidEnkeltdagForm';
 import {
     DateDurationMap,
@@ -67,16 +67,7 @@ const OmsorgstilbudMånedInfo: React.FunctionComponent<Props> = ({
                 utilgjengeligeDatoer={utilgjengeligeDatoer}
                 dagerOpprinnelig={omsorgsdagerSak}
                 skjulTommeDagerIListe={true}
-                visEndringsinformasjon={true}
-                tidRenderer={({ tid }) => {
-                    if (tid.hours === '0' && tid.minutes === '0') {
-                        return <></>;
-                    }
-                    return <DurationText duration={tid} />;
-                }}
-                opprinneligTidRenderer={({ tid }) => {
-                    return <DurationText duration={tid} />;
-                }}
+                visOpprinneligTid={true}
                 onDateClick={(date) => {
                     const tid = omsorgsdager[dateToISODate(date)] || {};
                     setEditDate({ dato: date, tid: tid });

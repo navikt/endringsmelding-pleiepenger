@@ -62,7 +62,7 @@ const ArbeidstidMåned: React.FunctionComponent<Props> = ({
                     dagerOpprinnelig={dagerSak}
                     utilgjengeligeDatoer={utilgjengeligeDatoer}
                     skjulTommeDagerIListe={true}
-                    visEndringsinformasjon={true}
+                    visOpprinneligTid={true}
                     onDateClick={(dato) => {
                         const tid = dagerSøknad[dateToISODate(dato)];
                         setEditDate({ dato, tid });
