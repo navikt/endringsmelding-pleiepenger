@@ -111,12 +111,11 @@ const EndreArbeidstidPeriode: React.FunctionComponent<Props> = ({
             <ArbeidstidPeriodeDialog
                 isOpen={visDialog}
                 formProps={{
-                    jobberNormaltTimer: 7,
                     arbeidsstedNavn,
                     intlValues: getArbeidstidIPeriodeIntlValues(intl, {
                         arbeidsforhold: {
                             arbeidsstedNavn,
-                            jobberNormaltTimer: 7,
+                            jobberNormaltTimer: undefined,
                             type: ArbeidsforholdType.ANSATT,
                         },
                         erHistorisk: false,
