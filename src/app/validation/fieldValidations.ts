@@ -1,13 +1,8 @@
 import { InputTime } from '@navikt/sif-common-formik/lib';
 import { getNumberValidator } from '@navikt/sif-common-formik/lib/validation';
 import getTimeValidator from '@navikt/sif-common-formik/lib/validation/getTimeValidator';
-import { ValidationError, ValidationResult } from '@navikt/sif-common-formik/lib/validation/types';
-import {
-    DateDurationMap,
-    durationsAreEqual,
-    DurationWeekdays,
-    summarizeDurationInDurationWeekdays,
-} from '@navikt/sif-common-utils';
+import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
+import { DateDurationMap, durationsAreEqual } from '@navikt/sif-common-utils';
 import { YtelseArbeidstid } from '../types/Sak';
 import { ArbeidstidFormValue } from '../types/SoknadFormData';
 import { getArbeidstidForArbeidsgiver } from '../utils/arbeidUtils';
@@ -87,24 +82,24 @@ export const validateAktivitetArbeidstid = ({
     return endret ? undefined : 'ingenEndringer';
 };
 
-export const validateFasteArbeidstimerIUke = (
-    fasteDager: DurationWeekdays | undefined
-): ValidationResult<ValidationError> => {
-    let error;
-    const timer = fasteDager ? summarizeDurationInDurationWeekdays(fasteDager) : 0;
-    if (timer === 0) {
-        error = 'ingenTidRegistrert';
-    }
-    if (timer > 37.5) {
-        error = 'forMangeTimerRegistrert';
-    }
-    return error
-        ? {
-              key: `arbeidstidPeriode.fasteDager.${error}`,
-              keepKeyUnaltered: true,
-          }
-        : undefined;
-};
+// export const validateFasteArbeidstimerIUke = (
+//     fasteDager: DurationWeekdays | undefined
+// ): ValidationResult<ValidationError> => {
+//     let error;
+//     const timer = fasteDager ? summarizeDurationInDurationWeekdays(fasteDager) : 0;
+//     if (timer === 0) {
+//         error = 'ingenTidRegistrert';
+//     }
+//     if (timer > 37.5) {
+//         error = 'forMangeTimerRegistrert';
+//     }
+//     return error
+//         ? {
+//               key: `arbeidstidPeriode.fasteDager.${error}`,
+//               keepKeyUnaltered: true,
+//           }
+//         : undefined;
+// };
 
 export const getArbeidstimerFastDagValidator = getTimeValidator({
     max: { hours: 24, minutes: 0 },

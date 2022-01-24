@@ -40,16 +40,11 @@
     "Torsdager": "Torsdager",
     "Fredager": "Fredager",
 
-    "tidKalenderForm.ok.label": "Lagre",
-    "tidKalenderForm.avbryt.label": "Avbryt",
-    "tidKalenderForm.lukk.label": "Avbryt",
-
     "steg.footer.avbryt": "Avbryt",
     "steg.footer.fortsettSenere": "Fortsett senere",
     "steg.footer.cancelOrContinueLater.label": "Avbryt eller fortsett senere",
 
     "application.title": "Endringsmelding - pleiepenger",
-
     "application.loadError.title": "Noe gikk galt ...",
     "application.loadError.message": "Beklager, her har det dessverre skjedd en feil. Dersom feilen fortsetter, prøv igjen litt senere.",
 
@@ -65,11 +60,12 @@
     "avbrytSøknadDialog.spørsmål": "Ønsker du å slette endringen?",
     "avbrytSøknadDialog.tittel": "Avbryt og slett endring",
 
+    "arbeidstid.ukeOgÅr": "{ukeOgÅr}",
+
     "stepIntroduction.ariaTitle": "Introduksjon",
 
     "page.error.pageTitle": "Noe gikk galt ...",
     "page.form.ubesvarteSpørsmålInfo": "For å komme videre, må du svare på alle spørsmålene ovenfor",
-
     "page.ikkeTilgang.tekst": "Du har ikke tilgang til denne siden.",
 
     "samtykke.tekst": "Jeg bekrefter at jeg har lest og forstått",
@@ -128,52 +124,6 @@
     "validation.hvaSkalEndres.noValue": "Du må krysse av for hva du ønsker å endre",
     "validation.omsorgstilbud_liste.ingenEndringer": "Det er ikke registrert noen endringer i omsorgstilbudet",
     "validation.alle_arbeidsgivere_liste.ingenEndringer": "Det er ikke registrert noen endringer i arbeidstid",
-
-    "validation.arbeidsforhold.arbeidsform.noValue": "Du må svare på hvordan du {jobber} {hvor}.",
-    "validation.arbeidsforhold.jobberNormaltTimer.numberHasNoValue": "Du må oppgi hvor mange timer per uke du {jobber} {arbeidsform} {hvor}.",
-    "validation.arbeidsforhold.jobberNormaltTimer.numberHasInvalidFormat": "Antall timer du {jobber} {arbeidsform} per uke {hvor} kan kun bestå av tall.",
-    "validation.arbeidsforhold.jobberNormaltTimer.numberIsTooSmall": "Antall timer du {jobber} {arbeidsform} per uke {hvor} kan ikke være mindre enn {min}.",
-    "validation.arbeidsforhold.jobberNormaltTimer.numberIsTooLarge": "Antall timer du {jobber} {arbeidsform} per uke {hvor} kan ikke være mer enn {max}.",
-
-    "arbeidstidEnkeltdag.tid.tooManyHours": "Antall timer er for høyt. Maks antall timer er 24.",
-    "arbeidstidEnkeltdag.tid.tooManyMinutes": "Antall minutter er for høyt. Maks antall minutter er 59.",
-    "arbeidstidEnkeltdag.tid.hoursAreInvalid": "Antall timer er ikke et gyldig tall.",
-    "arbeidstidEnkeltdag.tid.minutesAreInvalid": "Antall minutter er ikke et gyldig tall.",
-    "arbeidstidEnkeltdag.tid.hoursAreNegative": "Antall timer kan ikke være et negativt tall.",
-    "arbeidstidEnkeltdag.tid.minutesAreNegative": "Antall minutter kan ikke være et negativt tall.",
-    "arbeidstidEnkeltdag.tid.durationIsTooLong": "Antall timer og minutter er for høyt. Tiden kan ikke være mer enn 24.",
-    "arbeidstidEnkeltdag.tid.durationIsTooShort": "Antall timer og minutter er for lavt. Tiden må være minst ett minutt.",
-
-    "arbeidstidPeriode.fom_tom.noValue": "Perioden er ikke gyldig",
-    "arbeidstidPeriode.fom.dateHasNoValue": "Du må fylle ut periodens fra-dato.",
-    "arbeidstidPeriode.fom.dateHasInvalidFormat": "Du må oppgi periodens fra-dato i et gyldig datoformat. Gyldig format er dd.mm.åååå.",
-    "arbeidstidPeriode.fom.fromDateIsAfterToDate": "Fra-datoen kan ikke være etter til-datoen. Skriv inn eller velg dato fra kalenderen.",
-    "arbeidstidPeriode.fom.dateIsBeforeMin": "Perioden kan ikke starte utenfor perioden du har søkt pleiepenger for.",
-    "arbeidstidPeriode.fom.dateIsNotWeekday": "Periodens fra-dato må være en ukedag, det kan ikke være en lørdag eller søndag. Skriv inn eller velg dato fra kalenderen.",
-    "arbeidstidPeriode.tom.dateHasNoValue": "Du må fylle ut periodens til-dato.",
-    "arbeidstidPeriode.tom.dateHasInvalidFormat": "Du må oppgi periodens til-dato i et gyldig datoformat. Gyldig format er dd.mm.åååå.",
-    "arbeidstidPeriode.tom.toDateIsBeforeFromDate": "Til-datoen kan ikke være før fra-datoen. Skriv inn eller velg dato fra kalenderen.",
-    "arbeidstidPeriode.tom.dateIsAfterMax": "Perioden kan ikke slutte utenfor perioden du har søkt pleiepenger for.",
-    "arbeidstidPeriode.tom.dateIsNotWeekday": "Periodens til-dato må være en ukedag, det kan ikke være en lørdag eller søndag. Skriv inn eller velg dato fra kalenderen.",
-    "arbeidstidPeriode.skalJobbe.yesOrNoIsUnanswered": "Du må svare på om du skal jobbe denne perioden.",
-    "arbeidstidPeriode.fasteDager.ingenTidRegistrert": "Du må oppgi hvor mange timer du jobber i disse ukedagene.",
-    "arbeidstidPeriode.fasteDager.forMangeTimerRegistrert": "Du har oppgitt for mange timer du jobber disse ukedagene. Du kan registrere maks 37,5 timer.",
-    "arbeidstidPeriode.fasteDager.dag.timeHasNoValue": "Du må fylle ut timer og minutter for {dag}.",
-    "arbeidstidPeriode.fasteDager.dag.hoursAreInvalid": "Antall timer på {dag} er ikke et gyldig tall.",
-    "arbeidstidPeriode.fasteDager.dag.minutesAreInvalid": "Antall minutter på {dag} er ikke et gyldig tall.",
-    "arbeidstidPeriode.fasteDager.dag.tooManyHours": "Antall timer på {dag} kan ikke overstige 24.",
-    "arbeidstidPeriode.fasteDager.dag.tooManyMinutes": "Antall minutter på {dag} kan ikke overstige 59.",
-    "arbeidstidPeriode.fasteDager.dag.durationIsTooLong": "Antall timer og minutter registrert {dag} er for høyt. Tiden kan ikke være mer enn 7 timer og 30 minutter hver ukedag.",
-    "arbeidstidPeriode.fasteDager.dag.durationIsTooShort": "0 timer og 0 minutter er oppgitt for {dag}. Dersom barnet skal være i et omsorgstilbud på {dag}, må du oppgi en gyldig tid.",
-
-    "omsorgstilbudEnkeltdag.tid.tooManyHours": "Antall timer er for høyt. Maks antall timer er 7.",
-    "omsorgstilbudEnkeltdag.tid.tooManyMinutes": "Antall minutter er for høyt. Maks antall minutter er 30.",
-    "omsorgstilbudEnkeltdag.tid.hoursAreInvalid": "Antall timer er ikke et gyldig tall.",
-    "omsorgstilbudEnkeltdag.tid.minutesAreInvalid": "Antall minutter er ikke et gyldig tall.",
-    "omsorgstilbudEnkeltdag.tid.hoursAreNegative": "Antall timer kan ikke være et negativt tall.",
-    "omsorgstilbudEnkeltdag.tid.minutesAreNegative": "Antall minutter kan ikke være et negativt tall.",
-    "omsorgstilbudEnkeltdag.tid.durationIsTooLong": "Antall timer og minutter er for høyt. Tiden kan ikke være mer enn 7 timer og 30 minutter.",
-    "omsorgstilbudEnkeltdag.tid.durationIsTooShort": "Antall timer og minutter er for lavt. Tiden må være minst ett minutt.",
 
     "oppsummering.advarsel.invalidApiValues": "Det oppstod en feil under behandlingen av informasjonen, og som gjør at du ikke kan sende inn meldingen om endring."
 }
