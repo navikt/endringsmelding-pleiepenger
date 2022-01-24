@@ -13,6 +13,7 @@ import { ulid } from 'ulid';
 import { sendEndringsmelding } from '../api/sendSoknad';
 import { SKJEMANAVN } from '../App';
 import AppRoutes, { getRouteUrl } from '../config/routeConfig';
+import { useEffectOnce } from '../hooks/useEffectOnce';
 import { Arbeidsgiver } from '../types/Arbeidsgiver';
 import { SakMedMeta } from '../types/Sak';
 import { SoknadApiData } from '../types/SoknadApiData';
@@ -23,7 +24,6 @@ import appSentryLogger from '../utils/appSentryLogger';
 import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 import { getAvailableSteps } from '../utils/getAvailableSteps';
 import { getInitialFormData } from '../utils/initialFormDataUtils';
-import { harSakArbeidstidInfo } from '../utils/sakUtils';
 import {
     navigateTo,
     navigateToErrorPage,
@@ -32,13 +32,13 @@ import {
     relocateToNavFrontpage,
     relocateToSoknad,
 } from '../utils/navigationUtils';
+import { harSakArbeidstidInfo } from '../utils/sakUtils';
 import { verifySoknadApiData } from '../validation/verifySoknadApiData';
 import { initialSendSoknadState, SendSoknadStatus, SoknadContextProvider } from './SoknadContext';
 import SoknadFormComponents from './SoknadFormComponents';
 import SoknadRoutes from './SoknadRoutes';
 import { getSoknadStepsConfig, StepID } from './soknadStepsConfig';
 import soknadTempStorage, { isStorageDataValid } from './soknadTempStorage';
-import { useEffectOnce } from '../hooks/useEffectOnce';
 
 interface Props {
     søker: Søker;

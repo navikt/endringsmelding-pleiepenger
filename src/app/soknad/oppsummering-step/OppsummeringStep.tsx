@@ -1,3 +1,5 @@
+import React, { useEffect } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { isFailure, isPending } from '@devexperts/remote-data-ts';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
@@ -8,8 +10,6 @@ import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { getCheckedValidator } from '@navikt/sif-common-formik/lib/validation';
 import SummarySection from '@navikt/sif-common-soknad/lib/soknad-summary/summary-section/SummarySection';
 import { AlertStripeFeil } from 'nav-frontend-alertstriper';
-import React, { useEffect } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
 import { Arbeidsgiver } from '../../types/Arbeidsgiver';
 import { Sak } from '../../types/Sak';
 import { SoknadApiData } from '../../types/SoknadApiData';

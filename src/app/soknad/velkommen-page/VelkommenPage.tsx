@@ -7,8 +7,8 @@ import Page from '@navikt/sif-common-core/lib/components/page/Page';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { Sidetittel } from 'nav-frontend-typografi';
 import { useSoknadContext } from '../SoknadContext';
+import VelkommenPageForm from './velkommen-page-form/VelkommenPageForm';
 import VelkommenInfo from './VelkommenInfo';
-import VelkommenPageForm from './VelkommenPageForm';
 
 const VelkommenPage = () => {
     const intl = useIntl();

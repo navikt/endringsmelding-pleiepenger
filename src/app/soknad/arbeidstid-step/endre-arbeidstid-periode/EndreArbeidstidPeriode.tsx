@@ -1,12 +1,8 @@
+import React, { useState } from 'react';
+import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import Knapperad from '@navikt/sif-common-core/lib/components/knapperad/Knapperad';
-import {
-    DateRange,
-    decimalDurationToDuration,
-    Duration,
-    durationToDecimalDuration,
-    ISODate,
-} from '@navikt/sif-common-utils';
+import { getNumberFromNumberInputValue } from '@navikt/sif-common-formik/lib';
 import {
     ArbeidsforholdType,
     ArbeidstidPeriodeData,
@@ -15,19 +11,21 @@ import {
 } from '@navikt/sif-common-pleiepenger/lib';
 import {
     DateDurationMap,
+    DateRange,
     dateToISODate,
+    decimalDurationToDuration,
+    Duration,
+    durationToDecimalDuration,
     getDatesInDateRange,
     getDurationForISOWeekday,
+    ISODate,
     ISODateToDate,
 } from '@navikt/sif-common-utils';
 import dayjs from 'dayjs';
 import { useFormikContext } from 'formik';
 import { Knapp } from 'nav-frontend-knapper';
-import React, { useState } from 'react';
-import { useIntl } from 'react-intl';
 import { DagerSøktForMap } from '../../../types';
 import { ArbeidstidEnkeltdagSøknad, SoknadFormData, SoknadFormField } from '../../../types/SoknadFormData';
-import { getNumberFromNumberInputValue } from '@navikt/sif-common-formik/lib';
 
 interface Props {
     formFieldName: SoknadFormField;

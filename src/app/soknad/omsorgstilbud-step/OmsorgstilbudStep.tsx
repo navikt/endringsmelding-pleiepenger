@@ -1,6 +1,7 @@
 import React from 'react';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
+import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 import { DateDurationMap } from '@navikt/sif-common-utils';
 import { useFormikContext } from 'formik';
 import StepIntroduction from '../../components/step-introduction/StepIntroduction';
@@ -10,7 +11,6 @@ import SoknadFormStep from '../SoknadFormStep';
 import { StepID } from '../soknadStepsConfig';
 import EndreOmsorgstilbudPeriode from './endre-omsorgstilbud-periode/EndreOmsorgstilbudPeriode';
 import OmsorgstilbudMånedListe from './OmsorgstilbudMånedListe';
-import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 
 const cleanupOmsorgstilbudStep = (formData: SoknadFormData): SoknadFormData => {
     return formData;

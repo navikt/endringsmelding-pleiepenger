@@ -1,12 +1,12 @@
 import React from 'react';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
+import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 import { ArbeidsforholdType } from '@navikt/sif-common-pleiepenger/lib';
 import { Undertittel } from 'nav-frontend-typografi';
 import { ArbeidstidEnkeltdagSak, SakMetadata } from '../../../types/Sak';
 import { ArbeidstidEnkeltdagSøknad, SoknadFormField } from '../../../types/SoknadFormData';
 import ArbeidstidMånedListe from '../ArbeidstidMånedListe';
 import EndreArbeidstidPeriode from '../endre-arbeidstid-periode/EndreArbeidstidPeriode';
-import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 
 interface Props {
     tittel: string | JSX.Element;

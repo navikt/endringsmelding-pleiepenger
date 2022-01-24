@@ -4,6 +4,7 @@ import { sifCommonPleiepengerMessages } from '@navikt/sif-common-pleiepenger/lib
 import soknadErrorIntlMessages from '@navikt/sif-common-soknad/lib/soknad-error-messages/soknadErrorIntlMessages';
 import soknadIntlMessages from '@navikt/sif-common-soknad/lib/soknad-intl-messages/soknadIntlMessages';
 import omsorgstilbudMessages from '../soknad/omsorgstilbud-step/omsorgstilbudMessages';
+import { velkommenPageFormMessages } from '../soknad/velkommen-page/velkommen-page-form/velkommenPageFormMessages';
 
 const appMessagesNB = require('./nb.json');
 const dinePlikterNB = require('../soknad/velkommen-page/dine-plikter/dinePlikterNB.json');
@@ -18,6 +19,7 @@ const bokmålstekster = {
     ...soknadIntlMessages.nb,
     ...omsorgstilbudMessages.nb,
     ...sifCommonPleiepengerMessages.nb,
+    ...velkommenPageFormMessages.nb,
 };
 
 export const applicationIntlMessages: MessageFileFormat = {
