@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { isFailure, isInitial, isPending, isSuccess } from '@devexperts/remote-data-ts';
@@ -44,17 +44,27 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, arbeid
 
     const [persistRequest, setPersistRequest] = useState<{ stepID: StepID } | undefined>();
 
-    useEffect(() => {
-        if (soknadId) {
-            if (persistRequest) {
-                setPersistRequest(undefined);
-                persist(soknadId, persistRequest.stepID, {
+    const doPersist = useCallback(
+        (stepID: StepID) => {
+            if (soknadId) {
+                /** Dobbeltlagrer enn så lenge pga lagring i sif-common-soknad */
+                persist(soknadId, stepID, {
                     søker,
                     sak,
                 });
             }
+        },
+        [søker, sak, persist, soknadId]
+    );
+
+    useEffect(() => {
+        if (soknadId) {
+            if (persistRequest) {
+                doPersist(persistRequest.stepID);
+                setPersistRequest(undefined);
+            }
         }
-    }, [soknadId, persistRequest, persist, søker, sak, arbeidsgivere]);
+    }, [soknadId, doPersist, persistRequest, persist, søker, sak, arbeidsgivere]);
 
     const renderSoknadStep = (soknadId: string, søker: Søker, stepID: StepID): React.ReactNode => {
         switch (stepID) {
@@ -94,6 +104,9 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, arbeid
                     );
                 } catch (error) {
                     appSentryLogger.logError('mapFormDataToK9Format', error);
+                }
+                if (apiValues) {
+                    doPersist(StepID.OMSORGSTILBUD);
                 }
                 return apiValues ? (
                     <OppsummeringStep

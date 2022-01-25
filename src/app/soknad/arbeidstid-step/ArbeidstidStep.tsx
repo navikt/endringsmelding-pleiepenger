@@ -15,6 +15,7 @@ import { getArbeidstidForArbeidsgiver } from '../../utils/arbeidUtils';
 import SoknadFormStep from '../SoknadFormStep';
 import { StepID } from '../soknadStepsConfig';
 import ArbeidstidAktivitet from './arbeidstid-aktivitet/ArbeidstidAktivitet';
+import { useEffectOnce } from '../../hooks/useEffectOnce';
 
 const cleanupStep = (formData: SoknadFormData): SoknadFormData => {
     return formData;
@@ -36,6 +37,9 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
 }) => {
     const stepId = StepID.ARBEIDSTID;
     const { arbeidstakerMap } = arbeidstidSak;
+    useEffectOnce(() => {
+        onArbeidstidChanged();
+    });
     return (
         <SoknadFormStep id={stepId} onStepCleanup={cleanupStep}>
             <StepIntroduction>
