@@ -1,4 +1,6 @@
-import { DateDurationMap, isDateInDates, isValidDuration } from '@navikt/sif-common-utils/lib';
+import { decimalTimeToTime } from '@navikt/sif-common-core/lib/utils/timeUtils';
+import { getNumberFromNumberInputValue } from '@navikt/sif-common-formik/lib';
+import { DateDurationMap, Duration, isDateInDates, isValidDuration } from '@navikt/sif-common-utils';
 import { ArbeidstakerMap, ArbeidstidEnkeltdagSak } from '../types/Sak';
 import { ArbeidssituasjonFormValue, Arbeidssituasjon } from '../types/SoknadFormData';
 
@@ -53,6 +55,14 @@ export const getDagerMedIkkeGyldigArbeidstidISak = (
     return ikkeGyldigeDager;
 };
 
-// export const erNyttArbeidsforhold = (orgnr: string, nyeArbeidsforhold: Arbeidsgiver[]): boolean => {
-//     return nyeArbeidsforhold.some((a) => a.id === orgnr);
-// };
+export const beregNormalarbeidstidUtFraUkesnitt = (ukesnitt: string): Duration => {
+    const tid = getNumberFromNumberInputValue(ukesnitt);
+    if (!tid) {
+        throw new Error('beregNormalarbeidstid - invalid tid');
+    }
+    const { hours, minutes } = decimalTimeToTime(tid / 5);
+    return {
+        hours: `${hours}`,
+        minutes: `${minutes}`,
+    };
+};

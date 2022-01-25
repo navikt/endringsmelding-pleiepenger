@@ -1,5 +1,4 @@
 import { YesOrNo } from '@navikt/sif-common-core/lib/types/YesOrNo';
-import { InputTime } from '@navikt/sif-common-formik/lib';
 import { DateDurationMap, DurationWeekdays } from '@navikt/sif-common-utils';
 import { Arbeidsgiver } from './Arbeidsgiver';
 
@@ -9,10 +8,8 @@ export enum SoknadFormField {
     sakBarnAktørid = 'sakBarnAktørid',
     hvaSkalEndres = 'hvaSkalEndres',
     omsorgstilbud = 'omsorgstilbud',
-    omsorgstilbud_dager_gruppe = 'omsorgstilbud_dager_gruppe',
     omsorgstilbud_enkeltdager = 'omsorgstilbud.enkeltdager',
     arbeidstid = 'arbeidstid',
-    arbeidstid_gruppe = 'arbeidstid_gruppe',
     arbeidstid_arbeidsgiver = 'arbeidstid.arbeidsgiver',
     arbeidstid_frilanser = 'arbeidstid.frilanser',
     arbeidstid_selvstendig = 'arbeidstid.selvstendig',
@@ -25,30 +22,10 @@ export enum JobberIPeriodeSvar {
     VET_IKKE = 'VET_IKKE',
 }
 
-export enum ArbeidsforholdField {
-    arbeidsform = 'arbeidsform',
-    jobberNormaltTimer = 'jobberNormaltTimer',
-    jobberIPerioden = 'jobberIPerioden',
-    jobberSomVanlig = 'jobberSomVanlig',
-    erLiktHverUke = 'erLiktHverUke',
-    fasteDager = 'fasteDager',
-}
-
 export enum HvaSkalEndres {
     'arbeidstid' = 'arbeidstid',
     'omsorgstilbud' = 'omsorgstilbud',
 }
-
-export interface DagMedTid {
-    dato: Date;
-    tid: InputTime;
-}
-export interface DagMedTidEllerEndretTid {
-    dato: Date;
-    tid?: InputTime;
-    opprinneligTid?: InputTime;
-}
-
 export interface Omsorgstilbud {
     enkeltdager: DateDurationMap;
 }
@@ -68,11 +45,11 @@ export interface ArbeidstidFormValue {
     selvstendig?: ArbeidstidEnkeltdagSøknad;
 }
 export interface Arbeidssituasjon {
-    [ArbeidsforholdField.jobberNormaltTimer]: string;
-    [ArbeidsforholdField.jobberIPerioden]: JobberIPeriodeSvar;
-    [ArbeidsforholdField.jobberSomVanlig]?: YesOrNo;
-    [ArbeidsforholdField.erLiktHverUke]?: YesOrNo;
-    [ArbeidsforholdField.fasteDager]?: DurationWeekdays;
+    jobberNormaltTimer: string;
+    jobberIPerioden: JobberIPeriodeSvar;
+    jobberSomVanlig?: YesOrNo;
+    erLiktHverUke?: YesOrNo;
+    fasteDager?: DurationWeekdays;
 }
 
 export interface ArbeidssituasjonFormValue {

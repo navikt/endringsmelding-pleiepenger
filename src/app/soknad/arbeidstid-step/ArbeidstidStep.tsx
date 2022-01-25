@@ -41,29 +41,32 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
             <StepIntroduction>
                 Her legger du inn endringer i hvor mange timer du jobber de dagene du har søkt om pleiepenger.
             </StepIntroduction>
-            {(arbeidsgivere || []).map((a) => {
-                const arbeidsgiverArbeidstid = arbeidstidSøknad.arbeidsgiver[a.id];
-
-                return arbeidsgiverArbeidstid ? (
-                    <FormBlock margin="xxl" key={a.id}>
-                        <ArbeidstidAktivitet
-                            tittel={
-                                <>
-                                    {a.navn}
-                                    {a.type === ArbeidsgiverType.ORGANISASJON && <>(orgnr. {a.id})</>}
-                                </>
-                            }
-                            arbeidsstedNavn={a.navn}
-                            formFieldName={getArbeidsgiverArbeidstidFormFieldName(a)}
-                            arbeidsforholdType={ArbeidsforholdType.ANSATT}
-                            arbeidstidEnkeltdagSøknad={arbeidsgiverArbeidstid}
-                            arbeidstidSak={getArbeidstidForArbeidsgiver(a.id, arbeidstakerMap)}
-                            sakMetadata={sakMetadata}
-                            onArbeidstidChanged={onArbeidstidChanged}
-                        />
-                    </FormBlock>
-                ) : null;
-            })}
+            {arbeidsgivere && arbeidsgivere.length > 0 && (
+                <>
+                    {arbeidsgivere.map((a) => {
+                        const arbeidsgiverArbeidstid = arbeidstidSøknad.arbeidsgiver[a.id];
+                        return arbeidsgiverArbeidstid ? (
+                            <FormBlock margin="xxl" key={a.id}>
+                                <ArbeidstidAktivitet
+                                    tittel={
+                                        <>
+                                            {a.navn}
+                                            {a.type === ArbeidsgiverType.ORGANISASJON && <>(orgnr. {a.id})</>}
+                                        </>
+                                    }
+                                    arbeidsstedNavn={a.navn}
+                                    formFieldName={getArbeidsgiverArbeidstidFormFieldName(a)}
+                                    arbeidsforholdType={ArbeidsforholdType.ANSATT}
+                                    arbeidstidEnkeltdagSøknad={arbeidsgiverArbeidstid}
+                                    arbeidstidSak={getArbeidstidForArbeidsgiver(a.id, arbeidstakerMap)}
+                                    sakMetadata={sakMetadata}
+                                    onArbeidstidChanged={onArbeidstidChanged}
+                                />
+                            </FormBlock>
+                        ) : null;
+                    })}
+                </>
+            )}
 
             {arbeidstidSak.frilanser && arbeidstidSøknad.frilanser && (
                 <FormBlock margin="xxl">

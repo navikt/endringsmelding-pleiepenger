@@ -1,25 +1,30 @@
+import React, { useState } from 'react';
+import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import Knapperad from '@navikt/sif-common-core/lib/components/knapperad/Knapperad';
-import { DateRange } from '@navikt/sif-common-formik/lib';
+import { getNumberFromNumberInputValue } from '@navikt/sif-common-formik/lib';
 import {
     ArbeidsforholdType,
+    ArbeidstidPeriodeData,
     ArbeidstidPeriodeDialog,
     getArbeidstidIPeriodeIntlValues,
 } from '@navikt/sif-common-pleiepenger/lib';
 import {
     DateDurationMap,
+    DateRange,
     dateToISODate,
+    decimalDurationToDuration,
+    Duration,
+    durationToDecimalDuration,
     getDatesInDateRange,
     getDurationForISOWeekday,
+    ISODate,
     ISODateToDate,
 } from '@navikt/sif-common-utils';
 import dayjs from 'dayjs';
 import { useFormikContext } from 'formik';
 import { Knapp } from 'nav-frontend-knapper';
-import React, { useState } from 'react';
-import { useIntl } from 'react-intl';
-import { ArbeidstidPeriodeData } from '../../../components/arbeidstid-periode/ArbeidstidPeriodeForm';
-import { DagerSøktForMap, ISODate } from '../../../types';
+import { DagerSøktForMap } from '../../../types';
 import { ArbeidstidEnkeltdagSøknad, SoknadFormData, SoknadFormField } from '../../../types/SoknadFormData';
 
 interface Props {
@@ -28,6 +33,7 @@ interface Props {
     arbeidstidEnkeltdagSøknad: ArbeidstidEnkeltdagSøknad;
     endringsperiode: DateRange;
     dagerSøktForMap: DagerSøktForMap;
+    onArbeidstidChanged?: () => void;
 }
 
 /** Returns ISODate array */
@@ -43,32 +49,46 @@ export const getDagerDetErSøktForIPeriode = (periode: DateRange, dagerSøktForM
     return dagerIPeriodeDetErSøktFor;
 };
 
+const getNyArbeidstidUtFraProsent = (prosent: number, normalArbeidstid: Duration): Duration => {
+    const nyArbeidstidUtFraProsent = (durationToDecimalDuration(normalArbeidstid) / 100) * prosent;
+    return decimalDurationToDuration(nyArbeidstidUtFraProsent);
+};
+
 const EndreArbeidstidPeriode: React.FunctionComponent<Props> = ({
     arbeidstidEnkeltdagSøknad,
     formFieldName,
     arbeidsstedNavn,
     endringsperiode,
     dagerSøktForMap,
+    onArbeidstidChanged,
 }) => {
     const intl = useIntl();
     const [visDialog, setVisDialog] = useState(false);
     const { setFieldValue } = useFormikContext<SoknadFormData>();
 
-    const handleChangePeriode = ({ fom, tom, skalJobbe, tidFasteDager }: ArbeidstidPeriodeData) => {
+    const handleChangePeriode = ({ fom, tom, tidFasteDager, prosent }: ArbeidstidPeriodeData) => {
         const dagerSøktFor = getDagerDetErSøktForIPeriode({ from: fom, to: tom }, dagerSøktForMap);
         const dagerSomSkalEndres: DateDurationMap = {};
         dagerSøktFor.forEach((isoDate) => {
-            if (skalJobbe === false) {
-                dagerSomSkalEndres[isoDate] = { hours: '0', minutes: '0' };
-            } else if (skalJobbe === true && tidFasteDager) {
+            if (tidFasteDager) {
                 const tid = getDurationForISOWeekday(tidFasteDager, dayjs(ISODateToDate(isoDate)).isoWeekday());
                 if (tid) {
                     dagerSomSkalEndres[isoDate] = tid;
                 }
             }
+            const pst = getNumberFromNumberInputValue(prosent);
+            if (pst && isNaN(pst) === false) {
+                const normalarbeidstid = arbeidstidEnkeltdagSøknad.normalt[isoDate];
+                if (normalarbeidstid) {
+                    dagerSomSkalEndres[isoDate] = getNyArbeidstidUtFraProsent(pst, normalarbeidstid);
+                }
+            }
         });
         setFieldValue(formFieldName, { ...arbeidstidEnkeltdagSøknad.faktisk, ...dagerSomSkalEndres });
         setVisDialog(false);
+        if (onArbeidstidChanged) {
+            onArbeidstidChanged();
+        }
     };
 
     return (
@@ -89,12 +109,11 @@ const EndreArbeidstidPeriode: React.FunctionComponent<Props> = ({
             <ArbeidstidPeriodeDialog
                 isOpen={visDialog}
                 formProps={{
-                    jobberNormaltTimer: 7,
                     arbeidsstedNavn,
                     intlValues: getArbeidstidIPeriodeIntlValues(intl, {
                         arbeidsforhold: {
                             arbeidsstedNavn,
-                            jobberNormaltTimer: 7,
+                            jobberNormaltTimer: undefined,
                             type: ArbeidsforholdType.ANSATT,
                         },
                         erHistorisk: false,
@@ -105,16 +124,6 @@ const EndreArbeidstidPeriode: React.FunctionComponent<Props> = ({
                     onSubmit: handleChangePeriode,
                 }}
             />
-
-            {/* <ArbeidstidPeriodeDialog
-                endringsperiode={endringsperiode}
-                arbeidsstedNavn={arbeidsstedNavn}
-                isOpen={visPeriode}
-                onCancel={() => setVisPeriode(false)}
-                onSubmit={handleChangePeriode}
-            /> */}
-
-            {/* <ArbeidstidEnkeltdagDialog endringsperiode={endringsperiode} arbeidsstedNavn={arbeidsstedNavn} dagMedTid /> */}
         </>
     );
 };

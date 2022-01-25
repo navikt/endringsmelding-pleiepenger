@@ -5,10 +5,9 @@ import { DurationText } from '@navikt/sif-common-pleiepenger/lib';
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import { groupBy } from 'lodash';
-import { Element, Undertittel } from 'nav-frontend-typografi';
-import { datoSorter } from '../../../utils/datoSorter';
-import { DagMedEndretTid } from '../SummaryDagerMedTid';
-import './dagerMedTidListe.less';
+import { Element, Undertekst, Undertittel } from 'nav-frontend-typografi';
+import { DagMedEndretTid, sorterDag } from '../SummaryDagerMedTid';
+import './summaryDagerMedTidListe.less';
 
 dayjs.extend(isoWeek);
 
@@ -18,9 +17,18 @@ interface Props {
     viseUke?: boolean;
 }
 
-const bem = bemUtils('dagerMedTidListe');
+const bem = bemUtils('summaryDagerMedTidListe');
 
-export const DagerMedTidListe = ({ dagerMedTid: dagerMedTid, viseUke, visMåned }: Props) => {
+const StatusTekst = ({ dag }: { dag: DagMedEndretTid }) => {
+    return dag.tid ? (
+        <span style={{ textDecoration: 'line-through' }}>
+            (<span className="sr-only">Endret fra: </span>
+            <DurationText duration={dag.tidOpprinnelig || { hours: '0', minutes: '0' }} />)
+        </span>
+    ) : null;
+};
+
+export const SummaryDagerMedTidListe = ({ dagerMedTid: dagerMedTid, viseUke, visMåned }: Props) => {
     const weeksWithDays = groupBy(dagerMedTid, (dag) => `${dag.dato.getFullYear()}-${dayjs(dag.dato).isoWeek()}`);
     return (
         <div className={bem.block}>
@@ -39,9 +47,8 @@ export const DagerMedTidListe = ({ dagerMedTid: dagerMedTid, viseUke, visMåned 
                                 </Element>
                             )}
                             <ul className={bem.element('dager')}>
-                                {days.sort(datoSorter).map((dag, idx) => {
+                                {days.sort(sorterDag).map((dag, idx) => {
                                     const tid = dag.tid || dag.tidOpprinnelig;
-                                    const erEndret = dag.tid !== undefined;
                                     const timer = tid?.hours || '0';
                                     const minutter = tid?.minutes || '0';
 
@@ -57,15 +64,9 @@ export const DagerMedTidListe = ({ dagerMedTid: dagerMedTid, viseUke, visMåned 
                                                         fullText={true}
                                                     />
                                                 </span>
-                                                <span className={bem.element('dag__status')}>
-                                                    (
-                                                    {erEndret
-                                                        ? dag.tidOpprinnelig === undefined
-                                                            ? 'lagt til'
-                                                            : 'endret'
-                                                        : 'uendret'}
-                                                    )
-                                                </span>
+                                                <Undertekst className={bem.element('dag__status')}>
+                                                    <StatusTekst dag={dag} />
+                                                </Undertekst>
                                             </div>
                                         </li>
                                     );
@@ -79,4 +80,4 @@ export const DagerMedTidListe = ({ dagerMedTid: dagerMedTid, viseUke, visMåned 
     );
 };
 
-export default DagerMedTidListe;
+export default SummaryDagerMedTidListe;

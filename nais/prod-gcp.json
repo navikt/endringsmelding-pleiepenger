@@ -16,7 +16,6 @@
         "PERSISTENCE": "off",
         "APPSTATUS_PROJECT_ID": "ryujtq87",
         "APPSTATUS_DATASET": "production",
-        "USE_AMPLITUDE": "true",
-        "FAKE_API_KALL": "false"
+        "USE_AMPLITUDE": "true"
     }
 }

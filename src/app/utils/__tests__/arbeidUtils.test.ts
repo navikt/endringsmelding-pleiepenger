@@ -1,5 +1,9 @@
-import { DateDurationMap } from '@navikt/sif-common-utils/lib';
-import { getDagerMedGyldigArbeidstidISak, getDagerMedIkkeGyldigArbeidstidISak } from '../arbeidUtils';
+import { DateDurationMap } from '@navikt/sif-common-utils';
+import {
+    beregNormalarbeidstidUtFraUkesnitt,
+    getDagerMedGyldigArbeidstidISak,
+    getDagerMedIkkeGyldigArbeidstidISak,
+} from '../arbeidUtils';
 
 describe('arbeidUtils', () => {
     const dager: DateDurationMap = {
@@ -33,6 +37,28 @@ describe('arbeidUtils', () => {
             expect(Object.keys(result).length).toBe(1);
             expect(result['2020-01-01']).toBeUndefined();
             expect(result['2020-01-02']).toBeDefined();
+        });
+    });
+    describe('beregNormalarbeidstidUtFraUkesnitt', () => {
+        it('håndterer tid med punktum', () => {
+            const result = beregNormalarbeidstidUtFraUkesnitt('37.5');
+            expect(result.hours).toEqual('7');
+            expect(result.minutes).toEqual('30');
+        });
+        it('beregner riktig 37,5-timers uke', () => {
+            const result = beregNormalarbeidstidUtFraUkesnitt('37,5');
+            expect(result.hours).toEqual('7');
+            expect(result.minutes).toEqual('30');
+        });
+        it('beregner riktig 12-timers uke', () => {
+            const result = beregNormalarbeidstidUtFraUkesnitt('12');
+            expect(result.hours).toEqual('2');
+            expect(result.minutes).toEqual('24');
+        });
+        it('beregner riktig 12,5-timers uke', () => {
+            const result = beregNormalarbeidstidUtFraUkesnitt('12.5');
+            expect(result.hours).toEqual('2');
+            expect(result.minutes).toEqual('30');
         });
     });
 });

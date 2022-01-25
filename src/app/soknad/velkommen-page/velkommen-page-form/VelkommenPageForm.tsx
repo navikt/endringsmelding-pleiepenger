@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import InfoDialog from '@navikt/sif-common-core/lib/components/dialogs/info-dialog/InfoDialog';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
@@ -7,12 +9,10 @@ import getIntlFormErrorHandler from '@navikt/sif-common-formik/lib/validation/in
 import { Hovedknapp } from 'nav-frontend-knapper';
 import Lenke from 'nav-frontend-lenker';
 import { Element } from 'nav-frontend-typografi';
-import React, { useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import SoknadFormComponents from '../../soknad/SoknadFormComponents';
-import { HvaSkalEndres, SoknadFormField } from '../../types/SoknadFormData';
-import DinePlikterContent from './dine-plikter/DinePlikter';
-import BehandlingAvPersonopplysningerContent from './personopplysninger/Personopplysninger';
+import { HvaSkalEndres, SoknadFormField } from '../../../types/SoknadFormData';
+import SoknadFormComponents from '../../SoknadFormComponents';
+import DinePlikterContent from '../dine-plikter/DinePlikter';
+import BehandlingAvPersonopplysningerContent from '../personopplysninger/Personopplysninger';
 
 interface DialogState {
     dinePlikterModalOpen?: boolean;
@@ -33,18 +33,7 @@ const VelkommenPageForm: React.FunctionComponent<Props> = ({ onStart }) => {
             onValidSubmit={onStart}
             includeButtons={false}
             formErrorHandler={getIntlFormErrorHandler(intl, 'validation')}>
-            {/* {nyeArbeidsforhold.length > 0 && (
-                <AlertStripeInfo>
-                    Vi ser at du har fått nye arbeidsforhold siden sist. For å kunne sende inn en melding om endring, må
-                    du da også fylle ut informasjon om hvordan du jobber hos denne/disse.
-                    <ul>
-                        {nyeArbeidsforhold.map((a) => (
-                            <li key={a.id}>{a.navn}</li>
-                        ))}
-                    </ul>
-                </AlertStripeInfo>
-            )} */}
-            <section aria-label="Skjema" role="form">
+            <section aria-label="Skjema">
                 <FormBlock>
                     <SoknadFormComponents.CheckboxPanelGroup
                         id="abc"
@@ -56,7 +45,10 @@ const VelkommenPageForm: React.FunctionComponent<Props> = ({ onStart }) => {
                                 id: 'arbeidstid',
                                 label: (
                                     <>
-                                        <Element>Endre arbeidstimer</Element>Legge til, fjerne eller endre arbeidstimer
+                                        <Element>
+                                            <FormattedMessage id="velkommenPageForm.hvaSkalEndres.arbeidstid.1" />
+                                        </Element>{' '}
+                                        <FormattedMessage id="velkommenPageForm.hvaSkalEndres.arbeidstid.2" />
                                     </>
                                 ),
                                 value: HvaSkalEndres.arbeidstid,
@@ -65,8 +57,10 @@ const VelkommenPageForm: React.FunctionComponent<Props> = ({ onStart }) => {
                                 id: 'omsorgstilbud',
                                 label: (
                                     <>
-                                        <Element>Endre tid i omsorgstilbud</Element>Legge til, fjerne eller endre tid i
-                                        omsorgstilbud
+                                        <Element>
+                                            <FormattedMessage id="velkommenPageForm.hvaSkalEndres.omsorgstilbud.1" />
+                                        </Element>{' '}
+                                        <FormattedMessage id="velkommenPageForm.hvaSkalEndres.omsorgstilbud.2" />
                                     </>
                                 ),
                                 value: HvaSkalEndres.omsorgstilbud,
@@ -76,24 +70,24 @@ const VelkommenPageForm: React.FunctionComponent<Props> = ({ onStart }) => {
                 </FormBlock>
                 <FormBlock>
                     <SoknadFormComponents.ConfirmationCheckbox
-                        label={intlHelper(intl, 'samtykke.tekst')}
+                        label={intlHelper(intl, 'velkommenPageForm.samtykke.tekst')}
                         name={SoknadFormField.harForståttRettigheterOgPlikter}
                         validate={getCheckedValidator()}>
                         <FormattedMessage
-                            id="samtykke.harForståttLabel"
+                            id="velkommenPageForm.samtykke.harForståttLabel"
                             values={{
                                 plikterLink: (
                                     <Lenke
                                         href="#"
                                         onClick={(): void => setDialogState({ dinePlikterModalOpen: true })}>
-                                        {intlHelper(intl, 'samtykke.harForståttLabel.lenketekst')}
+                                        {intlHelper(intl, 'velkommenPageForm.samtykke.harForståttLabel.lenketekst')}
                                     </Lenke>
                                 ),
                             }}
                         />
                     </SoknadFormComponents.ConfirmationCheckbox>
                     <Box textAlignCenter={true} margin="xl">
-                        <Hovedknapp>{intlHelper(intl, 'step.velkommen.button.start')}</Hovedknapp>
+                        <Hovedknapp>{intlHelper(intl, 'velkommenPageForm.button.start')}</Hovedknapp>
                     </Box>
                 </FormBlock>
             </section>
@@ -102,7 +96,7 @@ const VelkommenPageForm: React.FunctionComponent<Props> = ({ onStart }) => {
                     <Lenke
                         href="#"
                         onClick={(): void => setDialogState({ behandlingAvPersonopplysningerModalOpen: true })}>
-                        <FormattedMessage id="step.velkommen.personopplysninger.lenketekst" />
+                        <FormattedMessage id="velkommenPageForm.personopplysninger.lenketekst" />
                     </Lenke>
                 </div>
             </FormBlock>

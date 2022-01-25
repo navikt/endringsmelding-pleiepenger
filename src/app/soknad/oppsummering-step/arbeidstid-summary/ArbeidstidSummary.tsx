@@ -1,14 +1,14 @@
+import React from 'react';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import FormBlock from '@navikt/sif-common-core/lib/components/form-block/FormBlock';
 import SummarySection from '@navikt/sif-common-soknad/lib/soknad-summary/summary-section/SummarySection';
 import { DateDurationMap, ISODateRangeToISODates } from '@navikt/sif-common-utils';
 import { Element } from 'nav-frontend-typografi';
-import React from 'react';
 import SummaryDagerMedTid from '../../../components/summary-dager-med-tid/SummaryDagerMedTid';
 import { Arbeidsgiver } from '../../../types/Arbeidsgiver';
-import { ArbeidstidDagKApiData, ArbeidstidApiData } from '../../../types/YtelseApiData';
 import { YtelseArbeidstid } from '../../../types/Sak';
 import { TidEnkeltdagApiData } from '../../../types/SoknadApiData';
+import { ArbeidstidApiData, ArbeidstidDagKApiData } from '../../../types/YtelseApiData';
 
 // TODO - legge på tekst dersom bruker har sagt en vil endre arbeidstid men ikke har gjort det.
 

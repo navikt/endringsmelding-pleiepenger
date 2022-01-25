@@ -1,5 +1,6 @@
-import { DateRange, InputTime } from '@navikt/sif-common-formik/lib';
 import {
+    DateRange,
+    Duration,
     getISODatesInISODateRange,
     isDateInDateRange,
     ISODateRangeToDateRange,
@@ -52,7 +53,7 @@ export const getAktivitetArbeidstidFromK9Format = (
         normalt: {},
     };
 
-    const getTid = (tid: InputTime | undefined): InputTime => {
+    const getTid = (tid: Duration | undefined): Duration => {
         return {
             hours: tid?.hours || '0',
             minutes: tid?.minutes || '0',

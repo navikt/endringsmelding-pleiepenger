@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
 import { ArbeidsforholdType, ArbeidstidEnkeltdagDialog, TidsbrukKalender } from '@navikt/sif-common-pleiepenger';
@@ -47,12 +47,8 @@ const ArbeidstidMåned: React.FunctionComponent<Props> = ({
             apen={false}
             tittel={
                 <Element tag={`h${månedTittelHeadingLevel}`}>
-                    <span>
-                        {intlHelper(intl, 'arbeidstid.ukeOgÅr', {
-                            ukeOgÅr: dayjs(måned.from).format('YYYY - MMMM'),
-                        })}
-                    </span>
-                    {harEndringer && ' (endret)'}
+                    <span>{dayjs(måned.from).format('YYYY - MMMM')}</span>
+                    {harEndringer ? ` ${intlHelper(intl, 'arbeidstidMåned.endret')}` : null}
                 </Element>
             }>
             {harArbeidstidISak ? (
@@ -62,7 +58,7 @@ const ArbeidstidMåned: React.FunctionComponent<Props> = ({
                     dagerOpprinnelig={dagerSak}
                     utilgjengeligeDatoer={utilgjengeligeDatoer}
                     skjulTommeDagerIListe={true}
-                    visEndringsinformasjon={true}
+                    visOpprinneligTid={true}
                     onDateClick={(dato) => {
                         const tid = dagerSøknad[dateToISODate(dato)];
                         setEditDate({ dato, tid });
@@ -71,8 +67,7 @@ const ArbeidstidMåned: React.FunctionComponent<Props> = ({
             ) : (
                 <Box margin="l" padBottom="s">
                     <Alertstripe type="info" form="inline">
-                        Saken inneholder ikke informasjon om hvor mye du jobber normalt i denne perioden. Du kan da ikke
-                        endre arbeidstid for denne perioden.
+                        <FormattedMessage id="arbeidstidMåned.ingenArbeidstidISak" />
                     </Alertstripe>
                 </Box>
             )}

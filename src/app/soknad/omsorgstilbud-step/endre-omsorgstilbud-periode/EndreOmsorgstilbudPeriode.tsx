@@ -1,16 +1,16 @@
-import { DateRange } from '@navikt/sif-common-formik/lib';
+import React, { useState } from 'react';
 import { OmsorgstilbudPeriodeDialog } from '@navikt/sif-common-pleiepenger';
 import { OmsorgstilbudPeriodeData } from '@navikt/sif-common-pleiepenger/lib/omsorgstilbud-periode/omsorgstilbud-periode-form/OmsorgstilbudPeriodeForm';
 import {
     DateDurationMap,
+    DateRange,
     dateToISODate,
     getDatesInDateRange,
     getDurationForISOWeekday,
     ISODateToDate,
-} from '@navikt/sif-common-utils/lib';
+} from '@navikt/sif-common-utils';
 import dayjs from 'dayjs';
 import { Knapp } from 'nav-frontend-knapper';
-import React, { useState } from 'react';
 
 interface Props {
     periode: DateRange;

@@ -1,12 +1,6 @@
 import { failure, RemoteData, success } from '@devexperts/remote-data-ts';
-// import {
-//     isK9FormatArbeidsgiverOrganisasjon,
-//     K9FormatArbeidsgiver,
-//     K9FormatArbeidsgiverOrganisasjon,
-// } from '../types/k9Format';
-import { ISODateToDate } from '@navikt/sif-common-utils';
+import { ISODate, ISODateToDate } from '@navikt/sif-common-utils';
 import { AxiosError } from 'axios';
-import { ISODate } from '../types';
 import { ApiEndpointPsb } from './endpoints';
 import { Arbeidsgiver, ArbeidsgiverType } from '../types/Arbeidsgiver';
 import api from './api';
@@ -25,10 +19,6 @@ type AAregArbeidsgiver = {
         ansattTom?: ISODate;
     }[];
 };
-
-// interface OrganisasjonResponseType {
-//     [organisasjonsnummer: string]: string;
-// }
 
 export type ArbeidsgiverRemoteData = RemoteData<AxiosError, Arbeidsgiver[]>;
 

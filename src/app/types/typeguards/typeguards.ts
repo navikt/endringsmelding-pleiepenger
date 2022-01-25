@@ -1,4 +1,4 @@
-import { ISODate, ISODateRange, ISODuration } from '..';
+import { ISODate, ISODateRange, ISODuration } from '@navikt/sif-common-utils/lib';
 
 export const isISODate = (value: any): value is ISODate => {
     if (value && typeof value === 'string') {

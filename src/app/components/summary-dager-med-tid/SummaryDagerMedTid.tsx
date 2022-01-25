@@ -1,10 +1,11 @@
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
-import { InputTime } from '@navikt/sif-common-formik/lib';
 import {
     DateDurationMap,
+    Duration,
     durationsAreEqual,
     durationToISODuration,
     ISODateToDate,
+    ISODuration,
     ISODurationToDuration,
 } from '@navikt/sif-common-utils';
 import dayjs from 'dayjs';
@@ -13,10 +14,8 @@ import EkspanderbartPanel from 'nav-frontend-ekspanderbartpanel';
 import { Element } from 'nav-frontend-typografi';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { ISODuration } from '../../types';
 import { TidEnkeltdagApiData } from '../../types/SoknadApiData';
-import { datoSorter } from '../../utils/datoSorter';
-import DagerMedTidListe from './dager-med-tid-liste/DagerMedTidListe';
+import SummaryDagerMedTidListe from './summary-dager-med-tid-liste/SummaryDagerMedTidListe';
 
 interface Props {
     dager?: TidEnkeltdagApiData[];
@@ -25,10 +24,13 @@ interface Props {
     ingenEndringerMelding?: string;
 }
 
+export const sorterDag = (d1: { dato: Date }, d2: { dato: Date }): number =>
+    dayjs(d1.dato).isSameOrBefore(d2.dato, 'day') ? -1 : 1;
+
 export type DagMedEndretTid = {
     dato: Date;
-    tid?: InputTime;
-    tidOpprinnelig?: InputTime;
+    tid?: Duration;
+    tidOpprinnelig?: Duration;
     erEndret: boolean;
 };
 
@@ -78,7 +80,7 @@ const SummaryDagerMedTid: React.FunctionComponent<Props> = ({
             };
         })
         .filter((d) => (visKunEndretTid ? d.erEndret === true : true))
-        .sort(datoSorter);
+        .sort(sorterDag);
 
     const ingenDagerRegistrertMelding = ingenEndringerMelding ? (
         ingenEndringerMelding
@@ -111,7 +113,7 @@ const SummaryDagerMedTid: React.FunctionComponent<Props> = ({
                                     )}
                                 </Element>
                             }>
-                            <DagerMedTidListe dagerMedTid={dagerMedTid} viseUke={true} />
+                            <SummaryDagerMedTidListe dagerMedTid={dagerMedTid} viseUke={true} />
                         </EkspanderbartPanel>
                     </Box>
                 );

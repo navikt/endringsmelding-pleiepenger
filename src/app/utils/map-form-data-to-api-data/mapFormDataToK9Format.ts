@@ -1,6 +1,6 @@
 import { getEnvironmentVariable } from '@navikt/sif-common-core/lib/utils/envUtils';
-import { DateRange } from '@navikt/sif-common-formik/lib';
-import { dateToISODate } from '@navikt/sif-common-utils/lib';
+import { DateRange } from '@navikt/sif-common-utils';
+import { dateToISODate } from '@navikt/sif-common-utils';
 import { Sak } from '../../types/Sak';
 import { SoknadApiData } from '../../types/SoknadApiData';
 import { SoknadFormData } from '../../types/SoknadFormData';

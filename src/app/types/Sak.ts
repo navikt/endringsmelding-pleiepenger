@@ -1,4 +1,4 @@
-import { DateDurationMap, DateRange } from '@navikt/sif-common-utils/lib';
+import { DateDurationMap, DateRange } from '@navikt/sif-common-utils';
 import { DagerIkkeSøktForMap, DagerSøktForMap } from '.';
 
 export type TidEnkeltdag = DateDurationMap; // { [isoDateString: string]: { hours: string; minutes: string } };

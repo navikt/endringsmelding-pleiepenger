@@ -13,8 +13,8 @@ import {
 import { useFormikContext } from 'formik';
 import { ArbeidstidEnkeltdagSak, SakMetadata } from '../../types/Sak';
 import { ArbeidstidEnkeltdagSøknad, SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
-import ArbeidstidMåned from './ArbeidstidMåned';
 import { getDatesNotInDates } from '../../utils/arbeidUtils';
+import ArbeidstidMåned from './arbeidstid-måned/ArbeidstidMåned';
 
 interface Props {
     arbeidsstedNavn: string;

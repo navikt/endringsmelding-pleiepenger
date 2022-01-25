@@ -1,10 +1,10 @@
+import React from 'react';
 import SummaryBlock from '@navikt/sif-common-soknad/lib/soknad-summary/summary-block/SummaryBlock';
 import SummarySection from '@navikt/sif-common-soknad/lib/soknad-summary/summary-section/SummarySection';
 import { DateDurationMap, ISODateRangeToISODates } from '@navikt/sif-common-utils';
-import React from 'react';
 import SummaryDagerMedTid from '../../../components/summary-dager-med-tid/SummaryDagerMedTid';
-import { TilsynsordningApiData } from '../../../types/YtelseApiData';
 import { TidEnkeltdagApiData } from '../../../types/SoknadApiData';
+import { TilsynsordningApiData } from '../../../types/YtelseApiData';
 
 interface Props {
     tilsynsordning: TilsynsordningApiData;

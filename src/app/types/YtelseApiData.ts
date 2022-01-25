@@ -1,4 +1,4 @@
-import { ISODate, ISODateRange, ISODuration } from '.';
+import { ISODate, ISODateRange, ISODuration } from '@navikt/sif-common-utils/lib';
 
 export type TilsynsordningApiData = {
     perioder: { [key: ISODateRange]: { etablertTilsynTimerPerDag: ISODuration } };

@@ -1,4 +1,4 @@
-import { DateRange } from '@navikt/sif-common-formik/lib';
+import { DateRange } from '@navikt/sif-common-utils';
 import {
     DateDurationMap,
     durationToISODuration,

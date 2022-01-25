@@ -1,8 +1,8 @@
+import * as React from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import Lenke from 'nav-frontend-lenker';
 import { Ingress, Systemtittel } from 'nav-frontend-typografi';
-import * as React from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
 import getLenker from '../../../lenker';
 
 const BehandlingAvPersonopplysningerContent: React.FunctionComponent = () => {

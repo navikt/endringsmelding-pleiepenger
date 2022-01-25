@@ -1,0 +1,70 @@
+.summaryDagerMedTidListe {
+    &__dager {
+        margin: 0;
+        padding: 0.25rem 0;
+        list-style: none;
+        li > {
+            margin: 0;
+            padding: 0;
+        }
+    }
+    &__dag {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0.5rem 0;
+        li:first-child & {
+            border-top: 1px solid rgba(0, 0, 0, 0.15);
+        }
+        border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+        &__dato {
+            white-space: nowrap;
+            text-transform: capitalize;
+        }
+        @media (min-width: 601px) {
+            &__dato {
+                margin-right: 1rem;
+                flex: 1 1 8rem;
+                white-space: nowrap;
+                text-transform: capitalize;
+            }
+            &__tid {
+                flex: 2 1 10rem;
+            }
+            &__status {
+                flex: 2 1 5rem;
+                text-align: right;
+            }
+        }
+        @media (max-width: 600px) and (min-width: 401px) {
+            &__dato {
+                flex: 2 1 50%;
+            }
+            &__tid {
+                flex: 2 1 50%;
+            }
+            &__status {
+                flex-wrap: wrap;
+                flex: 2 1 50%;
+                margin-left: 50%;
+                text-align: left;
+            }
+        }
+        @media (max-width: 400px) {
+            &__status {
+                padding-left: 1rem;
+            }
+        }
+    }
+    &__uketittel {
+        margin-bottom: 0.5rem;
+        margin-top: 1rem;
+    }
+    &__uke + &__uke {
+        .omsorgsdagerListe__uketittel {
+            margin-top: 1.5rem;
+        }
+    }
+    &__tidTotalt {
+        margin-bottom: 2rem;
+    }
+}
