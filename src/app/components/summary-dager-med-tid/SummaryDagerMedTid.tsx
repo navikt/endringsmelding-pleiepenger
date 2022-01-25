@@ -15,7 +15,6 @@ import { Element } from 'nav-frontend-typografi';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { TidEnkeltdagApiData } from '../../types/SoknadApiData';
-import { datoSorter } from '../../utils/datoSorter';
 import SummaryDagerMedTidListe from './summary-dager-med-tid-liste/SummaryDagerMedTidListe';
 
 interface Props {
@@ -24,6 +23,9 @@ interface Props {
     visKunEndretTid?: boolean;
     ingenEndringerMelding?: string;
 }
+
+export const sorterDag = (d1: { dato: Date }, d2: { dato: Date }): number =>
+    dayjs(d1.dato).isSameOrBefore(d2.dato, 'day') ? -1 : 1;
 
 export type DagMedEndretTid = {
     dato: Date;
@@ -78,7 +80,7 @@ const SummaryDagerMedTid: React.FunctionComponent<Props> = ({
             };
         })
         .filter((d) => (visKunEndretTid ? d.erEndret === true : true))
-        .sort(datoSorter);
+        .sort(sorterDag);
 
     const ingenDagerRegistrertMelding = ingenEndringerMelding ? (
         ingenEndringerMelding

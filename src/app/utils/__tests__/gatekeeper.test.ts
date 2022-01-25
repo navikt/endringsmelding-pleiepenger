@@ -1,6 +1,6 @@
 import { Arbeidsgiver, ArbeidsgiverType } from '../../types/Arbeidsgiver';
-import { ArbeidstakerMap, Sak } from '../../types/Sak';
-import { erArbeidsgivereISakIAareg, kontrollerTilgangTilDialog, StoppÅrsak } from '../gatekeeper';
+import { Sak } from '../../types/Sak';
+import { kontrollerTilgangTilDialog, StoppÅrsak } from '../gatekeeper';
 
 const privatArbeidsgiver: Arbeidsgiver = {
     type: ArbeidsgiverType.PRIVATPERSON,
@@ -16,6 +16,13 @@ const orgArbeidsgiver: Arbeidsgiver = {
 
 const sak1: Sak = { ytelse: { arbeidstid: { arbeidstakerMap: { [orgArbeidsgiver.id]: {} } } } } as any;
 const sak2: Sak = { ytelse: { arbeidstid: { arbeidstakerMap: { ukjent: {} } } } } as any;
+const sakUtenArbeid: Sak = { ytelse: { arbeidstid: { arbeidstakerMap: undefined } } } as any;
+const sakFrilanser: Sak = {
+    ytelse: { arbeidstid: { arbeidstakerMap: undefined, frilanser: { normalt: {}, faktisk: {} } } },
+} as any;
+const sakSN: Sak = {
+    ytelse: { arbeidstid: { arbeidstakerMap: undefined, selvstendig: { normalt: {}, faktisk: {} } } },
+} as any;
 
 describe('gatekeeper', () => {
     describe('kontrollerTilgangTilDialog', () => {
@@ -33,29 +40,19 @@ describe('gatekeeper', () => {
                 StoppÅrsak.arbeidsgiverSakErIkkeIAareg
             );
         });
+        it('stopper bruker dersom ingen arbeidstid finnes som arbeidstaker, selvstendig eller frilanser', () => {
+            expect(kontrollerTilgangTilDialog([sakUtenArbeid], [orgArbeidsgiver])).toEqual(
+                StoppÅrsak.arbeidsgiverSakErIkkeIAareg
+            );
+        });
         it('slipper gjennom bruker med én sak og organisasjon-arbeidsgivere som er både i sak og aareg', () => {
             expect(kontrollerTilgangTilDialog([sak1], [orgArbeidsgiver])).toBeUndefined();
         });
-    });
-
-    describe('arbeidsgivereISakErIAareg', () => {
-        const arbeidstakerMap: ArbeidstakerMap = {
-            a1: { faktisk: {}, normalt: {} },
-            a2: { faktisk: {}, normalt: {} },
-        };
-        const arbeidsgivere: Arbeidsgiver[] = [
-            {
-                id: 'a1',
-            },
-            {
-                id: 'a2',
-            },
-        ] as any;
-        it('returnerer ok når arbeidsgivere finnes', () => {
-            expect(erArbeidsgivereISakIAareg(arbeidstakerMap, arbeidsgivere)).toBeTruthy();
+        it('slipper gjennom bruker med kun sn-arbeid', () => {
+            expect(kontrollerTilgangTilDialog([sakSN], [orgArbeidsgiver])).toBeUndefined();
         });
-        it('returnerer feil når arbeidsgivere ikke finnes i AAreg', () => {
-            expect(erArbeidsgivereISakIAareg(arbeidstakerMap, [arbeidsgivere[0]])).toBeFalsy();
+        it('slipper gjennom bruker med kun frilanser-arbeid', () => {
+            expect(kontrollerTilgangTilDialog([sakFrilanser], [orgArbeidsgiver])).toBeUndefined();
         });
     });
 });

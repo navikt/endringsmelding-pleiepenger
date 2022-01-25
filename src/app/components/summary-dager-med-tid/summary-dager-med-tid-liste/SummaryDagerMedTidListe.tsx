@@ -6,8 +6,7 @@ import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import { groupBy } from 'lodash';
 import { Element, Undertekst, Undertittel } from 'nav-frontend-typografi';
-import { datoSorter } from '../../../utils/datoSorter';
-import { DagMedEndretTid } from '../SummaryDagerMedTid';
+import { DagMedEndretTid, sorterDag } from '../SummaryDagerMedTid';
 import './summaryDagerMedTidListe.less';
 
 dayjs.extend(isoWeek);
@@ -48,7 +47,7 @@ export const SummaryDagerMedTidListe = ({ dagerMedTid: dagerMedTid, viseUke, vis
                                 </Element>
                             )}
                             <ul className={bem.element('dager')}>
-                                {days.sort(datoSorter).map((dag, idx) => {
+                                {days.sort(sorterDag).map((dag, idx) => {
                                     const tid = dag.tid || dag.tidOpprinnelig;
                                     const timer = tid?.hours || '0';
                                     const minutter = tid?.minutes || '0';

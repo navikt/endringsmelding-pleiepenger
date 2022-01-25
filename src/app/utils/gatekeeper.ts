@@ -1,27 +1,17 @@
 import { Arbeidsgiver, ArbeidsgiverType } from '../types/Arbeidsgiver';
-import { ArbeidstakerMap, Sak } from '../types/Sak';
+import { Sak } from '../types/Sak';
+import { erArbeidsgivereIBådeSakOgAAreg, harSakArbeidstidInfo } from './sakUtils';
 
 export enum StoppÅrsak {
     harIngenSak = 'harIngenSak',
     harFlereSaker = 'harFlereSaker',
     harPrivatArbeidsgiver = 'harPrivatArbeidsgiver',
     arbeidsgiverSakErIkkeIAareg = 'arbeidsgiverSakErIkkeIAareg',
+    arbeidIkkeRegistrert = 'arbeidIkkeRegistrert',
 }
 
 const harPrivatArbeidsgiver = (arbeidsgivere: Arbeidsgiver[]): boolean =>
     arbeidsgivere.some((a) => a.type === ArbeidsgiverType.PRIVATPERSON);
-
-const arbeidsgiverErIAareg = (arbeidsgiverId: string, arbeidsgivere: Arbeidsgiver[]): boolean => {
-    return arbeidsgivere.some((a) => a.id === arbeidsgiverId);
-};
-
-export const erArbeidsgivereISakIAareg = (arbeidstakerMap: ArbeidstakerMap, arbeidsgivereAAreg: Arbeidsgiver[]) => {
-    return (
-        Object.keys(arbeidstakerMap).some((id) => {
-            return arbeidsgiverErIAareg(id, arbeidsgivereAAreg) === false;
-        }) === false
-    );
-};
 
 export const kontrollerTilgangTilDialog = (saker: Sak[], arbeidsgivere: Arbeidsgiver[]): StoppÅrsak | undefined => {
     if (saker.length === 0) {
@@ -41,10 +31,13 @@ export const kontrollerTilgangTilDialog = (saker: Sak[], arbeidsgivere: Arbeidsg
             arbeidstid: { arbeidstakerMap },
         },
     } = sak;
-    if (arbeidstakerMap) {
-        if (erArbeidsgivereISakIAareg(arbeidstakerMap, arbeidsgivere) === false) {
+    if (arbeidstakerMap && Object.keys(arbeidstakerMap).length > 0) {
+        if (erArbeidsgivereIBådeSakOgAAreg(arbeidsgivere, arbeidstakerMap) === false) {
             return StoppÅrsak.arbeidsgiverSakErIkkeIAareg;
         }
+    }
+    if (harSakArbeidstidInfo(arbeidsgivere, sak.ytelse.arbeidstid) === false) {
+        return StoppÅrsak.arbeidsgiverSakErIkkeIAareg;
     }
     return undefined;
 };

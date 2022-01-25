@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-import { useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 import { failure, pending, success } from '@devexperts/remote-data-ts';
 import { ApplikasjonHendelse, useAmplitudeInstance } from '@navikt/sif-common-amplitude';
 import LoadWrapper from '@navikt/sif-common-core/lib/components/load-wrapper/LoadWrapper';
 import { isUnauthorized } from '@navikt/sif-common-core/lib/utils/apiUtils';
-import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import ErrorPage from '@navikt/sif-common-soknad/lib/soknad-common-pages/ErrorPage';
 import { SoknadApplicationType, StepConfig } from '@navikt/sif-common-soknad/lib/soknad-step/soknadStepTypes';
 import soknadStepUtils from '@navikt/sif-common-soknad/lib/soknad-step/soknadStepUtils';
 import { ulid } from 'ulid';
@@ -32,7 +29,6 @@ import {
     relocateToNavFrontpage,
     relocateToSoknad,
 } from '../utils/navigationUtils';
-import { harSakArbeidstidInfo } from '../utils/sakUtils';
 import { verifySoknadApiData } from '../validation/verifySoknadApiData';
 import { initialSendSoknadState, SendSoknadStatus, SoknadContextProvider } from './SoknadContext';
 import SoknadFormComponents from './SoknadFormComponents';
@@ -53,7 +49,6 @@ type resetFormFunc = () => void;
 const Soknad: React.FunctionComponent<Props> = ({ søker, tempStorage, arbeidsgivere, sakMedMeta }) => {
     const history = useHistory();
     const [initializing, setInitializing] = useState(true);
-    const intl = useIntl();
 
     const [sendSoknadStatus, setSendSoknadStatus] = useState<SendSoknadStatus>(initialSendSoknadState);
     const [soknadId, setSoknadId] = useState<string | undefined>();
@@ -221,17 +216,6 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, tempStorage, arbeidsgi
         <LoadWrapper
             isLoading={initializing}
             contentRenderer={(): React.ReactNode => {
-                if (harSakArbeidstidInfo(arbeidsgivere, sakMedMeta.sak.ytelse.arbeidstid) === false) {
-                    appSentryLogger.logError(
-                        'harSakArbeidstidInfo - info om arbeidstid mangler eller usynk mellom aareg og sak'
-                    );
-                    return (
-                        <ErrorPage
-                            bannerTitle={intlHelper(intl, 'application.title')}
-                            contentRenderer={() => <>Informasjon om arbeidstid mangler - usynk mellom aareg og sak</>}
-                        />
-                    );
-                }
                 const initialData = getInitialFormData(sakMedMeta.sak, søker, tempStorage);
                 return (
                     <SoknadFormComponents.FormikWrapper
