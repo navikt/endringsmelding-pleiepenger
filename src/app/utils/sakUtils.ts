@@ -1,31 +1,9 @@
-import { DateRange } from '@navikt/sif-common-utils';
-import {
-    dateToISODate,
-    getDateRangeFromDateRanges,
-    getDateRangesBetweenDateRanges,
-    getDatesInDateRange,
-    getMonthDateRange,
-    getMonthsInDateRange,
-    getYearsInDateRanges,
-    isDateInDateRange,
-    ISODateToDate,
-} from '@navikt/sif-common-utils';
-import dayjs from 'dayjs';
-import { flatten } from 'lodash';
-import moize from 'moize';
-import { DagerIkkeSøktForMap, DagerSøktForMap } from '../types';
+import { DateRange, getDateRangeFromDateRanges, isDateInDateRange, ISODateToDate } from '@navikt/sif-common-utils';
+import { DagerIkkeSøktForMap } from '../types';
 import { Arbeidsgiver } from '../types/Arbeidsgiver';
-import {
-    ArbeidstakerMap,
-    ArbeidstidEnkeltdagSak,
-    MånedMedSøknadsperioderMap as MånedMedSøknadsperioderMap,
-    Sak,
-    SakMedMeta,
-    SakMetadata,
-    YtelseArbeidstid,
-} from '../types/Sak';
-import { getEndringsdato, getEndringsperiode, getMaksEndringsperiode } from './endringsperiode';
-import { getUtilgjengeligeDatoerIMåned } from './getUtilgjengeligeDatoerIMåned';
+import { ArbeidstakerMap, ArbeidstidEnkeltdagSak, Sak, SakMedMeta, YtelseArbeidstid } from '../types/Sak';
+import { getEndringsdato, getMaksEndringsperiode } from './endringsperiode';
+import { getSakMetadata } from './sakMetadata';
 
 type ISODateObject = { [key: string]: any };
 
@@ -67,72 +45,18 @@ export const trimArbeidstidTilTillatPeriode = (
     return result;
 };
 
-export const getDagerIkkeSøktFor = (søknadsperioder: DateRange[]): DagerIkkeSøktForMap => {
-    const hull = getDateRangesBetweenDateRanges(søknadsperioder);
-    const dagerIkkeSøktFor: DagerIkkeSøktForMap = {};
-    hull.forEach((periode) => {
-        const datoer = getDatesInDateRange(periode, false);
-        datoer.forEach((d) => (dagerIkkeSøktFor[dateToISODate(d)] = true));
-    });
-    return dagerIkkeSøktFor;
-};
+export const erArbeidsgivereISakIAAreg = (arbeidsgivere: Arbeidsgiver[], arbeidsgivereMap?: ArbeidstakerMap): boolean =>
+    arbeidsgivereMap !== undefined
+        ? Object.keys(arbeidsgivereMap).some((orgnr) => arbeidsgivere.some((a) => a.id === orgnr) === false) === false
+        : false;
 
-export const getDagerSøktFor = (søknadsperioder: DateRange[]): DagerSøktForMap => {
-    const dagerSøktFor: DagerSøktForMap = {};
-    søknadsperioder.forEach((periode) => {
-        const datoer = getDatesInDateRange(periode, true);
-        datoer.forEach((d) => (dagerSøktFor[dateToISODate(d)] = true));
-    });
-    return dagerSøktFor;
-};
-
-export const _getYearMonthKey = (date: Date): string => dayjs(date).format('YYYY-MM');
-export const getYearMonthKey = moize(_getYearMonthKey);
-
-export const getDateRangeFromYearMonthKey = (yearMonthKey: string): DateRange => {
-    const [year, month] = yearMonthKey.split('-');
-    return getMonthDateRange(new Date(parseInt(year, 10), parseInt(month, 10) - 1));
-};
-
-export const getMånederMedSøknadsperioder = (søknadsperioder: DateRange[]): MånedMedSøknadsperioderMap => {
-    const måneder: MånedMedSøknadsperioderMap = {};
-    flatten(søknadsperioder.map((periode) => getMonthsInDateRange(periode))).forEach((periode) => {
-        const key = getYearMonthKey(periode.from);
-        måneder[key] = måneder[key] ? [...måneder[key], periode] : [periode];
-    });
-    return måneder;
-};
-
-const getSakMetadata = (endringsdato: Date, søknadsperioder: DateRange[]): SakMetadata => {
-    const endringsperiode = getEndringsperiode(endringsdato, søknadsperioder);
-    const dagerIkkeSøktForMap = getDagerIkkeSøktFor(søknadsperioder);
-    const dagerSøktForMap = getDagerSøktFor(søknadsperioder);
-    const alleMånederISøknadsperiode = getMonthsInDateRange(getDateRangeFromDateRanges(søknadsperioder));
-    const månederMedSøknadsperiodeMap = getMånederMedSøknadsperioder(søknadsperioder);
-    const antallMånederUtenSøknadsperiode =
-        alleMånederISøknadsperiode.length - Object.keys(månederMedSøknadsperiodeMap).length;
-    const søknadsperioderGårOverFlereÅr = getYearsInDateRanges(alleMånederISøknadsperiode).length > 1;
-    const datoerIkkeSøktFor: Date[] = Object.keys(dagerIkkeSøktForMap).map((dato) => ISODateToDate(dato));
-    const datoerIkkeSøktForIMåned = {};
-
-    Object.keys(månederMedSøknadsperiodeMap).forEach((key) => {
-        const måned = getDateRangeFromYearMonthKey(key);
-        datoerIkkeSøktForIMåned[key] = getUtilgjengeligeDatoerIMåned(datoerIkkeSøktFor, måned.from, endringsperiode);
-    });
-
-    return {
-        endringsdato,
-        endringsperiode,
-        søknadsperioder,
-        dagerIkkeSøktForMap,
-        dagerSøktForMap,
-        månederMedSøknadsperiodeMap,
-        alleMånederISøknadsperiode,
-        søknadsperioderGårOverFlereÅr,
-        antallMånederUtenSøknadsperiode,
-        datoerIkkeSøktFor,
-        datoerIkkeSøktForIMåned,
-    };
+export const harSakArbeidstidInfo = (arbeidsgivere: Arbeidsgiver[], arbeidstidSak: YtelseArbeidstid): boolean => {
+    const arbeidsgivereErBådeISakOgAAreg = erArbeidsgivereISakIAAreg(arbeidsgivere, arbeidstidSak.arbeidstakerMap);
+    return (
+        arbeidsgivereErBådeISakOgAAreg ||
+        arbeidstidSak.frilanser !== undefined ||
+        arbeidstidSak.selvstendig !== undefined
+    );
 };
 
 export const getSakMedMetadata = (opprinneligSak: Sak): SakMedMeta => {
@@ -173,23 +97,6 @@ export const getSakMedMetadata = (opprinneligSak: Sak): SakMedMeta => {
     }
 
     return { sak, meta };
-};
-
-export const erArbeidsgivereIBådeSakOgAAreg = (
-    arbeidsgivere: Arbeidsgiver[],
-    arbeidsgivereMap?: ArbeidstakerMap
-): boolean =>
-    arbeidsgivereMap !== undefined
-        ? Object.keys(arbeidsgivereMap).some((orgnr) => arbeidsgivere.some((a) => a.id === orgnr) === false) === false
-        : false;
-
-export const harSakArbeidstidInfo = (arbeidsgivere: Arbeidsgiver[], arbeidstidSak: YtelseArbeidstid): boolean => {
-    const arbeidsgivereErBådeISakOgAAreg = erArbeidsgivereIBådeSakOgAAreg(arbeidsgivere, arbeidstidSak.arbeidstakerMap);
-    return (
-        arbeidsgivereErBådeISakOgAAreg ||
-        arbeidstidSak.frilanser !== undefined ||
-        arbeidstidSak.selvstendig !== undefined
-    );
 };
 
 // export const getNyeArbeidsforholdIkkeRegistrertISak = (

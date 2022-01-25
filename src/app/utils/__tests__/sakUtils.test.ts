@@ -2,7 +2,7 @@ import { DateDurationMap, DateRange, dateToISODate, Duration, ISODateToDate } fr
 import { ArbeidsgiverType } from '../../types/Arbeidsgiver';
 import { ArbeidstidEnkeltdagSak, Sak } from '../../types/Sak';
 import {
-    erArbeidsgivereIBådeSakOgAAreg,
+    erArbeidsgivereISakIAAreg,
     getDateRangeForSaker,
     getISODateObjectsWithinDateRange,
     harSakArbeidstidInfo,
@@ -66,9 +66,9 @@ describe('trimArbeidstidTilTillatPeriode', () => {
     });
 });
 
-describe('erArbeidsgivereErBådeISakOgAAreg', () => {
+describe('erArbeidsgivereISakIAAreg', () => {
     it('returnerer true når alle arbeidsgivere (1) finnes i AA-reg', () => {
-        const result = erArbeidsgivereIBådeSakOgAAreg(
+        const result = erArbeidsgivereISakIAAreg(
             [
                 {
                     type: ArbeidsgiverType.ORGANISASJON,
@@ -84,7 +84,7 @@ describe('erArbeidsgivereErBådeISakOgAAreg', () => {
         expect(result).toBeTruthy();
     });
     it('returnerer true når ingen arbeidsgivere finnes i sak', () => {
-        const result = erArbeidsgivereIBådeSakOgAAreg(
+        const result = erArbeidsgivereISakIAAreg(
             [
                 {
                     type: ArbeidsgiverType.ORGANISASJON,
@@ -98,7 +98,7 @@ describe('erArbeidsgivereErBådeISakOgAAreg', () => {
         expect(result).toBeTruthy();
     });
     it('returnerer false når en k9 arbeidsgiver ikke finnes i AA-reg', () => {
-        const result = erArbeidsgivereIBådeSakOgAAreg(
+        const result = erArbeidsgivereISakIAAreg(
             [
                 {
                     type: ArbeidsgiverType.ORGANISASJON,
@@ -114,7 +114,7 @@ describe('erArbeidsgivereErBådeISakOgAAreg', () => {
         expect(result).toBeFalsy();
     });
     it('returnerer false når ingen arbeidsgivere finnes i AA-reg', () => {
-        const result = erArbeidsgivereIBådeSakOgAAreg([], {
+        const result = erArbeidsgivereISakIAAreg([], {
             '2': { faktisk: {}, normalt: {} },
         });
         expect(result).toBeFalsy();

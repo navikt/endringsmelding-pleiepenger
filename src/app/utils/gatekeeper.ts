@@ -1,6 +1,6 @@
 import { Arbeidsgiver, ArbeidsgiverType } from '../types/Arbeidsgiver';
 import { Sak } from '../types/Sak';
-import { erArbeidsgivereIBådeSakOgAAreg, harSakArbeidstidInfo } from './sakUtils';
+import { erArbeidsgivereISakIAAreg, harSakArbeidstidInfo } from './sakUtils';
 
 export enum StoppÅrsak {
     harIngenSak = 'harIngenSak',
@@ -32,7 +32,7 @@ export const kontrollerTilgangTilDialog = (saker: Sak[], arbeidsgivere: Arbeidsg
         },
     } = sak;
     if (arbeidstakerMap && Object.keys(arbeidstakerMap).length > 0) {
-        if (erArbeidsgivereIBådeSakOgAAreg(arbeidsgivere, arbeidstakerMap) === false) {
+        if (erArbeidsgivereISakIAAreg(arbeidsgivere, arbeidstakerMap) === false) {
             return StoppÅrsak.arbeidsgiverSakErIkkeIAareg;
         }
     }
