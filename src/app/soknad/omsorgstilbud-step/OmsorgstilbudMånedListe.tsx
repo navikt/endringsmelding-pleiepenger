@@ -1,11 +1,10 @@
 import React from 'react';
 import { SøknadsperioderMånedListe } from '@navikt/sif-common-pleiepenger/lib';
 import { TidEnkeltdagEndring } from '@navikt/sif-common-pleiepenger/lib/tid-enkeltdag-dialog/TidEnkeltdagForm';
-import { DateDurationMap } from '@navikt/sif-common-utils';
+import { DateDurationMap, getYearMonthKey } from '@navikt/sif-common-utils';
 import { useFormikContext } from 'formik';
 import { SakMetadata, TidEnkeltdag } from '../../types/Sak';
 import { SoknadFormData, SoknadFormField } from '../../types/SoknadFormData';
-import { getYearMonthKey } from '../../utils/sakUtils';
 import OmsorgstilbudMånedInfo from './omsorgstilbud-måned/OmsorgstilbudMåned';
 
 interface Props {

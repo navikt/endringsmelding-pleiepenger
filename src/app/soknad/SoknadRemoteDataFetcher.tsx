@@ -53,7 +53,7 @@ const getSakSomSkalEndres = (saker: Sak[], soknadTempStorage?: SoknadTempStorage
     return undefined;
 };
 
-export const getArbeidsgivereISak = (arbeidsgivere: Arbeidsgiver[], sak: Sak): Arbeidsgiver[] => {
+const getArbeidsgivereISak = (arbeidsgivere: Arbeidsgiver[], sak: Sak): Arbeidsgiver[] => {
     const { arbeidstakerMap } = sak.ytelse.arbeidstid;
     if (arbeidstakerMap === undefined) {
         return [];

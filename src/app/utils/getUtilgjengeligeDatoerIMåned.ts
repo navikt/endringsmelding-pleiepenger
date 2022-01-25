@@ -1,6 +1,5 @@
-import { DateRange } from '@navikt/sif-common-utils';
+import { DateRange, getYearMonthKey } from '@navikt/sif-common-utils';
 import { getDatesInMonthOutsideDateRange } from '@navikt/sif-common-utils';
-import { getYearMonthKey } from './sakUtils';
 
 export const getUtilgjengeligeDatoerIMåned = (
     utilgjengeligeDatoer: Date[],
