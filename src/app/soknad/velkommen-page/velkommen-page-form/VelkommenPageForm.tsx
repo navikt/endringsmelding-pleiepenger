@@ -96,7 +96,7 @@ const VelkommenPageForm: React.FunctionComponent<Props> = ({ onStart }) => {
                     <Lenke
                         href="#"
                         onClick={(): void => setDialogState({ behandlingAvPersonopplysningerModalOpen: true })}>
-                        <FormattedMessage id="velkommenPageForm..personopplysninger.lenketekst" />
+                        <FormattedMessage id="velkommenPageForm.personopplysninger.lenketekst" />
                     </Lenke>
                 </div>
             </FormBlock>
