@@ -33,6 +33,7 @@ const handleStoppÅrsak = (stoppÅrsak: StoppÅrsak): JSX.Element => {
                     )}
                 />
             );
+        case StoppÅrsak.arbeidsgiverSakErIkkeIAareg:
         case StoppÅrsak.harFlereSaker:
         case StoppÅrsak.harPrivatArbeidsgiver:
             return <IkkeTilgangPage stoppÅrsak={stoppÅrsak} />;

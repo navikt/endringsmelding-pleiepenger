@@ -1,21 +1,21 @@
 import { Arbeidsgiver, ArbeidsgiverType } from '../../types/Arbeidsgiver';
-import { Sak } from '../../types/Sak';
-import { kontrollerTilgangTilDialog, StoppÅrsak } from '../gatekeeper';
+import { ArbeidstakerMap, Sak } from '../../types/Sak';
+import { erArbeidsgivereISakIAareg, kontrollerTilgangTilDialog, StoppÅrsak } from '../gatekeeper';
 
 const privatArbeidsgiver: Arbeidsgiver = {
     type: ArbeidsgiverType.PRIVATPERSON,
-    id: '123',
+    id: 'p1',
     navn: 'Private',
 };
 
 const orgArbeidsgiver: Arbeidsgiver = {
     type: ArbeidsgiverType.ORGANISASJON,
-    id: '123',
+    id: 'a1',
     navn: 'Private',
 };
 
-const sak1: Sak = {} as any;
-const sak2: Sak = {} as any;
+const sak1: Sak = { ytelse: { arbeidstid: { arbeidstakerMap: { [orgArbeidsgiver.id]: {} } } } } as any;
+const sak2: Sak = { ytelse: { arbeidstid: { arbeidstakerMap: { ukjent: {} } } } } as any;
 
 describe('gatekeeper', () => {
     describe('kontrollerTilgangTilDialog', () => {
@@ -28,8 +28,34 @@ describe('gatekeeper', () => {
         it('stopper bruker dersom en har privat arbeidsgiver', () => {
             expect(kontrollerTilgangTilDialog([sak1], [privatArbeidsgiver])).toEqual(StoppÅrsak.harPrivatArbeidsgiver);
         });
-        it('slipper gjennom bruker med én sak og organisasjon-arbeidsgivere', () => {
+        it('stopper bruker dersom arbeidsgivere i sak ikke er i aareg', () => {
+            expect(kontrollerTilgangTilDialog([sak2], [orgArbeidsgiver])).toEqual(
+                StoppÅrsak.arbeidsgiverSakErIkkeIAareg
+            );
+        });
+        it('slipper gjennom bruker med én sak og organisasjon-arbeidsgivere som er både i sak og aareg', () => {
             expect(kontrollerTilgangTilDialog([sak1], [orgArbeidsgiver])).toBeUndefined();
+        });
+    });
+
+    describe('arbeidsgivereISakErIAareg', () => {
+        const arbeidstakerMap: ArbeidstakerMap = {
+            a1: { faktisk: {}, normalt: {} },
+            a2: { faktisk: {}, normalt: {} },
+        };
+        const arbeidsgivere: Arbeidsgiver[] = [
+            {
+                id: 'a1',
+            },
+            {
+                id: 'a2',
+            },
+        ] as any;
+        it('returnerer ok når arbeidsgivere finnes', () => {
+            expect(erArbeidsgivereISakIAareg(arbeidstakerMap, arbeidsgivere)).toBeTruthy();
+        });
+        it('returnerer feil når arbeidsgivere ikke finnes i AAreg', () => {
+            expect(erArbeidsgivereISakIAareg(arbeidstakerMap, [arbeidsgivere[0]])).toBeFalsy();
         });
     });
 });
