@@ -8,6 +8,7 @@ import {
     SoknadFormField,
 } from '../types/SoknadFormData';
 import { SoknadTempStorageData } from '../types/SoknadTempStorageData';
+import { HvaSkalEndres } from '../types';
 
 /** TODO - skrive tester på disse */
 
@@ -35,13 +36,14 @@ export const getArbeidstidArbeidsgiverMap = (k9Arbeidstid: YtelseArbeidstid): Ar
 export const getInitialFormData = (
     sak: Sak,
     søker: Søker,
-    tempStorage: SoknadTempStorageData
+    tempStorage: SoknadTempStorageData | undefined,
+    hvaSkalEndres: HvaSkalEndres[]
 ): Partial<SoknadFormData> => {
     const initialData: Partial<SoknadFormData> = {
-        [SoknadFormField.harForståttRettigheterOgPlikter]: false,
+        [SoknadFormField.harForståttRettigheterOgPlikter]: true,
         [SoknadFormField.harBekreftetOpplysninger]: false,
         [SoknadFormField.sakBarnAktørid]: sak.barn.aktørId,
-        hvaSkalEndres: [],
+        hvaSkalEndres,
         omsorgstilbud: { ...sak.ytelse.tilsynsordning },
         arbeidstid: {
             arbeidsgiver: getArbeidstidArbeidsgiverMap(sak.ytelse.arbeidstid),
@@ -52,7 +54,7 @@ export const getInitialFormData = (
                 ? getArbeidstidEnkeltdagFormValueFraK9ArbeidstidSak(sak.ytelse.arbeidstid.selvstendig)
                 : undefined,
         },
-        ...(isStorageDataValid(tempStorage, { søker, sak }) ? tempStorage.formData : {}),
+        ...(tempStorage && isStorageDataValid(tempStorage, { søker, sak }) ? tempStorage.formData : {}),
     };
     return initialData;
 };

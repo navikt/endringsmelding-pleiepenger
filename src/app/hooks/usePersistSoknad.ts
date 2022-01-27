@@ -5,7 +5,6 @@ import { StepID } from '../soknad/soknadStepsConfig';
 import soknadTempStorage, { UserHashInfo } from '../soknad/soknadTempStorage';
 import { SoknadFormData } from '../types/SoknadFormData';
 import { navigateToErrorPage, relocateToLoginPage } from '../utils/navigationUtils';
-import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 import { useHistory } from 'react-router';
 
 function usePersistSoknad() {
@@ -27,9 +26,7 @@ function usePersistSoknad() {
     }
 
     const persist = (soknadId: string, stepID: StepID, hashInfo: UserHashInfo) => {
-        if (isFeatureEnabled(Feature.PERSISTENCE)) {
-            doPersist(soknadId, stepID, hashInfo);
-        }
+        doPersist(soknadId, stepID, hashInfo);
     };
 
     return { persist };

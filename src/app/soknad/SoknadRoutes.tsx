@@ -24,7 +24,6 @@ import OmsorgstilbudStep from './omsorgstilbud-step/OmsorgstilbudStep';
 import OppsummeringStep from './oppsummering-step/OppsummeringStep';
 import { useSoknadContext } from './SoknadContext';
 import { StepID } from './soknadStepsConfig';
-import VelkommenPage from './velkommen-page/VelkommenPage';
 
 interface Props {
     soknadId?: string;
@@ -100,9 +99,6 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, arbeid
                 } catch (error) {
                     appSentryLogger.logError('mapFormDataToK9Format', error);
                 }
-                if (apiValues && soknadId) {
-                    doPersist(soknadId, StepID.OPPSUMMERING);
-                }
                 return apiValues ? (
                     <OppsummeringStep
                         arbeidsgivere={arbeidsgivere || []}
@@ -123,7 +119,6 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, arbeid
               title: soknadStepUtils.getStepTexts(intl, soknadStepsConfig[lastAvailableStep]).stepTitle,
           }
         : undefined;
-
     return (
         <Switch>
             <Route path={AppRoutes.SOKNAD_SENT} exact={true}>
@@ -139,9 +134,6 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, arbeid
                         return <div>Det oppstod en feil</div>;
                     }}
                 />
-            </Route>
-            <Route path={AppRoutes.SOKNAD} exact={true}>
-                <VelkommenPage />
             </Route>
             {soknadId === undefined && <Redirect key="redirectToWelcome" to={AppRoutes.SOKNAD} />}
             {soknadId &&
