@@ -1,8 +1,7 @@
-import { DateRange } from '@navikt/sif-common-utils';
-import { DateDurationMap, getDurationsDiff, ISODateToISODateRange } from '@navikt/sif-common-utils';
-import { TilsynsordningApiData } from '../../types/YtelseApiData';
+import { DateDurationMap, DateRange, getDurationsDiff, ISODateToISODateRange } from '@navikt/sif-common-utils';
 import { TidEnkeltdagApiData } from '../../types/SoknadApiData';
 import { Omsorgstilbud } from '../../types/SoknadFormData';
+import { TilsynsordningApiData } from '../../types/YtelseApiData';
 import { getTidEnkeltdagApiDataIPeriodeApiData } from '../tidsbrukApiUtils';
 
 export const mapOmsorgstilbudToK9FormatInnsending = (

@@ -9,7 +9,7 @@ import { SoknadTempStorageData } from '../types/SoknadTempStorageData';
 import { Søker } from '../types/Søker';
 import { StepID } from './soknadStepsConfig';
 
-export const STORAGE_VERSION = '2.1';
+export const STORAGE_VERSION = '1.0';
 
 export interface UserHashInfo {
     søker: Søker;

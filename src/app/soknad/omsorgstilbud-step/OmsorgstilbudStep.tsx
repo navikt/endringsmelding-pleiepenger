@@ -19,7 +19,7 @@ const cleanupOmsorgstilbudStep = (formData: SoknadFormData): SoknadFormData => {
 interface Props {
     tidIOmsorgstilbudSak?: TidEnkeltdag;
     sakMetadata: SakMetadata;
-    onOmsorgstilbudChanged?: () => void;
+    onOmsorgstilbudChanged: () => void;
 }
 
 const OmsorgstilbudStep: React.FunctionComponent<Props> = ({

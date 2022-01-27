@@ -40,6 +40,8 @@ export interface OpptjeningAktivitetFrilanser {
 
 export interface Sak {
     søknadId: string;
+    språk: string;
+    mottattDato: Date;
     barn: Barn;
     søker: {
         norskIdentitetsnummer: string;

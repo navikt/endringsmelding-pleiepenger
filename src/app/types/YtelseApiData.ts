@@ -35,6 +35,7 @@ export interface YtelseApiData {
     tilsynsordning?: TilsynsordningApiData;
     arbeidstid?: ArbeidstidApiData;
     barn: BarnApiData;
+    // søknadsperiode: ISODateRange[];
 }
 
 export interface BarnApiData {

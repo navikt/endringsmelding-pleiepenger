@@ -181,13 +181,6 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, tempStorage, arbeidsgi
         });
     };
 
-    // useEffect(() => {
-    //     const arbeidsforholdIkkeISsak = getNyeArbeidsforholdIkkeRegistrertISak(arbeidsgivere, []);
-    //     if (arbeidsforholdIkkeISsak.length > 0) {
-    //         setNyeArbeidsforhold(arbeidsforholdIkkeISsak);
-    //     }
-    // }, [arbeidsgivere]);
-
     useEffectOnce(() => {
         if (isStorageDataValid(tempStorage, { søker, sak })) {
             setSoknadId(tempStorage.metadata.soknadId);

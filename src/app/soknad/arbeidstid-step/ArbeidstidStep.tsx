@@ -36,6 +36,7 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
 }) => {
     const stepId = StepID.ARBEIDSTID;
     const { arbeidstakerMap } = arbeidstidSak;
+
     return (
         <SoknadFormStep id={stepId} onStepCleanup={cleanupStep}>
             <StepIntroduction>
