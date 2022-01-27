@@ -17,9 +17,9 @@ export const kontrollerTilgangTilDialog = (saker: Sak[], arbeidsgivere: Arbeidsg
     if (saker.length === 0) {
         return StoppÅrsak.harIngenSak;
     }
-    // if (saker.length > 1) {
-    //     return StoppÅrsak.harFlereSaker;
-    // }
+    if (saker.length > 1) {
+        return StoppÅrsak.harFlereSaker;
+    }
     if (harPrivatArbeidsgiver(arbeidsgivere)) {
         return StoppÅrsak.harPrivatArbeidsgiver;
     }
