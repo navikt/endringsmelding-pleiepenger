@@ -2,17 +2,8 @@ import { decimalTimeToTime } from '@navikt/sif-common-core/lib/utils/timeUtils';
 import { getNumberFromNumberInputValue } from '@navikt/sif-common-formik/lib';
 import { DateDurationMap, Duration, isDateInDates, isValidDuration } from '@navikt/sif-common-utils';
 import { ArbeidstakerMap, ArbeidstidEnkeltdagSak } from '../types/Sak';
-import { ArbeidssituasjonFormValue, Arbeidssituasjon } from '../types/SoknadFormData';
 
 export const getArbeidssituasjonFieldKeyForArbeidsgiver = (orgnr: string) => `#${orgnr}`;
-
-export const getArbeidssituasjonForArbeidsgiver = (
-    orgnr: string,
-    arbeidssituasjon?: ArbeidssituasjonFormValue
-): Arbeidssituasjon | undefined => {
-    const fieldKey = getArbeidssituasjonFieldKeyForArbeidsgiver(orgnr);
-    return arbeidssituasjon ? arbeidssituasjon?.arbeidsgiver[fieldKey] : undefined;
-};
 
 export const getArbeidstidForArbeidsgiver = (
     orgnr: string,

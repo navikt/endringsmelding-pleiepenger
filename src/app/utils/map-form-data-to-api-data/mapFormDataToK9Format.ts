@@ -1,6 +1,7 @@
 import { getEnvironmentVariable } from '@navikt/sif-common-core/lib/utils/envUtils';
 import { DateRange } from '@navikt/sif-common-utils';
 import { dateToISODate } from '@navikt/sif-common-utils';
+import { skalEndreArbeidstid, skalEndreOmsorgstilbud } from '../../soknad/soknadStepsConfig';
 import { Sak } from '../../types/Sak';
 import { SoknadApiData } from '../../types/SoknadApiData';
 import { SoknadFormData } from '../../types/SoknadFormData';
@@ -23,33 +24,35 @@ export const mapFormDataToK9Format = (
     søknadsperioder: DateRange[],
     sak: Sak
 ): SoknadApiData | undefined => {
-    const { arbeidssituasjon, arbeidstid, omsorgstilbud } = values.formData;
+    const { arbeidstid, omsorgstilbud, hvaSkalEndres } = values.formData;
     const apiValues: SoknadApiData = {
         harBekreftetOpplysninger: values.formData.harBekreftetOpplysninger,
         harForståttRettigheterOgPlikter: values.formData.harForståttRettigheterOgPlikter,
-        id: '123',
-        språk: 'nb',
+        id: sak.søknadId,
+        språk: sak.språk,
         ytelse: {
             type: sak.ytelse.type,
             barn: {
                 fødselsdato: sak.ytelse.barn.fødselsdato ? dateToISODate(sak.ytelse.barn.fødselsdato) : undefined,
                 norskIdentitetsnummer: sak.ytelse.barn.norskIdentitetsnummer,
             },
-            arbeidstid: arbeidstid
-                ? mapArbeidstidToK9FormatInnsending({
-                      arbeidstid,
-                      arbeidssituasjon,
-                      sak: sak,
-                      søknadsperioder,
-                  })
-                : undefined,
-            tilsynsordning: omsorgstilbud
-                ? mapOmsorgstilbudToK9FormatInnsending(
-                      omsorgstilbud,
-                      sak.ytelse.tilsynsordning.enkeltdager,
-                      søknadsperioder
-                  )
-                : undefined,
+            arbeidstid:
+                arbeidstid && skalEndreArbeidstid({ hvaSkalEndres })
+                    ? mapArbeidstidToK9FormatInnsending({
+                          arbeidstid,
+                          sak: sak,
+                          søknadsperioder,
+                      })
+                    : undefined,
+            tilsynsordning:
+                omsorgstilbud && skalEndreOmsorgstilbud({ hvaSkalEndres })
+                    ? mapOmsorgstilbudToK9FormatInnsending(
+                          omsorgstilbud,
+                          sak.ytelse.tilsynsordning.enkeltdager,
+                          søknadsperioder
+                      )
+                    : undefined,
+            // søknadsperiode: sak.ytelse.søknadsperioder.map((periode) => dateRangeToISODateRange(periode)),
         },
     };
 

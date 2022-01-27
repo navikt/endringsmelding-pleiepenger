@@ -41,11 +41,11 @@ const OppsummeringStep: React.FunctionComponent<Props> = ({ apiValues, arbeidsgi
         }
     }, [apiDataValidationResult]);
 
-    const harEndringerSomKanSendesInn =
-        apiValues.ytelse.arbeidstid == undefined &&
-        skalEndreArbeidstid({ hvaSkalEndres }) &&
-        apiValues.ytelse.tilsynsordning == undefined &&
-        skalEndreOmsorgstilbud({ hvaSkalEndres }) === false;
+    const harEndretArbeidstid = skalEndreArbeidstid({ hvaSkalEndres }) && apiValues.ytelse.arbeidstid !== undefined;
+    const harEndretOmsorgstilbud =
+        skalEndreOmsorgstilbud({ hvaSkalEndres }) && apiValues.ytelse.tilsynsordning !== undefined;
+
+    const harEndringerSomKanSendesInn = harEndretArbeidstid || harEndretOmsorgstilbud;
 
     return (
         <SoknadFormStep

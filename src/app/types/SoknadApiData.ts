@@ -1,4 +1,3 @@
-import { Locale } from '@navikt/sif-common-core/lib/types/Locale';
 import { ISODate, ISODuration } from '@navikt/sif-common-utils/lib';
 import { YtelseApiData } from './YtelseApiData';
 
@@ -20,7 +19,7 @@ export interface TidEnkeltdagApiData {
 
 export interface SoknadApiData {
     [SoknadApiDataField.id]: string;
-    [SoknadApiDataField.språk]: Locale;
+    [SoknadApiDataField.språk]: string;
     [SoknadApiDataField.harForståttRettigheterOgPlikter]: boolean;
     [SoknadApiDataField.harBekreftetOpplysninger]: boolean;
     [SoknadApiDataField.ytelse]: YtelseApiData;

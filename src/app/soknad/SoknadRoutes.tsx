@@ -45,24 +45,19 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, arbeid
     const [persistRequest, setPersistRequest] = useState<{ stepID: StepID } | undefined>();
 
     const doPersist = useCallback(
-        (stepID: StepID) => {
-            if (soknadId) {
-                /** Dobbeltlagrer enn så lenge pga lagring i sif-common-soknad */
-                persist(soknadId, stepID, {
-                    søker,
-                    sak,
-                });
-            }
+        (sId: string, stepID: StepID) => {
+            persist(sId, stepID, {
+                søker,
+                sak,
+            });
         },
-        [søker, sak, persist, soknadId]
+        [søker, sak, persist]
     );
 
     useEffect(() => {
-        if (soknadId) {
-            if (persistRequest) {
-                doPersist(persistRequest.stepID);
-                setPersistRequest(undefined);
-            }
+        if (soknadId && persistRequest) {
+            setPersistRequest(undefined);
+            doPersist(soknadId, persistRequest.stepID);
         }
     }, [soknadId, doPersist, persistRequest, persist, søker, sak, arbeidsgivere]);
 
@@ -105,8 +100,8 @@ const SoknadRoutes: React.FunctionComponent<Props> = ({ soknadId, søker, arbeid
                 } catch (error) {
                     appSentryLogger.logError('mapFormDataToK9Format', error);
                 }
-                if (apiValues) {
-                    doPersist(StepID.OMSORGSTILBUD);
+                if (apiValues && soknadId) {
+                    doPersist(soknadId, StepID.OPPSUMMERING);
                 }
                 return apiValues ? (
                     <OppsummeringStep

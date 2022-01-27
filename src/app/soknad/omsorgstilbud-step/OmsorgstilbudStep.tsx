@@ -11,7 +11,6 @@ import SoknadFormStep from '../SoknadFormStep';
 import { StepID } from '../soknadStepsConfig';
 import EndreOmsorgstilbudPeriode from './endre-omsorgstilbud-periode/EndreOmsorgstilbudPeriode';
 import OmsorgstilbudMånedListe from './OmsorgstilbudMånedListe';
-import { useEffectOnce } from '../../hooks/useEffectOnce';
 
 const cleanupOmsorgstilbudStep = (formData: SoknadFormData): SoknadFormData => {
     return formData;
@@ -31,10 +30,6 @@ const OmsorgstilbudStep: React.FunctionComponent<Props> = ({
     const stepId = StepID.OMSORGSTILBUD;
     const { setFieldValue, values } = useFormikContext<SoknadFormData>();
     const tidOmsorgstilbud = values.omsorgstilbud?.enkeltdager || {};
-
-    useEffectOnce(() => {
-        onOmsorgstilbudChanged();
-    });
 
     const handleOnPeriodeChange = (data: DateDurationMap) => {
         const dagerMedOmsorgstilbud = { ...tidOmsorgstilbud, ...data };

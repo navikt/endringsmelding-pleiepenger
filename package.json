@@ -19,7 +19,8 @@
         "start-server-local": "npm-run-all -s rm:dist build -p dev-api server-test:local",
         "start": "node ./src/build/scripts/start-dev.js",
         "test": "jest --maxWorkers=2 --config ./jest/jest.config.js",
-        "test-w": "jest --maxWorkers=2 --config ./jest/jest.config.js --watch"
+        "test-w": "jest --maxWorkers=2 --config ./jest/jest.config.js --watch",
+        "test-c": "jest  --coverage --config ./jest/jest.config.js --watch"
     },
     "dependencies": {
         "@devexperts/remote-data-ts": "^2.1.1",

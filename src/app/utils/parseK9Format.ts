@@ -7,6 +7,7 @@ import {
     ISODateToDate,
     ISODurationToDuration,
 } from '@navikt/sif-common-utils';
+import dayjs from 'dayjs';
 import {
     K9Format,
     K9FormatArbeidstaker,
@@ -127,6 +128,8 @@ export const parseK9Format = (data: K9Format): Sak => {
     const sak: Sak = {
         søker: søker,
         søknadId: søknadId,
+        språk: data.søknad.språk,
+        mottattDato: dayjs(data.søknad.mottattDato).toDate(),
         barn: getBarn(data.barn),
         ytelse: {
             type: 'PLEIEPENGER_SYKT_BARN',

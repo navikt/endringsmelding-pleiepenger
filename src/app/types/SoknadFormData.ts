@@ -1,5 +1,4 @@
-import { YesOrNo } from '@navikt/sif-common-core/lib/types/YesOrNo';
-import { DateDurationMap, DurationWeekdays } from '@navikt/sif-common-utils';
+import { DateDurationMap } from '@navikt/sif-common-utils';
 import { Arbeidsgiver } from './Arbeidsgiver';
 
 export enum SoknadFormField {
@@ -44,19 +43,6 @@ export interface ArbeidstidFormValue {
     frilanser?: ArbeidstidEnkeltdagSøknad;
     selvstendig?: ArbeidstidEnkeltdagSøknad;
 }
-export interface Arbeidssituasjon {
-    jobberNormaltTimer: string;
-    jobberIPerioden: JobberIPeriodeSvar;
-    jobberSomVanlig?: YesOrNo;
-    erLiktHverUke?: YesOrNo;
-    fasteDager?: DurationWeekdays;
-}
-
-export interface ArbeidssituasjonFormValue {
-    arbeidsgiver: {
-        [orgnr: string]: Arbeidssituasjon;
-    };
-}
 
 export interface SoknadFormData {
     [SoknadFormField.harForståttRettigheterOgPlikter]: boolean;
@@ -65,7 +51,6 @@ export interface SoknadFormData {
     [SoknadFormField.hvaSkalEndres]: HvaSkalEndres[];
     [SoknadFormField.omsorgstilbud]?: Omsorgstilbud;
     [SoknadFormField.arbeidstid]: ArbeidstidFormValue;
-    [SoknadFormField.arbeidssituasjon]?: ArbeidssituasjonFormValue;
 }
 
 export const getArbeidsgiverArbeidstidFormFieldName = (a: Arbeidsgiver): SoknadFormField =>
