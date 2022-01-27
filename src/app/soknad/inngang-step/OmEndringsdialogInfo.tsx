@@ -1,7 +1,7 @@
 import React from 'react';
 import Lenke from 'nav-frontend-lenker';
 
-const VelkommenInfo: React.FunctionComponent = () => {
+const OmEndringsdialogInfo: React.FunctionComponent = () => {
     return (
         <>
             <p>
@@ -18,4 +18,4 @@ const VelkommenInfo: React.FunctionComponent = () => {
     );
 };
 
-export default VelkommenInfo;
+export default OmEndringsdialogInfo;

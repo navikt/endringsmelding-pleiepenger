@@ -1,6 +1,7 @@
 import { SoknadApplicationType, SoknadStepsConfig } from '@navikt/sif-common-soknad/lib/soknad-step/soknadStepTypes';
 import soknadStepUtils from '@navikt/sif-common-soknad/lib/soknad-step/soknadStepUtils';
-import { HvaSkalEndres, SoknadFormData } from '../types/SoknadFormData';
+import { HvaSkalEndres } from '../types';
+import { SoknadFormData } from '../types/SoknadFormData';
 
 export enum StepID {
     'ARBEIDSTID' = 'arbeidstid',

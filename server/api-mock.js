@@ -54,6 +54,7 @@ const existsSync = (path) => fs.existsSync(path);
 
 const mockPath = `./server/mock-data/`;
 const soker = 'soker1';
+// const soker = 'soker3-flere-saker';
 
 const sakFileName = `sak-mock.json`;
 const søkerFileName = `søker-mock.json`;

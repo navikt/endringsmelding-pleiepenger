@@ -99,6 +99,15 @@ export const getSakMedMetadata = (opprinneligSak: Sak): SakMedMeta => {
     return { sak, meta };
 };
 
+export const getArbeidsgivereISak = (arbeidsgivere: Arbeidsgiver[], sak: Sak): Arbeidsgiver[] => {
+    const { arbeidstakerMap } = sak.ytelse.arbeidstid;
+    if (arbeidstakerMap === undefined) {
+        return [];
+    }
+    return arbeidsgivere.filter((a) => {
+        return arbeidstakerMap[a.id] !== undefined;
+    });
+};
 // export const getNyeArbeidsforholdIkkeRegistrertISak = (
 //     arbeidsgivere: Arbeidsgiver[],
 //     k9FormtArbeidsgivere: K9FormatArbeidsgiver[]

@@ -1,4 +1,5 @@
 import { DateDurationMap } from '@navikt/sif-common-utils';
+import { HvaSkalEndres } from '.';
 import { Arbeidsgiver } from './Arbeidsgiver';
 
 export enum SoknadFormField {
@@ -21,10 +22,6 @@ export enum JobberIPeriodeSvar {
     VET_IKKE = 'VET_IKKE',
 }
 
-export enum HvaSkalEndres {
-    'arbeidstid' = 'arbeidstid',
-    'omsorgstilbud' = 'omsorgstilbud',
-}
 export interface Omsorgstilbud {
     enkeltdager: DateDurationMap;
 }
