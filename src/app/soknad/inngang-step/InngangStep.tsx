@@ -50,7 +50,7 @@ const InngangStep: React.FunctionComponent<Props> = ({ saker, arbeidsgivere, onS
                 </Box>
             ) : (
                 <Box margin="xl">
-                    <InngangForm onStart={(values) => onStart(saker[0], values.hvaSkalEndres)} />
+                    <InngangForm saker={saker} onStart={({ sak, hvaSkalEndres }) => onStart(sak, hvaSkalEndres)} />
                 </Box>
             )}
         </Page>

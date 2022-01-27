@@ -10,10 +10,14 @@ import getIntlFormErrorHandler from '@navikt/sif-common-formik/lib/validation/in
 import { ValidationError } from '@navikt/sif-common-formik/lib/validation/types';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import Lenke from 'nav-frontend-lenker';
-import { Element } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { HvaSkalEndres } from '../../../types';
 import DinePlikterContent from '../dine-plikter/DinePlikter';
 import BehandlingAvPersonopplysningerContent from '../personopplysninger/Personopplysninger';
+import { Feature, isFeatureEnabled } from '../../../utils/featureToggleUtils';
+import { formatName } from '@navikt/sif-common-core/lib/utils/personUtils';
+import { Sak } from '../../../types/Sak';
+import { prettifyDate } from '@navikt/sif-common-core/lib/utils/dateUtils';
 
 interface DialogState {
     dinePlikterModalOpen?: boolean;
@@ -21,15 +25,18 @@ interface DialogState {
 }
 
 interface Props {
-    onStart: (values: FormValues) => void;
+    saker: Sak[];
+    onStart: (values: { hvaSkalEndres: HvaSkalEndres[]; sak: Sak }) => void;
 }
 
 enum FormField {
+    barnAktørId = 'barnAktørId',
     hvaSkalEndres = 'hvaSkalEndres',
     harForståttRettigheterOgPlikter = 'harForståttRettigheterOgPlikter',
 }
 
 interface FormValues {
+    [FormField.barnAktørId]?: string;
     [FormField.hvaSkalEndres]: HvaSkalEndres[];
     [FormField.harForståttRettigheterOgPlikter]: boolean;
 }
@@ -38,13 +45,18 @@ const VelgSakFormInitialValues: Partial<FormValues> = {};
 
 const FormComponents = getTypedFormComponents<FormField, FormValues, ValidationError>();
 
-const InngangForm: React.FunctionComponent<Props> = ({ onStart }) => {
+const InngangForm: React.FunctionComponent<Props> = ({ onStart, saker }) => {
     const [dialogState, setDialogState] = useState<DialogState>({});
     const { dinePlikterModalOpen, behandlingAvPersonopplysningerModalOpen } = dialogState;
     const intl = useIntl();
 
     const handleOnValidSubmit = (values: FormValues) => {
-        onStart(values);
+        const sak =
+            isFeatureEnabled(Feature.VELG_SAK) && saker.length > 1
+                ? saker.find((sak) => sak.barn.aktørId === values.barnAktørId)
+                : undefined;
+
+        onStart({ hvaSkalEndres: values.hvaSkalEndres, sak: sak || saker[0] });
     };
 
     return (
@@ -59,6 +71,31 @@ const InngangForm: React.FunctionComponent<Props> = ({ onStart }) => {
                         formErrorHandler={getIntlFormErrorHandler(intl, 'validation')}>
                         <section aria-label="Skjema">
                             <FormBlock>
+                                {isFeatureEnabled(Feature.VELG_SAK) && saker.length > 1 && (
+                                    <Box padBottom="xxl">
+                                        <FormComponents.RadioPanelGroup
+                                            name={FormField.barnAktørId}
+                                            legend={'Hvilket barn gjelder endringen?'}
+                                            useTwoColumns={true}
+                                            radios={saker.map((sak) => {
+                                                const { fornavn, mellomnavn, etternavn, fødselsdato, aktørId } =
+                                                    sak.barn;
+                                                const barnetsNavn = formatName(fornavn, etternavn, mellomnavn);
+                                                return {
+                                                    value: aktørId,
+                                                    key: aktørId,
+                                                    label: (
+                                                        <>
+                                                            <Normaltekst>{barnetsNavn}</Normaltekst>
+                                                            <Normaltekst>Født {prettifyDate(fødselsdato)}</Normaltekst>
+                                                        </>
+                                                    ),
+                                                };
+                                            })}
+                                            validate={getRequiredFieldValidator()}
+                                        />
+                                    </Box>
+                                )}
                                 <FormComponents.CheckboxPanelGroup
                                     id="abc"
                                     name={FormField.hvaSkalEndres}
