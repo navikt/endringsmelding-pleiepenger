@@ -13,7 +13,13 @@ const KvitteringPage: React.FunctionComponent = () => {
 
     return (
         <Page title={intlHelper(intl, 'application.title')}>
-            <Kvittering tittel={'Melding om endring er mottatt!'}>
+            <Kvittering
+                tittel={
+                    <>
+                        <p style={{ margin: '0 0 .5rem 0' }}>Takk!</p>
+                        Melding om endring er mottatt!
+                    </>
+                }>
                 <p>Når vi har behandlet meldingen fra deg, får du svar fra oss på Dine pleiepenger.</p>
                 <p>Hvis du har registrert deg mot å motta digital post, får du svaret tilsendt i posten.</p>
                 <Box margin="xl">
