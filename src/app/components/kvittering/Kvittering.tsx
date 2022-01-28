@@ -5,7 +5,7 @@ import { Innholdstittel } from 'nav-frontend-typografi';
 import './kvittering.less';
 
 interface Props {
-    tittel: string;
+    tittel: React.ReactNode;
     children?: React.ReactNode;
 }
 
