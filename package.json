@@ -86,7 +86,7 @@
         "react-modal": "^3.14.4",
         "react-responsive": "^8.2.0",
         "react-router-dom": "^5.3.0",
-        "snyk": "^1.836.0",
+        "snyk": "^1.839.0",
         "ulid": "^2.3.0"
     },
     "devDependencies": {
