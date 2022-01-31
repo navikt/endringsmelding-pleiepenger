@@ -7,6 +7,7 @@ import { Sak } from '../types/Sak';
 import { SoknadFormData } from '../types/SoknadFormData';
 import { SoknadTempStorageData } from '../types/SoknadTempStorageData';
 import { Søker } from '../types/Søker';
+import { jsonSort } from '../utils/jsonSort';
 import { StepID } from './soknadStepsConfig';
 
 export const STORAGE_VERSION = '1.0';
@@ -15,6 +16,10 @@ export interface UserHashInfo {
     søker: Søker;
     sak: Sak;
 }
+
+export const createUserHashInfoString = (info: UserHashInfo) => {
+    return hash(jsonSort(info));
+};
 
 interface SoknadTemporaryStorage extends Omit<PersistenceInterface<SoknadTempStorageData>, 'update'> {
     update: (
@@ -41,7 +46,7 @@ export const isStorageDataValid = (data: SoknadTempStorageData, userHashInfo: Us
             console.log('empty form data');
             return false;
         }
-        if (hash(userHashInfo) !== data.metadata.userHash) {
+        if (createUserHashInfoString(userHashInfo) !== data.metadata.userHash) {
             console.log('useHashInfo has changed');
             return false;
         }
@@ -62,7 +67,7 @@ const soknadTempStorage: SoknadTemporaryStorage = {
                 soknadId,
                 lastStepID,
                 version: STORAGE_VERSION,
-                userHash: hash(userHashInfo),
+                userHash: createUserHashInfoString(userHashInfo),
                 updatedTimestemp: new Date().toISOString(),
             },
         });
