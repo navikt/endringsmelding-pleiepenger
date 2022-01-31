@@ -162,7 +162,7 @@ const isK9FormatArbeidstidPerioder = (perioder: any): perioder is K9FormatArbeid
 
 const isK9FormatArbeidstidInfo = (arbeidstidInfo: any): arbeidstidInfo is K9FormatArbeidstidInfo => {
     const info = arbeidstidInfo as K9FormatArbeidstidInfo;
-    if (isObject(info) && isK9FormatArbeidstidPerioder(info.perioder)) {
+    if (isObject(info) && (info.perioder === undefined || isK9FormatArbeidstidPerioder(info.perioder))) {
         return true;
     }
     return false;
@@ -208,7 +208,7 @@ const isSøknadsperioder = (perioder: any): perioder is ISODateRange[] => {
     if (isArray(perioder) && itemsAreValidISODateRanges(perioder)) {
         return true;
     }
-    return true;
+    return false;
 };
 
 const isK9FormatTilsynsordningPerioder = (perioder: any): perioder is K9FormatTilsynsordningPerioder => {

@@ -148,13 +148,13 @@ export const parseK9Format = (data: K9Format): Sak => {
             },
             arbeidstid: {
                 arbeidstakerMap: getArbeidstidArbeidsgivere(ytelse.arbeidstid.arbeidstakerList, søknadsperioder),
-                frilanser: ytelse.arbeidstid.frilanserArbeidstidInfo
+                frilanser: ytelse.arbeidstid.frilanserArbeidstidInfo?.perioder
                     ? getAktivitetArbeidstidFromK9Format(
                           ytelse.arbeidstid.frilanserArbeidstidInfo.perioder,
                           søknadsperioder
                       )
                     : undefined,
-                selvstendig: ytelse.arbeidstid.selvstendigNæringsdrivendeArbeidstidInfo
+                selvstendig: ytelse.arbeidstid.selvstendigNæringsdrivendeArbeidstidInfo?.perioder
                     ? getAktivitetArbeidstidFromK9Format(
                           ytelse.arbeidstid.selvstendigNæringsdrivendeArbeidstidInfo.perioder,
                           søknadsperioder
