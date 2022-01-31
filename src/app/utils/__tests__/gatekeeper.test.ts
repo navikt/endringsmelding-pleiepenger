@@ -42,7 +42,7 @@ describe('gatekeeper', () => {
         });
         it('stopper bruker dersom ingen arbeidstid finnes som arbeidstaker, selvstendig eller frilanser', () => {
             expect(kontrollerTilgangTilDialog([sakUtenArbeid], [orgArbeidsgiver])).toEqual(
-                StoppÅrsak.arbeidsgiverSakErIkkeIAareg
+                StoppÅrsak.arbeidIkkeRegistrert
             );
         });
         it('slipper gjennom bruker med én sak og organisasjon-arbeidsgivere som er både i sak og aareg', () => {
