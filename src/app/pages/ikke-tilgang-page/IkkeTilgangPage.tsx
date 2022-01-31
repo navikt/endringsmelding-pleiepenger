@@ -6,6 +6,8 @@ import CounsellorPanel from '@navikt/sif-common-core/lib/components/counsellor-p
 import Page from '@navikt/sif-common-core/lib/components/page/Page';
 import StepBanner from '@navikt/sif-common-core/lib/components/step-banner/StepBanner';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
+import Lenke from 'nav-frontend-lenker';
+import getLenker from '../../lenker';
 import { StoppÅrsak } from '../../utils/gatekeeper';
 
 interface Props {
@@ -14,7 +16,7 @@ interface Props {
     innhold?: React.ReactNode;
 }
 
-const IkkeTilgangPage = ({ tittel, innhold, stoppÅrsak }: Props) => {
+const IkkeTilgangPage = ({ tittel, innhold }: Props) => {
     const intl = useIntl();
     useLogSidevisning(SIFCommonPageKey.ikkeTilgang);
     return (
@@ -24,8 +26,17 @@ const IkkeTilgangPage = ({ tittel, innhold, stoppÅrsak }: Props) => {
             topContentRenderer={() => <StepBanner text={intlHelper(intl, 'application.title')} />}>
             <Box margin="xxl">
                 <CounsellorPanel type="plakat">
-                    {innhold || <p>Du kan dessverre ikke bruke denne løsningen enda. For å melde endring, må du abc</p>}
-                    {stoppÅrsak && <p>Årsak: {stoppÅrsak}</p>}
+                    {innhold || (
+                        <Box margin="l">
+                            <p>
+                                Vi ser at du har en eller flere saker som vi ikke enda støtter å sende endringsmelding.
+                            </p>
+                            <p>
+                                Benytt <Lenke href={getLenker(intl.defaultLocale).skrivTilOss}>Skriv til oss</Lenke>{' '}
+                                eller ta kontakt på telefon, så hjelper vi deg med endringene du ønsker å utføre.
+                            </p>
+                        </Box>
+                    )}
                 </CounsellorPanel>
             </Box>
         </Page>

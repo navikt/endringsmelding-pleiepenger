@@ -55,7 +55,13 @@ const soknadTempStorage: SoknadTemporaryStorage = {
     update: (soknadId: string, formData: SoknadFormData, lastStepID: StepID, userHashInfo: UserHashInfo) => {
         return persistSetup.update({
             formData,
-            metadata: { soknadId, lastStepID, version: STORAGE_VERSION, userHash: hash(userHashInfo) },
+            metadata: {
+                soknadId,
+                lastStepID,
+                version: STORAGE_VERSION,
+                userHash: hash(userHashInfo),
+                updatedTimestemp: new Date().toISOString(),
+            },
         });
     },
     purge: persistSetup.purge,

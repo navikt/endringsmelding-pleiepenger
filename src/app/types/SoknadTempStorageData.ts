@@ -7,6 +7,7 @@ export interface SoknadTempStorageData {
         lastStepID: StepID;
         version: string;
         userHash: string;
+        updatedTimestemp: string;
     };
     formData: SoknadFormData;
 }
