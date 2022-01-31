@@ -43,16 +43,13 @@ export const isStorageDataValid = (data: SoknadTempStorageData, userHashInfo: Us
         data.metadata.soknadId !== undefined
     ) {
         if (JSON.stringify(data.formData) === JSON.stringify({})) {
-            console.log('empty form data');
             return false;
         }
         if (createUserHashInfoString(userHashInfo) !== data.metadata.userHash) {
-            console.log('useHashInfo has changed');
             return false;
         }
         return true;
     }
-    console.log('isStorageDataValid === false', { ...data.metadata });
     return false;
 };
 
