@@ -11,14 +11,15 @@ import { jsonSort } from '../utils/jsonSort';
 import { StepID } from './soknadStepsConfig';
 
 export const STORAGE_VERSION = '1.0';
-
 export interface UserHashInfo {
     søker: Søker;
     sak: Sak;
 }
 
 export const createUserHashInfoString = (info: UserHashInfo) => {
-    return hash(jsonSort(info));
+    const trimmedInfo: any = { ...info };
+    delete trimmedInfo.sak.mottattDato;
+    return hash(jsonSort(trimmedInfo));
 };
 
 interface SoknadTemporaryStorage extends Omit<PersistenceInterface<SoknadTempStorageData>, 'update'> {
