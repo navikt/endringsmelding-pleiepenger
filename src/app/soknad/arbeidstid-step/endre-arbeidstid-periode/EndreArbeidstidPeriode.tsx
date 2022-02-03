@@ -116,7 +116,6 @@ const EndreArbeidstidPeriode: React.FunctionComponent<Props> = ({
                             jobberNormaltTimer: undefined,
                             type: ArbeidsforholdType.ANSATT,
                         },
-                        erHistorisk: false,
                         periode: endringsperiode,
                     }),
                     periode: endringsperiode,

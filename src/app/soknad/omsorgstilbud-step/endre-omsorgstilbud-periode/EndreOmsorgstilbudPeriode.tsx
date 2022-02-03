@@ -35,7 +35,7 @@ const oppdaterDagerMedOmsorgstilbudIPeriode = ({
     return dagerSomSkalEndres;
 };
 
-const EndreOmsorgstilbudPeriode: React.FC<Props> = ({ periode, gjelderFortid, onPeriodeChange }) => {
+const EndreOmsorgstilbudPeriode: React.FC<Props> = ({ periode, onPeriodeChange }) => {
     const [visPeriode, setVisPeriode] = useState(false);
 
     const handleFormSubmit = (data: OmsorgstilbudPeriodeData) => {
@@ -57,7 +57,6 @@ const EndreOmsorgstilbudPeriode: React.FC<Props> = ({ periode, gjelderFortid, on
             <OmsorgstilbudPeriodeDialog
                 formProps={{
                     periode,
-                    gjelderFortid,
                     onCancel: () => setVisPeriode(false),
                     onSubmit: handleFormSubmit,
                 }}
