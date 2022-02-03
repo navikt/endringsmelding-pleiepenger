@@ -35,7 +35,7 @@
         "@navikt/sif-common-sentry": "0.3.0",
         "@navikt/sif-common-soknad": "^4.5.0",
         "@navikt/sif-common-utils": "^2.0.0",
-        "@sentry/browser": "^6.17.1",
+        "@sentry/browser": "^6.17.4",
         "@testing-library/react": "^12.1.2",
         "@types/amplitude-js": "^8.9.5",
         "amplitude-js": "^8.16.0",
