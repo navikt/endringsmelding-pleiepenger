@@ -41,7 +41,7 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
     arbeidsstedNavn,
     arbeidsforholdType,
     formFieldName,
-    arbeidstidEnkeltdagSak: arbeidstidSak,
+    arbeidstidEnkeltdagSak,
     arbeidstidEnkeltdagSøknad,
     sakMetadata,
     onArbeidstidChanged,
@@ -49,7 +49,7 @@ const ArbeidstidMånedListe: React.FunctionComponent<Props> = ({
     const { setFieldValue } = useFormikContext<SoknadFormData>();
 
     const månedContentRenderer = (måned: DateRange) => {
-        const dagerSak = getDurationsInDateRange(arbeidstidSak.faktisk, måned);
+        const dagerSak = getDurationsInDateRange(arbeidstidEnkeltdagSak.faktisk, måned);
         const dagerSøknad = getDurationsInDateRange(arbeidstidEnkeltdagSøknad.faktisk, måned);
         const datoerSomIkkeErTilgjengeligIMåned = getDatoerSomIkkeErTilgjengeligIMåned(måned, sakMetadata, dagerSak);
 
