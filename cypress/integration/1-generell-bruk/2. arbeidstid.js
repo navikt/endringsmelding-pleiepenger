@@ -1,5 +1,5 @@
 describe('Generell flyt', () => {
-    const fyllUtEnkeltdag = () => {
+    const fyllUtArbeidEnkeltdagForm = () => {
         cy.get('.tidEnkeltdagDialog').within(() => {
             cy.get('.timeInput__hours').children('input').type('{selectall}').type('2');
             cy.get('.timeInput__minutes').children('input').type('{selectall}').type('30');
@@ -7,7 +7,7 @@ describe('Generell flyt', () => {
         });
     };
 
-    const fyllUtPeriode = (brukProsent, fraDato, tilDato) => {
+    const fyllUtArbeidIPeriodeForm = (brukProsent, fraDato, tilDato) => {
         cy.get('.arbeidstidPeriodeDialog').within(() => {
             cy.get('input[type=text]').eq(0).type('{selectall}').type(fraDato).blur();
             cy.get('input[type=text]').eq(1).type('{selectall}').type(tilDato).blur();
@@ -28,36 +28,37 @@ describe('Generell flyt', () => {
             cy.get('button[type=submit]').click();
         });
     };
-    const fyllUtArbeidstidForEnkeltdag = (arbeidssted) => {
+
+    const fyllUtArbeidEnkeltdagForArbeidssted = (arbeidssted) => {
         cy.get(`#arbeidsted-${arbeidssted}`).within(() => {
             cy.get('.calendarGrid__day--button').first().should('contain.text', '0 t.');
             cy.get('.calendarGrid__day--button').first().should('contain.text', '0 m.');
             cy.get('.calendarGrid__day--button').first().click();
         });
         cy.get('.tidEnkeltdagDialog').should('exist');
-        fyllUtEnkeltdag();
+        fyllUtArbeidEnkeltdagForm();
         cy.get(`#arbeidsted-${arbeidssted}`).within(() => {
             cy.get('.calendarGrid__day--button').first().should('contain.text', '2 t.');
             cy.get('.calendarGrid__day--button').first().should('contain.text', '30 m.');
         });
     };
 
-    const fyllUtArbeidstidForPeriodeProsent = (arbeidssted) => {
+    const fyllUtArbeidPeriodeForArbeidsstedProsent = (arbeidssted) => {
         cy.get(`#arbeidsted-${arbeidssted}`).within(() => {
             cy.get('.knapperad button').click();
         });
-        fyllUtPeriode(true, '15.11.2021', '19.11.2021');
+        fyllUtArbeidIPeriodeForm(true, '15.11.2021', '19.11.2021');
         cy.get(`#arbeidsted-${arbeidssted}`).within(() => {
             cy.get('.calendarGrid__day--button').eq(6).should('contain.text', '4 t.');
             cy.get('.calendarGrid__day--button').eq(6).should('contain.text', '0 m.');
         });
     };
 
-    const fyllUtArbeidstidForPeriodeFasteDager = (arbeidssted) => {
+    const fyllUtArbeidPeriodeForArbeidsstedTimer = (arbeidssted) => {
         cy.get(`#arbeidsted-${arbeidssted}`).within(() => {
             cy.get('.knapperad button').click();
         });
-        fyllUtPeriode(false, '22.11.2021', '26.11.2021');
+        fyllUtArbeidIPeriodeForm(false, '22.11.2021', '26.11.2021');
         cy.get(`#arbeidsted-${arbeidssted}`).within(() => {
             cy.get('.calendarGrid__day--button').eq(10).should('contain.text', '1 t.');
             cy.get('.calendarGrid__day--button').eq(10).should('contain.text', '10 m.');
@@ -71,35 +72,14 @@ describe('Generell flyt', () => {
         });
     };
 
-    it('siden lastes ok', () => {
+    it('velger å endre arbeidstid', () => {
         cy.visit('http://localhost:8090');
-    });
-    it('kan velge å endre arbeidstid', () => {
-        cy.get('#inngangForm').within(() => {
-            cy.get('#arbeidstid').should('exist');
-            cy.get('#arbeidstid').parent().click();
-        });
-    });
-    it('kan velge å endre omsorgstilbud', () => {
-        cy.get('#inngangForm').within(() => {
-            cy.get('#omsorgstilbud').should('exist');
-            cy.get('#omsorgstilbud').parent().click();
-        });
-    });
-    it('stoppes dersom en ikke bekrefter vilkår', () => {
-        cy.get('button[type=submit]').click();
-        cy.get('.bekreftCheckboksPanel').within(() => {
-            cy.get('.skjemaelement__feilmelding').should('exist');
-        });
-    });
-    it('kommer videre når en har bekreftet vilkår', () => {
+        cy.get('#arbeidstid').parent().click();
         cy.get('.bekreftCheckboksPanel').get('.skjemaelement__label').click();
         cy.get('button[type=submit]').click();
-    });
-
-    it('viser arbeidstid-steg', () => {
         cy.get('.step__title').should('contain.text', 'Endre arbeidstimer');
     });
+
     it('inneholder alle arbeidsgivere', () => {
         cy.get('.typo-undertittel').should('contain.text', 'Dykkert svømmeutstyr');
         cy.get('.typo-undertittel').should('contain.text', 'Flaks og fly');
@@ -111,26 +91,21 @@ describe('Generell flyt', () => {
         cy.get('.ekspanderbartPanel__hode').eq(6).click();
     });
     it('kan endre arbeidstid enkeltdag for arbeidsgivere', () => {
-        fyllUtArbeidstidForEnkeltdag('805824352');
-        fyllUtArbeidstidForEnkeltdag('839942907');
+        fyllUtArbeidEnkeltdagForArbeidssted('805824352');
+        fyllUtArbeidEnkeltdagForArbeidssted('839942907');
     });
     it('kan endre arbeidstid periode for arbeidsgivere', () => {
-        fyllUtArbeidstidForPeriodeProsent('805824352');
-        fyllUtArbeidstidForPeriodeFasteDager('805824352');
+        fyllUtArbeidPeriodeForArbeidsstedProsent('805824352');
+        fyllUtArbeidPeriodeForArbeidsstedTimer('805824352');
     });
     it('kan endre arbeidstid for frilanser', () => {
-        fyllUtArbeidstidForEnkeltdag('frilanser');
-        fyllUtArbeidstidForPeriodeProsent('frilanser');
-        fyllUtArbeidstidForPeriodeFasteDager('frilanser');
+        fyllUtArbeidEnkeltdagForArbeidssted('frilanser');
+        fyllUtArbeidPeriodeForArbeidsstedProsent('frilanser');
+        fyllUtArbeidPeriodeForArbeidsstedTimer('frilanser');
     });
     it('kan endre arbeidstid for sn', () => {
-        fyllUtArbeidstidForEnkeltdag('sn');
-        fyllUtArbeidstidForPeriodeProsent('sn');
-        fyllUtArbeidstidForPeriodeFasteDager('sn');
+        fyllUtArbeidEnkeltdagForArbeidssted('sn');
+        fyllUtArbeidPeriodeForArbeidsstedProsent('sn');
+        fyllUtArbeidPeriodeForArbeidsstedTimer('sn');
     });
-
-    // it('kan gå videre til omsorgstilbud', () => {
-    //     cy.get('button[type=submit]').click();
-    //     cy.get('.step__title').should('contain.text', 'Endre tid i omsorgstilbud');
-    // });
 });
