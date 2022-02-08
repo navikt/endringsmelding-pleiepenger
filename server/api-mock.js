@@ -7,9 +7,13 @@ server.use(express.json());
 server.use((req, res, next) => {
     const allowedOrigins = [
         'http://host.docker.internal:8090',
+        'http://host.docker.internal:8080',
         'http://localhost:8090',
+        'http://localhost:8080',
         'http://web:8090',
+        'http://web:8080',
         'http://192.168.0.121:8090',
+        'http://127.0.0.1:8080',
         '*',
     ];
     const requestOrigin = req.headers.origin;
@@ -52,7 +56,7 @@ const readFileSync = (path) => {
 
 const existsSync = (path) => fs.existsSync(path);
 
-const mockPath = `./server/mock-data/`;
+const mockPath = `${__dirname}/mock-data`;
 const soker = 'soker1';
 // const soker = 'soker3-flere-saker';
 
@@ -63,6 +67,8 @@ const organisasjonFileName = `organisasjon-mock.json`;
 
 const readMockFile = (file, responseObject) => {
     const filePath = `${mockPath}/${soker}/${file}`;
+    console.log(filePath);
+    console.log(existsSync(filePath));
     if (existsSync(filePath)) {
         const body = readFileSync(filePath);
         responseObject.send(JSON.parse(body));
@@ -102,19 +108,6 @@ const startExpressServer = () => {
 
     server.get('/organisasjoner', (req, res) => {
         readMockFile(organisasjonFileName, res);
-    });
-
-    server.get('/soker-not-logged-in', (req, res) => {
-        res.sendStatus(401);
-    });
-    server.get('/soker-err', (req, res) => {
-        setTimeout(() => {
-            res.sendStatus(501);
-        }, 200);
-    });
-
-    server.get('/soker-logget-ut', (req, res) => {
-        res.sendStatus(401);
     });
 
     server.post('/endringsmelding', (req, res) => {

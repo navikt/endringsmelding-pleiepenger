@@ -47,6 +47,12 @@ jobs:
               run: |
                   npm ci
                   npm run build
+            - name: Kjør E2E-tester
+              uses: cypress-io/github-action@v2
+              with:
+                start: npm run test:run
+                wait-on: "http://localhost:8090"
+                wait-on-timeout: 60
             - name: Build Docker image
               run: |
                   docker build --tag ${IMAGE} .
