@@ -1,6 +1,6 @@
 import { isForbidden, isUnauthorized } from '@navikt/sif-common-core/lib/utils/apiUtils';
-import { getEnvironmentVariable } from '@navikt/sif-common-core/lib/utils/envUtils';
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
+import { getEnvVariableOrDefault } from '../utils/envUtils';
 import { ApiEndpointInnsyn, ApiEndpointPsb } from './endpoints';
 
 const axiosConfigCommon: AxiosRequestConfig = {
@@ -10,12 +10,12 @@ const axiosConfigCommon: AxiosRequestConfig = {
 
 export const axiosConfigPsb: AxiosRequestConfig = {
     ...axiosConfigCommon,
-    baseURL: getEnvironmentVariable('API_URL'),
+    baseURL: getEnvVariableOrDefault('API_URL', 'http://localhost:8099'),
 };
 
 export const axiosConfigInnsyn = {
     ...axiosConfigCommon,
-    baseURL: getEnvironmentVariable('API_URL_INNSYN'),
+    baseURL: getEnvVariableOrDefault('API_URL_INNSYN', 'http://localhost:8099'),
 };
 
 axios.interceptors.request.use((config) => {

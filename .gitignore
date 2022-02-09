@@ -8,3 +8,5 @@
 .DS_Store
 .env
 /src/sif-common
+/cypress/screenshots
+/cypress/videos

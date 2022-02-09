@@ -97,7 +97,7 @@ const InngangForm: React.FunctionComponent<Props> = ({ onStart, saker }) => {
                                     </Box>
                                 )}
                                 <FormComponents.CheckboxPanelGroup
-                                    id="abc"
+                                    id="inngangForm"
                                     name={FormField.hvaSkalEndres}
                                     legend={'Hva ønsker du å gjøre?'}
                                     validate={getRequiredFieldValidator()}

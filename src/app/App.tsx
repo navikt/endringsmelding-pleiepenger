@@ -10,6 +10,7 @@ import { applicationIntlMessages } from './i18n/applicationMessages';
 import SoknadRemoteDataFetcher from './soknad/SoknadRemoteDataFetcher';
 import '@navikt/sif-common-core/lib/styles/globalStyles.less';
 import './styles/app.less';
+import { getEnvVariableOrDefault } from './utils/envUtils';
 
 Modal.setAppElement('#app');
 
@@ -17,9 +18,20 @@ export const APPLICATION_KEY = 'endringsmelding-pleiepenger';
 export const SKJEMANAVN = 'Endringsmelding - pleiepenger';
 
 const root = document.getElementById('app');
-const publicPath = getEnvironmentVariable('PUBLIC_PATH');
+const publicPath = getEnvVariableOrDefault('PUBLIC_PATH', '/');
 
-render(
+function prepare() {
+    if (getEnvironmentVariable('APP_VERSION') !== 'production') {
+        if (getEnvVariableOrDefault('MSW_MODE', 'test') === 'test') {
+            return import('../../mocks/msw/browser').then(({ worker }) =>
+                worker.start({ onUnhandledRequest: 'bypass' })
+            );
+        }
+    }
+    return Promise.resolve();
+}
+
+const App = () => (
     <AmplitudeProvider applicationKey={APPLICATION_KEY} isActive={getEnvironmentVariable('USE_AMPLITUDE') === 'true'}>
         <SoknadApplication
             appName="Overføring av omsorgsdager"
@@ -40,6 +52,9 @@ render(
                 ]}
             />
         </SoknadApplication>
-    </AmplitudeProvider>,
-    root
+    </AmplitudeProvider>
 );
+
+prepare().then(() => {
+    render(<App />, root);
+});

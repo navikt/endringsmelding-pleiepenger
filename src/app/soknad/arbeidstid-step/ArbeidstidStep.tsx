@@ -47,7 +47,7 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
                     {arbeidsgivere.map((a) => {
                         const arbeidsgiverArbeidstid = arbeidstidSøknad.arbeidsgiver[a.id];
                         return arbeidsgiverArbeidstid ? (
-                            <FormBlock margin="xxl" key={a.id}>
+                            <FormBlock margin="xxl" key={a.id} id={`arbeidsted-${a.id}`}>
                                 <ArbeidstidAktivitet
                                     tittel={
                                         <>
@@ -59,7 +59,7 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
                                     formFieldName={getArbeidsgiverArbeidstidFormFieldName(a)}
                                     arbeidsforholdType={ArbeidsforholdType.ANSATT}
                                     arbeidstidEnkeltdagSøknad={arbeidsgiverArbeidstid}
-                                    arbeidstidSak={getArbeidstidForArbeidsgiver(a.id, arbeidstakerMap)}
+                                    arbeidstidEnkeltdagSak={getArbeidstidForArbeidsgiver(a.id, arbeidstakerMap)}
                                     sakMetadata={sakMetadata}
                                     onArbeidstidChanged={onArbeidstidChanged}
                                 />
@@ -70,13 +70,13 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
             )}
 
             {arbeidstidSak.frilanser && arbeidstidSøknad.frilanser && (
-                <FormBlock margin="xxl">
+                <FormBlock margin="xxl" id={`arbeidsted-frilanser`}>
                     <ArbeidstidAktivitet
                         tittel="Frilanser"
                         arbeidsstedNavn="Frilanser"
                         formFieldName={getFrilanserArbeidstidFormFieldName()}
                         arbeidsforholdType={ArbeidsforholdType.FRILANSER}
-                        arbeidstidSak={arbeidstidSak.frilanser}
+                        arbeidstidEnkeltdagSak={arbeidstidSak.frilanser}
                         arbeidstidEnkeltdagSøknad={arbeidstidSøknad.frilanser}
                         sakMetadata={sakMetadata}
                         onArbeidstidChanged={onArbeidstidChanged}
@@ -84,13 +84,13 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
                 </FormBlock>
             )}
             {arbeidstidSak.selvstendig && arbeidstidSøknad.selvstendig && (
-                <FormBlock margin="xxl">
+                <FormBlock margin="xxl" id="arbeidsted-sn">
                     <ArbeidstidAktivitet
                         tittel="Selvstendig næringsdrivende"
                         arbeidsstedNavn="Selvstendig næringsdrivende"
                         formFieldName={getSelvstendigArbeidstidFormFieldName()}
                         arbeidsforholdType={ArbeidsforholdType.SELVSTENDIG}
-                        arbeidstidSak={arbeidstidSak.selvstendig}
+                        arbeidstidEnkeltdagSak={arbeidstidSak.selvstendig}
                         arbeidstidEnkeltdagSøknad={arbeidstidSøknad.selvstendig}
                         sakMetadata={sakMetadata}
                         onArbeidstidChanged={onArbeidstidChanged}

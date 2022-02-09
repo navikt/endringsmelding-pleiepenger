@@ -29,6 +29,7 @@ import { getSoknadStepsConfig, StepID } from './soknadStepsConfig';
 import soknadTempStorage from './soknadTempStorage';
 import { useEffectOnce } from '../hooks/useEffectOnce';
 import soknadStepUtils from '@navikt/sif-common-soknad/lib/soknad-step/soknadStepUtils';
+import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 
 interface Props {
     søker: Søker;
@@ -53,15 +54,19 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, arbeidsgivere, sakMedM
 
     const abortSoknad = async (): Promise<void> => {
         await logHendelse(ApplikasjonHendelse.avbryt);
-        await soknadTempStorage.purge();
+        if (isFeatureEnabled(Feature.MELLOMLAGRING)) {
+            await soknadTempStorage.purge();
+        }
         relocateToSoknad();
     };
 
     const continueSoknadLater = async (sId: string, stepID: StepID, values: SoknadFormData): Promise<void> => {
-        await soknadTempStorage.update(sId, values, stepID, {
-            søker,
-            sak,
-        });
+        if (isFeatureEnabled(Feature.MELLOMLAGRING)) {
+            await soknadTempStorage.update(sId, values, stepID, {
+                søker,
+                sak,
+            });
+        }
         await logHendelse(ApplikasjonHendelse.fortsettSenere);
         relocateToNavFrontpage();
     };
@@ -69,7 +74,9 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, arbeidsgivere, sakMedM
     const doSend = async (apiValues: SoknadApiData, resetFormikForm: resetFormFunc): Promise<void> => {
         try {
             await sendEndringsmelding(apiValues);
-            await soknadTempStorage.purge();
+            if (isFeatureEnabled(Feature.MELLOMLAGRING)) {
+                await soknadTempStorage.purge();
+            }
             setSendSoknadStatus({ failures: 0, status: success(apiValues) });
             navigateToKvitteringPage(history);
             resetFormikForm();
@@ -111,16 +118,18 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, arbeidsgivere, sakMedM
         step: StepConfig<StepID>,
         nextStep?: StepID
     ): Promise<void> => {
-        if (nextStep && soknadId) {
-            try {
-                await soknadTempStorage.update(soknadId, values, nextStep, {
-                    søker,
-                    sak,
-                });
-            } catch (error) {
-                if (isUnauthorized(error)) {
-                    await logUserLoggedOut('ved mellomlagring');
-                    relocateToLoginPage();
+        if (isFeatureEnabled(Feature.MELLOMLAGRING)) {
+            if (nextStep && soknadId) {
+                try {
+                    await soknadTempStorage.update(soknadId, values, nextStep, {
+                        søker,
+                        sak,
+                    });
+                } catch (error) {
+                    if (isUnauthorized(error)) {
+                        await logUserLoggedOut('ved mellomlagring');
+                        relocateToLoginPage();
+                    }
                 }
             }
         }

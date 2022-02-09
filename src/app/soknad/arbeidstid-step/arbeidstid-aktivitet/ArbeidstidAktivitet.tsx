@@ -14,7 +14,7 @@ interface Props {
     arbeidsforholdType: ArbeidsforholdType;
     sakMetadata: SakMetadata;
     formFieldName: SoknadFormField;
-    arbeidstidSak: ArbeidstidEnkeltdagSak;
+    arbeidstidEnkeltdagSak: ArbeidstidEnkeltdagSak;
     arbeidstidEnkeltdagSøknad: ArbeidstidEnkeltdagSøknad;
     onArbeidstidChanged?: () => void;
 }
@@ -25,7 +25,7 @@ const ArbeidstidAktivitet: React.FunctionComponent<Props> = ({
     arbeidsstedNavn,
     sakMetadata,
     formFieldName,
-    arbeidstidSak,
+    arbeidstidEnkeltdagSak,
     arbeidstidEnkeltdagSøknad,
     onArbeidstidChanged,
 }) => {
@@ -49,7 +49,7 @@ const ArbeidstidAktivitet: React.FunctionComponent<Props> = ({
                     arbeidsstedNavn={arbeidsstedNavn}
                     arbeidsforholdType={arbeidsforholdType}
                     formFieldName={formFieldName}
-                    arbeidstidEnkeltdagSak={arbeidstidSak}
+                    arbeidstidEnkeltdagSak={arbeidstidEnkeltdagSak}
                     arbeidstidEnkeltdagSøknad={arbeidstidEnkeltdagSøknad}
                     sakMetadata={sakMetadata}
                     onArbeidstidChanged={onArbeidstidChanged}

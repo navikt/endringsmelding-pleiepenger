@@ -10,47 +10,43 @@ on:
         branches:
 
 env:
-    IMAGE: docker.pkg.github.com/${{ github.repository }}/endringsmelding-pleiepenger:${{ github.sha }}
+      IMAGE: docker.pkg.github.com/${{ github.repository }}/endringsmelding-pleiepenger:${{ github.sha }}
 
 jobs:
     test:
-        name: Test Code
+        name: Run tests
+        if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/dev-') || github.event.deployment.payload.triggered
         runs-on: ubuntu-latest
-        strategy:
-            matrix:
-                node-version: [12.x]
-
         steps:
-            - uses: actions/checkout@v1
-            - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v1
-              with:
-                  node-version: ${{ matrix.node-version }}
-            - name: Test code
-              run: |
-                  npm ci
-                  npm run test
+            - name: Hente kode
+              uses: actions/checkout@v2.4.0
+            - name: Sette opp Node
+              uses: actions/setup-node@v2.5.1
+            - name: Installere moduler
+              run: npm ci
+            - name: Bygge kode
+              run: npm run build
+            - name: Cypress tests
+              run: npm run e2e:run
+
 
     build-code-and-push-docker:
         name: Build code and push docker image
         if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/dev-') || github.event.deployment.payload.triggered
-        needs: test
         runs-on: ubuntu-latest
+        needs: test
         steps:
-            - name: Checkout code
-              uses: actions/checkout@v1
-            - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v1
-              with:
-                  node-version: ${{ matrix.node-version }}
-            - name: build code
-              run: |
-                  npm ci
-                  npm run build
-            - name: Build Docker image
-              run: |
-                  docker build --tag ${IMAGE} .
-            - name: Login to Github Package Registry
+            - name: Hente kode
+              uses: actions/checkout@v2.4.0
+            - name: Sette opp Node
+              uses: actions/setup-node@v2.5.1
+            - name: Installere moduler
+              run: npm ci
+            - name: Bygge kode
+              run: npm run build
+            - name: Bygge Docker image
+              run: docker build --tag ${IMAGE} .
+            - name: Logge inn Github Package Registry
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
@@ -63,25 +59,10 @@ jobs:
         needs: build-code-and-push-docker
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v1
+            - uses: actions/checkout@v2.4.0
             - uses: nais/deploy/actions/deploy@v1
               env:
                   APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
                   CLUSTER: dev-gcp
                   RESOURCE: nais/naiserator.yml
                   VARS: nais/dev-gcp.json
-
-    # deploy-prod:
-    #     name: deploy-prod
-    #     if: startsWith(github.ref, 'refs/heads/main')
-    #     needs: build-code-and-push-docker
-    #     runs-on: ubuntu-latest
-    #     steps:
-    #         - uses: actions/checkout@v1
-    #         - uses: nais/deploy/actions/deploy@v1
-    #           env:
-    #               APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-    #               CLUSTER: prod-gcp
-    #               RESOURCE: nais/naiserator.yml
-                #   VARS: nais/prod-gcp.json
-

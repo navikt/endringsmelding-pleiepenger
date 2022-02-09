@@ -16,6 +16,7 @@
         "APPSTATUS_PROJECT_ID": "ryujtq87",
         "APPSTATUS_DATASET": "staging",
         "USE_AMPLITUDE": "true",
-        "INNSYN_URL": "https://www.nav.no/familie/sykdom-i-familien/soknad/innsyn"
+        "INNSYN_URL": "https://www.nav.no/familie/sykdom-i-familien/soknad/innsyn",
+        "MSW_MODE": "dev"
     }
 }
