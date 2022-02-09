@@ -6,6 +6,7 @@ import soknadTempStorage, { UserHashInfo } from '../soknad/soknadTempStorage';
 import { SoknadFormData } from '../types/SoknadFormData';
 import { navigateToErrorPage, relocateToLoginPage } from '../utils/navigationUtils';
 import { useHistory } from 'react-router';
+import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 
 function usePersistSoknad() {
     const history = useHistory();
@@ -26,7 +27,9 @@ function usePersistSoknad() {
     }
 
     const persist = (soknadId: string, stepID: StepID, hashInfo: UserHashInfo) => {
-        doPersist(soknadId, stepID, hashInfo);
+        if (isFeatureEnabled(Feature.MELLOMLAGRING)) {
+            doPersist(soknadId, stepID, hashInfo);
+        }
     };
 
     return { persist };

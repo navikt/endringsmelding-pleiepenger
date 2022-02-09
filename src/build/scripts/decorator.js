@@ -10,7 +10,6 @@ const getDecorator = () =>
     new Promise((resolve, reject) => {
         const callback = (error, response, body) => {
             if (!error && response.statusCode >= 200 && response.statusCode < 400) {
-                const publicPath = '/familie/sykdom-i-familien/soknad/endringsmelding-pleiepenger'; // process.env.PUBLIC_PATH
                 const { document } = new JSDOM(body).window;
                 const prop = 'innerHTML';
                 const data = {
@@ -18,7 +17,7 @@ const getDecorator = () =>
                     NAV_STYLES: document.getElementById('styles')[prop],
                     NAV_HEADING: document.getElementById('header-withmenu')[prop],
                     NAV_FOOTER: document.getElementById('footer-withmenu')[prop],
-                    PUBLIC_PATH: `${publicPath}`,
+                    PUBLIC_PATH: `${process.env.PUBLIC_PATH}`,
                 };
                 resolve(data);
             } else {
@@ -26,7 +25,6 @@ const getDecorator = () =>
                 reject(new Error(error));
             }
         };
-
         requestDecorator(callback);
     });
 

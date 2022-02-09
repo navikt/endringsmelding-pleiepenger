@@ -51,7 +51,7 @@ const EndreOmsorgstilbudPeriode: React.FC<Props> = ({ periode, onPeriodeChange }
                 Du kan endre enkeltdager ved å velge en dato i månedene nedenfor, eller du kan legge til endringer som
                 gjelder flere dager ved å velge &quot;Endre periode&quot;-knappen.
             </p>
-            <Knapp htmlType="button" onClick={() => setVisPeriode(true)} mini={true}>
+            <Knapp htmlType="button" onClick={() => setVisPeriode(true)} mini={true} name="leggTilPeriode">
                 Endre for en periode
             </Knapp>
             <OmsorgstilbudPeriodeDialog
