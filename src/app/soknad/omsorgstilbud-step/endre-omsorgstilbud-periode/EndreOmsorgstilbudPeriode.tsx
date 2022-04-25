@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { OmsorgstilbudPeriodeDialog } from '@navikt/sif-common-pleiepenger';
-import { OmsorgstilbudPeriodeData } from '@navikt/sif-common-pleiepenger/lib/omsorgstilbud-periode/omsorgstilbud-periode-form/OmsorgstilbudPeriodeForm';
+import { OmsorgstilbudPeriodeData, OmsorgstilbudPeriodeDialog } from '@navikt/sif-common-pleiepenger';
 import {
     DateDurationMap,
     DateRange,

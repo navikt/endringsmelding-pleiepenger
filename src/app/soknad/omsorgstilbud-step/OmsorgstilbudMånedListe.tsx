@@ -1,6 +1,5 @@
 import React from 'react';
-import { SøknadsperioderMånedListe } from '@navikt/sif-common-pleiepenger/lib';
-import { TidEnkeltdagEndring } from '@navikt/sif-common-pleiepenger/lib/tid-enkeltdag-dialog/TidEnkeltdagForm';
+import { SøknadsperioderMånedListe, TidEnkeltdagEndring } from '@navikt/sif-common-pleiepenger/lib';
 import { DateDurationMap, getYearMonthKey } from '@navikt/sif-common-utils';
 import { useFormikContext } from 'formik';
 import { SakMetadata, TidEnkeltdag } from '../../types/Sak';

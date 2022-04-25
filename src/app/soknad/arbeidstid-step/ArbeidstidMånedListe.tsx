@@ -1,6 +1,5 @@
 import React from 'react';
-import { ArbeidsforholdType, SøknadsperioderMånedListe } from '@navikt/sif-common-pleiepenger/lib';
-import { TidEnkeltdagEndring } from '@navikt/sif-common-pleiepenger/lib/tid-enkeltdag-dialog/TidEnkeltdagForm';
+import { ArbeidsforholdType, SøknadsperioderMånedListe, TidEnkeltdagEndring } from '@navikt/sif-common-pleiepenger/lib';
 import {
     DateDurationMap,
     DateRange,

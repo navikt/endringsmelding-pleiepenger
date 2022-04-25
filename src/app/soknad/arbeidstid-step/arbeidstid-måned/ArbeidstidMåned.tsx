@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import { ArbeidsforholdType, ArbeidstidEnkeltdagDialog, TidsbrukKalender } from '@navikt/sif-common-pleiepenger';
-import { TidEnkeltdagEndring } from '@navikt/sif-common-pleiepenger/lib/tid-enkeltdag-dialog/TidEnkeltdagForm';
+import {
+    ArbeidsforholdType,
+    ArbeidstidEnkeltdagDialog,
+    TidEnkeltdagEndring,
+    TidsbrukKalender,
+} from '@navikt/sif-common-pleiepenger';
 import { DateDurationMap, DateRange, dateToISODate, Duration, durationsAreEqual } from '@navikt/sif-common-utils';
 import dayjs from 'dayjs';
 import Alertstripe from 'nav-frontend-alertstriper';
