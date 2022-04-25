@@ -140,8 +140,6 @@ export const getDateRangeForSaker = (saker: Sak[]): DateRange | undefined => {
         if (sak.ytelse.søknadsperioder.length > 0) {
             const range = getDateRangeFromDateRanges(sak.ytelse.søknadsperioder);
             dateRanges.push(range);
-        } else {
-            console.log(sak);
         }
     });
     return dateRanges.length > 0 ? getDateRangeFromDateRanges(dateRanges) : undefined;

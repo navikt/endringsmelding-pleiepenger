@@ -1,4 +1,10 @@
-describe('Generell flyt', () => {
+const TestDate = require('../../fixtures/date.js');
+
+describe('Overordnet flyt', () => {
+    beforeEach(() => {
+        cy.clock(TestDate, ['Date']);
+    });
+
     it('siden lastes ok', () => {
         cy.visit('http://localhost:8090');
         cy.get('.typo-sidetittel', { timeout: 15000 }).should('contain.text', 'Melde endring i pleiepengeperioden');

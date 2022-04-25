@@ -16,7 +16,7 @@
             "ytelse": {
                 "type": "PLEIEPENGER_SYKT_BARN",
                 "barn": { "norskIdentitetsnummer": "00000000000", "fødselsdato": null },
-                "søknadsperiode": ["2021-11-01/2022-03-31"],
+                "søknadsperiode": ["2021-11-01/2021-12-31"],
                 "endringsperiode": [],
                 "trekkKravPerioder": [],
                 "opptjeningAktivitet": {},

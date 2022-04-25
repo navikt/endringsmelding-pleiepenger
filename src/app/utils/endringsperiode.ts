@@ -9,7 +9,10 @@ dayjs.extend(minMax);
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
-export const getEndringsdato = (): Date => new Date();
+export const getEndringsdato = (): Date => {
+    // return new Date(2021, 11, 1);
+    return new Date();
+};
 
 export const getMaksEndringsperiode = (endringsdato: Date): DateRange => ({
     from: dayjs(endringsdato).subtract(3, 'months').startOf('day').toDate(),

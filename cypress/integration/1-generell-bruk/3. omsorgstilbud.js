@@ -1,6 +1,10 @@
 const TestDate = require('../../fixtures/date.js');
 
 describe('Generell flyt', () => {
+    beforeEach(() => {
+        cy.clock(TestDate, ['Date']);
+    });
+
     const ensureÅpentExpanderbartPanel = (idx) => {
         cy.get('.ekspanderbartPanel__hode')
             .eq(idx)
@@ -29,7 +33,6 @@ describe('Generell flyt', () => {
         });
     };
     it('velger å endre omsorgstilbud', () => {
-        cy.clock(TestDate, ['Date']);
         cy.visit('http://localhost:8090');
         cy.get('#omsorgstilbud').parent().click();
         cy.get('.bekreftCheckboksPanel').get('.skjemaelement__label').click();

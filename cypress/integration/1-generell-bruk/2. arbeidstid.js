@@ -1,6 +1,9 @@
 const TestDate = require('../../fixtures/date.js');
 
-describe('Generell flyt', () => {
+describe('Arbeidstid', () => {
+    beforeEach(() => {
+        cy.clock(TestDate, ['Date']);
+    });
     const fyllUtArbeidEnkeltdagForm = () => {
         cy.get('.tidEnkeltdagDialog').within(() => {
             cy.get('.timeInput__hours').children('input').type('{selectall}').type('2');
@@ -75,7 +78,6 @@ describe('Generell flyt', () => {
     };
 
     it('velger å endre arbeidstid', () => {
-        cy.clock(TestDate, ['Date']);
         cy.visit('http://localhost:8090');
         cy.get('#arbeidstid').parent().click();
         cy.get('.bekreftCheckboksPanel').get('.skjemaelement__label').click();
