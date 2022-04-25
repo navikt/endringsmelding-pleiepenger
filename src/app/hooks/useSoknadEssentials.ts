@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { combine, initial, pending, RemoteData } from '@devexperts/remote-data-ts';
+import { combine, initial, pending, RemoteData, failure } from '@devexperts/remote-data-ts';
 import { isUnauthorized } from '@navikt/sif-common-core/lib/utils/apiUtils';
 import { dateToISODate } from '@navikt/sif-common-utils';
 import { AxiosError } from 'axios';
@@ -15,6 +15,10 @@ import appSentryLogger from '../utils/appSentryLogger';
 import { getEndringsdato, getEndringsperiode } from '../utils/endringsperiode';
 import { relocateToLoginPage } from '../utils/navigationUtils';
 import { getDateRangeForSaker } from '../utils/sakUtils';
+
+export enum ESSENTIALS_ERROR {
+    INGEN_AKTIVE_SAKER = 'INGEN_AKTIVE_SAKER',
+}
 
 export type SoknadEssentials = [Søker, Sak[], Arbeidsgiver[], SoknadTempStorageData];
 
@@ -33,7 +37,11 @@ function useSoknadEssentials(): SoknadEssentialsRemoteData {
 
             /** Hent arbeidsgivere fra aa-reg */
             const saker: Sak[] = sakerResult._tag === 'RemoteSuccess' ? sakerResult.value : [];
-            const endringsperiode = getEndringsperiode(getEndringsdato(), [getDateRangeForSaker(saker)]);
+            const dateRangeForSaker = getDateRangeForSaker(saker);
+            if (!dateRangeForSaker) {
+                throw failure(ESSENTIALS_ERROR.INGEN_AKTIVE_SAKER);
+            }
+            const endringsperiode = getEndringsperiode(getEndringsdato(), [dateRangeForSaker]);
             const arbeidsgivereResult = await getArbeidsgivereRemoteData(
                 dateToISODate(endringsperiode.from),
                 dateToISODate(endringsperiode.to)

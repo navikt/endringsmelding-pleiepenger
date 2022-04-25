@@ -162,8 +162,11 @@ describe('getDateRangeForSaker', () => {
             ytelse: { søknadsperioder: [{ from: ISODateToDate('2021-01-01'), to: ISODateToDate('2021-01-02') }] },
         } as any;
         const range = getDateRangeForSaker([sak]);
-        expect(dateToISODate(range.from)).toEqual('2021-01-01');
-        expect(dateToISODate(range.to)).toEqual('2021-01-02');
+        expect(range).toBeDefined();
+        if (range) {
+            expect(dateToISODate(range.from)).toEqual('2021-01-01');
+            expect(dateToISODate(range.to)).toEqual('2021-01-02');
+        }
     });
     it('returnerer riktig når det er to saker som ikke overlapper', () => {
         const sak: Sak = {
@@ -175,8 +178,11 @@ describe('getDateRangeForSaker', () => {
             },
         } as any;
         const range = getDateRangeForSaker([sak]);
-        expect(dateToISODate(range.from)).toEqual('2021-01-01');
-        expect(dateToISODate(range.to)).toEqual('2021-01-04');
+        expect(range).toBeDefined();
+        if (range) {
+            expect(dateToISODate(range.from)).toEqual('2021-01-01');
+            expect(dateToISODate(range.to)).toEqual('2021-01-04');
+        }
     });
     it('returnerer riktig når det er to saker som overlapper', () => {
         const sak: Sak = {
@@ -188,7 +194,10 @@ describe('getDateRangeForSaker', () => {
             },
         } as any;
         const range = getDateRangeForSaker([sak]);
-        expect(dateToISODate(range.from)).toEqual('2021-01-01');
-        expect(dateToISODate(range.to)).toEqual('2021-01-03');
+        expect(range).toBeDefined();
+        if (range) {
+            expect(dateToISODate(range.from)).toEqual('2021-01-01');
+            expect(dateToISODate(range.to)).toEqual('2021-01-03');
+        }
     });
 });

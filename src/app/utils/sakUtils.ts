@@ -131,14 +131,20 @@ export const getArbeidsgivereISak = (arbeidsgivere: Arbeidsgiver[], sak: Sak): A
 //     throw new Error('Ukjent ident for arbeidsgiver');
 // };
 
-export const getDateRangeForSaker = (saker: Sak[]): DateRange => {
-    return saker.length === 0
-        ? { from: new Date(), to: new Date() }
-        : getDateRangeFromDateRanges(
-              saker.map((sak) => {
-                  return getDateRangeFromDateRanges(sak.ytelse.søknadsperioder);
-              })
-          );
+export const getDateRangeForSaker = (saker: Sak[]): DateRange | undefined => {
+    const dateRanges: DateRange[] = [];
+    if (saker.length === 0) {
+        return { from: new Date(), to: new Date() };
+    }
+    saker.forEach((sak) => {
+        if (sak.ytelse.søknadsperioder.length > 0) {
+            dateRanges.push(getDateRangeFromDateRanges(sak.ytelse.søknadsperioder));
+        }
+    });
+    if (dateRanges.length > 0) {
+        getDateRangeFromDateRanges(dateRanges);
+    }
+    return undefined;
 };
 
 // export const getArbeidsgivereISaker = (saker: Sak[]): ArbeidstidArbeidsgiver[] => {

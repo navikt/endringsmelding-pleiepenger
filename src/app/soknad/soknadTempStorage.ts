@@ -10,7 +10,7 @@ import { Søker } from '../types/Søker';
 import { jsonSort } from '../utils/jsonSort';
 import { StepID } from './soknadStepsConfig';
 
-export const STORAGE_VERSION = '1.0';
+export const STORAGE_VERSION = '1.1';
 
 export interface UserHashInfo {
     søker: Søker;
