@@ -134,17 +134,17 @@ export const getArbeidsgivereISak = (arbeidsgivere: Arbeidsgiver[], sak: Sak): A
 export const getDateRangeForSaker = (saker: Sak[]): DateRange | undefined => {
     const dateRanges: DateRange[] = [];
     if (saker.length === 0) {
-        return { from: new Date(), to: new Date() };
+        return undefined;
     }
     saker.forEach((sak) => {
         if (sak.ytelse.søknadsperioder.length > 0) {
-            dateRanges.push(getDateRangeFromDateRanges(sak.ytelse.søknadsperioder));
+            const range = getDateRangeFromDateRanges(sak.ytelse.søknadsperioder);
+            dateRanges.push(range);
+        } else {
+            console.log(sak);
         }
     });
-    if (dateRanges.length > 0) {
-        getDateRangeFromDateRanges(dateRanges);
-    }
-    return undefined;
+    return dateRanges.length > 0 ? getDateRangeFromDateRanges(dateRanges) : undefined;
 };
 
 // export const getArbeidsgivereISaker = (saker: Sak[]): ArbeidstidArbeidsgiver[] => {
