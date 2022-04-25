@@ -17,7 +17,7 @@ import {
     Duration,
     durationToDecimalDuration,
     getDatesInDateRange,
-    getDurationForISOWeekday,
+    getDurationForISOWeekdayNumber,
     ISODate,
     ISODateToDate,
 } from '@navikt/sif-common-utils';
@@ -71,7 +71,7 @@ const EndreArbeidstidPeriode: React.FunctionComponent<Props> = ({
         const dagerSomSkalEndres: DateDurationMap = {};
         dagerSøktFor.forEach((isoDate) => {
             if (tidFasteDager) {
-                const tid = getDurationForISOWeekday(tidFasteDager, dayjs(ISODateToDate(isoDate)).isoWeekday());
+                const tid = getDurationForISOWeekdayNumber(tidFasteDager, dayjs(ISODateToDate(isoDate)).isoWeekday());
                 if (tid) {
                     dagerSomSkalEndres[isoDate] = tid;
                 }

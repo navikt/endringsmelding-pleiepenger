@@ -6,7 +6,7 @@ import {
     DateRange,
     dateToISODate,
     getDatesInDateRange,
-    getDurationForISOWeekday,
+    getDurationForISOWeekdayNumber,
     ISODateToDate,
 } from '@navikt/sif-common-utils';
 import dayjs from 'dayjs';
@@ -27,7 +27,7 @@ const oppdaterDagerMedOmsorgstilbudIPeriode = ({
     const dagerSomSkalEndres: DateDurationMap = {};
     datoerIPeriode.forEach((dato) => {
         const isoDate = dateToISODate(dato);
-        const varighet = getDurationForISOWeekday(tidFasteDager, dayjs(ISODateToDate(isoDate)).isoWeekday());
+        const varighet = getDurationForISOWeekdayNumber(tidFasteDager, dayjs(ISODateToDate(isoDate)).isoWeekday());
         if (varighet) {
             dagerSomSkalEndres[isoDate] = { ...varighet };
         }
