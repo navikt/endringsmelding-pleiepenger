@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import Knapperad from '@navikt/sif-common-core/lib/components/knapperad/Knapperad';
-import { getNumberFromNumberInputValue } from '@navikt/sif-common-formik/lib';
-import { ArbeidsforholdType, ArbeidstidPeriodeData, ArbeidstidPeriodeDialog } from '@navikt/sif-common-pleiepenger';
+import {
+    ArbeiderIPeriodenSvar,
+    ArbeidsforholdType,
+    ArbeidstidPeriodeData,
+    ArbeidstidPeriodeDialog,
+} from '@navikt/sif-common-pleiepenger';
 import { getArbeidstidIPeriodeIntlValues } from '@navikt/sif-common-pleiepenger/lib/arbeidstid/arbeidstid-periode-dialog/utils/arbeidstidPeriodeIntlValuesUtils';
 import {
     DateDurationMap,
     DateRange,
     dateToISODate,
-    decimalDurationToDuration,
-    Duration,
-    durationToDecimalDuration,
     getDatesInDateRange,
     getDurationForISOWeekdayNumber,
     ISODate,
@@ -45,11 +46,6 @@ export const getDagerDetErSøktForIPeriode = (periode: DateRange, dagerSøktForM
     return dagerIPeriodeDetErSøktFor;
 };
 
-const getNyArbeidstidUtFraProsent = (prosent: number, normalArbeidstid: Duration): Duration => {
-    const nyArbeidstidUtFraProsent = (durationToDecimalDuration(normalArbeidstid) / 100) * prosent;
-    return decimalDurationToDuration(nyArbeidstidUtFraProsent);
-};
-
 const EndreArbeidstidPeriode: React.FunctionComponent<Props> = ({
     arbeidstidEnkeltdagSøknad,
     formFieldName,
@@ -62,22 +58,26 @@ const EndreArbeidstidPeriode: React.FunctionComponent<Props> = ({
     const [visDialog, setVisDialog] = useState(false);
     const { setFieldValue } = useFormikContext<SoknadFormData>();
 
-    const handleChangePeriode = ({ fom, tom, tidFasteDager, prosent }: ArbeidstidPeriodeData) => {
-        const dagerSøktFor = getDagerDetErSøktForIPeriode({ from: fom, to: tom }, dagerSøktForMap);
+    const handleChangePeriode = (data: ArbeidstidPeriodeData) => {
+        const dagerSøktFor = getDagerDetErSøktForIPeriode({ from: data.fom, to: data.tom }, dagerSøktForMap);
         const dagerSomSkalEndres: DateDurationMap = {};
         dagerSøktFor.forEach((isoDate) => {
-            if (tidFasteDager) {
-                const tid = getDurationForISOWeekdayNumber(tidFasteDager, dayjs(ISODateToDate(isoDate)).isoWeekday());
-                if (tid) {
-                    dagerSomSkalEndres[isoDate] = tid;
-                }
-            }
-            const pst = getNumberFromNumberInputValue(prosent);
-            if (pst && isNaN(pst) === false) {
-                const normalarbeidstid = arbeidstidEnkeltdagSøknad.normalt[isoDate];
-                if (normalarbeidstid) {
-                    dagerSomSkalEndres[isoDate] = getNyArbeidstidUtFraProsent(pst, normalarbeidstid);
-                }
+            switch (data.arbeiderHvordan) {
+                case ArbeiderIPeriodenSvar.heltFravær:
+                    dagerSomSkalEndres[isoDate] = { hours: '0', minutes: '0' };
+                    break;
+                case ArbeiderIPeriodenSvar.somVanlig:
+                    dagerSomSkalEndres[isoDate] = arbeidstidEnkeltdagSøknad.normalt[isoDate];
+                    break;
+                case ArbeiderIPeriodenSvar.redusert:
+                    const tid = getDurationForISOWeekdayNumber(
+                        data.tidFasteDager,
+                        dayjs(ISODateToDate(isoDate)).isoWeekday()
+                    );
+                    if (tid) {
+                        dagerSomSkalEndres[isoDate] = tid;
+                    }
+                    break;
             }
         });
         setFieldValue(formFieldName, { ...arbeidstidEnkeltdagSøknad.faktisk, ...dagerSomSkalEndres });
