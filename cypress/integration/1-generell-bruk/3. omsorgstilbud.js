@@ -1,5 +1,11 @@
 const TestDate = require('../../fixtures/date.js');
 
+const tømMellomlagring = () => {
+    if (Cypress.env('MSW_MODE') === 'dev') {
+        cy.request('POST', 'http://localhost:8099/endringsmelding/mellomlagring', {});
+    }
+};
+
 describe('Generell flyt', () => {
     beforeEach(() => {
         cy.clock(TestDate, ['Date']);
@@ -33,8 +39,8 @@ describe('Generell flyt', () => {
         });
     };
 
-    it('tøm mellomlagring', () => {
-        cy.request('POST', 'http://localhost:8099/endringsmelding/mellomlagring', {});
+    it('tømmer mellomlagring dersom nødvendig', () => {
+        tømMellomlagring();
     });
 
     it('velger å endre omsorgstilbud', () => {
