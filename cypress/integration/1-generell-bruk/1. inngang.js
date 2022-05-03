@@ -1,8 +1,15 @@
 const TestDate = require('../../fixtures/date.js');
 
+const tømMellomlagring = () => {
+    cy.request('POST', 'http://localhost:8099/endringsmelding/mellomlagring', {});
+};
 describe('Overordnet flyt', () => {
     beforeEach(() => {
         cy.clock(TestDate, ['Date']);
+    });
+
+    it('tøm mellomlagring', () => {
+        tømMellomlagring();
     });
 
     it('siden lastes ok', () => {
@@ -38,6 +45,7 @@ describe('Overordnet flyt', () => {
     });
 
     it('test kun arbeidstid', () => {
+        tømMellomlagring();
         cy.visit('http://localhost:8090');
         cy.get('#arbeidstid').parent().click();
         cy.get('.bekreftCheckboksPanel').get('.skjemaelement__label').click();
@@ -45,6 +53,7 @@ describe('Overordnet flyt', () => {
         cy.get('.step__title').should('contain.text', 'Endre arbeidstimer');
     });
     it('test kun omsorgstilbud', () => {
+        tømMellomlagring();
         cy.visit('http://localhost:8090');
         cy.get('#omsorgstilbud').parent().click();
         cy.get('.bekreftCheckboksPanel').get('.skjemaelement__label').click();

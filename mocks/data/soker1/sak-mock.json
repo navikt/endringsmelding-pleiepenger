@@ -27,8 +27,7 @@
                 "beredskap": { "perioder": {}, "perioderSomSkalSlettes": {} },
                 "nattevåk": { "perioder": {}, "perioderSomSkalSlettes": {} },
                 "tilsynsordning": {
-                    "perioder": {
-                    }
+                    "perioder": {}
                 },
                 "lovbestemtFerie": { "perioder": {} },
                 "arbeidstid": {
@@ -54,16 +53,12 @@
                             "organisasjonsnummer": "839942907",
                             "arbeidstidInfo": {
                                 "perioder": {
-                                    "2021-11-01/2021-11-30": {
-                                        "jobberNormaltTimerPerDag": "PT0S",
-                                        "faktiskArbeidTimerPerDag": "PT0S"
-                                    },
-                                    "2021-12-01/2021-12-16": {
+                                    "2022-02-01/2022-02-28": {
                                         "jobberNormaltTimerPerDag": "PT8H",
                                         "faktiskArbeidTimerPerDag": "PT0S"
                                     },
-                                    "2021-12-17/2021-12-31": {
-                                        "jobberNormaltTimerPerDag": "PT0S",
+                                    "2022-03-01/2022-03-15": {
+                                        "jobberNormaltTimerPerDag": "PT8H",
                                         "faktiskArbeidTimerPerDag": "PT0S"
                                     }
                                 }
@@ -72,39 +67,11 @@
                     ],
                     "frilanserArbeidstidInfo": {
                         "perioder": {
-                            "2021-11-01/2021-11-05": {
+                            "2022-02-01/2022-02-28": {
                                 "jobberNormaltTimerPerDag": "PT8H",
                                 "faktiskArbeidTimerPerDag": "PT0S"
                             },
-                            "2021-11-08/2021-11-12": {
-                                "jobberNormaltTimerPerDag": "PT8H",
-                                "faktiskArbeidTimerPerDag": "PT0S"
-                            },
-                            "2021-11-15/2021-11-19": {
-                                "jobberNormaltTimerPerDag": "PT8H",
-                                "faktiskArbeidTimerPerDag": "PT0S"
-                            },
-                            "2021-11-22/2021-11-26": {
-                                "jobberNormaltTimerPerDag": "PT8H",
-                                "faktiskArbeidTimerPerDag": "PT0S"
-                            },
-                            "2021-11-29/2021-11-30": {
-                                "jobberNormaltTimerPerDag": "PT8H",
-                                "faktiskArbeidTimerPerDag": "PT0S"
-                            },
-                            "2021-12-01/2021-12-03": {
-                                "jobberNormaltTimerPerDag": "PT8H",
-                                "faktiskArbeidTimerPerDag": "PT7H"
-                            },
-                            "2021-12-06/2021-12-10": {
-                                "jobberNormaltTimerPerDag": "PT8H",
-                                "faktiskArbeidTimerPerDag": "PT7H"
-                            },
-                            "2021-12-13/2021-12-16": {
-                                "jobberNormaltTimerPerDag": "PT8H",
-                                "faktiskArbeidTimerPerDag": "PT7H"
-                            },
-                            "2021-12-17/2021-12-31": {
+                            "2022-03-01/2022-03-15": {
                                 "jobberNormaltTimerPerDag": "PT8H",
                                 "faktiskArbeidTimerPerDag": "PT0S"
                             }
@@ -112,51 +79,11 @@
                     },
                     "selvstendigNæringsdrivendeArbeidstidInfo": {
                         "perioder": {
-                            "2021-11-01/2021-11-05": {
+                            "2022-02-01/2022-02-28": {
                                 "jobberNormaltTimerPerDag": "PT8H",
                                 "faktiskArbeidTimerPerDag": "PT0S"
                             },
-                            "2021-11-08/2021-11-12": {
-                                "jobberNormaltTimerPerDag": "PT8H",
-                                "faktiskArbeidTimerPerDag": "PT0S"
-                            },
-                            "2021-11-15/2021-11-15": {
-                                "jobberNormaltTimerPerDag": "PT8H",
-                                "faktiskArbeidTimerPerDag": "PT0S"
-                            },
-                            "2021-11-16/2021-11-16": {
-                                "jobberNormaltTimerPerDag": "PT8H",
-                                "faktiskArbeidTimerPerDag": "PT4H"
-                            },
-                            "2021-11-17/2021-11-19": {
-                                "jobberNormaltTimerPerDag": "PT8H",
-                                "faktiskArbeidTimerPerDag": "PT0S"
-                            },
-                            "2021-11-22/2021-11-22": {
-                                "jobberNormaltTimerPerDag": "PT8H",
-                                "faktiskArbeidTimerPerDag": "PT0S"
-                            },
-                            "2021-11-23/2021-11-23": {
-                                "jobberNormaltTimerPerDag": "PT8H",
-                                "faktiskArbeidTimerPerDag": "PT4H"
-                            },
-                            "2021-11-24/2021-11-26": {
-                                "jobberNormaltTimerPerDag": "PT8H",
-                                "faktiskArbeidTimerPerDag": "PT0S"
-                            },
-                            "2021-11-29/2021-11-29": {
-                                "jobberNormaltTimerPerDag": "PT8H",
-                                "faktiskArbeidTimerPerDag": "PT0S"
-                            },
-                            "2021-11-30/2021-11-30": {
-                                "jobberNormaltTimerPerDag": "PT8H",
-                                "faktiskArbeidTimerPerDag": "PT4H"
-                            },
-                            "2021-12-01/2021-12-16": {
-                                "jobberNormaltTimerPerDag": "PT4H24M",
-                                "faktiskArbeidTimerPerDag": "PT0S"
-                            },
-                            "2021-12-17/2021-12-31": {
+                            "2022-03-01/2022-03-15": {
                                 "jobberNormaltTimerPerDag": "PT8H",
                                 "faktiskArbeidTimerPerDag": "PT0S"
                             }
