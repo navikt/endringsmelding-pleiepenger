@@ -89,11 +89,6 @@ const EndreArbeidstidPeriode: React.FunctionComponent<Props> = ({
 
     return (
         <>
-            <p style={{ marginTop: '0' }}>
-                Du kan endre enkeltdager ved å velge en dato i månedene nedenfor, eller du kan legge til endringer som
-                gjelder flere dager ved å velge &quot;Endre periode&quot;-knappen.
-            </p>
-
             <Knapperad align="left">
                 <Box margin="none" padBottom="l">
                     <Knapp htmlType="button" onClick={() => setVisDialog(true)} mini={true}>
@@ -114,6 +109,15 @@ const EndreArbeidstidPeriode: React.FunctionComponent<Props> = ({
                         },
                         periode: endringsperiode,
                     }),
+                    tekst: {
+                        introduksjon: (
+                            <>
+                                Arbeidstid du fyller ut vil overskrive eventuelle endringer som du allerde har gjort på
+                                dager i denne perioden. Felter du ikke fyller ut vil være det samme som 0
+                                timer/minutter.
+                            </>
+                        ),
+                    },
                     periode: endringsperiode,
                     onCancel: () => setVisDialog(false),
                     onSubmit: handleChangePeriode,

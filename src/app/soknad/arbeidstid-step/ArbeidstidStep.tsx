@@ -40,7 +40,14 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
     return (
         <SoknadFormStep id={stepId} onStepCleanup={cleanupStep}>
             <StepIntroduction>
-                Her legger du inn endringer i hvor mange timer du jobber de dagene du har søkt om pleiepenger.
+                <p>
+                    Nedenfor ser du den tiden vi har registrert at du skal jobbe de dagene du har søkt om pleiepenger.
+                </p>
+                <p>
+                    Du kan endre arbeidstiden din for enkeltdager ved å velge en dato i måneden, eller du kan legge til
+                    endringer som gjelder flere dager ved å velge &quot;Endre dager i en periode&quot;-knappen.
+                </p>
+                <p>Når du har gjort en endring vil den opprinnelige tiden vises overstreket.</p>
             </StepIntroduction>
             {arbeidsgivere && arbeidsgivere.length > 0 && (
                 <>
