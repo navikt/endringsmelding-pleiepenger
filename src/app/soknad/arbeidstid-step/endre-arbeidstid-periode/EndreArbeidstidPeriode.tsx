@@ -112,8 +112,8 @@ const EndreArbeidstidPeriode: React.FunctionComponent<Props> = ({
                     tekst: {
                         introduksjon: (
                             <>
-                                Arbeidstid du fyller ut vil overskrive eventuelle endringer som du allerde har gjort på
-                                dager i denne perioden. Felter du ikke fyller ut vil være det samme som 0
+                                Arbeidstid du fyller ut på de enkelte ukedagene vil overskrive eventuelle endringer som
+                                du allerde har gjort på dager i denne perioden. Tomme felter vil være det samme som 0
                                 timer/minutter.
                             </>
                         ),

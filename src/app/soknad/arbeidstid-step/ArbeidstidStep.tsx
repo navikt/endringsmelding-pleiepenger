@@ -45,7 +45,7 @@ const ArbeidstidStep: React.FunctionComponent<Props> = ({
                 </p>
                 <p>
                     Du kan endre arbeidstiden din for enkeltdager ved å velge en dato i måneden, eller du kan legge til
-                    endringer som gjelder flere dager ved å velge &quot;Endre dager i en periode&quot;-knappen.
+                    endringer for flere dager ved å velge &quot;Endre dager i en periode&quot;-knappen.
                 </p>
                 <p>Når du har gjort en endring vil den opprinnelige tiden vises overstreket.</p>
             </StepIntroduction>

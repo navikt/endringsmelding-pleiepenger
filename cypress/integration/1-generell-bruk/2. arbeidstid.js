@@ -76,7 +76,7 @@ describe('Arbeidstid', () => {
         cy.get('#arbeidstid').parent().click();
         cy.get('.bekreftCheckboksPanel').get('.skjemaelement__label').click();
         cy.get('button[type=submit]').click();
-        cy.get('.step__title').should('contain.text', 'Endre arbeidstimer');
+        cy.get('.step__title').should('contain.text', 'Endre hvor mye du jobber');
     });
 
     it('inneholder alle arbeidsgivere', () => {

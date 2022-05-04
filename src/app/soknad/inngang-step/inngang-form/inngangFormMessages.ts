@@ -1,7 +1,7 @@
 export const inngangFormMessages = {
     nb: {
-        'inngangForm.hvaSkalEndres.arbeidstid.1': 'Endre arbeidstimer',
-        'inngangForm.hvaSkalEndres.arbeidstid.2': 'Legge til, fjerne eller endre arbeidstimer',
+        'inngangForm.hvaSkalEndres.arbeidstid.1': 'Endre hvor mye du jobber',
+        'inngangForm.hvaSkalEndres.arbeidstid.2': 'Legge til, fjerne eller endre hvor mye du jobber',
         'inngangForm.hvaSkalEndres.omsorgstilbud.1': 'Endre tid i omsorgstilbud',
         'inngangForm.hvaSkalEndres.omsorgstilbud.2': 'Legge til, fjerne eller endre tid i omsorgstilbud',
         'inngangForm.samtykke.tekst': 'Jeg bekrefter at jeg har lest og forstått',

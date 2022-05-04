@@ -44,7 +44,7 @@ describe('Overordnet flyt', () => {
     });
 
     it('viser arbeidstid-steg', () => {
-        cy.get('.step__title').should('contain.text', 'Endre arbeidstimer');
+        cy.get('.step__title').should('contain.text', 'Endre hvor mye du jobber');
     });
 
     it('test kun arbeidstid', () => {
@@ -53,7 +53,7 @@ describe('Overordnet flyt', () => {
         cy.get('#arbeidstid').parent().click();
         cy.get('.bekreftCheckboksPanel').get('.skjemaelement__label').click();
         cy.get('button[type=submit]').click();
-        cy.get('.step__title').should('contain.text', 'Endre arbeidstimer');
+        cy.get('.step__title').should('contain.text', 'Endre hvor mye du jobber');
     });
     it('test kun omsorgstilbud', () => {
         tømMellomlagring();
