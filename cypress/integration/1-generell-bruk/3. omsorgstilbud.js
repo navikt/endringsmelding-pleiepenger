@@ -1,6 +1,16 @@
 const TestDate = require('../../fixtures/date.js');
 
+const tømMellomlagring = () => {
+    if (Cypress.env('MSW_MODE') === 'dev') {
+        cy.request('POST', 'http://localhost:8099/endringsmelding/mellomlagring', {});
+    }
+};
+
 describe('Generell flyt', () => {
+    beforeEach(() => {
+        cy.clock(TestDate, ['Date']);
+    });
+
     const ensureÅpentExpanderbartPanel = (idx) => {
         cy.get('.ekspanderbartPanel__hode')
             .eq(idx)
@@ -28,8 +38,12 @@ describe('Generell flyt', () => {
             cy.get('button[type=submit]').click();
         });
     };
+
+    it('tømmer mellomlagring dersom nødvendig', () => {
+        tømMellomlagring();
+    });
+
     it('velger å endre omsorgstilbud', () => {
-        cy.clock(TestDate, ['Date']);
         cy.visit('http://localhost:8090');
         cy.get('#omsorgstilbud').parent().click();
         cy.get('.bekreftCheckboksPanel').get('.skjemaelement__label').click();
@@ -43,17 +57,17 @@ describe('Generell flyt', () => {
     it('kan legge til omsorgstilbud for en periode', () => {
         ensureÅpentExpanderbartPanel(0);
         cy.get('button[name=leggTilPeriode]').click();
-        fyllUtOmsorgstilbudPeriodeForm('22.11.2021', '26.11.2021');
-        cy.get('.calendarGrid__day--button').eq(10).should('contain.text', '1 t.');
-        cy.get('.calendarGrid__day--button').eq(10).should('contain.text', '10 m.');
-        cy.get('.calendarGrid__day--button').eq(11).should('contain.text', '2 t.');
-        cy.get('.calendarGrid__day--button').eq(11).should('contain.text', '20 m.');
-        cy.get('.calendarGrid__day--button').eq(12).should('contain.text', '3 t.');
-        cy.get('.calendarGrid__day--button').eq(12).should('contain.text', '30 m.');
-        cy.get('.calendarGrid__day--button').eq(13).should('contain.text', '4 t.');
-        cy.get('.calendarGrid__day--button').eq(13).should('contain.text', '40 m.');
-        cy.get('.calendarGrid__day--button').eq(14).should('contain.text', '5 t.');
-        cy.get('.calendarGrid__day--button').eq(14).should('contain.text', '50 m.');
+        fyllUtOmsorgstilbudPeriodeForm('2022-02-01', '2022-03-01');
+        cy.get('.calendarGrid__day--button').eq(9).should('contain.text', '1 t.');
+        cy.get('.calendarGrid__day--button').eq(9).should('contain.text', '10 m.');
+        cy.get('.calendarGrid__day--button').eq(10).should('contain.text', '2 t.');
+        cy.get('.calendarGrid__day--button').eq(10).should('contain.text', '20 m.');
+        cy.get('.calendarGrid__day--button').eq(11).should('contain.text', '3 t.');
+        cy.get('.calendarGrid__day--button').eq(11).should('contain.text', '30 m.');
+        cy.get('.calendarGrid__day--button').eq(12).should('contain.text', '4 t.');
+        cy.get('.calendarGrid__day--button').eq(12).should('contain.text', '40 m.');
+        cy.get('.calendarGrid__day--button').eq(13).should('contain.text', '5 t.');
+        cy.get('.calendarGrid__day--button').eq(13).should('contain.text', '50 m.');
     });
 
     it('kan legge til omsorgstilbud for én dag', () => {

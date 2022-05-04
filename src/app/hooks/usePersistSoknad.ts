@@ -1,3 +1,4 @@
+import { useHistory } from 'react-router';
 import { useAmplitudeInstance } from '@navikt/sif-common-amplitude/lib';
 import { isUnauthorized } from '@navikt/sif-common-core/lib/utils/apiUtils';
 import { useFormikContext } from 'formik';
@@ -5,8 +6,6 @@ import { StepID } from '../soknad/soknadStepsConfig';
 import soknadTempStorage, { UserHashInfo } from '../soknad/soknadTempStorage';
 import { SoknadFormData } from '../types/SoknadFormData';
 import { navigateToErrorPage, relocateToLoginPage } from '../utils/navigationUtils';
-import { useHistory } from 'react-router';
-import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 
 function usePersistSoknad() {
     const history = useHistory();
@@ -27,9 +26,7 @@ function usePersistSoknad() {
     }
 
     const persist = (soknadId: string, stepID: StepID, hashInfo: UserHashInfo) => {
-        if (isFeatureEnabled(Feature.MELLOMLAGRING)) {
-            doPersist(soknadId, stepID, hashInfo);
-        }
+        doPersist(soknadId, stepID, hashInfo);
     };
 
     return { persist };

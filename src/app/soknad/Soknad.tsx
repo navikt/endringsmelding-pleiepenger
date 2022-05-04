@@ -5,8 +5,10 @@ import { ApplikasjonHendelse, useAmplitudeInstance } from '@navikt/sif-common-am
 import LoadWrapper from '@navikt/sif-common-core/lib/components/load-wrapper/LoadWrapper';
 import { isUnauthorized } from '@navikt/sif-common-core/lib/utils/apiUtils';
 import { SoknadApplicationType, StepConfig } from '@navikt/sif-common-soknad/lib/soknad-step/soknadStepTypes';
+import soknadStepUtils from '@navikt/sif-common-soknad/lib/soknad-step/soknadStepUtils';
 import { sendEndringsmelding } from '../api/sendSoknad';
 import { SKJEMANAVN } from '../App';
+import { useEffectOnce } from '../hooks/useEffectOnce';
 import { Arbeidsgiver } from '../types/Arbeidsgiver';
 import { SakMedMeta } from '../types/Sak';
 import { SoknadApiData } from '../types/SoknadApiData';
@@ -27,9 +29,6 @@ import SoknadFormComponents from './SoknadFormComponents';
 import SoknadRoutes from './SoknadRoutes';
 import { getSoknadStepsConfig, StepID } from './soknadStepsConfig';
 import soknadTempStorage from './soknadTempStorage';
-import { useEffectOnce } from '../hooks/useEffectOnce';
-import soknadStepUtils from '@navikt/sif-common-soknad/lib/soknad-step/soknadStepUtils';
-import { Feature, isFeatureEnabled } from '../utils/featureToggleUtils';
 
 interface Props {
     søker: Søker;
@@ -54,19 +53,15 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, arbeidsgivere, sakMedM
 
     const abortSoknad = async (): Promise<void> => {
         await logHendelse(ApplikasjonHendelse.avbryt);
-        if (isFeatureEnabled(Feature.MELLOMLAGRING)) {
-            await soknadTempStorage.purge();
-        }
+        await soknadTempStorage.purge();
         relocateToSoknad();
     };
 
     const continueSoknadLater = async (sId: string, stepID: StepID, values: SoknadFormData): Promise<void> => {
-        if (isFeatureEnabled(Feature.MELLOMLAGRING)) {
-            await soknadTempStorage.update(sId, values, stepID, {
-                søker,
-                sak,
-            });
-        }
+        await soknadTempStorage.update(sId, values, stepID, {
+            søker,
+            sak,
+        });
         await logHendelse(ApplikasjonHendelse.fortsettSenere);
         relocateToNavFrontpage();
     };
@@ -74,9 +69,7 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, arbeidsgivere, sakMedM
     const doSend = async (apiValues: SoknadApiData, resetFormikForm: resetFormFunc): Promise<void> => {
         try {
             await sendEndringsmelding(apiValues);
-            if (isFeatureEnabled(Feature.MELLOMLAGRING)) {
-                await soknadTempStorage.purge();
-            }
+            await soknadTempStorage.purge();
             setSendSoknadStatus({ failures: 0, status: success(apiValues) });
             navigateToKvitteringPage(history);
             resetFormikForm();
@@ -118,18 +111,16 @@ const Soknad: React.FunctionComponent<Props> = ({ søker, arbeidsgivere, sakMedM
         step: StepConfig<StepID>,
         nextStep?: StepID
     ): Promise<void> => {
-        if (isFeatureEnabled(Feature.MELLOMLAGRING)) {
-            if (nextStep && soknadId) {
-                try {
-                    await soknadTempStorage.update(soknadId, values, nextStep, {
-                        søker,
-                        sak,
-                    });
-                } catch (error) {
-                    if (isUnauthorized(error)) {
-                        await logUserLoggedOut('ved mellomlagring');
-                        relocateToLoginPage();
-                    }
+        if (nextStep && soknadId) {
+            try {
+                await soknadTempStorage.update(soknadId, values, nextStep, {
+                    søker,
+                    sak,
+                });
+            } catch (error) {
+                if (isUnauthorized(error)) {
+                    await logUserLoggedOut('ved mellomlagring');
+                    relocateToLoginPage();
                 }
             }
         }

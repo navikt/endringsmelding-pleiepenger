@@ -1,6 +1,15 @@
 const TestDate = require('../../fixtures/date.js');
 
-describe('Generell flyt', () => {
+const tømMellomlagring = () => {
+    if (Cypress.env('MSW_MODE') === 'dev') {
+        cy.request('POST', 'http://localhost:8099/endringsmelding/mellomlagring', {});
+    }
+};
+
+describe('Arbeidstid', () => {
+    beforeEach(() => {
+        cy.clock(TestDate, ['Date']);
+    });
     const fyllUtArbeidEnkeltdagForm = () => {
         cy.get('.tidEnkeltdagDialog').within(() => {
             cy.get('.timeInput__hours').children('input').type('{selectall}').type('2');
@@ -9,24 +18,19 @@ describe('Generell flyt', () => {
         });
     };
 
-    const fyllUtArbeidIPeriodeForm = (brukProsent, fraDato, tilDato) => {
+    const fyllUtArbeidIPeriodeForm = (fraDato, tilDato) => {
         cy.get('.arbeidstidPeriodeDialog').within(() => {
             cy.get('input[type=text]').eq(0).type('{selectall}').type(fraDato).blur();
             cy.get('input[type=text]').eq(1).type('{selectall}').type(tilDato).blur();
-            if (brukProsent === true) {
-                cy.get('input[value=prosent]').parent().click();
-                cy.get('input[name=prosent]').type('50');
-            } else {
-                cy.get('input[value=tidFasteDager]').parent().click();
-                cy.get('.timeInput__hours > input').eq(0).type('1');
-                cy.get('.timeInput__minutes > input').eq(0).type('10');
-                cy.get('.timeInput__hours > input').eq(1).type('0');
-                cy.get('.timeInput__minutes > input').eq(1).type('0');
-                cy.get('.timeInput__hours > input').eq(2).type('3');
-                cy.get('.timeInput__minutes > input').eq(2).type('30');
-                cy.get('.timeInput__hours > input').eq(4).type('5');
-                cy.get('.timeInput__minutes > input').eq(4).type('50');
-            }
+            cy.get('input[value=REDUSERT]').parent().click();
+            cy.get('.timeInput__hours > input').eq(0).type('1');
+            cy.get('.timeInput__minutes > input').eq(0).type('10');
+            cy.get('.timeInput__hours > input').eq(1).type('0');
+            cy.get('.timeInput__minutes > input').eq(1).type('0');
+            cy.get('.timeInput__hours > input').eq(2).type('3');
+            cy.get('.timeInput__minutes > input').eq(2).type('30');
+            cy.get('.timeInput__hours > input').eq(4).type('5');
+            cy.get('.timeInput__minutes > input').eq(4).type('50');
             cy.get('button[type=submit]').click();
         });
     };
@@ -45,42 +49,34 @@ describe('Generell flyt', () => {
         });
     };
 
-    const fyllUtArbeidPeriodeForArbeidsstedProsent = (arbeidssted) => {
-        cy.get(`#arbeidsted-${arbeidssted}`).within(() => {
-            cy.get('.knapperad button').click();
-        });
-        fyllUtArbeidIPeriodeForm(true, '15.11.2021', '19.11.2021');
-        cy.get(`#arbeidsted-${arbeidssted}`).within(() => {
-            cy.get('.calendarGrid__day--button').eq(6).should('contain.text', '4 t.');
-            cy.get('.calendarGrid__day--button').eq(6).should('contain.text', '0 m.');
-        });
-    };
-
     const fyllUtArbeidPeriodeForArbeidsstedTimer = (arbeidssted) => {
         cy.get(`#arbeidsted-${arbeidssted}`).within(() => {
             cy.get('.knapperad button').click();
         });
-        fyllUtArbeidIPeriodeForm(false, '22.11.2021', '26.11.2021');
+        fyllUtArbeidIPeriodeForm('2022-02-01', '2022-03-01');
         cy.get(`#arbeidsted-${arbeidssted}`).within(() => {
-            cy.get('.calendarGrid__day--button').eq(10).should('contain.text', '1 t.');
-            cy.get('.calendarGrid__day--button').eq(10).should('contain.text', '10 m.');
-            cy.get('.calendarGrid__day--button').eq(11).should('contain.text', '0 t.');
-            cy.get('.calendarGrid__day--button').eq(11).should('contain.text', '0 m.');
-            cy.get('.calendarGrid__day--button').eq(12).should('contain.text', '3 t.');
-            cy.get('.calendarGrid__day--button').eq(12).should('contain.text', '30 m.');
-            cy.get('.calendarGrid__day--button').eq(13).should('contain.text', 'uendret');
-            cy.get('.calendarGrid__day--button').eq(14).should('contain.text', '5 t.');
-            cy.get('.calendarGrid__day--button').eq(14).should('contain.text', '50 m.');
+            cy.get('.calendarGrid__day--button').eq(9).should('contain.text', '1 t.');
+            cy.get('.calendarGrid__day--button').eq(9).should('contain.text', '10 m.');
+            cy.get('.calendarGrid__day--button').eq(10).should('contain.text', '0 t.');
+            cy.get('.calendarGrid__day--button').eq(10).should('contain.text', '0 m.');
+            cy.get('.calendarGrid__day--button').eq(11).should('contain.text', '3 t.');
+            cy.get('.calendarGrid__day--button').eq(11).should('contain.text', '30 m.');
+            cy.get('.calendarGrid__day--button').eq(12).should('contain.text', 'uendret');
+            cy.get('.calendarGrid__day--button').eq(13).should('contain.text', '5 t.');
+            cy.get('.calendarGrid__day--button').eq(13).should('contain.text', '50 m.');
         });
     };
 
+    it('tømmer mellomlagring dersom nødvendig', () => {
+        tømMellomlagring();
+    });
+
     it('velger å endre arbeidstid', () => {
-        cy.clock(TestDate, ['Date']);
         cy.visit('http://localhost:8090');
         cy.get('#arbeidstid').parent().click();
         cy.get('.bekreftCheckboksPanel').get('.skjemaelement__label').click();
         cy.get('button[type=submit]').click();
-        cy.get('.step__title').should('contain.text', 'Endre arbeidstimer');
+        cy.get('.step__title').should('contain.text', 'Endre hvor mye du jobber');
     });
 
     it('inneholder alle arbeidsgivere', () => {
@@ -98,17 +94,14 @@ describe('Generell flyt', () => {
         fyllUtArbeidEnkeltdagForArbeidssted('839942907');
     });
     it('kan endre arbeidstid periode for arbeidsgivere', () => {
-        fyllUtArbeidPeriodeForArbeidsstedProsent('805824352');
         fyllUtArbeidPeriodeForArbeidsstedTimer('805824352');
     });
     it('kan endre arbeidstid for frilanser', () => {
         fyllUtArbeidEnkeltdagForArbeidssted('frilanser');
-        fyllUtArbeidPeriodeForArbeidsstedProsent('frilanser');
         fyllUtArbeidPeriodeForArbeidsstedTimer('frilanser');
     });
     it('kan endre arbeidstid for sn', () => {
         fyllUtArbeidEnkeltdagForArbeidssted('sn');
-        fyllUtArbeidPeriodeForArbeidsstedProsent('sn');
         fyllUtArbeidPeriodeForArbeidsstedTimer('sn');
     });
 });

@@ -1,7 +1,6 @@
 import React from 'react';
 import Box from '@navikt/sif-common-core/lib/components/box/Box';
 import ExpandableInfo from '@navikt/sif-common-core/lib/components/expandable-content/ExpandableInfo';
-import ResponsivePanel from '@navikt/sif-common-core/lib/components/responsive-panel/ResponsivePanel';
 import { DateDurationMap } from '@navikt/sif-common-utils';
 import { useFormikContext } from 'formik';
 import StepIntroduction from '../../components/step-introduction/StepIntroduction';
@@ -70,21 +69,19 @@ const OmsorgstilbudStep: React.FunctionComponent<Props> = ({
             </StepIntroduction>
 
             <Box margin="xl">
-                <ResponsivePanel>
-                    <Box padBottom="l">
-                        <EndreOmsorgstilbudPeriode
-                            gjelderFortid={true}
-                            periode={sakMetadata.endringsperiode}
-                            onPeriodeChange={handleOnPeriodeChange}
-                        />
-                    </Box>
-                    <OmsorgstilbudMånedListe
-                        tidOmsorgstilbud={tidOmsorgstilbud}
-                        tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}
-                        sakMetadata={sakMetadata}
-                        onOmsorgstilbudChanged={onOmsorgstilbudChanged}
+                <Box padBottom="l">
+                    <EndreOmsorgstilbudPeriode
+                        gjelderFortid={true}
+                        periode={sakMetadata.endringsperiode}
+                        onPeriodeChange={handleOnPeriodeChange}
                     />
-                </ResponsivePanel>
+                </Box>
+                <OmsorgstilbudMånedListe
+                    tidOmsorgstilbud={tidOmsorgstilbud}
+                    tidIOmsorgstilbudSak={tidIOmsorgstilbudSak}
+                    sakMetadata={sakMetadata}
+                    onOmsorgstilbudChanged={onOmsorgstilbudChanged}
+                />
             </Box>
         </SoknadFormStep>
     );

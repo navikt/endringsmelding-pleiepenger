@@ -8,9 +8,9 @@ import SoknadApplicationCommonRoutes from '@navikt/sif-common-soknad/lib/soknad-
 import Modal from 'nav-frontend-modal';
 import { applicationIntlMessages } from './i18n/applicationMessages';
 import SoknadRemoteDataFetcher from './soknad/SoknadRemoteDataFetcher';
+import { getEnvVariableOrDefault } from './utils/envUtils';
 import '@navikt/sif-common-core/lib/styles/globalStyles.less';
 import './styles/app.less';
-import { getEnvVariableOrDefault } from './utils/envUtils';
 
 Modal.setAppElement('#app');
 

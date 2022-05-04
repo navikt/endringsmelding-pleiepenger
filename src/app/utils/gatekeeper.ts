@@ -33,11 +33,11 @@ export const kontrollerTilgangTilDialog = (saker: Sak[], arbeidsgivere: Arbeidsg
     } = sak;
     if (arbeidstakerMap && Object.keys(arbeidstakerMap).length > 0) {
         if (erArbeidsgivereISakIAAreg(arbeidsgivere, arbeidstakerMap) === false) {
-            console.error({
-                feil: 'arbeidstid sak mangler arbeidsgivere i aareg',
-                aareg: arbeidsgivere,
-                sak: Object.keys(arbeidstakerMap),
-            });
+            // console.error({
+            //     feil: 'arbeidstid sak mangler arbeidsgivere i aareg',
+            //     aareg: arbeidsgivere,
+            //     sak: Object.keys(arbeidstakerMap),
+            // });
             return StoppÅrsak.arbeidsgiverSakErIkkeIAareg;
         }
     }

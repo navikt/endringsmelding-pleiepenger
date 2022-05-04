@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useIntl } from 'react-intl';
 import intlHelper from '@navikt/sif-common-core/lib/utils/intlUtils';
-import { OmsorgstilbudEnkeltdagDialog, TidsbrukKalender } from '@navikt/sif-common-pleiepenger';
-import { TidEnkeltdagEndring } from '@navikt/sif-common-pleiepenger/lib/tid-enkeltdag-dialog/TidEnkeltdagForm';
+import { OmsorgstilbudEnkeltdagDialog, TidEnkeltdagEndring, TidsbrukKalender } from '@navikt/sif-common-pleiepenger';
 import {
     DateDurationMap,
     DateRange,

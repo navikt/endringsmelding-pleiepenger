@@ -17,12 +17,19 @@ const SoknadRemoteDataFetcher = (): JSX.Element => {
             remoteData={soknadEssentials}
             initializing={(): React.ReactNode => <LoadingPage />}
             loading={(): React.ReactNode => <LoadingPage />}
-            error={(): React.ReactNode => (
-                <ErrorPage
-                    bannerTitle={intlHelper(intl, 'application.title')}
-                    contentRenderer={(): JSX.Element => <SoknadErrorMessages.GeneralApplicationError />}
-                />
-            )}
+            error={(error): React.ReactNode => {
+                return (
+                    <ErrorPage
+                        bannerTitle={intlHelper(intl, 'application.title')}
+                        contentRenderer={(): JSX.Element => (
+                            <>
+                                <SoknadErrorMessages.GeneralApplicationError />
+                                {error && <p>Feilkode: {JSON.stringify(error)}</p>}
+                            </>
+                        )}
+                    />
+                );
+            }}
             success={([søker, saker, arbeidsgivere, soknadTempStorage]): React.ReactNode => {
                 return (
                     <SoknadInngang

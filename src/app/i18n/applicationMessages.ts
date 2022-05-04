@@ -3,6 +3,7 @@ import { allCommonMessages } from '@navikt/sif-common-core/lib/i18n/allCommonMes
 import { sifCommonPleiepengerMessages } from '@navikt/sif-common-pleiepenger/lib/i18n/index';
 import soknadErrorIntlMessages from '@navikt/sif-common-soknad/lib/soknad-error-messages/soknadErrorIntlMessages';
 import soknadIntlMessages from '@navikt/sif-common-soknad/lib/soknad-intl-messages/soknadIntlMessages';
+import { arbeidstidPeriodeMessages } from '@navikt/sif-common-pleiepenger/lib/arbeidstid/arbeidstid-periode-dialog/i18n/arbeidstidPeriodeMessages';
 import { arbeidstidMånedMessages } from '../soknad/arbeidstid-step/arbeidstid-måned/arbeidstidMånedMessages';
 import { dinePlikterMessages } from '../soknad/inngang-step/dine-plikter/dinePlikterMessages';
 import { personopplysningerMessages } from '../soknad/inngang-step/personopplysninger/personopplysningerMessages';
@@ -13,6 +14,7 @@ const appMessagesNB = require('./nb.json');
 
 const bokmålstekster = {
     ...allCommonMessages.nb,
+    ...arbeidstidPeriodeMessages.nb,
     ...appMessagesNB,
     ...dinePlikterMessages.nb,
     ...personopplysningerMessages.nb,
