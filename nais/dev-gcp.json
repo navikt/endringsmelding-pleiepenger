@@ -17,6 +17,7 @@
         "APPSTATUS_DATASET": "staging",
         "USE_AMPLITUDE": "true",
         "INNSYN_URL": "https://www.nav.no/familie/sykdom-i-familien/soknad/innsyn",
-        "MSW_MODE": "dev"
+        "MSW_MODE": "dev",
+        "NPM_CONFIG_CACHE": "/tmp"
     }
 }
