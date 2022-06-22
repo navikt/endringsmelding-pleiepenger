@@ -10,7 +10,7 @@ on:
         branches:
 
 env:
-      IMAGE: docker.pkg.github.com/${{ github.repository }}/endringsmelding-pleiepenger:${{ github.sha }}
+    IMAGE: ghcr.io/${{ github.repository }}/endringsmelding-pleiepenger:${{ github.sha }}
 
 jobs:
     test:
@@ -28,7 +28,6 @@ jobs:
               run: npm run build
             - name: Cypress tests
               run: npm run e2e:run
-
 
     build-code-and-push-docker:
         name: Build code and push docker image
@@ -50,7 +49,7 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
-                  docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
+                  docker login ghcr.io -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
                   docker push ${IMAGE}
 
     deploy-dev:
