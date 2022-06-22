@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { combine, initial, pending, RemoteData } from '@devexperts/remote-data-ts';
+import { combine, initial, pending, RemoteData, failure, success } from '@devexperts/remote-data-ts';
 import { isUnauthorized } from '@navikt/sif-common-core/lib/utils/apiUtils';
 import { dateToISODate } from '@navikt/sif-common-utils';
 import { AxiosError } from 'axios';
@@ -31,27 +31,36 @@ function useSoknadEssentials(): SoknadEssentialsRemoteData {
                 getSoknadTempStorage(),
             ]);
 
-            /** Hent arbeidsgivere fra aa-reg */
+            /** Hent tidsperiode fra saker og deretter arbeidsgivere i denne tidsperioden fra aa-reg */
             const saker: Sak[] = sakerResult._tag === 'RemoteSuccess' ? sakerResult.value : [];
-            const endringsperiode = getEndringsperiode(getEndringsdato(), [getDateRangeForSaker(saker)]);
+            if (saker.length === 0) {
+                setData(combine(søkerResult, sakerResult, success([]), soknadTempStorageResult));
+                return;
+            }
+            const dateRangeForSaker = getDateRangeForSaker(saker);
+            if (!dateRangeForSaker) {
+                throw 'ugyldigTidsrom';
+            }
+            const endringsperiode = getEndringsperiode(getEndringsdato(), [dateRangeForSaker]);
             const arbeidsgivereResult = await getArbeidsgivereRemoteData(
                 dateToISODate(endringsperiode.from),
                 dateToISODate(endringsperiode.to)
             );
             setData(combine(søkerResult, sakerResult, arbeidsgivereResult, soknadTempStorageResult));
-        } catch (remoteDataError) {
-            if (isUnauthorized(remoteDataError.error)) {
+        } catch (error) {
+            if (isUnauthorized(error.error)) {
                 setData(pending);
                 relocateToLoginPage();
             } else {
-                appSentryLogger.logError('useSoknadEssentials', remoteDataError.error);
-                setData(remoteDataError);
+                appSentryLogger.logError('useSoknadEssentials', error.error);
+                setData(failure(error));
             }
         }
     };
     useEffect(() => {
         fetch();
     }, []);
+
     return data;
 }
 

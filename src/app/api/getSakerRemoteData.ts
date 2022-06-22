@@ -17,7 +17,10 @@ const getSakerRemoteData = async (): Promise<RemoteData<AxiosError, Sak[]>> => {
         data.forEach((sak) => {
             const erGyldig = isK9Format(sak);
             if (erGyldig) {
-                saker.push(parseK9Format(sak));
+                const parsedSak = parseK9Format(sak);
+                if (parsedSak.ytelse.søknadsperioder.length > 0) {
+                    saker.push(parsedSak);
+                }
             } else {
                 harUgyldigSak = true;
             }

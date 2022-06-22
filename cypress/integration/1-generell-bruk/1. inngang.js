@@ -1,10 +1,17 @@
+const TestDate = require('../../fixtures/date.js');
+
 describe('Generell flyt', () => {
+    beforeEach(() => {
+        cy.clock(TestDate, ['Date']);
+    });
+
     it('siden lastes ok', () => {
         cy.visit('http://localhost:8090');
         cy.get('.typo-sidetittel', { timeout: 15000 }).should('contain.text', 'Melde endring i pleiepengeperioden');
     });
 
     it('kan velge å endre arbeidstid', () => {
+        cy.clock(TestDate, ['Date']);
         cy.get('#inngangForm').within(() => {
             cy.get('#arbeidstid').should('exist');
             cy.get('#arbeidstid').parent().click();
