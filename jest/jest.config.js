@@ -1,7 +1,22 @@
 module.exports = {
     transform: {
-        '^.+\\.tsx?$': 'ts-jest',
+        '^.+\\.tsx?$': [
+            'ts-jest',
+            {
+                tsconfig: './tsconfig.json',
+                babelConfig: {
+                    plugins: ['@babel/plugin-proposal-object-rest-spread'],
+                    presets: ['@babel/preset-env', '@babel/preset-react'],
+                    env: {
+                        test: {
+                            plugins: ['@babel/plugin-transform-modules-commonjs'],
+                        },
+                    },
+                },
+            },
+        ],
     },
+
     setupFilesAfterEnv: ['./jest/setup.ts'],
     testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
     moduleNameMapper: {
@@ -11,20 +26,6 @@ module.exports = {
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
     transformIgnorePatterns: ['node_modules/(?!(nav-frontend-spinner-style)/)'],
     testEnvironment: 'jsdom',
-    globals: {
-        'ts-jest': {
-            tsconfig: './tsconfig.json',
-            babelConfig: {
-                plugins: ['@babel/plugin-proposal-object-rest-spread'],
-                presets: ['@babel/preset-env', '@babel/preset-react'],
-                env: {
-                    test: {
-                        plugins: ['@babel/plugin-transform-modules-commonjs'],
-                    },
-                },
-            },
-        },
-    },
     rootDir: '../',
     modulePathIgnorePatterns: ['./cypress'],
 };
